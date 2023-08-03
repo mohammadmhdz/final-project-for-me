@@ -5,7 +5,7 @@ from rest_framework.routers import DefaultRouter,SimpleRouter
 
 router = SimpleRouter()
 router.register('jobs' , views.JobViewSet , basename="jobs")
-
+router.register('companies' , views.CompanyViewSet , basename="companies")
 
 urlpatterns = router.urls
 
