@@ -191,7 +191,7 @@ class Verification(models.Model):
 
      
      def __str__(self):
-          return f'{self.registrationـnumber}  is registration number of:  { self.Company.name}'
+          return f'{self.registrationـnumber}  is registration number of:  { self.Company.Name}'
      
 
 
@@ -263,6 +263,7 @@ class Employee(models.Model):
     city = models.ForeignKey(City ,on_delete=models.SET_NULL,null=True)
     skills = models.ManyToManyField(Skills)
     cv = models.FileField( null=True, blank=True, validators=[FileExtensionValidator(allowed_extensions=["pdf"])])
+    favorite_jobs = ArrayField(models.IntegerField(null=True , blank= True , default=[]))
 
     def __str__(self):
         return self.user.username
@@ -318,12 +319,11 @@ class Apply(models.Model):
     Company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     job = models.ForeignKey(Job, on_delete=models.CASCADE, null=True)
     message  = models.TextField(max_length=1000)
-    # cv = 
     send_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=15 , choices=Requststatus)
     status_change_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.employee
+        return self.message
 
 

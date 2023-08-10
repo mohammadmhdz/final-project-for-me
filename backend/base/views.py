@@ -7,9 +7,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import Job , Company , Employee , WorkExperience , Education , Language 
+from .models import Job , Company , Employee , WorkExperience , Education , Language , Apply , Verification , Skills , Category
 from django.contrib.auth.models import User
-from .serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer
+from .serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer , ApplySerializer , VerificationSerializer , SkillSerializer , CategorySerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
@@ -304,40 +304,200 @@ class EducationViewSet(viewsets.ViewSet):
 
 
 
-# class LanguageViewSet(viewsets.ViewSet):
 
 
-#     def list(self,request):
-#         language = Language.objects.all()
-#         serializer = LanguageSerializer(language , many = True)
-#         return Response(serializer.data)
+class LanguageViewSet(viewsets.ViewSet):
+
+
+    def list(self,request):
+        language = Language.objects.all()
+        serializer = LanguageSerializer(language , many = True)
+        return Response(serializer.data)
     
         
-#     def retrieve(self, request, pk=None):
-#         languages = Language.objects.all()
-#         language = get_object_or_404(languages, pk=pk)
-#         serializer = LanguageSerializer(language)
-#         return Response(serializer.data)
+    def retrieve(self, request, pk=None):
+        languages = Language.objects.all()
+        language = get_object_or_404(languages, pk=pk)
+        serializer = LanguageSerializer(language)
+        return Response(serializer.data)
     
-#     def create(self,request):
-#         serializer = LanguageSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+    def create(self,request):
+        serializer = LanguageSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
     
 
-#     def update(self, request, pk=None):
-#         language = get_object_or_404(Language.objects.all(), pk=pk)
-#         serializer = LanguageSerializer(language, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def update(self, request, pk=None):
+        language = get_object_or_404(Language.objects.all(), pk=pk)
+        serializer = LanguageSerializer(language, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-#     def destroy(self, request,pk):
-#         id=pk
-#         language = Language.objects.get(pk=id)
-#         language.delete()
-#         return Response({'msg':'Data Deleted'})   
+    def destroy(self, request,pk):
+        id=pk
+        language = Language.objects.get(pk=id)
+        language.delete()
+        return Response({'msg':'Data Deleted'})   
+    
+
+
+class ApplyViewSet(viewsets.ViewSet):
+
+
+    def list(self,request):
+        apply = Apply.objects.all()
+        serializer = ApplySerializer(apply , many = True)
+        return Response(serializer.data)
+    
+        
+    def retrieve(self, request, pk=None):
+        allapply = Apply.objects.all()
+        apply = get_object_or_404(allapply, pk=pk)
+        serializer = ApplySerializer(apply)
+        return Response(serializer.data)
+    
+    def create(self,request):
+        serializer = ApplySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def update(self, request, pk=None):
+        apply = get_object_or_404(Apply.objects.all(), pk=pk)
+        serializer = ApplySerializer(apply, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def destroy(self, request,pk):
+        id=pk
+        apply = Apply.objects.get(pk=id)
+        apply.delete()
+        return Response({'msg':'Data Deleted'})      
+
+
+class VerificationViewSet(viewsets.ViewSet):
+
+
+    def list(self,request):
+        verification = Verification.objects.all()
+        serializer = VerificationSerializer(verification , many = True)
+        return Response(serializer.data)
+    
+        
+    def retrieve(self, request, pk=None):
+        verifications = Verification.objects.all()
+        verification = get_object_or_404(verifications, pk=pk)
+        serializer = VerificationSerializer(verification)
+        return Response(serializer.data)
+    
+    def create(self,request):
+        serializer = VerificationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def update(self, request, pk=None):
+        verification = get_object_or_404(Verification.objects.all(), pk=pk)
+        serializer = VerificationSerializer(verification, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def destroy(self, request,pk):
+        id=pk
+        verification = Verification.objects.get(pk=id)
+        verification.delete()
+        return Response({'msg':'Data Deleted'}) 
+
+
+class SkillsViewSet(viewsets.ViewSet):
+
+
+    def list(self,request):
+        skill = Skills.objects.all()
+        serializer = SkillSerializer(skill , many = True)
+        return Response(serializer.data)
+    
+        
+    def retrieve(self, request, pk=None):
+        skills = Skills.objects.all()
+        skill = get_object_or_404(skills, pk=pk)
+        serializer = SkillSerializer(skill)
+        return Response(serializer.data)
+    
+    def create(self,request):
+        serializer = SkillSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def update(self, request, pk=None):
+        skill = get_object_or_404(Skills.objects.all(), pk=pk)
+        serializer = SkillSerializer(skill, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def destroy(self, request,pk):
+        id=pk
+        skill = Skills.objects.get(pk=id)
+        skill.delete()
+        return Response({'msg':'Data Deleted'}) 
+
+
+
+class CategoryViewSet(viewsets.ViewSet):
+
+
+    def list(self,request):
+        category = Category.objects.all()
+        serializer = CategorySerializer(category , many = True)
+        return Response(serializer.data)
+    
+        
+    def retrieve(self, request, pk=None):
+        categories = Category.objects.all()
+        category = get_object_or_404(categories, pk=pk)
+        serializer = CategorySerializer(category)
+        return Response(serializer.data)
+    
+    def create(self,request):
+        serializer = CategorySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def update(self, request, pk=None):
+        category = get_object_or_404(Category.objects.all(), pk=pk)
+        serializer = CategorySerializer(category, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def destroy(self, request,pk):
+        id=pk
+        category = Category.objects.get(pk=id)
+        category.delete()
+        return Response({'msg':'Data Deleted'})     
