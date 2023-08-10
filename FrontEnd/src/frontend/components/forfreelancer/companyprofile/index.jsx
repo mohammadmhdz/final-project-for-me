@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   home_icon,
@@ -14,13 +14,23 @@ import {
 } from "../../imagepath";
 
 const CompanyProfile = (props) => {
+  const [users, setUsers] = useState([]);
+
   useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/employees/")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setUsers(data);
+      })
+      .catch((err) => console.log(err, "errrrrrr"));
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
-  });
-
+  }, []);
+  console.log(users, "Xdssd");
   return (
     <>
       {/* Breadcrumb */}
