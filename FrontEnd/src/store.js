@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import { jobListReducer } from "./reducers/jobsReducer";
-
+// use selector tu use one of the below reducers
 const reducer = combineReducers({
   jobList: jobListReducer,
 });
