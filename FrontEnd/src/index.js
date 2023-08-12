@@ -6,9 +6,17 @@ import AppRouter from "./frontend/approuter";
 // Use For Switch
 import "react-toggle-switch/dist/css/switch.min.css";
 
+import store from "./store";
+import { Provider } from "react-redux";
+
 import "./index.css";
 
-ReactDOM.render(<AppRouter />, document.getElementById("root"));
+ReactDOM.render(
+  <Provider store={store}>
+    <AppRouter />
+  </Provider>,
+  document.getElementById("root")
+);
 
 if (module.hot) {
   // enables hot module replacement if plugin is installed

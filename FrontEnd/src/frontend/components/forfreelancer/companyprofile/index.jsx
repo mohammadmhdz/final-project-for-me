@@ -12,25 +12,29 @@ import {
   Tab_icon_11,
   Tab_icon_13,
 } from "../../imagepath";
+// for redux using
+import { useDispatch, useSelector } from "react-redux";
+import { listJobs } from "../../../../actions/jobActions";
 
 const CompanyProfile = (props) => {
   const [users, setUsers] = useState([]);
 
+  // for using redux in our project
+  const dispatch = useDispatch();
+  const jobsList = useSelector((state) => state.jobList);
+  // const { error, loading, jobs } = jobsList;
+  // console.log(error, loading, jobs);
+
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/employees/")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setUsers(data);
-      })
-      .catch((err) => console.log(err, "errrrrrr"));
+    // for using redux in our project
+    dispatch(listJobs());
+
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
-  }, []);
-  console.log(users, "Xdssd");
+  }, [dispatch]);
+  console.log(jobsList, "Xdssd");
   return (
     <>
       {/* Breadcrumb */}
