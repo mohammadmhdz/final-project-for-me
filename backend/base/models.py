@@ -5,6 +5,7 @@ from django.core import validators
 from django.core.validators import FileExtensionValidator
 
 
+
 # Create your models here.
 
 
@@ -175,7 +176,8 @@ class Company(models.Model):
      Working_days_to = models.CharField(max_length=15 , choices=Days , default='16;00')
      working_hours_from = models.TimeField()
      working_hours_to = models.TimeField()
-     favorite_employee = ArrayField(ArrayField(models.IntegerField(null=True , blank= True , default=[])))
+     favorite_employee = models.ManyToManyField('Employee')
+    
 
 
      def __str__(self):
@@ -231,7 +233,7 @@ class Job(models.Model):
     salary_type   = models.CharField(max_length=15 , choices=Salary_Type ,  default='توافقی')
     salary_amount       = models.CharField(max_length=100 , null=True, blank=True) 
     description  = models.TextField(max_length=1000)               
-    skills_required = models.ManyToManyField(Skills)
+    skills = models.ManyToManyField(Skills)
     category     = models.ForeignKey('Category',on_delete=models.CASCADE, default=1)
     status = models.CharField(max_length=15 , choices=JobStatus)
     # maplocation
@@ -263,7 +265,9 @@ class Employee(models.Model):
     city = models.ForeignKey(City ,on_delete=models.SET_NULL,null=True)
     skills = models.ManyToManyField(Skills)
     cv = models.FileField( null=True, blank=True, validators=[FileExtensionValidator(allowed_extensions=["pdf"])])
-    favorite_jobs = ArrayField(models.IntegerField(null=True , blank= True , default=[]))
+    # favorite_jobs = ArrayField(models.IntegerField(null=True , blank= True , default=[]))
+    favorite_jobs = models.ManyToManyField(Job)
+    
 
     def __str__(self):
         return self.user.username
@@ -326,4 +330,6 @@ class Apply(models.Model):
     def __str__(self):
         return self.message
 
+
+    
 

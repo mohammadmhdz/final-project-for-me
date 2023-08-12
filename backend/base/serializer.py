@@ -39,10 +39,35 @@ class UserSerializerWithToken(UserSerializer):
         return str(token.access_token)
 
 class JobSerializer(serializers.ModelSerializer):
+    Company = serializers.SerializerMethodField(read_only=True)
+    city = serializers.SerializerMethodField(read_only=True)
+    category = serializers.SerializerMethodField(read_only=True)
+    skills = serializers.SerializerMethodField(read_only=True)
+ 
     class Meta:
         model = Job
         fields = '__all__'
 
+    def get_city(self, obj):
+        city = obj.city
+        serializer = CitySerializer(city, many=False)
+        return serializer.data  
+    
+    def get_category(self, obj):
+        category = obj.category
+        serializer = CategorySerializer(category, many=False)
+        return serializer.data  
+    
+
+    def get_Company(self, obj):
+        Company = obj.Company
+        serializer = CompanySerializer(Company, many=False)
+        return serializer.data  
+    
+    def get_skills(self, obj):
+        skills = obj.skills
+        serializer = SkillSerializer(skills, many=True)
+        return serializer.data 
 
 class CompanySerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField(read_only=True)
@@ -52,12 +77,26 @@ class CompanySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
-
     def get_user(self, obj):
         user = obj.user
         serializer = UserSerializer(user, many=False)
         return serializer.data
+    
+
+        
+    def get_city(self, obj):
+        city = obj.city
+        serializer = CategorySerializer(city, many=False)
+        return serializer.data  
+
+
+
+
+    city = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = Company
+        fields = '__all__'
+
     
 
         
@@ -90,6 +129,30 @@ class ApplySerializer(serializers.ModelSerializer):
         employee = obj.employee
         serializer = EmployeeSerializer(employee, many=False)
         return serializer.data
+
+
+
+
+class EmployeeApplySerializer(serializers.ModelSerializer):
+    Company = serializers.SerializerMethodField(read_only=True)
+    job = serializers.SerializerMethodField(read_only=True)
+
+    
+    class Meta:
+        model = Apply
+        fields = '__all__'
+    
+    def get_Company(self, obj):
+        Company = obj.Company
+        serializer = CompanySerializer(Company, many=False)
+        return serializer.data  
+    
+    def get_job(self, obj):
+        job = obj.job
+        serializer = JobSerializer(job, many=False) 
+        return serializer.data
+
+
 
 
 class SkillSerializer(serializers.ModelSerializer):
@@ -135,6 +198,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
     Experiences = serializers.SerializerMethodField(read_only=True)
     city = serializers.SerializerMethodField(read_only=True)
     user = serializers.SerializerMethodField(read_only=True)
+
+
 
     class Meta:
         model = Employee

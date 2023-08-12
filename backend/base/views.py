@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from rest_framework import status 
 from  django.shortcuts import render 
 from django.shortcuts import get_object_or_404
@@ -86,15 +87,24 @@ def getEmployees(request):
 
 
 
+# @api_view(['GET'])
+# def getapply(self, request, pk=None):
+#     allapply = Apply.objects.all()
+#     apply = get_object_or_404(allapply, employee.id=pk)
+#     serializer = ApplySerializer(apply)
+#     return Response(serializer.data)
 
 
 
 
-
-
-
-
-
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def getMyapply(request):
+    print(request)
+    employee = request.employee
+    apply = employee.apply_set.all()
+    serializer = ApplySerializer(apply, many=True)
+    return Response(serializer.data)
 
 
 
@@ -360,7 +370,11 @@ class ApplyViewSet(viewsets.ViewSet):
         apply = get_object_or_404(allapply, pk=pk)
         serializer = ApplySerializer(apply)
         return Response(serializer.data)
-    
+        
+  
+
+
+
     def create(self,request):
         serializer = ApplySerializer(data=request.data)
         if serializer.is_valid():
