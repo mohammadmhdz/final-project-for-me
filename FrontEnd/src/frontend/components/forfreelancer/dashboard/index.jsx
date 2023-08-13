@@ -10,9 +10,10 @@ import {
   home_icon,
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
-
+// redux
 import { useDispatch, useSelector } from "react-redux";
 import { listEmployee } from "../../../../actions/employeeActions";
+import { freelancerRequest } from "../../../../actions/requestsActions";
 
 const FreelancerDashboard = (props) => {
   var chartprofileoptions = {
@@ -152,10 +153,12 @@ const FreelancerDashboard = (props) => {
   // redux
   const dispatch = useDispatch();
   const employeeList = useSelector((state) => state.employeeListDetails);
+  const freelancerRequests = useSelector((state) => state.freelancerRequest);
   // const { employee } = employeeList;
   // const emloyeeDetails = useSelector((state) => state.employeeListDetails);
   useEffect(() => {
     dispatch(listEmployee());
+    dispatch(freelancerRequest());
 
     let chartprofileoptionsColumn = document.getElementById("chartprofile");
     let chartprofileoptionsChart = new ApexCharts(
