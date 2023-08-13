@@ -11,6 +11,9 @@ import {
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 
+import { useDispatch, useSelector } from "react-redux";
+import { listEmployee } from "../../../../actions/employeeActions";
+
 const FreelancerDashboard = (props) => {
   var chartprofileoptions = {
     series: [
@@ -145,7 +148,15 @@ const FreelancerDashboard = (props) => {
       },
     ],
   };
+
+  // redux
+  const dispatch = useDispatch();
+  const employeeList = useSelector((state) => state.employeeListDetails);
+  // const { employee } = employeeList;
+  // const emloyeeDetails = useSelector((state) => state.employeeListDetails);
   useEffect(() => {
+    dispatch(listEmployee());
+
     let chartprofileoptionsColumn = document.getElementById("chartprofile");
     let chartprofileoptionsChart = new ApexCharts(
       chartprofileoptionsColumn,
@@ -160,7 +171,8 @@ const FreelancerDashboard = (props) => {
     return () => {
       document.body.className = "";
     };
-  });
+  }, [dispatch]);
+  // console.log(employeeList, "sdsd");
   return (
     <>
       {/* Page Content */}
