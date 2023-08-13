@@ -2,7 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Img_04 } from "../../imagepath";
 
+import { logout } from "../../../../actions/userActions";
+import { useDispatch } from "react-redux";
+
 const Sidebar = (props) => {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   const pathname = window.location.pathname.split("/")[1];
   return (
     <>
@@ -88,8 +97,9 @@ const Sidebar = (props) => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/" className="nav-link">
-                <i className="material-icons">power_settings_new</i> خروج
+              <Link onClick={handleLogout} to="/" className="nav-link">
+                <i className="material-icons">power_settings_new</i>
+                خروج
               </Link>
             </li>
           </ul>

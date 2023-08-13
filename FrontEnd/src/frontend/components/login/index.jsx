@@ -1,10 +1,27 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Logo_01 } from "../imagepath";
+import { useState } from "react";
+// redux
+import { login } from "../../../actions/userActions";
+import { useDispatch, useSelector } from "react-redux";
+import Password from "antd/lib/input/Password";
 
 const Login = (props) => {
-  //  useEffect(() => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
+  // redux
+  const dispatch = useDispatch();
+  //  useEffect(() => {
+  const submithandler = (e) => {
+    e.preventDefault();
+    // redux
+    dispatch(login(email, password));
+  };
+
+  const userLogin = useSelector((state) => state.userLogin);
+  // const { error, loading, userInfo } = userLogin
   //     document.body.className = 'account-page';
   //     return () => { document.body.className = ''; }
   //   });
@@ -29,13 +46,23 @@ const Login = (props) => {
                         دنیای حرفه ای مطلع شوید
                       </p>
                     </div>
-                    <form action="/template-reactjs/dashboard">
+                    <form
+                      onSubmit={submithandler}
+                      // action="/template-reactjs/dashboard"
+                    >
                       <div className="form-group form-focus">
-                        <input type="text" className="form-control floating" />
+                        <input
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          type="text"
+                          className="form-control floating"
+                        />
                         <label className="focus-label">ایمیل</label>
                       </div>
                       <div className="form-group form-focus">
                         <input
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
                           type="password"
                           className="form-control floating"
                         />
