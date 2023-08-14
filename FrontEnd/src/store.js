@@ -2,15 +2,17 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import { jobListReducer } from "./reducers/jobsReducer";
-import { employeeListReducer } from "./reducers/employeeReducer";
+import { jobListReducer, jobsDetailsReducer } from "./reducers/jobsReducer";
+import { employeeDetailsReducer } from "./reducers/employeeReducer";
 import { freelancerRequestReducer } from "./reducers/requestsReducer";
 import { userLoginReducer } from "./reducers/userReducer";
 import { companyDetailsReducer } from "./reducers/companyReducer";
 // use selector tu use one of the below reducers
 const reducer = combineReducers({
   jobList: jobListReducer,
-  employeeListDetails: employeeListReducer,
+  jobsDetails: jobsDetailsReducer,
+  //
+  employeeDetails: employeeDetailsReducer,
   freelancerRequest: freelancerRequestReducer,
   userLogin: userLoginReducer,
   companyDetails: companyDetailsReducer,

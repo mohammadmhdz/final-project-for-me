@@ -12,14 +12,25 @@ import {
   home_icon,
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
-
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { employeeDetails } from "../../../../actions/employeeActions";
+import { jobsDetail } from "../../../../actions/jobActions";
 const FreelancerFavourites = (props) => {
+  // redux
+  const dispatch = useDispatch();
+  const employeeDetail = useSelector((state) => state.employeeDetails);
+  const { employee } = employeeDetail;
   useEffect(() => {
+    dispatch(employeeDetails(2));
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
-  });
+  }, [dispatch]);
+  // const x = employee.favorite_jobs;
+  // x.map((items, index) => console.log(items, index));
+  // dispatch(jobsDetail(employee.favorite_jobs[0]));
   return (
     <>
       {/* Page Content */}

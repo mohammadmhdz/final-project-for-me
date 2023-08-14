@@ -4,7 +4,7 @@ import {
   EMPLOYEE_DETAILS_FAIL,
 } from "../constant/employeeConstant";
 
-export const employeeListReducer = (state = { employee: [] }, action) => {
+export const employeeDetailsReducer = (state = { employee: [] }, action) => {
   switch (action.type) {
     case EMPLOYEE_DETAILS_REQUEST:
       return { loading: true, employee: [] };

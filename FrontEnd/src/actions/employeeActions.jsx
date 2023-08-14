@@ -5,11 +5,13 @@ import {
 } from "../constant/employeeConstant";
 import axios from "axios";
 
-export const employeeDetails = () => async (dispatch) => {
+export const employeeDetails = (keyword) => async (dispatch) => {
   try {
     dispatch({ type: EMPLOYEE_DETAILS_REQUEST });
-
-    const { data } = await axios.get(`http://127.0.0.1:8000/api/employees/2/`);
+    console.log(keyword);
+    const { data } = await axios.get(
+      `http://127.0.0.1:8000/api/employees/${keyword}/`
+    );
     dispatch({
       type: EMPLOYEE_DETAILS_SUCCESS,
       payload: data,

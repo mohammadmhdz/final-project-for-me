@@ -152,12 +152,13 @@ const FreelancerDashboard = (props) => {
 
   // redux
   const dispatch = useDispatch();
-  const employeeList = useSelector((state) => state.employeeListDetails);
+  const employeeList = useSelector((state) => state.employeeDetails);
   const freelancerRequests = useSelector((state) => state.freelancerRequest);
   // const { employee } = employeeList;
   // const emloyeeDetails = useSelector((state) => state.employeeListDetails);
   useEffect(() => {
     // redux
+    // employeeDetails ra taghir dadim
     dispatch(employeeDetails());
     dispatch(freelancerRequest());
 
