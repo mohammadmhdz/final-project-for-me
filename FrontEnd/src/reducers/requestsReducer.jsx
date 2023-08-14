@@ -5,17 +5,17 @@ import {
 } from "../constant/requestsConstant";
 
 export const freelancerRequestReducer = (
-  state = { freelancerRequests: [] },
+  state = { freelancerRequestsAll: [] },
   action
 ) => {
   switch (action.type) {
     case FREELANCER_REQUESTS_REQUEST:
-      return { loading: true, freelancerRequests: [] };
+      return { loading: true, freelancerRequestsAll: [] };
 
     case FREELANCER_REQUESTS_SUCCESS:
       return {
         loading: false,
-        freelancerRequests: action.payload,
+        freelancerRequestsAll: action.payload,
       };
     case FREELANCER_REQUESTS_FAIL:
       return { loading: false, error: action.payload };

@@ -106,7 +106,7 @@ const FreelancerFavourites = (props) => {
       </div>
       {/* /Page Content */}
       {/* The Modal */}
-      <div className="modal fade" id="bookmark">
+      {/* <div className="modal fade" id="bookmark">
         <div className="modal-dialog modal-dialog-centered modal-md">
           <div className="modal-content">
             <div className="modal-header">
@@ -269,7 +269,7 @@ const FreelancerFavourites = (props) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* /The Modal */}
     </>
   );

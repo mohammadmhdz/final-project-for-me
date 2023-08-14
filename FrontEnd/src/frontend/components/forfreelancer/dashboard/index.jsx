@@ -12,7 +12,7 @@ import {
 import { Sidebar } from "../sidebar";
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { listEmployee } from "../../../../actions/employeeActions";
+import { employeeDetails } from "../../../../actions/employeeActions";
 import { freelancerRequest } from "../../../../actions/requestsActions";
 
 const FreelancerDashboard = (props) => {
@@ -157,7 +157,8 @@ const FreelancerDashboard = (props) => {
   // const { employee } = employeeList;
   // const emloyeeDetails = useSelector((state) => state.employeeListDetails);
   useEffect(() => {
-    dispatch(listEmployee());
+    // redux
+    dispatch(employeeDetails());
     dispatch(freelancerRequest());
 
     let chartprofileoptionsColumn = document.getElementById("chartprofile");

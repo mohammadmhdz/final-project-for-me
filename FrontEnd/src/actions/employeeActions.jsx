@@ -5,7 +5,7 @@ import {
 } from "../constant/employeeConstant";
 import axios from "axios";
 
-export const listEmployee = () => async (dispatch) => {
+export const employeeDetails = () => async (dispatch) => {
   try {
     dispatch({ type: EMPLOYEE_DETAILS_REQUEST });
 
