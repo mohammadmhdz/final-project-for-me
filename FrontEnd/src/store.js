@@ -6,12 +6,14 @@ import { jobListReducer } from "./reducers/jobsReducer";
 import { employeeListReducer } from "./reducers/employeeReducer";
 import { freelancerRequestReducer } from "./reducers/requestsReducer";
 import { userLoginReducer } from "./reducers/userReducer";
+import { companyDetailsReducer } from "./reducers/companyReducer";
 // use selector tu use one of the below reducers
 const reducer = combineReducers({
   jobList: jobListReducer,
   employeeListDetails: employeeListReducer,
   freelancerRequest: freelancerRequestReducer,
   userLogin: userLoginReducer,
+  companyDetails: companyDetailsReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

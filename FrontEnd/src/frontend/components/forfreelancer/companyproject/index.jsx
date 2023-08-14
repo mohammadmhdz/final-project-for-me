@@ -14,15 +14,32 @@ import {
 } from "../../imagepath";
 import StickyBox from "react-sticky-box";
 import { ProfileSidebar } from "../../forfreelancer/sidebar/profilesidebar";
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { listJobs } from "../../../../actions/jobActions";
 
 const CompanyProject = (props) => {
+  // for using redux in our project
+  const dispatch = useDispatch();
+  const listJob = useSelector((state) => state.jobList);
+  const { jobs } = listJob;
+  // console.log(error, loading, jobs);
   useEffect(() => {
+    dispatch(listJobs());
+
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
-  });
+  }, [dispatch]);
 
+  // console.log(jobs, "job list per company");
+
+  const test = jobs.map((item) => {
+    // console.log(item.Company.id); this is what we want
+    console.log(item.Company);
+  });
+  // test();
   return (
     <>
       {/* Breadcrumb */}

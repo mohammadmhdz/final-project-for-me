@@ -14,27 +14,28 @@ import {
 } from "../../imagepath";
 // for redux using
 import { useDispatch, useSelector } from "react-redux";
-import { listJobs } from "../../../../actions/jobActions";
+import { companyDetails } from "../../../../actions/companyActions";
 
 const CompanyProfile = (props) => {
   const [users, setUsers] = useState([]);
 
   // for using redux in our project
   const dispatch = useDispatch();
-  const jobsList = useSelector((state) => state.jobList);
-  // const { error, loading, jobs } = jobsList;
+  const companyDetail = useSelector((state) => state.companyDetails);
+  // const { companyDetails } = companyDetail;
   // console.log(error, loading, jobs);
 
   useEffect(() => {
     // for using redux in our project
-    dispatch(listJobs());
+    dispatch(companyDetails());
+    const x = companyDetail;
 
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
   }, [dispatch]);
-  console.log(jobsList, "Xdssd");
+  console.log(companyDetail, "Xdssd");
   return (
     <>
       {/* Breadcrumb */}

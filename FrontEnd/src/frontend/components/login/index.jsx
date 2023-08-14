@@ -48,7 +48,7 @@ const Login = (props) => {
                     </div>
                     <form
                       onSubmit={submithandler}
-                      // action="/template-reactjs/dashboard"
+                      action="/template-reactjs/dashboard"
                     >
                       <div className="form-group form-focus">
                         <input
