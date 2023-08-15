@@ -8,7 +8,7 @@ import axios from "axios";
 export const employeeDetails = (keyword) => async (dispatch) => {
   try {
     dispatch({ type: EMPLOYEE_DETAILS_REQUEST });
-    console.log(keyword);
+    // console.log(keyword);
     const { data } = await axios.get(
       `http://127.0.0.1:8000/api/employees/${keyword}/`
     );
