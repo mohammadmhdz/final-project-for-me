@@ -57,10 +57,6 @@ const Settings = (props) => {
                       <div className="pro-body p-0">
                         <div className="form-row pro-pad">
                           <div className="form-group col-md-6">
-                            <label>نام کاربری</label>
-                            <input type="text" className="form-control" />
-                          </div>
-                          <div className="form-group col-md-6">
                             <label>آدرس ایمیل</label>
                             <input type="email" className="form-control" />
                           </div>
@@ -84,28 +80,10 @@ const Settings = (props) => {
                             <label>جمعیت شرکت</label>
                             <input type="email" className="form-control" />
                           </div>
-                          <div className="form-group col-md-6">
-                            <label>حوزه شرکت</label>
-                            <select className="form-control select">
-                              <option value={0}>Male</option>
-                              <option value={1}>Female</option>
-                            </select>
-                          </div>
-                          <div className="form-group col-md-6">
-                            <label>جنسیت</label>
-                            <select className="form-control select">
-                              <option value={0}>آقا</option>
-                              <option value={1}>خانوم</option>
-                            </select>
-                          </div>
-                          <div className="form-group col-md-6">
-                            <label>زبان </label>
-                            <input type="text" className="form-control" />
-                          </div>
                         </div>
                         <div className="form-row pro-pad pt-0">
                           <div className="form-group col-md-6 pro-pic">
-                            <label>تصویر حساب کاربری</label>
+                            <label>لوگو شرکت</label>
                             <div className="d-flex align-items-center">
                               <div className="upload-images">
                                 <img src={Img_02} alt="Image" />
@@ -151,10 +129,6 @@ const Settings = (props) => {
                           <label>شهر</label>
                           <input type="text" className="form-control" />
                         </div>
-                        <div className="form-group col-md-6">
-                          <label>کدپستی</label>
-                          <input type="text" className="form-control" />
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -186,11 +160,6 @@ const Settings = (props) => {
                       <div className="row">
                         <div className="form-group col-md-6">
                           <label>فیس بوک</label>
-                          <input type="text" className="form-control" />
-                        </div>
-
-                        <div className="form-group col-md-6">
-                          <label>توییتر</label>
                           <input type="text" className="form-control" />
                         </div>
                         <div className="form-group col-md-6">

@@ -85,12 +85,7 @@ const CompanyDetails = () => {
                         <p>فرصت های شغلی</p>
                       </Link>
                     </li>
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/company-gallery">
-                        <img src={Tab_icon_10} alt="User Image" />
-                        <p>گالری</p>
-                      </Link>
-                    </li>
+
                     <li className="nav-item">
                       <Link className="nav-link" to="/company-review">
                         <img src={Tab_icon_11} alt="User Image" />

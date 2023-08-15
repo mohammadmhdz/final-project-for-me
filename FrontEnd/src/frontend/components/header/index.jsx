@@ -111,26 +111,26 @@ const Header = (props) => {
                 </div>
                 <ul className="main-nav">
                   <li>
-                    <Link to="/admin/login" target="_blank">
+                    <Link to="/" target="_blank">
                       خانه
                     </Link>
                   </li>
                   <li>
-                    <Link to="/admin/login" target="_blank">
+                    <Link to="/project" target="_blank">
                       فرصت های شغلی
                     </Link>
                   </li>
                   <li>
-                    <Link to="/admin/login" target="_blank">
-                      پروفایل من
+                    <Link to="/privacy-policy" target="_blank">
+                      قوانین و مقررات
                     </Link>
                   </li>
 
-                  <li>
+                  {/* <li>
                     <Link to="/admin/login" target="_blank">
-                      شرکت های برتر
+                       آگهی های برتر 
                     </Link>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
               {pathname === "user-account-details" ? (
@@ -146,40 +146,30 @@ const Header = (props) => {
                       className="dropdown-toggle nav-link"
                       data-bs-toggle="dropdown"
                     >
-                      <span className="user-img">
+                      <span className="user-img  ms-2">
                         <img src={avatar_1} alt="" />
                       </span>
-                      <span>John</span>
+                      <span className=" ms-2">پروفایل</span>
                     </Link>
+
                     <div className="dropdown-menu emp">
-                      <div className="drop-head">Account Details</div>
                       <Link
                         className="dropdown-item"
                         to="/user-account-details"
                       >
-                        <i className="material-icons">verified_user</i> View
-                        profile
+                        <i className="material-icons  ms-1">verified_user</i>{" "}
+                        پروفایل من
                       </Link>
-                      <div className="drop-head">Projects Settings</div>
-                      <Link className="dropdown-item" to="/manage-projects">
-                        <i className="material-icons">business_center</i>{" "}
-                        Projects
-                      </Link>
-                      <Link className="dropdown-item" to="/favourites">
-                        <i className="material-icons">local_play</i> Favourites
-                      </Link>
-                      <Link className="dropdown-item" to="/review">
-                        <i className="material-icons">pie_chart</i> Reviews
-                      </Link>
-                      <div className="drop-head">Account Details</div>
-                      <Link className="dropdown-item" to="/profile-settings">
+                      <Link className="dropdown-item " to="/profile-settings">
                         {" "}
-                        <i className="material-icons">settings</i> Profile
-                        Settings
+                        <i className="material-icons  ms-1">settings</i>
+                        تنظیمات
                       </Link>
                       <Link className="dropdown-item" to="/">
-                        <i className="material-icons">power_settings_new</i>{" "}
-                        Logout
+                        <i className="material-icons  ms-1">
+                          power_settings_new
+                        </i>{" "}
+                        خروج
                       </Link>
                     </div>
                   </li>
@@ -201,11 +191,11 @@ const Header = (props) => {
                       <i className="fa fa-lock" /> ورود
                     </Link>
                   </li>
-                  <li className={pathname === "post-project" ? "active" : ""}>
+                  {/* <li className={pathname === "post-project" ? "active" : ""}>
                     <Link to="/post-project" className="login-btn">
                       ایجاد فرصت شغلی{" "}
                     </Link>
-                  </li>
+                  </li> */}
                 </ul>
               )}
             </nav>

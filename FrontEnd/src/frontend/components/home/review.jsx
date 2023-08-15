@@ -54,7 +54,9 @@ const Reviews = (props) => {
                 data-aos="fade-up"
               >
                 <div className="section-line" />
-                <h2 className="header-title">نظرات کاربران</h2>
+                <h2 className="header-title">
+                  نظرات کاربران ما در شبکه های اجتماعی{" "}
+                </h2>
                 <p>تجربه کاربرانی که از کمک کار استفاده کرده اند را بخوانید</p>
               </div>
             </div>

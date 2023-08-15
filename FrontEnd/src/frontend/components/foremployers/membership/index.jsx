@@ -2,39 +2,25 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { home_icon } from "../../imagepath";
-import { Sidebar } from '../sidebar';
+import { Sidebar } from "../sidebar";
 
 const Membership = (props) => {
   useEffect(() => {
-    document.body.className = 'dashboard-page';
-    return () => { document.body.className = ''; }
+    document.body.className = "dashboard-page";
+    return () => {
+      document.body.className = "";
+    };
   });
 
   return (
     <>
       {/* Breadcrumb */}
-      <div className="bread-crumb-bar">
-        <div className="container">
-          <div className="row align-items-center inner-banner">
-            <div className="col-md-12 col-12 text-center">
-              <div className="breadcrumb-list">
-                <nav aria-label="breadcrumb" className="page-breadcrumb">
-                  <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><Link to="#"><img src={home_icon} alt="Post Author" /> Home</Link></li>
-                    <li className="breadcrumb-item" aria-current="page">Employee</li>
-                    <li className="breadcrumb-item" aria-current="page">Membership</li>
-                  </ol>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
       {/* /Breadcrumb */}
       {/* Page Content */}
       <div className="content content-page">
         <div className="container-fluid">
-          <div className="row">
+          <div className="row mt-5 align-right">
             {/* sidebar */}
             <div className="col-xl-3 col-md-4 theiaStickySidebar">
               <StickyBox offsetTop={20} offsetBottom={20}>
@@ -44,70 +30,56 @@ const Membership = (props) => {
             {/* /sidebar */}
             <div className="col-xl-9 col-md-8 mx-auto">
               <div className="freelance-title" id="plan">
-                <h3>Employer Packages</h3>
-                <p> Choose the best pricing that suites your requirements</p>
+                <h3>بسته های کارفرمایان</h3>
+                <p> بهترین بسته را با توجه به نیاز های خود انتخاب کنید</p>
               </div>
               <div className="row">
                 <div className="col-lg-4">
                   <div className="package-detail">
-                    <h4>Basic Plan</h4>
-                    <p>Go Pro, Best for the individuals</p>
-                    <h3 className="package-price">$19.00</h3>
+                    <h4>بسته عضویت بنیادی </h4>
+                    {/* <p>Go Pro, Best for the individuals</p> */}
+                    <h3 className="package-price">۱۰۰ هزار تومان</h3>
                     <div className="package-feature">
                       <ul>
-                        <li>12 Project Credits</li>
-                        <li>10 Allowed Services</li>
-                        <li>20 Days visibility</li>
-                        <li>5 Featured Services</li>
-                        <li>20 Days visibility</li>
-                        <li>30 Days Package Expiry</li>
-                        <li className="non-check">Profile Featured</li>
+                        <li>امکان درج ده آگهی شغلی در سایت</li>
+                        <li>نمایش آگهی در صفحه اصلی سایت به مدت یک ساعت.</li>
+                        <li> امکان جستجوی و مشاهده رزومه‌های کارجویان</li>
+
+                        <li>امکان به روزرسانی یا حذف آگهی در هر زمان</li>
+                        <li className="non-check">
+                          {" "}
+                          پشتیبانی اختصاصی و اولویت در رفع مشکلات فنی
+                        </li>
+                        <li className="non-check">
+                          {" "}
+                          امکان انتشار آگهی در شبکه های اجتماعی و سایت های مرتبط
+                        </li>
                       </ul>
                     </div>
                     <a href="#" className="btn btn-primary price-btn btn-block">
-                      Select Plan
+                      اتنخاب
                     </a>
                   </div>
                 </div>
                 <div className="col-lg-4">
                   <div className="package-detail">
-                    <h4>Business </h4>
-                    <p>Highest selling package features</p>
-                    <h3 className="package-price">$29.00</h3>
+                    <h4>بسته عضویت پیشرفته </h4>
+
+                    <h3 className="package-price">۲۱۰ هزار تومان</h3>
                     <div className="package-feature">
                       <ul>
-                        <li>15 Project Credits</li>
-                        <li>12 Allowed Services</li>
-                        <li>25 Days visibility</li>
-                        <li>10 Featured Services</li>
-                        <li>30 Days visibility</li>
-                        <li>40 Days Package Expiry</li>
-                        <li>Profile Featured</li>
+                        <li>تمامی ویژگی‌های بسته عضویت بنیادی </li>
+                        <li>نمایش آگهی در صفحه اصلی سایت به مدت یک هفته </li>
+                        <li> برجسته کردن آگهی در نتایج جستجو</li>
+                        <li> ارائه آمار دقیق درباره بازدید آگهی</li>
+                        <li>
+                          امکان انتشار آگهی در شبکه های اجتماعی و سایت های مرتبط{" "}
+                        </li>
+                        <li>پشتیبانی اختصاصی و اولویت در رفع مشکلات فنی</li>
                       </ul>
                     </div>
                     <a href="#" className="btn btn-primary price-btn btn-block">
-                      Select Plan
-                    </a>
-                  </div>
-                </div>
-                <div className="col-lg-4">
-                  <div className="package-detail">
-                    <h4>The Unlimita </h4>
-                    <p>Drive crazy, unlimited on the go</p>
-                    <h3 className="package-price">$79.00</h3>
-                    <div className="package-feature">
-                      <ul>
-                        <li>Unlimited Project Credits</li>
-                        <li>Unlimited Services</li>
-                        <li>Services Never Expire</li>
-                        <li>20 Featured Services</li>
-                        <li>Services Never Expire</li>
-                        <li>Package Never Expire</li>
-                        <li>Profile Featured</li>
-                      </ul>
-                    </div>
-                    <a href="#" className="btn btn-primary price-btn btn-block">
-                      Select Plan
+                      انتخاب
                     </a>
                   </div>
                 </div>
@@ -121,109 +93,21 @@ const Membership = (props) => {
                           className="fa fa-check-circle orange-text"
                           aria-hidden="true"
                         />{" "}
-                        Plan Details
+                        اطلاعات بسته شما
                       </h2>
                     </div>
                     <div className="pro-body member-detail">
                       <div className="row">
                         <div className="col-6">
-                          <h4 className="mb-0">The Ultima</h4>
-                          <div className="yr-amt">Anually Price</div>
-                          <div className="expiry-on">Expiry On</div>
-                          <div className="expiry">24 JAN 2022</div>
+                          <h4 className="mb-0">پیشرفته</h4>
+                          <div className="yr-amt">ماهانه</div>
+                          <div className="expiry-on">انقضا</div>
+                          <div className="expiry">۸ مهر ۱۴۰۲</div>
                         </div>
                         <div className="col-6 change-plan">
-                          <h3>$1200</h3>
-                          <div className="yr-duration">Duration: One Year</div>
-                          <a
-                            href="#plan"
-                            className="btn btn-primary btn-plan black-btn"
-                          >
-                            Change Plan
-                          </a>
+                          <h3>۲۱۰ هزار تومان</h3>
+                          <div className="yr-duration">مدت : ۱ ماه</div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-lg-12">
-                  <div className="card">
-                    <div className="card-header">
-                      <h4 className="card-title">Statement</h4>
-                    </div>
-                    <div className="card-body">
-                      <div className="table-responsive table-box">
-                        <table className="table table-center table-hover datatable">
-                          <thead className="thead-pink">
-                            <tr>
-                              <th>Purchased Date</th>
-                              <th>Details</th>
-                              <th>Expiry Date</th>
-                              <th>Type</th>
-                              <th>Status</th>
-                              <th>Price</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>15 July 2021</td>
-                              <td>
-                                <p className="mb-0">The Unlimita</p>
-                                <a href="#" className="read-text">
-                                  Invoice : IVIP12023598
-                                </a>
-                              </td>
-                              <td>15th July 2022</td>
-                              <td>Yearly</td>
-                              <td className="text-danger">Inactive</td>
-                              <td>$200.00</td>
-                            </tr>
-                            <tr>
-                              <td>15 July 2022</td>
-                              <td>
-                                <p className="mb-0">The Unlimita</p>
-                                <a href="#" className="read-text">
-                                  Invoice : IVIP12023598
-                                </a>
-                              </td>
-                              <td>15th July 2023</td>
-                              <td>Yearly</td>
-                              <td className="text-success">Active</td>
-                              <td>$200.00</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div className="text-end mt-3">
-                        <ul className="paginations">
-                          <li>
-                            <a href="#">
-                              {" "}
-                              <i className="fas fa-angle-left" /> Previous
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">1</a>
-                          </li>
-                          <li>
-                            <a href="#" className="active">
-                              2
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">3</a>
-                          </li>
-                          <li>
-                            <a href="#">4</a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              Next <i className="fas fa-angle-right" />
-                            </a>
-                          </li>
-                        </ul>
                       </div>
                     </div>
                   </div>
@@ -235,7 +119,6 @@ const Membership = (props) => {
       </div>
       {/* /Page Content */}
     </>
-  )
-
-}
+  );
+};
 export default Membership;

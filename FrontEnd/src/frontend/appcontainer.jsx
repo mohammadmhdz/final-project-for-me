@@ -251,7 +251,7 @@ const AppContainer = function (props) {
                 component={DeveloperProfile}
               />
               <Route exact path="/searchp" component={SearchProject} />
-              <Route exact path="/search" component={Search} />
+              {/* <Route exact path="/search" component={Search} /> */}
               <Route exact path="/company-profile" component={CompanyProfile} />
               <Route exact path="/post-project" component={PostProject} />
               <Route exact path="/company-project" component={CompanyProject} />
@@ -315,8 +315,7 @@ const AppContainer = function (props) {
                 path="/project-proposals"
                 component={Projectproposal}
               />
-              <Route exact path="/company-details" component={CompanyDetails} />
-              <Route exact path="/company-gallery" component={CompanyGallery} />
+              {/* <Route exact path="/company-details" component={CompanyDetails} /> */}
               <Route exact path="/company-review" component={CompanyReview} />
               {/* For Freelancer */}
               <Route exact path="/project" component={Project} />

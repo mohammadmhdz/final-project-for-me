@@ -30,7 +30,7 @@ const Register = (props) => {
                         برتر بپیوندید
                       </p>
                     </div>
-                    <nav className="user-tabs mb-4">
+                    {/* <nav className="user-tabs mb-4">
                       <ul
                         role="tablist"
                         className="nav nav-pills nav-justified"
@@ -54,7 +54,7 @@ const Register = (props) => {
                           </a>
                         </li>
                       </ul>
-                    </nav>
+                    </nav> */}
                     <div className="tab-content pt-0">
                       <div
                         role="tabpanel"

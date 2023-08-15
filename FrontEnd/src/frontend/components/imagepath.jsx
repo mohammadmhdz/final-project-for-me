@@ -1,4 +1,5 @@
 export { default as logo_company } from "../assets/images/logo.png";
+export { default as about_us_img } from "../assets/images/about-us.jpg";
 export { default as companyimage } from "../assets/images/companyimage.png";
 export { default as logo_three } from "../assets/images/logo-three.png";
 export { default as logo_four } from "../assets/images/logo-four.png";

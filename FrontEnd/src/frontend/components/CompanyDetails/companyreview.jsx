@@ -89,12 +89,7 @@ const CompanyReview = () => {
                         <p>فرصت های شعلی </p>
                       </Link>
                     </li>
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/company-gallery">
-                        <img src={Tab_icon_10} alt="User Image" />
-                        <p>گالری</p>
-                      </Link>
-                    </li>
+
                     <li className="nav-item">
                       <Link className="nav-link active-about" to="#">
                         <img src={Tab_icon_11} alt="User Image" />
@@ -109,7 +104,6 @@ const CompanyReview = () => {
                   <h3 className="pro-title">نظرات</h3>
                   <div className="reviews company-review">
                     <div className="review-content no-padding">
-                      <h4>روند مصاحبه و پاسخ دهی بسیار کند</h4>
                       <p className="mb-0">
                         لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
                         چاپ و با استفاده از طراحان گرافیک است
@@ -128,24 +122,24 @@ const CompanyReview = () => {
                           <h3>
                             <Link to="#">علی کلهر</Link>
                           </h3>
-                          <h5>امروز • ۹:۳۰ </h5>
+                          <h5>۲۲ مرداد • ۹:۳۰ </h5>
                         </div>
-                        <div className="rating">
+                        {/* <div className="rating">
                           <i className="fas fa-star filled" />
                           <i className="fas fa-star filled" />
                           <i className="fas fa-star filled" />
                           <i className="fas fa-star filled" />
                           <i className="fas fa-star" />
                           <span className="average-rating">4.7</span>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
 
                     <div className="col-md-12 text-center">
-                      <Link to="#" className="btn more-btn">
+                      {/* <Link to="#" className="btn more-btn">
                         بارگذاری بیشتر{" "}
                         <img src={loader_icon} height={24} alt="User Image" />
-                      </Link>
+                      </Link> */}
                     </div>
                   </div>
                 </div>
@@ -166,7 +160,7 @@ const CompanyReview = () => {
                       <label>شماره تماس</label>
                       <input type="text" className="form-control" />
                     </div>
-                    <div className="form-group">
+                    {/* <div className="form-group">
                       <label>امتیاز</label>
                       <div className="rating">
                         <i className="fas fa-star filled" />
@@ -174,7 +168,7 @@ const CompanyReview = () => {
                         <i className="fas fa-star filled" />
                         <i className="fas fa-star filled" />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="form-group">
                       <textarea
                         className="form-control"

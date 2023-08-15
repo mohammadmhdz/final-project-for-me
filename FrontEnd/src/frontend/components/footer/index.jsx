@@ -54,7 +54,7 @@ const Footer = (props) => {
                       <a href="/blog-list">بلاگ</a>
                     </li>
                     <li>
-                      <a href="/">ورود</a>
+                      <a href="/login">ورود</a>
                     </li>
                     <li>
                       <a href="/register">ثبت نام</a>
@@ -70,13 +70,7 @@ const Footer = (props) => {
                   <h2 className="footer-title">کارجویان</h2>
                   <ul>
                     <li>
-                      <a href="/chats">لیست مشاغل</a>
-                    </li>
-                    <li>
-                      <a href="#">آگهی‌های استخدام</a>
-                    </li>
-                    <li>
-                      <a href="/review">آشنایی با شرکت‌ها</a>
+                      <a href="/project">آگهی‌های استخدام</a>
                     </li>
                   </ul>
                 </div>
@@ -86,13 +80,7 @@ const Footer = (props) => {
                   <h2 className="footer-title">سایر</h2>
                   <ul>
                     <li>
-                      <a href="/freelancer-dashboard">کارجویان</a>
-                    </li>
-                    <li>
-                      <a href="/freelancer-portfolio">اطلاعات کارجویان</a>
-                    </li>
-                    <li>
-                      <a href="post-/project">ایجاد آگهی کار</a>
+                      <a href="/developer">کارجویان</a>
                     </li>
                   </ul>
                 </div>

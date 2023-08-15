@@ -76,14 +76,7 @@ const Sidebar = (props) => {
                 <i className="material-icons">record_voice_over</i> نظرات
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                to="/chats"
-                className={`nav-link ${pathname === "chats" ? "active" : ""}`}
-              >
-                <i className="material-icons">chat</i> پیام ها
-              </Link>
-            </li>
+            <li className="nav-item"></li>
             <li className="nav-item">
               <Link
                 to="/membership-plans"
@@ -94,16 +87,7 @@ const Sidebar = (props) => {
                 <i className="material-icons">person_add</i> پریمیوم
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                to="/milestones"
-                className={`nav-link ${
-                  pathname === "milestones" ? "active" : ""
-                }`}
-              >
-                <i className="material-icons">pie_chart</i> وضعیت
-              </Link>
-            </li>
+
             <li className="nav-item">
               <Link
                 to="/verify-identity"
@@ -116,7 +100,7 @@ const Sidebar = (props) => {
             </li>
             <li className="nav-item">
               <Link
-                to="/deposit-funds"
+                to="/transaction-history"
                 className={`nav-link ${
                   pathname === "deposit-funds" ||
                   pathname === "withdraw-money" ||
