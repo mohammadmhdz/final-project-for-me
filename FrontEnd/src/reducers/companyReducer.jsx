@@ -5,17 +5,17 @@ import {
 } from "../constant/companyConstant";
 
 export const companyDetailsReducer = (
-  state = { companyDetails: [] },
+  state = { companyDetail: [] },
   action
 ) => {
   switch (action.type) {
     case COMPANY_DETAILS_REQUEST:
-      return { loading: true, companyDetails: [] };
+      return { loading: true, companyDetail: [] };
 
     case COMPANY_DETAILS_SUCCESS:
       return {
         loading: false,
-        companyDetails: action.payload,
+        companyDetail: action.payload,
       };
     case COMPANY_DETAILS_FAIL:
       return { loading: false, error: action.payload };

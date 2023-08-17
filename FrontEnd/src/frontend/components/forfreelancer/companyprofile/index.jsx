@@ -18,11 +18,50 @@ import { companyDetails } from "../../../../actions/companyActions";
 
 const CompanyProfile = (props) => {
   const [users, setUsers] = useState([]);
-
+  const json_test = {
+    id: 2,
+    user: {
+      id: 3,
+      _id: 3,
+      username: "mozhde.1026@gmail.com",
+      first_name: "مژده",
+      last_name: "زینال زادگان",
+      email: "mozhde.1026@gmail.com",
+      name: "مژده",
+      isAdmin: false,
+      last_login: null,
+    },
+    city: {
+      name: "تهران",
+    },
+    Name: "پارس پک | ParsPack",
+    image: null,
+    about:
+      "شرکت پارس پروا سیستم با نام تجاری پارس پک، اولین ارائه دهنده خدمات رایانش ابری در ایران می باشد.\r\nما در پارس پک با تکیه بر دانش مهندسان خلاق، جوان و باانگیزه همواره در تلاشیم تا کاری ارزشمند و بزرگ انجام داده و در رقابت سالم با هم پایان داخلی و خارجی به توسعه و پیشرفت تکنولوژی در عرصه وب، نه تنها در ایران که در جهان می اندیشیم.",
+    founded_at: "2023-08-07",
+    population: "100-500",
+    Owner_name: "نادیا بنیادنژاد",
+    Email: "info@ParsPack.com",
+    Website: "https://parspack.com/",
+    facebook: "https://www.facebook.com",
+    linkdin: "https://www.linkedin.com",
+    instagram: "https://www.instagram.com/",
+    Phone: "٤٢٨٨٣ - ٠٢١",
+    Adress:
+      "تهران، سعادت آباد، صرافهای جنوبی، کوچه سی پنجم غربی، پلاک ۲، واحد ۴",
+    Working_days_from: "شنبه",
+    Working_days_to: "پنج شنبه",
+    working_hours_from: "08:00:00",
+    working_hours_to: "18:00:00",
+    favorite_employee: [],
+  };
   // for using redux in our project
+  // const [companyDetail, setCompanyDetail] = useState({});
   const dispatch = useDispatch();
-  const companyDetail = useSelector((state) => state.companyDetails);
-  // const { companyDetails } = companyDetail;
+  const companyDetailsDispatch = useSelector((state) => state.companyDetails);
+  const { companyDetail } = companyDetailsDispatch;
+  // const test = JSON.parse(JSON.stringify(companyDetail));
+  // const test = () => setCompanyDetail(companyDetailsDispatch.companyDetail);
   // console.log(error, loading, jobs);
 
   useEffect(() => {
@@ -35,7 +74,7 @@ const CompanyProfile = (props) => {
       document.body.className = "";
     };
   }, [dispatch]);
-  console.log(companyDetail, "Xdssd");
+  console.log(json_test.city.name, "Xdssd");
   return (
     <>
       {/* Breadcrumb */}
@@ -59,13 +98,14 @@ const CompanyProfile = (props) => {
             <div className="col">
               <div className="profile-main">
                 <h2>
-                  فراوب | FaraWeb <i className="fas fa-check-circle" />
+                  {companyDetail.Name} <i className="fas fa-check-circle" />
                 </h2>
                 <p>از خرداد ۹۹</p>
                 <div className="about-list">
                   <ul>
                     <li>
-                      <i className="fas fa-map-marker-alt m-0" /> تهران
+                      <i className="fas fa-map-marker-alt m-0" />
+                      {/* {companyDetail.city.name} */}
                     </li>
                   </ul>
                 </div>
@@ -121,21 +161,7 @@ const CompanyProfile = (props) => {
                 <div className="pro-post widget-box company-post abouts-detail align-right">
                   <h3 className="pro-title">درباره ما</h3>
                   <div className="pro-content">
-                    <p>
-                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ،
-                      و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه
-                      روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای
-                      شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-                      بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
-                      درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می
-                      طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه
-                      ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی
-                      ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری
-                      موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                      زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی
-                      سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده
-                      قرار گیرد.
-                    </p>
+                    <p>{companyDetail.about}</p>
                   </div>
                 </div>
                 {/* /About Tab Content */}
@@ -151,27 +177,27 @@ const CompanyProfile = (props) => {
                 <ul className="latest-posts pro-content">
                   <li>
                     <p>نام شرکت</p>
-                    <h6>فراوب</h6>
+                    <h6>{companyDetail.Name}</h6>
                   </li>
                   <li>
                     <p>سال تاسیس</p>
-                    <h6>۱۳۹۸</h6>
+                    <h6>{companyDetail.founded_at}</h6>
                   </li>
                   <li>
                     <p>جمعیت</p>
-                    <h6>۵۰-۱۰۰</h6>
+                    <h6>{companyDetail.population}</h6>
                   </li>
                   <li>
                     <p>صاحب شرکت</p>
-                    <h6>آقای محمدپور</h6>
+                    <h6>{companyDetail.Owner_name}</h6>
                   </li>
                   <li>
                     <p>ایمیل</p>
-                    <h6> faraweb.ir@gmail.com</h6>
+                    <h6>{companyDetail.Email}</h6>
                   </li>
                   <li>
                     <p>وبسایت</p>
-                    <h6> faraweb.ir</h6>
+                    <h6>{companyDetail.Website}</h6>
                   </li>
                 </ul>
                 <div className="contact-btn">
@@ -237,24 +263,24 @@ const CompanyProfile = (props) => {
                 </div>
                 <ul className="social-link-profile">
                   <li>
-                    <Link to="#">
+                    <a href={companyDetail.facebook}>
                       <i className="fab fa-facebook" />
-                    </Link>
+                    </a>
                   </li>
                   <li>
-                    <Link to="#">
+                    <a href={companyDetail.instagram}>
                       <i className="fab fa-twitter" />
-                    </Link>
+                    </a>
                   </li>
                   <li>
-                    <Link to="#">
+                    <a href={companyDetail.instagram}>
                       <i className="fab fa-instagram" />
-                    </Link>
+                    </a>
                   </li>
                   <li>
-                    <Link to="#">
+                    <a href={companyDetail.linkdin}>
                       <i className="fab fa-linkedin" />
-                    </Link>
+                    </a>
                   </li>
                   <li>
                     <Link to="#">

@@ -15,28 +15,58 @@ import { Sidebar } from "../sidebar";
 // redux
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { employeeDetails } from "../../../../actions/employeeActions";
-import { jobsDetail } from "../../../../actions/jobActions";
+import { jobsDetail, listJobs } from "../../../../actions/jobActions";
+import { useState } from "react";
 const FreelancerFavourites = (props) => {
   // redux
+  const [isLoaded, setIsLoaded] = useState(true);
   const dispatch = useDispatch();
   const store = useStore();
   const employeeDetail = useSelector((state) => state.employeeDetails);
+  const jobList = useSelector((state) => state.jobList);
+  const { jobs } = jobList;
   const { employee } = employeeDetail;
+  // const test = [];
   useEffect(() => {
     dispatch(employeeDetails(2));
+    dispatch(listJobs());
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
   }, [dispatch]);
+
+  // let jsonArray = [];
+
+  const test =
+    employee.favorite_jobs !== undefined
+      ? Object.values(employee.favorite_jobs)
+      : null;
+
+  // test.concat();
+  // return { name: i, matched: secondArray.includes(i) };
+  console.log(typeof test, "test");
+  // console.log(employee?.favorite_jobs.values);
+  // useEffect(() => {
+  //   // setIsLoaded(store.getState().employeeDetails.loading);
+  //   console.log(employee.favorite_jobs);
+  //   test.map((items, index) => dispatch(jobsDetail(items?.[index]), index));
+  // }, [employee]);
+  console.log(employee, "employee");
+  console.log(jobs, "jobs");
   // console.log(store.getState().employeeDetails.loading, "te");
-  console.log(employee);
-  if (!store.getState().employeeDetails.loading) {
-    // const x = store.getState().employeeDetails.employee.favorite_jobs;
-    // const x = employee?.favorite_jobs.values();
-    // console.log(x);
-    // x.map((items, index) => console.log(items, index, "array"));
-  }
+  // const x = JSON.stringify(employee);
+  // const getJobsById = () => {
+  //   if (!isLoaded) {}
+  // };
+  // getJobsById();
+  // if (!store.getState().employeeDetails.loading) {
+  //   test.push(employee.favorite_jobs);
+  //   test.map((items, index) => dispatch(listJobs(items?.[])), index));
+
+  // const x = employee?.favorite_jobs.values();
+  // x.map((items, index) => console.log(items, index, "array"));
+  // }
   // console.log(store.getState().employeeDetails.loading, "setails");
 
   // dispatch(jobsDetail(employee.favorite_jobs[0]));

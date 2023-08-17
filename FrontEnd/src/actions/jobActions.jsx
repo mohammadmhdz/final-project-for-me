@@ -34,6 +34,7 @@ export const listJobs = () => async (dispatch) => {
 export const jobsDetail = (keyword) => async (dispatch) => {
   try {
     dispatch({ type: JOBS_DETAIL_REQUEST });
+    console.log(typeof keyword, "keyword");
     // const { data } = await axios.get(`/api/products${keyword}`)
     const { data } = await axios.get(
       `http://127.0.0.1:8000/api/jobs/${keyword}/`

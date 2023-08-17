@@ -26,15 +26,15 @@ export const jobListReducer = (state = { jobs: [] }, action) => {
   }
 };
 
-export const jobsDetailsReducer = (state = { jobsDetails: [] }, action) => {
+export const jobsDetailsReducer = (state = { jobsDetailsList: [] }, action) => {
   switch (action.type) {
     case JOBS_DETAIL_REQUEST:
-      return { loading: true, jobsDetails: [] };
+      return { loading: true, jobsDetailsList: [] };
 
     case JOBS_DETAIL_SUCCESS:
       return {
         loading: false,
-        jobsDetails: action.payload,
+        jobsDetailsList: action.payload,
       };
     case JOBS_DETAIL_FAIL:
       return { loading: false, error: action.payload };
