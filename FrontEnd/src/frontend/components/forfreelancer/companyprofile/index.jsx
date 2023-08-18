@@ -12,69 +12,32 @@ import {
   Tab_icon_11,
   Tab_icon_13,
 } from "../../imagepath";
+import { CompanyProject } from "../companyproject";
 // for redux using
 import { useDispatch, useSelector } from "react-redux";
 import { companyDetails } from "../../../../actions/companyActions";
 
 const CompanyProfile = (props) => {
-  const [users, setUsers] = useState([]);
-  const json_test = {
-    id: 2,
-    user: {
-      id: 3,
-      _id: 3,
-      username: "mozhde.1026@gmail.com",
-      first_name: "مژده",
-      last_name: "زینال زادگان",
-      email: "mozhde.1026@gmail.com",
-      name: "مژده",
-      isAdmin: false,
-      last_login: null,
-    },
-    city: {
-      name: "تهران",
-    },
-    Name: "پارس پک | ParsPack",
-    image: null,
-    about:
-      "شرکت پارس پروا سیستم با نام تجاری پارس پک، اولین ارائه دهنده خدمات رایانش ابری در ایران می باشد.\r\nما در پارس پک با تکیه بر دانش مهندسان خلاق، جوان و باانگیزه همواره در تلاشیم تا کاری ارزشمند و بزرگ انجام داده و در رقابت سالم با هم پایان داخلی و خارجی به توسعه و پیشرفت تکنولوژی در عرصه وب، نه تنها در ایران که در جهان می اندیشیم.",
-    founded_at: "2023-08-07",
-    population: "100-500",
-    Owner_name: "نادیا بنیادنژاد",
-    Email: "info@ParsPack.com",
-    Website: "https://parspack.com/",
-    facebook: "https://www.facebook.com",
-    linkdin: "https://www.linkedin.com",
-    instagram: "https://www.instagram.com/",
-    Phone: "٤٢٨٨٣ - ٠٢١",
-    Adress:
-      "تهران، سعادت آباد، صرافهای جنوبی، کوچه سی پنجم غربی، پلاک ۲، واحد ۴",
-    Working_days_from: "شنبه",
-    Working_days_to: "پنج شنبه",
-    working_hours_from: "08:00:00",
-    working_hours_to: "18:00:00",
-    favorite_employee: [],
+  const [activeJobs, setActiveJobs] = useState(false);
+  const handleJobList = () => {
+    setActiveJobs(!activeJobs);
   };
   // for using redux in our project
-  // const [companyDetail, setCompanyDetail] = useState({});
   const dispatch = useDispatch();
   const companyDetailsDispatch = useSelector((state) => state.companyDetails);
   const { companyDetail } = companyDetailsDispatch;
-  // const test = JSON.parse(JSON.stringify(companyDetail));
-  // const test = () => setCompanyDetail(companyDetailsDispatch.companyDetail);
   // console.log(error, loading, jobs);
 
   useEffect(() => {
     // for using redux in our project
     dispatch(companyDetails());
-    const x = companyDetail;
 
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
   }, [dispatch]);
-  console.log(json_test.city.name, "Xdssd");
+  console.log(companyDetail, "Xdssd");
   return (
     <>
       {/* Breadcrumb */}
@@ -105,7 +68,7 @@ const CompanyProfile = (props) => {
                   <ul>
                     <li>
                       <i className="fas fa-map-marker-alt m-0" />
-                      {/* {companyDetail.city.name} */}
+                      {companyDetail.city?.name}
                     </li>
                   </ul>
                 </div>
@@ -142,7 +105,12 @@ const CompanyProfile = (props) => {
                       </Link>
                     </li>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/company-project">
+                      <Link
+                        onClick={handleJobList}
+                        className="nav-link"
+                        // to="/company-project"
+                        state={{ item: companyDetail }}
+                      >
                         <img src={Tab_icon_09} alt="User Image" />
                         <p>فرصت های شغلی</p>
                       </Link>
@@ -158,12 +126,16 @@ const CompanyProfile = (props) => {
                 </nav>
                 {/* /Tab Detail */}
                 {/* About Tab Content */}
-                <div className="pro-post widget-box company-post abouts-detail align-right">
-                  <h3 className="pro-title">درباره ما</h3>
-                  <div className="pro-content">
-                    <p>{companyDetail.about}</p>
+                {activeJobs ? (
+                  <CompanyProject />
+                ) : (
+                  <div className="pro-post widget-box company-post abouts-detail align-right">
+                    <h3 className="pro-title">درباره ما</h3>
+                    <div className="pro-content">
+                      <p>{companyDetail.about}</p>
+                    </div>
                   </div>
-                </div>
+                )}
                 {/* /About Tab Content */}
               </div>
             </div>
@@ -224,14 +196,17 @@ const CompanyProfile = (props) => {
                 </div>
                 <ul className="latest-posts pro-content">
                   <li>
-                    <p>شنبه</p>
-                    <h6>۹ الی ۱۸</h6>
+                    <p>{companyDetail.Working_days_from}</p>
+                    <h6>{companyDetail.working_hours_from}</h6>
                   </li>
                   <li>
-                    <p>یکشنبه</p>
-                    <h6>۹ الی ۱۸</h6>
+                    <p>الی</p>
                   </li>
                   <li>
+                    <p>{companyDetail.Working_days_to}</p>
+                    <h6>{companyDetail.working_hours_to}</h6>
+                  </li>
+                  {/* <li>
                     <p>دوشنبه</p>
                     <h6>۹ الی ۱۸</h6>
                   </li>
@@ -251,8 +226,8 @@ const CompanyProfile = (props) => {
                     <p>جمعه </p>
                     <h6>
                       <span>تعطیل</span>
-                    </h6>
-                  </li>
+                    </h6> */}
+                  {/* </li> */}
                 </ul>
               </div>
               {/* /Working Widget */}
