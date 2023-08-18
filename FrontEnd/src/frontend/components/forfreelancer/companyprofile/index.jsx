@@ -12,15 +12,32 @@ import {
   Tab_icon_11,
   Tab_icon_13,
 } from "../../imagepath";
-import { CompanyProject } from "../companyproject";
+import CompanyProject from "../companyproject";
+import { CompanyReview } from "../../CompanyDetails/companyreview";
 // for redux using
 import { useDispatch, useSelector } from "react-redux";
 import { companyDetails } from "../../../../actions/companyActions";
 
 const CompanyProfile = (props) => {
   const [activeJobs, setActiveJobs] = useState(false);
+  const [activePreview, setActivePreview] = useState(false);
+  const [activeAbout, setActiveAbout] = useState(true);
+
   const handleJobList = () => {
-    setActiveJobs(!activeJobs);
+    setActivePreview(false);
+    setActiveAbout(false);
+    setActiveJobs(true);
+  };
+
+  const handlePreviewList = () => {
+    setActiveJobs(false);
+    setActiveAbout(false);
+    setActivePreview(true);
+  };
+  const handleAbout = () => {
+    setActiveJobs(false);
+    setActivePreview(false);
+    setActiveAbout(true);
   };
   // for using redux in our project
   const dispatch = useDispatch();
@@ -97,6 +114,7 @@ const CompanyProfile = (props) => {
                   <ul className="nav nav-tabs nav-tabs-solid nav-justified">
                     <li className="nav-item">
                       <Link
+                        onClick={handleAbout}
                         className="nav-link active-about"
                         to="/company-profile"
                       >
@@ -109,7 +127,7 @@ const CompanyProfile = (props) => {
                         onClick={handleJobList}
                         className="nav-link"
                         // to="/company-project"
-                        state={{ item: companyDetail }}
+                        // state={{ item: companyDetail }}
                       >
                         <img src={Tab_icon_09} alt="User Image" />
                         <p>فرصت های شغلی</p>
@@ -117,7 +135,11 @@ const CompanyProfile = (props) => {
                     </li>
 
                     <li className="nav-item">
-                      <Link className="nav-link" to="/company-review">
+                      <Link
+                        onClick={handlePreviewList}
+                        className="nav-link"
+                        // to="/company-review"
+                      >
                         <img src={Tab_icon_11} alt="User Image" />
                         <p>نظرات</p>
                       </Link>
@@ -128,14 +150,16 @@ const CompanyProfile = (props) => {
                 {/* About Tab Content */}
                 {activeJobs ? (
                   <CompanyProject />
-                ) : (
+                ) : activePreview ? (
+                  <CompanyReview />
+                ) : activeAbout ? (
                   <div className="pro-post widget-box company-post abouts-detail align-right">
                     <h3 className="pro-title">درباره ما</h3>
                     <div className="pro-content">
                       <p>{companyDetail.about}</p>
                     </div>
                   </div>
-                )}
+                ) : null}
                 {/* /About Tab Content */}
               </div>
             </div>

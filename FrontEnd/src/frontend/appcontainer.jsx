@@ -121,7 +121,7 @@ import FreelancerDetails from "./components/freelancer-details";
 import CompanyDetails from "./components/CompanyDetails";
 import OnboardScreenEmployer from "./components/pages/onboardScreen/onboard-screen-employer";
 import CompanyGallery from "./components/CompanyDetails/company-gallery";
-import CompanyReview from "./components/CompanyDetails/companyreview";
+import { CompanyReview } from "./components/CompanyDetails/companyreview";
 
 if (!window.location.pathname.includes("admin")) {
   require("./assets/js/bootstrap.min.js");
@@ -316,7 +316,7 @@ const AppContainer = function (props) {
                 component={Projectproposal}
               />
               {/* <Route exact path="/company-details" component={CompanyDetails} /> */}
-              <Route exact path="/company-review" component={CompanyReview} />
+              {/* <Route exact path="/company-review" component={CompanyReview} /> */}
               {/* For Freelancer */}
               <Route exact path="/project" component={Project} />
               <Route exact path="/project-details" component={ProjectDetails} />

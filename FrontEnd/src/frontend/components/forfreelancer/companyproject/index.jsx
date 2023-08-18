@@ -19,7 +19,7 @@ import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { listJobs } from "../../../../actions/jobActions";
 
-export const CompanyProject = (props) => {
+const CompanyProject = (props) => {
   // const input = useLocation();
   // console.log(input, "Sss");
   // const [item, setItem] = useState([input]);
@@ -143,3 +143,4 @@ export const CompanyProject = (props) => {
     </>
   );
 };
+export default CompanyProject;
