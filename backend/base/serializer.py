@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Job , Company ,Employee , Education , WorkExperience , Skills ,Category, City ,Apply , Language ,Verification
+from .models import Job , Company ,Employee , Education , WorkExperience , Skills ,Category, City ,Apply , Language ,Verification , Review
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -72,6 +72,7 @@ class JobSerializer(serializers.ModelSerializer):
 class CompanySerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField(read_only=True)
     city = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Company
         fields = '__all__'
@@ -86,8 +87,10 @@ class CompanySerializer(serializers.ModelSerializer):
         
     def get_city(self, obj):
         city = obj.city
-        serializer = CategorySerializer(city, many=False)
+        serializer = CitySerializer(city, many=False)
         return serializer.data  
+
+  
 
 
 
@@ -107,50 +110,17 @@ class CompanySerializer(serializers.ModelSerializer):
 
 
 class ApplySerializer(serializers.ModelSerializer):
-    Company = serializers.SerializerMethodField(read_only=True)
-    job = serializers.SerializerMethodField(read_only=True)
-    employee = serializers.SerializerMethodField(read_only=True)
-    
-    class Meta:
-        model = Apply
-        fields = '__all__'
-    
-    def get_Company(self, obj):
-        Company = obj.Company
-        serializer = CompanySerializer(Company, many=False)
-        return serializer.data  
-    
-    def get_job(self, obj):
-        job = obj.job
-        serializer = JobSerializer(job, many=False) 
-        return serializer.data
 
-    def get_employee(self, obj):
-        employee = obj.employee
-        serializer = EmployeeSerializer(employee, many=False)
-        return serializer.data
-
-
-
-
-class EmployeeApplySerializer(serializers.ModelSerializer):
-    Company = serializers.SerializerMethodField(read_only=True)
-    job = serializers.SerializerMethodField(read_only=True)
 
     
     class Meta:
         model = Apply
         fields = '__all__'
     
-    def get_Company(self, obj):
-        Company = obj.Company
-        serializer = CompanySerializer(Company, many=False)
-        return serializer.data  
-    
-    def get_job(self, obj):
-        job = obj.job
-        serializer = JobSerializer(job, many=False) 
-        return serializer.data
+
+
+
+
 
 
 
@@ -241,13 +211,12 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
 
 class VerificationSerializer(serializers.ModelSerializer):
-    Company = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Verification
         fields = '__all__'
 
 
-    def get_Company(self, obj):
-        Company = obj.Company
-        serializer = CompanySerializer(Company, many=False)
-        return serializer.data    
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'

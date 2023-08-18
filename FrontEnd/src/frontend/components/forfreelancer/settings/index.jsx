@@ -181,7 +181,7 @@ const FreelancerSettings = (props) => {
                         <div className="pro-card flex-fill mb-3">
                           <div className="pro-head">
                             <h3 className="pro-title without-border mb-0">
-                              مهرات ها
+                              مهارت ها
                             </h3>
                             <a href="#" className="btn fund-btn skill-add">
                               اضافه کردن

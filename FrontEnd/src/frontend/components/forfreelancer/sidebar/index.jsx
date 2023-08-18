@@ -75,16 +75,6 @@ const Sidebar = (props) => {
                 <i className="material-icons">pie_chart</i> پورتفولیو
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                to="/freelancer-chats"
-                className={`nav-link ${
-                  pathname === "freelancer-chats" ? "active" : ""
-                }`}
-              >
-                <i className="material-icons">chat</i> پیام ها
-              </Link>
-            </li>
 
             <li className="nav-item">
               <Link
