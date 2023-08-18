@@ -8,9 +8,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import Job , Company , Employee , WorkExperience , Education , Language , Apply , Verification , Skills , Category
+from .models import Job , Company , Employee , WorkExperience , Education , Language , Apply , Verification , Skills , Category , Review
 from django.contrib.auth.models import User
-from .serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer , ApplySerializer , VerificationSerializer , SkillSerializer , CategorySerializer
+from .serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer , ApplySerializer , VerificationSerializer , SkillSerializer , CategorySerializer , ReviewSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
@@ -87,26 +87,6 @@ def getEmployees(request):
 
 
 
-# @api_view(['GET'])
-# def getapply(self, request, pk=None):
-#     allapply = Apply.objects.all()
-#     apply = get_object_or_404(allapply, employee.id=pk)
-#     serializer = ApplySerializer(apply)
-#     return Response(serializer.data)
-
-
-
-
-@api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-def getMyapply(request):
-    print(request)
-    employee = request.employee
-    apply = employee.apply_set.all()
-    serializer = ApplySerializer(apply, many=True)
-    return Response(serializer.data)
-
-
 
 
 
@@ -151,13 +131,20 @@ class JobViewSet(viewsets.ViewSet):
         return Response({'msg':'Data Deleted'})
     
 
+    @action(detail=True, methods=['get'], name='get applies')
+    def applies(self,request, pk):
+        job = Job.objects.get(pk=pk)
+        applies = job.apply_set.all()
+        serializer = ApplySerializer(applies ,many=True )
+        return Response(serializer.data)
+    
+
 class CompanyViewSet(viewsets.ViewSet):
     def list(self,request):
         Companies = Company.objects.all()
         serializer = CompanySerializer(Companies , many = True)
         return Response(serializer.data)
     
-
         
     def retrieve(self, request, pk=None):
         Companies = Company.objects.all()
@@ -188,7 +175,62 @@ class CompanyViewSet(viewsets.ViewSet):
         Company.delete()
         return Response({'msg':'Data Deleted'})    
 
+    @action(detail=True, methods=['get'], name='Get jobs')
+    def get_jobs(self, request, pk=None):
+        company = Company.objects.get(pk=pk)
+        jobs = company.job_set.all()
+        serializer = JobSerializer(jobs ,many=True )
+        return Response(serializer.data)
+    
 
+    @action(detail=True, methods=['get'], name='Get pending jobs')
+    def pending_jobs(self, request, pk=None):
+        company = Company.objects.get(pk=pk)
+        jobs = company.job_set.filter(status='درانتظار تایید')
+        serializer = JobSerializer(jobs ,many=True )
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'], name='Get active jobs')
+    def active_jobs(self, request, pk=None):
+        company = Company.objects.get(pk=pk)
+        jobs = company.job_set.filter(status='فعال')
+        serializer = JobSerializer(jobs ,many=True )
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'], name='Get completed jobs')
+    def completed_jobs(self, request, pk=None):
+        company = Company.objects.get(pk=pk)
+        jobs = company.job_set.filter(status='تکمیل شده')
+        serializer = JobSerializer(jobs ,many=True )
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'], name='Get Expired jobs')
+    def expired_jobs(self, request, pk=None):
+        company = Company.objects.get(pk=pk)
+        jobs = company.job_set.filter(status='منقضی شده')
+        serializer = JobSerializer(jobs ,many=True )
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'], name='Get verification')
+    def get_verification(self, request, pk=None):
+        company = Company.objects.get(pk=pk)
+        verification = company.verification_set.all()
+        serializer = VerificationSerializer(verification ,many=True )
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'], name='get favorite employee')
+    def retrieve_favorite_employee(self,request, pk=None):
+        company = get_object_or_404(Company, pk=pk)
+        favorite_employee = company.favorite_employee.all()
+        serializer = EmployeeSerializer(favorite_employee ,many=True )
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'], name='Get reviews')
+    def get_reviews(self, request, pk=None):
+        company = Company.objects.get(pk=pk)
+        reviews = company.review_set.all()
+        serializer = ReviewSerializer(reviews ,many=True )
+        return Response(serializer.data)    
 
 class EmployeeViewSet(viewsets.ViewSet):
     # @permission_classes([IsAdminUser])
@@ -196,7 +238,6 @@ class EmployeeViewSet(viewsets.ViewSet):
         employees = Employee.objects.all()
         serializer = EmployeeSerializer(employees , many = True)
         return Response(serializer.data)
-    
 
         
     def retrieve(self, request, pk=None):
@@ -229,6 +270,42 @@ class EmployeeViewSet(viewsets.ViewSet):
         return Response({'msg':'Data Deleted'})
     
 
+    @action(detail=True, methods=['get'], name='get favorite jobs')
+    def retrieve_favorite_jobs(self,request, pk=None):
+        employee = get_object_or_404(Employee, pk=pk)
+        favorite_jobs = employee.favorite_jobs.all()
+        serializer = JobSerializer(favorite_jobs ,many=True )
+        return Response(serializer.data)
+
+
+
+    @action(detail=True, methods=['get'], name='get applies')
+    def applies(self,request, pk):
+        employee = Employee.objects.get(pk=pk)
+        applies = employee.apply_set.all()
+        serializer = ApplySerializer(applies ,many=True )
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'], name='get unchecked applies')
+    def unchecked_applies(self,request, pk):
+        employee = Employee.objects.get(pk=pk)
+        applies = employee.apply_set.filter(status='در انتظار بررسی')
+        serializer = ApplySerializer(applies ,many=True )
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'], name='get viewed applies')
+    def viewed_applies(self,request, pk):
+        employee = Employee.objects.get(pk=pk)
+        applies = employee.apply_set.filter(status='بررسی شده')
+        serializer = ApplySerializer(applies ,many=True )
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'], name='get Rejected applies')
+    def rejected_applies(self,request, pk):
+        employee = Employee.objects.get(pk=pk)
+        applies = employee.apply_set.filter(status='رد شده')
+        serializer = ApplySerializer(applies ,many=True )
+        return Response(serializer.data)
 
 class WorkExperienceViewSet(viewsets.ViewSet):
 
@@ -314,8 +391,6 @@ class EducationViewSet(viewsets.ViewSet):
 
 
 
-
-
 class LanguageViewSet(viewsets.ViewSet):
 
 
@@ -371,9 +446,6 @@ class ApplyViewSet(viewsets.ViewSet):
         serializer = ApplySerializer(apply)
         return Response(serializer.data)
         
-  
-
-
 
     def create(self,request):
         serializer = ApplySerializer(data=request.data)
@@ -396,7 +468,9 @@ class ApplyViewSet(viewsets.ViewSet):
         id=pk
         apply = Apply.objects.get(pk=id)
         apply.delete()
-        return Response({'msg':'Data Deleted'})      
+        return Response({'msg':'Data Deleted'}) 
+
+
 
 
 class VerificationViewSet(viewsets.ViewSet):
@@ -515,3 +589,29 @@ class CategoryViewSet(viewsets.ViewSet):
         category = Category.objects.get(pk=id)
         category.delete()
         return Response({'msg':'Data Deleted'})     
+    
+
+
+class ReviewViewSet(viewsets.ViewSet):
+
+    def list(self,request):
+        review = Review.objects.all()
+        serializer = ReviewSerializer(review , many = True)
+        return Response(serializer.data)
+    
+        
+    def retrieve(self, request, pk=None):
+        reviews = Review.objects.all()
+        review = get_object_or_404(reviews, pk=pk)
+        serializer = ReviewSerializer(review)
+        return Response(serializer.data)
+    
+    def create(self,request):
+        serializer = ReviewSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+    
+
+ 

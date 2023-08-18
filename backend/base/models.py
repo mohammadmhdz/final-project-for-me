@@ -47,7 +47,7 @@ Requststatus = (
     ('در انتظار بررسی','در انتظار بررسی'),
     ('بررسی شده','بررسی شده'),
     ('رد شده','رد شده'),
-    ('استخدام شده','استخدام شده'),
+    
 
 )
 
@@ -56,9 +56,14 @@ JobStatus = (
     ('درانتظار تایید','درانتظار تایید'),
     ('تکمیل شده','تکمیل شده'),
     ('منقضی شده','منقضی شده'),
-   
+ 
+)
 
-  
+reviewStatus = (
+    ('فعال','فعال'),
+    ('درانتظار تایید','درانتظار تایید'),
+    ('حذف شده شده','حذف شده شده'),
+ 
 )
 
 
@@ -177,6 +182,7 @@ class Company(models.Model):
      working_hours_from = models.TimeField()
      working_hours_to = models.TimeField()
      favorite_employee = models.ManyToManyField('Employee')
+
     
 
 
@@ -200,10 +206,15 @@ class Verification(models.Model):
 
 
 
+class Review(models.Model):
+    employee = models.ForeignKey('Employee', on_delete=models.CASCADE, null=True)
+    Company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
+    content = models.TextField(max_length=1000)
+    date =models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=15 , choices=reviewStatus, default="در انتظار بررسی")
 
-
-
-
+    def __str__(self):
+        return self.content
 
 
 
@@ -265,7 +276,6 @@ class Employee(models.Model):
     city = models.ForeignKey(City ,on_delete=models.SET_NULL,null=True)
     skills = models.ManyToManyField(Skills)
     cv = models.FileField( null=True, blank=True, validators=[FileExtensionValidator(allowed_extensions=["pdf"])])
-    # favorite_jobs = ArrayField(models.IntegerField(null=True , blank= True , default=[]))
     favorite_jobs = models.ManyToManyField(Job)
     
 

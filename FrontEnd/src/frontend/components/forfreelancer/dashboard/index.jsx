@@ -87,7 +87,7 @@ const FreelancerDashboard = (props) => {
   };
 
   var chartradialOptions = {
-    series: [85, 75, 60, 40],
+    series: [100, 40, 50, 10],
     chart: {
       toolbar: {
         show: false,
@@ -288,21 +288,21 @@ const FreelancerDashboard = (props) => {
                           <li>
                             <span>
                               <i className="fa fa-circle text-pink me-1" />{" "}
-                              استخدام
+                              بررسی شده
                             </span>{" "}
                             <span className="sta-count">30</span>
                           </li>
                           <li>
                             <span>
-                              <i className="fa fa-circle text-yellow me-1" />{" "}
-                              درخواست های رد شده
+                              <i className="fa fa-circle text-yellow me-1" /> در
+                              انتظار بررسی
                             </span>{" "}
                             <span className="sta-count">30</span>
                           </li>
                           <li>
                             <span>
-                              <i className="fa fa-circle text-blue me-1" />{" "}
-                              کارهای ذخیره شده
+                              <i className="fa fa-circle text-blue me-1" /> رد
+                              شده
                             </span>{" "}
                             <span className="sta-count">30</span>
                           </li>
