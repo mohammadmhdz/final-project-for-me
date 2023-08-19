@@ -16,6 +16,7 @@ import {
   Tab_icon_13,
 } from "../imagepath";
 import { useEffect } from "react";
+import moment from "jalali-moment";
 // redux
 import { companyReviewGet } from "../../../actions/companyActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,7 +36,6 @@ export const CompanyReview = () => {
             <h3 className="pro-title">نظرات</h3>
             <div className="reviews company-review">
               <div className="review-content no-padding">
-                <p className="mb-0">{companyReview.content}</p>
                 <div className="review-top tab-reviews d-flex align-items-center">
                   <div className="review-img">
                     <Link to="#">
@@ -50,7 +50,15 @@ export const CompanyReview = () => {
                     <h3>
                       <Link to="#">علی کلهر</Link>
                     </h3>
-                    <h5>۲۲ مرداد • ۹:۳۰ </h5>
+                    <p className="mb-0">{items.content}</p>
+                    {/* <h5>۲۲ مرداد • ۹:۳۰ </h5> */}
+                    <h5>
+                      <p>
+                        {moment(items.date, "YYYY/MM/DD")
+                          .locale("fa")
+                          .format("YYYY/MM/DD")}
+                      </p>
+                    </h5>
                   </div>
                 </div>
               </div>
