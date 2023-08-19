@@ -12,48 +12,47 @@ import {
   home_icon,
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
+import moment from "jalali-moment";
 // redux
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { employeeDetails } from "../../../../actions/employeeActions";
+import {
+  employeeDetails,
+  employeeFavoriteList,
+} from "../../../../actions/employeeActions";
 import { jobsDetail, listJobs } from "../../../../actions/jobActions";
 import { useState } from "react";
 const FreelancerFavourites = (props) => {
   // redux
-  const [isLoaded, setIsLoaded] = useState(true);
   const dispatch = useDispatch();
-  const store = useStore();
-  const employeeDetail = useSelector((state) => state.employeeDetails);
-  const jobList = useSelector((state) => state.jobList);
-  const { jobs } = jobList;
-  const { employee } = employeeDetail;
+  const employeeFavorite = useSelector((state) => state.employeeFavoriteList);
+  const { employeeFavorites } = employeeFavorite;
   // const test = [];
   useEffect(() => {
-    dispatch(employeeDetails(2));
-    dispatch(listJobs());
+    // bayad vorodi behesh bedahim(input = employee id)
+    dispatch(employeeFavoriteList());
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
   }, [dispatch]);
+  // console.log(employeeFavorites);
 
-  // let jsonArray = [];
+  // const test =
+  //   employee.favorite_jobs !== undefined
+  //     ? Object.values(employee.favorite_jobs)
+  //     : null;
 
-  const test =
-    employee.favorite_jobs !== undefined
-      ? Object.values(employee.favorite_jobs)
-      : null;
-
-  // test.concat();
-  // return { name: i, matched: secondArray.includes(i) };
-  console.log(typeof test, "test");
-  // console.log(employee?.favorite_jobs.values);
-  // useEffect(() => {
-  //   // setIsLoaded(store.getState().employeeDetails.loading);
-  //   console.log(employee.favorite_jobs);
-  //   test.map((items, index) => dispatch(jobsDetail(items?.[index]), index));
-  // }, [employee]);
-  console.log(employee, "employee");
-  console.log(jobs, "jobs");
+  // // test.concat();
+  // // return { name: i, matched: secondArray.includes(i) };
+  // console.log(typeof test, "test");
+  // // console.log(employee?.favorite_jobs.values);
+  // // useEffect(() => {
+  // //   // setIsLoaded(store.getState().employeeDetails.loading);
+  // //   console.log(employee.favorite_jobs);
+  // //   test.map((items, index) => dispatch(jobsDetail(items?.[index]), index));
+  // // }, [employee]);
+  // console.log(employee, "employee");
+  // console.log(jobs, "jobs");
   // console.log(store.getState().employeeDetails.loading, "te");
   // const x = JSON.stringify(employee);
   // const getJobsById = () => {
@@ -101,47 +100,63 @@ const FreelancerFavourites = (props) => {
                                 <th></th>
                               </tr>
                             </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <h2 className="table-avatar">
-                                    <Link
-                                      to="/project-details"
-                                      className="avatar avatar-md tab-imgcircle ms-2"
-                                    >
-                                      <img
-                                        className="avatar-img rounded-circle"
-                                        src={company_img1}
-                                        alt="User Image"
-                                      />
-                                    </Link>
-                                    <Link to="/project-details">
-                                      <span className="profile-name">
-                                        آرمان افرا
-                                      </span>
-                                      <span>Back-End developer</span>
-                                      <span className="rating mt-2">
-                                        <i className="fas fa-star filled" />
-                                        <i className="fas fa-star filled" />
-                                        <i className="fas fa-star filled" />
-                                        <i className="fas fa-star filled" />
-                                        <i className="fas fa-star" />
-                                      </span>
-                                    </Link>
-                                  </h2>
-                                </td>
-                                <td>برنامه نویس Back-End مسلط به Django</td>
-                                <td>
-                                  <h2 className="table-avatar">تهران</h2>
-                                </td>
-                                <td>۲۸ آبان ۱۴۰۱</td>
-                                <td>
-                                  <a href="" className="fav">
-                                    <i className="fas fa-heart filled" />
-                                  </a>
-                                </td>
-                              </tr>
-                            </tbody>
+                            {employeeFavorites.map((items, index) => {
+                              return (
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <h2 className="table-avatar">
+                                        <Link
+                                          to="/project-details"
+                                          className="avatar avatar-md tab-imgcircle ms-2"
+                                        >
+                                          <img
+                                            className="avatar-img rounded-circle"
+                                            src={company_img1}
+                                            alt="User Image"
+                                          />
+                                        </Link>
+                                        <Link to="/project-details">
+                                          <span className="profile-name">
+                                            {items.Company?.Name}
+                                          </span>
+                                          <span>{items.title}</span>
+                                          <span className="rating mt-2">
+                                            <i className="fas fa-star filled" />
+                                            <i className="fas fa-star filled" />
+                                            <i className="fas fa-star filled" />
+                                            <i className="fas fa-star filled" />
+                                            <i className="fas fa-star" />
+                                          </span>
+                                        </Link>
+                                      </h2>
+                                    </td>
+                                    <td>
+                                      <div style={{ display: "flex" }}>
+                                        {items.skills?.map((item) => (
+                                          <div>{item.title},</div>
+                                        ))}
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <h2 className="table-avatar">
+                                        {items.city?.name}
+                                      </h2>
+                                    </td>
+                                    <td>
+                                      {moment(items.published_at, "YYYY/MM/DD")
+                                        .locale("fa")
+                                        .format("YYYY/MM/DD")}
+                                    </td>
+                                    <td>
+                                      <a href="" className="fav">
+                                        <i className="fas fa-heart filled" />
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              );
+                            })}
                           </table>
                         </div>
                       </div>
@@ -157,9 +172,9 @@ const FreelancerFavourites = (props) => {
       {/* /Page Content */}
       {/* The Modal */}
       {/* <div className="modal fade" id="bookmark">
-        <div className="modal-dialog modal-dialog-centered modal-md">
-          <div className="modal-content">
-            <div className="modal-header">
+      <div className="modal-dialog modal-dialog-centered modal-md">
+      <div className="modal-content">
+      <div className="modal-header">
               <h4 className="modal-title">INVITE FREELANCER</h4>
               <span className="modal-close">
                 <a href="#" data-bs-dismiss="modal" aria-label="Close">

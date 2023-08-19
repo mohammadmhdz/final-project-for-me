@@ -3,7 +3,10 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import { jobListReducer, jobsDetailsReducer } from "./reducers/jobsReducer";
-import { employeeDetailsReducer } from "./reducers/employeeReducer";
+import {
+  employeeDetailsReducer,
+  employeeFavoriteListReducer,
+} from "./reducers/employeeReducer";
 import { freelancerRequestReducer } from "./reducers/requestsReducer";
 import { userLoginReducer } from "./reducers/userReducer";
 import {
@@ -17,6 +20,8 @@ const reducer = combineReducers({
   jobsDetails: jobsDetailsReducer,
   //
   employeeDetails: employeeDetailsReducer,
+  employeeFavoriteList: employeeFavoriteListReducer,
+  //
   freelancerRequest: freelancerRequestReducer,
   userLogin: userLoginReducer,
   //

@@ -159,7 +159,7 @@ const FreelancerDashboard = (props) => {
   useEffect(() => {
     // redux
     // employeeDetails ra taghir dadim
-    dispatch(employeeDetails());
+    dispatch(employeeDetails(2));
     dispatch(freelancerRequest());
 
     let chartprofileoptionsColumn = document.getElementById("chartprofile");
@@ -177,7 +177,7 @@ const FreelancerDashboard = (props) => {
       document.body.className = "";
     };
   }, [dispatch]);
-  // console.log(employeeList, "sdsd");
+  console.log(freelancerRequest, "sdsd");
   return (
     <>
       {/* Page Content */}
