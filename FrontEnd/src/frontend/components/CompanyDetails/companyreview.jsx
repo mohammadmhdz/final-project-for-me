@@ -15,52 +15,52 @@ import {
   Tab_icon_11,
   Tab_icon_13,
 } from "../imagepath";
-import StickyBox from "react-sticky-box";
-import { ProfileSidebar } from "../forfreelancer/sidebar/profilesidebar";
-
+import { useEffect } from "react";
+// redux
+import { companyReviewGet } from "../../../actions/companyActions";
+import { useDispatch, useSelector } from "react-redux";
 export const CompanyReview = () => {
+  const dispatch = useDispatch();
+  const companyReviewList = useSelector((state) => state.companyReview);
+  const { companyReview } = companyReviewList;
+  console.log(companyReview, "review list");
+  useEffect(() => {
+    dispatch(companyReviewGet());
+  }, [dispatch]);
   return (
     <>
-      <div className="pro-post widget-box company-post align-right">
-        <h3 className="pro-title">نظرات</h3>
-        <div className="reviews company-review">
-          <div className="review-content no-padding">
-            <p className="mb-0">
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-              استفاده از طراحان گرافیک است
-            </p>
-            <div className="review-top tab-reviews d-flex align-items-center">
-              <div className="review-img">
-                <Link to="#">
-                  <img className="img-fluid" src={Review_01} alt="Post Image" />
-                </Link>
+      {companyReview.map((items, index) => {
+        return (
+          <div className="pro-post widget-box company-post align-right">
+            <h3 className="pro-title">نظرات</h3>
+            <div className="reviews company-review">
+              <div className="review-content no-padding">
+                <p className="mb-0">{companyReview.content}</p>
+                <div className="review-top tab-reviews d-flex align-items-center">
+                  <div className="review-img">
+                    <Link to="#">
+                      <img
+                        className="img-fluid"
+                        src={Review_01}
+                        alt="Post Image"
+                      />
+                    </Link>
+                  </div>
+                  <div className="review-info">
+                    <h3>
+                      <Link to="#">علی کلهر</Link>
+                    </h3>
+                    <h5>۲۲ مرداد • ۹:۳۰ </h5>
+                  </div>
+                </div>
               </div>
-              <div className="review-info">
-                <h3>
-                  <Link to="#">علی کلهر</Link>
-                </h3>
-                <h5>۲۲ مرداد • ۹:۳۰ </h5>
-              </div>
-              {/* <div className="rating">
-                          <i className="fas fa-star filled" />
-                          <i className="fas fa-star filled" />
-                          <i className="fas fa-star filled" />
-                          <i className="fas fa-star filled" />
-                          <i className="fas fa-star" />
-                          <span className="average-rating">4.7</span>
-                        </div> */}
+
+              <div className="col-md-12 text-center"></div>
             </div>
           </div>
+        );
+      })}
 
-          <div className="col-md-12 text-center">
-            {/* <Link to="#" className="btn more-btn">
-                        بارگذاری بیشتر{" "}
-                        <img src={loader_icon} height={24} alt="User Image" />
-                      </Link> */}
-          </div>
-        </div>
-      </div>
-      {/* /Reviews Tab Content */}
       {/* Post a comment */}
       <div className="pro-post widget-box company-post post-comment align-right">
         <h3 className="pro-title">نظر خود را ثبت کنید</h3>
@@ -77,15 +77,7 @@ export const CompanyReview = () => {
             <label>شماره تماس</label>
             <input type="text" className="form-control" />
           </div>
-          {/* <div className="form-group">
-                      <label>امتیاز</label>
-                      <div className="rating">
-                        <i className="fas fa-star filled" />
-                        <i className="fas fa-star filled" />
-                        <i className="fas fa-star filled" />
-                        <i className="fas fa-star filled" />
-                      </div>
-                    </div> */}
+
           <div className="form-group">
             <textarea
               className="form-control"
@@ -100,8 +92,6 @@ export const CompanyReview = () => {
         </form>
       </div>
       {/* /Post a comment */}
-
-      {/* /page-content */}
     </>
   );
 };

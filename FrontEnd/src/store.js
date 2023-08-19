@@ -6,7 +6,11 @@ import { jobListReducer, jobsDetailsReducer } from "./reducers/jobsReducer";
 import { employeeDetailsReducer } from "./reducers/employeeReducer";
 import { freelancerRequestReducer } from "./reducers/requestsReducer";
 import { userLoginReducer } from "./reducers/userReducer";
-import { companyDetailsReducer } from "./reducers/companyReducer";
+import {
+  companyDetailsReducer,
+  companyReviewReducer,
+  companyJobsListReducer,
+} from "./reducers/companyReducer";
 // use selector tu use one of the below reducers
 const reducer = combineReducers({
   jobList: jobListReducer,
@@ -15,7 +19,10 @@ const reducer = combineReducers({
   employeeDetails: employeeDetailsReducer,
   freelancerRequest: freelancerRequestReducer,
   userLogin: userLoginReducer,
+  //
   companyDetails: companyDetailsReducer,
+  companyJobsList: companyJobsListReducer,
+  companyReview: companyReviewReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
