@@ -330,12 +330,22 @@ class Language(models.Model):
 
 class Apply(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
-    Company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     job = models.ForeignKey(Job, on_delete=models.CASCADE, null=True)
     message  = models.TextField(max_length=1000)
     send_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=15 , choices=Requststatus)
     status_change_date = models.DateTimeField(auto_now=True)
+
+
+    @property
+    def company_name(self):
+        return self.company.name if self.company else None
+    
+    @property
+    def job_title(self):
+        return self.job.title if self.job else None
+
 
     def __str__(self):
         return self.message
