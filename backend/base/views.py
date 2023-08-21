@@ -8,9 +8,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import Job , Company , Employee , WorkExperience , Education , Language , Apply , Verification , Skills , Category , Review
+from .models import Job , Company , Employee , WorkExperience , Education , Language  , Verification , Skills , Category , Review , Request
 from django.contrib.auth.models import User
-from .serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer , ApplySerializer , VerificationSerializer , SkillSerializer , CategorySerializer , ReviewSerializer
+from .serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer ,RequestSerializer , VerificationSerializer , SkillSerializer , CategorySerializer , ReviewSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
@@ -134,8 +134,8 @@ class JobViewSet(viewsets.ViewSet):
     @action(detail=True, methods=['get'], name='get applies')
     def applies(self,request, pk):
         job = Job.objects.get(pk=pk)
-        applies = job.apply_set.all()
-        serializer = ApplySerializer(applies ,many=True )
+        applies = job.request_set.all()
+        serializer =RequestSerializer(applies ,many=True )
         return Response(serializer.data)
     
 
@@ -282,29 +282,29 @@ class EmployeeViewSet(viewsets.ViewSet):
     @action(detail=True, methods=['get'], name='get applies')
     def applies(self,request, pk):
         employee = Employee.objects.get(pk=pk)
-        applies = employee.apply_set.all()
-        serializer = ApplySerializer(applies ,many=True )
+        applies = employee.request_set.all()
+        serializer =RequestSerializer(applies ,many=True )
         return Response(serializer.data)
     
     @action(detail=True, methods=['get'], name='get unchecked applies')
     def unchecked_applies(self,request, pk):
         employee = Employee.objects.get(pk=pk)
-        applies = employee.apply_set.filter(status='در انتظار بررسی')
-        serializer = ApplySerializer(applies ,many=True )
+        applies = employee.request_set.filter(status='در انتظار بررسی')
+        serializer =RequestSerializer(applies ,many=True )
         return Response(serializer.data)
 
     @action(detail=True, methods=['get'], name='get viewed applies')
     def viewed_applies(self,request, pk):
         employee = Employee.objects.get(pk=pk)
-        applies = employee.apply_set.filter(status='بررسی شده')
-        serializer = ApplySerializer(applies ,many=True )
+        applies = employee.request_set.filter(status='بررسی شده')
+        serializer =RequestSerializer(applies ,many=True )
         return Response(serializer.data)
     
     @action(detail=True, methods=['get'], name='get Rejected applies')
     def rejected_applies(self,request, pk):
         employee = Employee.objects.get(pk=pk)
-        applies = employee.apply_set.filter(status='رد شده')
-        serializer = ApplySerializer(applies ,many=True )
+        applies = employee.request_set.filter(status='رد شده')
+        serializer =RequestSerializer(applies ,many=True )
         return Response(serializer.data)
 
 class WorkExperienceViewSet(viewsets.ViewSet):
@@ -434,21 +434,35 @@ class LanguageViewSet(viewsets.ViewSet):
 class ApplyViewSet(viewsets.ViewSet):
 
 
-    def list(self,request):
-        apply = Apply.objects.all()
-        serializer = ApplySerializer(apply , many = True)
-        return Response(serializer.data)
+    def list(self, request):
+        queryset = Request.objects.all()
+        serializer = RequestSerializer(queryset, many=True)
+        data = serializer.data
+
+        for item in data:
+            instance = Request.objects.get(id=item['id'])
+            company_name = instance.company_name
+            job_title = instance.job_title
+            item['company_name'] = company_name
+            item['job_title'] = job_title
+
+        return Response(data)
     
         
     def retrieve(self, request, pk=None):
-        allapply = Apply.objects.all()
+        allapply = Request.objects.all()
         apply = get_object_or_404(allapply, pk=pk)
-        serializer = ApplySerializer(apply)
-        return Response(serializer.data)
+        company_name = apply.company_name
+        job_title = apply.job_title
+        serializer =RequestSerializer(apply)
+        data = serializer.data
+        data['company_name'] = company_name
+        data['job_title']=job_title
+        return Response(data)
         
 
     def create(self,request):
-        serializer = ApplySerializer(data=request.data)
+        serializer =RequestSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
@@ -456,8 +470,8 @@ class ApplyViewSet(viewsets.ViewSet):
     
 
     def update(self, request, pk=None):
-        apply = get_object_or_404(Apply.objects.all(), pk=pk)
-        serializer = ApplySerializer(apply, data=request.data)
+        apply = get_object_or_404(Request.objects.all(), pk=pk)
+        serializer =RequestSerializer(apply, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -466,7 +480,7 @@ class ApplyViewSet(viewsets.ViewSet):
 
     def destroy(self, request,pk):
         id=pk
-        apply = Apply.objects.get(pk=id)
+        apply = Request.objects.get(pk=id)
         apply.delete()
         return Response({'msg':'Data Deleted'}) 
 

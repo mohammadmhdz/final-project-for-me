@@ -181,7 +181,7 @@ class Company(models.Model):
      Working_days_to = models.CharField(max_length=15 , choices=Days , default='16;00')
      working_hours_from = models.TimeField()
      working_hours_to = models.TimeField()
-     favorite_employee = models.ManyToManyField('Employee')
+     favorite_employee = models.ManyToManyField('Employee', null=True , blank= True)
 
     
 
@@ -276,7 +276,7 @@ class Employee(models.Model):
     city = models.ForeignKey(City ,on_delete=models.SET_NULL,null=True)
     skills = models.ManyToManyField(Skills)
     cv = models.FileField( null=True, blank=True, validators=[FileExtensionValidator(allowed_extensions=["pdf"])])
-    favorite_jobs = models.ManyToManyField(Job)
+    favorite_jobs = models.ManyToManyField(Job,null=True,blank=True)
     
 
     def __str__(self):
@@ -328,7 +328,10 @@ class Language(models.Model):
 
 
 
-class Apply(models.Model):
+
+
+    
+class Request(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
     Company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     job = models.ForeignKey(Job, on_delete=models.CASCADE, null=True)
@@ -338,18 +341,22 @@ class Apply(models.Model):
     status_change_date = models.DateTimeField(auto_now=True)
 
 
+    class Meta:
+        # Define a unique constraint on the combination of employee and job
+        constraints = [
+            models.UniqueConstraint(
+                fields=['employee', 'job'],
+                name='unique_employee_job'
+            )
+        ]
+
     @property
-    def Company_name(self):
-        return self.Company.Name if self.Company else None
-    
+    def company_name(self):
+        return self.job.Company.Name if self.job else None
+
     @property
     def job_title(self):
-        return self.job.title if self.job else None
-
+        return self.job.title if self.job else None    
 
     def __str__(self):
         return self.message
-
-
-    
-
