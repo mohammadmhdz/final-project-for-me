@@ -8,12 +8,14 @@ import "react-summernote/dist/react-summernote.css"; // import styles
 import moment from "jalali-moment";
 
 import FreelacerOngoingProjects from "../ongoingprojects/index";
+import FreelacerCancelledProjects from "../cancelledprojects/index";
+import FreelacerCompletedProjects from "../completedprojects/index";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { freelancerRequest } from "../../../../actions/requestsActions";
 
 const Freelancer = (props) => {
-  const [allRequest, setAllRequest] = useState(false);
+  const [allRequest, setAllRequest] = useState(true);
   const [waiting, setWaiting] = useState(false);
   const [read, setRead] = useState(false);
   const [denied, setDenied] = useState(false);
@@ -56,7 +58,9 @@ const Freelancer = (props) => {
       document.body.className = "";
     };
   }, [dispatch]);
+  console.log(freelancerRequestsAll[0]?.company_name);
   console.log(freelancerRequestsAll);
+  // console.log();
 
   // filter request by the employee
   // const filterEmployee = freelancerRequestsAll.map((items) => {
@@ -144,9 +148,7 @@ const Freelancer = (props) => {
                                       <ul className="proposal-details">
                                         <li className="Bold">
                                           {" "}
-                                          <a href="">
-                                            ارسال شده برای داده ورزی سداد
-                                          </a>
+                                          <a href="">{items.company_name}</a>
                                         </li>
                                         <li>۲ روزپیش</li>
                                         <li className=" red">بررسی نشده</li>
@@ -185,9 +187,7 @@ const Freelancer = (props) => {
                                     <ul className="proposal-details">
                                       <li className="Bold">
                                         {" "}
-                                        <a href="">
-                                          ارسال شده برای داده ورزی سداد
-                                        </a>
+                                        <a href="">{items.company}</a>
                                       </li>
                                       <li>۲ روزپیش</li>
                                       <li className=" red">
@@ -217,9 +217,9 @@ const Freelancer = (props) => {
               ) : waiting ? (
                 <FreelacerOngoingProjects />
               ) : denied ? (
-                <p>rad shode</p>
+                <FreelacerCancelledProjects />
               ) : read ? (
-                <p1>barasi shode</p1>
+                <FreelacerCompletedProjects />
               ) : null}
               {/* Proposals */}
               {/* /Proposals list */}
