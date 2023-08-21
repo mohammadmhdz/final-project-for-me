@@ -330,7 +330,7 @@ class Language(models.Model):
 
 class Apply(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
+    Company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     job = models.ForeignKey(Job, on_delete=models.CASCADE, null=True)
     message  = models.TextField(max_length=1000)
     send_at = models.DateTimeField(auto_now=True)
@@ -339,8 +339,8 @@ class Apply(models.Model):
 
 
     @property
-    def company_name(self):
-        return self.company.name if self.company else None
+    def Company_name(self):
+        return self.Company.Name if self.Company else None
     
     @property
     def job_title(self):
