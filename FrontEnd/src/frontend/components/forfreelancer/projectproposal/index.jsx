@@ -1,21 +1,51 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { Developer_01, home_icon } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 import ReactSummernote from "react-summernote";
 import "react-summernote/dist/react-summernote.css"; // import styles
+import moment from "jalali-moment";
 
+import FreelacerOngoingProjects from "../ongoingprojects/index";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { freelancerRequest } from "../../../../actions/requestsActions";
 
 const Freelancer = (props) => {
+  const [allRequest, setAllRequest] = useState(false);
+  const [waiting, setWaiting] = useState(false);
+  const [read, setRead] = useState(false);
+  const [denied, setDenied] = useState(false);
+
+  const handleAllRequest = () => {
+    setAllRequest(true);
+    setDenied(false);
+    setWaiting(false);
+    setRead(false);
+  };
+  const handleWaiting = () => {
+    setAllRequest(false);
+    setDenied(false);
+    setWaiting(true);
+    setRead(false);
+  };
+  const handleRead = () => {
+    setAllRequest(false);
+    setDenied(false);
+    setWaiting(false);
+    setRead(true);
+  };
+  const handleDenied = () => {
+    setAllRequest(false);
+    setWaiting(false);
+    setRead(true);
+    setDenied(true);
+  };
   // redux
   const dispatch = useDispatch();
-  const { freelancerRequestsAll } = useSelector(
-    (state) => state.freelancerRequest
-  );
+  const freelancerRequests = useSelector((state) => state.freelancerRequest);
+  const { freelancerRequestsAll } = freelancerRequests;
 
   useEffect(() => {
     // redux
@@ -26,12 +56,12 @@ const Freelancer = (props) => {
       document.body.className = "";
     };
   }, [dispatch]);
-  // console.log(freelancerRequestsAll);
+  console.log(freelancerRequestsAll);
 
   // filter request by the employee
-  const filterEmployee = freelancerRequestsAll.map((items) => {
-    console.log(items.employee);
-  });
+  // const filterEmployee = freelancerRequestsAll.map((items) => {
+  //   console.log(items.status);
+  // });
 
   return (
     <>
@@ -52,32 +82,37 @@ const Freelancer = (props) => {
                 <ul className="nav nav-tabs nav-tabs-bottom nav-justified">
                   <li className="nav-item">
                     <Link
+                      onClick={handleAllRequest}
                       className="nav-link active"
-                      to="/freelancer-project-proposals"
+                      // to="/freelancer-project-proposals"
                     >
                       همه درخواست های من
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link
+                      onClick={handleWaiting}
                       className="nav-link"
-                      to="/freelancer-ongoing-projects"
+                      // to="/freelancer-ongoing-projects"
+                      // state={{ items: dispatch?.freelancerRequestsAll }}
                     >
                       در انتظار بررسی
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link
+                      onClick={handleRead}
                       className="nav-link"
-                      to="/freelancer-completed-projects"
+                      // to="/freelancer-completed-projects"
                     >
                       بررسی شده
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link
+                      onClick={handleDenied}
                       className="nav-link "
-                      to="/freelancer-cancelled-projects"
+                      // to="/freelancer-cancelled-projects"
                     >
                       رد شده
                     </Link>
@@ -85,84 +120,108 @@ const Freelancer = (props) => {
                 </ul>
               </nav>
               {/* Proposals list */}
-              <div className="proposals-section">
-                {/* Proposals */}
-                <div className="my-projects-list">
-                  <div className="row">
-                    <div className="col-lg-12 flex-wrap">
-                      <div className="projects-card flex-fill">
-                        <div className="card-body">
-                          <div className="projects-details align-items-center justify-content-between">
-                            <div className="projects-details align-items-center">
-                              <div className="proposer-img">
-                                <img
-                                  src={Developer_01}
-                                  alt=""
-                                  className="img-fluid"
-                                />
+              {/* Proposals */}
+              {allRequest ? (
+                freelancerRequestsAll.map((items) => (
+                  <div className="proposals-section">
+                    {items.status === "در انتظار بررسی" && (
+                      <div className="my-projects-list">
+                        <div className="row">
+                          <div className="col-lg-12 flex-wrap">
+                            <div className="projects-card flex-fill">
+                              <div className="card-body">
+                                <div className="projects-details align-items-center justify-content-between">
+                                  <div className="projects-details align-items-center">
+                                    <div className="proposer-img">
+                                      <img
+                                        src={Developer_01}
+                                        alt=""
+                                        className="img-fluid"
+                                      />
+                                    </div>
+                                    <div className="proposer-detail">
+                                      <h4 className="">طراح UI/UX</h4>
+                                      <ul className="proposal-details">
+                                        <li className="Bold">
+                                          {" "}
+                                          <a href="">
+                                            ارسال شده برای داده ورزی سداد
+                                          </a>
+                                        </li>
+                                        <li>۲ روزپیش</li>
+                                        <li className=" red">بررسی نشده</li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                  <Link
+                                    to="/freelancer-view-project-detail"
+                                    className="projects-btn project"
+                                  >
+                                    انصراف از درخواست{" "}
+                                  </Link>
+                                </div>
                               </div>
-                              <div className="proposer-detail">
-                                <h4 className="">طراح UI/UX</h4>
-                                <ul className="proposal-details">
-                                  <li className="Bold">
-                                    {" "}
-                                    <a href="">ارسال شده برای داده ورزی سداد</a>
-                                  </li>
-                                  <li>۲ روزپیش</li>
-                                  <li className=" red">بررسی نشده</li>
-                                </ul>
-                              </div>
-                            </div>
-                            <Link
-                              to="/freelancer-view-project-detail"
-                              className="projects-btn project"
-                            >
-                              انصراف از درخواست{" "}
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="my-projects-list">
-                  <div className="row align-right">
-                    <div className="col-lg-12 flex-wrap">
-                      <div className="projects-cancelled-card flex-fill">
-                        <div className="card-body">
-                          <div className="projects-details align-items-center">
-                            <div className="proposer-img">
-                              <img
-                                src={Developer_01}
-                                alt=""
-                                className="img-fluid"
-                              />
-                            </div>
-                            <div className="proposer-detail">
-                              <h4 className="">طراح UI/UX</h4>
-                              <ul className="proposal-details">
-                                <li className="Bold">
-                                  {" "}
-                                  <a href="">ارسال شده برای داده ورزی سداد</a>
-                                </li>
-                                <li>۲ روزپیش</li>
-                                <li className=" red">
-                                  رد شده به علت : <span>عدم تطابق سن </span>
-                                </li>
-                                <li className=" red">
-                                  رد شده درتاریخ : <span>۲ مرداد ۱۴۰۲</span>
-                                </li>
-                              </ul>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    )}
+                    {items.status === "بررسی شده" && (
+                      <div className="my-projects-list">
+                        <div className="row align-right">
+                          <div className="col-lg-12 flex-wrap">
+                            <div className="projects-cancelled-card flex-fill">
+                              <div className="card-body">
+                                <div className="projects-details align-items-center">
+                                  <div className="proposer-img">
+                                    <img
+                                      src={Developer_01}
+                                      alt=""
+                                      className="img-fluid"
+                                    />
+                                  </div>
+                                  <div className="proposer-detail">
+                                    <h4 className="">طراح UI/UX</h4>
+                                    <ul className="proposal-details">
+                                      <li className="Bold">
+                                        {" "}
+                                        <a href="">
+                                          ارسال شده برای داده ورزی سداد
+                                        </a>
+                                      </li>
+                                      <li>۲ روزپیش</li>
+                                      <li className=" red">
+                                        رد شده به علت :{" "}
+                                        <span>{items.message}</span>
+                                      </li>
+                                      <li className=" red">
+                                        رد شده درتاریخ :{" "}
+                                        <span>
+                                          {" "}
+                                          {moment(items.send_at, "YYYY/MM/DD")
+                                            .locale("fa")
+                                            .format("YYYY/MM/DD")}
+                                        </span>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
-
-                {/* Proposals */}
-              </div>
+                ))
+              ) : waiting ? (
+                <FreelacerOngoingProjects />
+              ) : denied ? (
+                <p>rad shode</p>
+              ) : read ? (
+                <p1>barasi shode</p1>
+              ) : null}
+              {/* Proposals */}
               {/* /Proposals list */}
               {/* pagination */}
               <div className="row">

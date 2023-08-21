@@ -1,16 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { Developer_01, Developer_02, Developer_03 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
+import { useLocation } from "react-router-dom";
 
-const FreelacerOngoingProjects = (props) => {
-  useEffect(() => {
-    document.body.className = "dashboard-page";
-    return () => {
-      document.body.className = "";
-    };
-  });
+const FreelacerOngoingProjects = () => {
+  console.log("here");
+  // const input = useLocation();
+  // const [item, setItem] = useState([input.state.item]);
+  // console.log(input);
+  // useEffect(() => {
+  //   document.body.className = "dashboard-page";
+  //   return () => {
+  //     document.body.className = "";
+  //   };
+  // });
+  // console.log(item);
 
   return (
     <>
@@ -32,7 +38,7 @@ const FreelacerOngoingProjects = (props) => {
                   <li className="nav-item">
                     <Link
                       className="nav-link"
-                      to="/freelancer-project-proposals"
+                      // to="/freelancer-project-proposals"
                     >
                       همه درخواست های من
                     </Link>
@@ -40,7 +46,7 @@ const FreelacerOngoingProjects = (props) => {
                   <li className="nav-item">
                     <Link
                       className="nav-link active"
-                      to="/freelancer-ongoing-projects"
+                      // to="/freelancer-ongoing-projects"
                     >
                       در انتظار بررسی
                     </Link>
@@ -48,7 +54,7 @@ const FreelacerOngoingProjects = (props) => {
                   <li className="nav-item">
                     <Link
                       className="nav-link"
-                      to="/freelancer-completed-projects"
+                      // to="/freelancer-completed-projects"
                     >
                       بررسی شده
                     </Link>
@@ -56,7 +62,7 @@ const FreelacerOngoingProjects = (props) => {
                   <li className="nav-item">
                     <Link
                       className="nav-link "
-                      to="/freelancer-cancelled-projects"
+                      // to="/freelancer-cancelled-projects"
                     >
                       رد شده
                     </Link>
@@ -91,7 +97,7 @@ const FreelacerOngoingProjects = (props) => {
                             </div>
                           </div>
                           <Link
-                            to="/freelancer-view-project-detail"
+                            // to="/freelancer-view-project-detail"
                             className="projects-btn project"
                           >
                             انصراف از درخواست{" "}
