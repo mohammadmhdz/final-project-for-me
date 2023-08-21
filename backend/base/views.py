@@ -434,17 +434,31 @@ class LanguageViewSet(viewsets.ViewSet):
 class ApplyViewSet(viewsets.ViewSet):
 
 
-    def list(self,request):
-        apply = Request.objects.all()
-        serializer =RequestSerializer(apply , many = True)
-        return Response(serializer.data)
+    def list(self, request):
+        queryset = Request.objects.all()
+        serializer = RequestSerializer(queryset, many=True)
+        data = serializer.data
+
+        for item in data:
+            instance = Request.objects.get(id=item['id'])
+            company_name = instance.company_name
+            job_title = instance.job_title
+            item['company_name'] = company_name
+            item['job_title'] = job_title
+
+        return Response(data)
     
         
     def retrieve(self, request, pk=None):
         allapply = Request.objects.all()
         apply = get_object_or_404(allapply, pk=pk)
+        company_name = apply.company_name
+        job_title = apply.job_title
         serializer =RequestSerializer(apply)
-        return Response(serializer.data)
+        data = serializer.data
+        data['company_name'] = company_name
+        data['job_title']=job_title
+        return Response(data)
         
 
     def create(self,request):

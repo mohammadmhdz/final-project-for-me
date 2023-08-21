@@ -352,7 +352,11 @@ class Request(models.Model):
 
     @property
     def company_name(self):
-        return self.job.Company.Name if self.job else None    
+        return self.job.Company.Name if self.job else None
+
+    @property
+    def job_title(self):
+        return self.job.title if self.job else None    
 
     def __str__(self):
         return self.message
