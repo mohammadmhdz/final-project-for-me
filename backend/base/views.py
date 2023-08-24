@@ -277,7 +277,48 @@ class EmployeeViewSet(viewsets.ViewSet):
         serializer = JobSerializer(favorite_jobs ,many=True )
         return Response(serializer.data)
 
+    @action(detail=True, methods=['post'])
+    def add_favorite_job(self, request, pk=None):
+        employee = self.get_object()
+        job_id = request.data.get('job_id')
 
+        try:
+            job = Job.objects.get(pk=job_id)
+            employee.favorite_jobs.add(job)
+            serializer = self.get_serializer(employee)
+            return Response(serializer.data)
+        except Job.DoesNotExist:
+            return Response({'error': 'Job does not exist.'}, status=400)
+        
+
+    @action(detail=True, methods=['post'])
+    def remove_favorite_job(self, request, pk=None):
+        employee = self.get_object()
+        job_id = request.data.get('job_id')
+
+        try:
+            job = Job.objects.get(pk=job_id)
+            employee.favorite_jobs.remove(job)
+            serializer = self.get_serializer(employee)
+            return Response(serializer.data)
+        except Job.DoesNotExist:
+            return Response({'error': 'Job does not exist.'}, status=400)
+
+    @action(detail=True, methods=['post'])
+    def toggle_favorite_job(self, request, pk=None):
+        employee = self.get_object()
+        job_id = request.data.get('job_id')
+
+        try:
+            job = Job.objects.get(pk=job_id)
+            if job in employee.favorite_jobs.all():
+                employee.favorite_jobs.remove(job)
+            else:
+                employee.favorite_jobs.add(job)
+            serializer = self.get_serializer(employee)
+            return Response(serializer.data)
+        except Job.DoesNotExist:
+            return Response({'error': 'Job does not exist.'}, status=400)                
 
     @action(detail=True, methods=['get'], name='get applies')
     def applies(self,request, pk):
