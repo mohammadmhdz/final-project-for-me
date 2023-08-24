@@ -243,7 +243,7 @@ class Job(models.Model):
     level   = models.CharField(max_length=15 , choices=Level,  default='Junior(جوان)')
     salary_type   = models.CharField(max_length=15 , choices=Salary_Type ,  default='توافقی')
     salary_amount       = models.CharField(max_length=100 , null=True, blank=True) 
-    description  = models.TextField(max_length=1000)               
+    description  = models.TextField(max_length=5000)               
     skills = models.ManyToManyField(Skills)
     category     = models.ForeignKey('Category',on_delete=models.CASCADE, default=1)
     status = models.CharField(max_length=15 , choices=JobStatus)
@@ -335,9 +335,9 @@ class Request(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
     Company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     job = models.ForeignKey(Job, on_delete=models.CASCADE, null=True)
-    message  = models.TextField(max_length=1000)
+    message  = models.TextField(max_length=1000, null=True , blank=True)
     send_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=15 , choices=Requststatus)
+    status = models.CharField(max_length=15 , choices=Requststatus , default='درانتظار بررسی')
     status_change_date = models.DateTimeField(auto_now=True)
 
 
