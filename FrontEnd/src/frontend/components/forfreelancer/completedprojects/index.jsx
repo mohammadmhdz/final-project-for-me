@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import StickyBox from "react-sticky-box";
+// import { Link } from "react-router-dom";
+// import StickyBox from "react-sticky-box";
 import { Developer_02, Developer_01, Developer_03 } from "../../imagepath";
-import { Sidebar } from "../sidebar";
+// import { Sidebar } from "../sidebar";
+import moment from "jalali-moment";
 
 const FreelacerCompletedProjects = ({data}) => {
   // useEffect(() => {
@@ -11,6 +12,12 @@ const FreelacerCompletedProjects = ({data}) => {
   //     document.body.className = "";
   //   };
   // });
+  const daysBetween =(input) => {
+    const now = new Date().getDate()
+    const date = new Date(input).getDate()
+    return now - date
+
+  }
   console.log(data , " ssss")
   return (
     <>
@@ -33,11 +40,13 @@ const FreelacerCompletedProjects = ({data}) => {
                             <ul className="proposal-details">
                               <li className="Bold">
                               {" "}
-                                <a href="">ارسال شده برای داده ورزی سداد</a>
+                                <a href="">ارسال شده برای {items.company_name}</a>
                               </li>
-                              <li>۲ روزپیش</li>
+                              <li>{daysBetween(items.send_at)} روز پیش</li>
                               <li className=" red">
-                              بررسی شده در تاریخ : <span>۳ مرداد ۱۴۰۲</span>
+                              بررسی شده در تاریخ : <span>{moment(items.status_change_date, "YYYY/MM/DD")
+                                            .locale("fa")
+                                            .format("YYYY/MM/DD")}</span>
                               </li>
                               </ul>
                           </div>

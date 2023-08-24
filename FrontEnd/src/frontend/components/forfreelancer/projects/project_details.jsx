@@ -75,11 +75,11 @@ const ProjectDetails = (props) => {
                           
                             <li>
                             <i className="fa fa-clock" /> 
-                             
+                             {" "}
                             <span>
-                            {daysBetween(jobsDetailsList?.published_at)}
+                              {daysBetween(jobsDetailsList?.published_at)} روز
                             </span>
-                            {" "} روز
+                            
                               
                           </li>
                           <li>

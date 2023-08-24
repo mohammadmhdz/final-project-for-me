@@ -41,7 +41,7 @@ const Freelancer = (props) => {
   const handleDenied = () => {
     setAllRequest(false);
     setWaiting(false);
-    setRead(true);
+    setRead(false);
     setDenied(true);
   };
   // redux
@@ -87,7 +87,7 @@ const Freelancer = (props) => {
                   <li className="nav-item">
                     <Link
                       onClick={handleAllRequest}
-                      className="nav-link active"
+                      className={allRequest? "nav-link active" : "nav-link"}
                       // to="/freelancer-project-proposals"
                     >
                       همه درخواست های من
@@ -96,7 +96,7 @@ const Freelancer = (props) => {
                   <li className="nav-item">
                     <Link
                       onClick={handleWaiting}
-                      className="nav-link"
+                      className={waiting? "nav-link active" : "nav-link"}
                       // to="/freelancer-ongoing-projects"
                       // state={{ items: dispatch?.freelancerRequestsAll }}
                     >
@@ -106,7 +106,7 @@ const Freelancer = (props) => {
                   <li className="nav-item">
                     <Link
                       onClick={handleRead}
-                      className="nav-link"
+                      className={read? "nav-link active" : "nav-link"}
                       // to="/freelancer-completed-projects"
                     >
                       بررسی شده
@@ -115,7 +115,7 @@ const Freelancer = (props) => {
                   <li className="nav-item">
                     <Link
                       onClick={handleDenied}
-                      className="nav-link "
+                      className={denied? "nav-link active" : "nav-link"}
                       // to="/freelancer-cancelled-projects"
                     >
                       رد شده
@@ -215,9 +215,9 @@ const Freelancer = (props) => {
                   </div>
                 ))
               ) : waiting ? (
-                <FreelacerOngoingProjects />
+                <FreelacerOngoingProjects data={freelancerRequestsAll} />
               ) : denied ? (
-                <FreelacerCancelledProjects />
+                <FreelacerCancelledProjects data={freelancerRequestsAll} />
               ) : read ? (
                 <FreelacerCompletedProjects data={freelancerRequestsAll} />
               ) : null}
