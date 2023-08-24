@@ -4,44 +4,56 @@ import StickyBox from "react-sticky-box";
 import { Developer_02, Developer_01, Developer_03 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 
-const FreelacerCompletedProjects = (props) => {
+const FreelacerCompletedProjects = ({data}) => {
   // useEffect(() => {
   //   document.body.className = "dashboard-page";
   //   return () => {
   //     document.body.className = "";
   //   };
   // });
+  console.log(data , " ssss")
   return (
     <>
       {/* Page Content */}
-      <div className="content">
-        <div className="row">
-          <div className="col-lg-12 flex-wrap">
-            <div className="projects-card flex-fill">
-              <div className="card-body">
-                <div className="projects-details align-items-center">
-                  <div className="proposer-img">
-                    <img src={Developer_01} alt="" className="img-fluid" />
-                  </div>
-                  <div className="proposer-detail">
-                    <h4 className="">طراح UI/UX</h4>
-                    <ul className="proposal-details">
-                      <li className="Bold">
-                        {" "}
-                        <a href="">ارسال شده برای داده ورزی سداد</a>
-                      </li>
-                      <li>۲ روزپیش</li>
-                      <li className=" red">
-                        بررسی شده در تاریخ : <span>۳ مرداد ۱۴۰۲</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+      {/* <div className="content"> */}
+      {data?.map((items) => (
+
+        // console.log(items.status === "بررسی شده")
+        items.status === "بررسی شده" && (
+          <div style={{paddingBottom : 10}}>
+                <div className="col-lg-12 flex-wrap">
+                  <div className="projects-card flex-fill">
+                      <div className="card-body">
+                        <div className="projects-details align-items-center">
+                        <div className="proposer-img">
+                            <img src={Developer_01} alt="" className="img-fluid" />
+                          </div>
+                          <div className="proposer-detail">
+                            <h4 className="">{items.job_title}</h4>
+                            <ul className="proposal-details">
+                              <li className="Bold">
+                              {" "}
+                                <a href="">ارسال شده برای داده ورزی سداد</a>
+                              </li>
+                              <li>۲ روزپیش</li>
+                              <li className=" red">
+                              بررسی شده در تاریخ : <span>۳ مرداد ۱۴۰۲</span>
+                              </li>
+                              </ul>
+                          </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                {/* </div> */}
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            )
+          
+          
+          )
+          )
+      }
+      {/* </div> */}
 
       <div className="row">
         <div className="col-md-12">

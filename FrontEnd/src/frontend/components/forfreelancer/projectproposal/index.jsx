@@ -219,7 +219,7 @@ const Freelancer = (props) => {
               ) : denied ? (
                 <FreelacerCancelledProjects />
               ) : read ? (
-                <FreelacerCompletedProjects />
+                <FreelacerCompletedProjects data={freelancerRequestsAll} />
               ) : null}
               {/* Proposals */}
               {/* /Proposals list */}

@@ -22,6 +22,7 @@ import {
   Icon_location,
   Icon_work,
 } from "../../imagepath";
+import moment from "jalali-moment";
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { jobsDetail } from "../../../../actions/jobActions";
@@ -29,12 +30,14 @@ import { jobsDetail } from "../../../../actions/jobActions";
 const ProjectDetails = (props) => {
   // redux
   const dispatch = useDispatch();
-  const { jobs } = useSelector((state) => state.jobsDetails);
+  const  jobs  = useSelector((state) => state.jobsDetails);
+  const {jobsDetailsList} = jobs
   useEffect(() => {
     //redux
     // bejaye 3 id job mored nazar ra ghara midahim
     dispatch(jobsDetail(3));
   }, [dispatch]);
+  console.log(jobsDetailsList)
   return (
     <>
       {/* Breadcrumb */}
@@ -51,23 +54,31 @@ const ProjectDetails = (props) => {
                     <div className="pro-info-left col-md-8">
                       <div className="profile-info">
                         <h2 className="profile-title">
-                          طراح رابط کاربری (UI/UX)
+                          {jobsDetailsList.title}
                         </h2>
                         <Link
                           to="/company-details"
                           className="profile-position"
                         >
                           {" "}
-                          فراوب | Faraweb
+                          {jobsDetailsList.Company?.Name}
                         </Link>
                         <div />
                         <ul className="profile-preword align-items-center">
+                          {/* {dispatch?(
                           <li>
-                            <i className="fa fa-clock" /> ۲ روز پیش
+                            <i className="fa fa-clock" /> 
+                            <span>
+                                  {moment(jobsDetailsList?.published_at, "YYYY/MM/DD")
+                                            .locale("fa")
+                                            .format("YYYY/MM/DD")}
+                            </span>
+                              
                           </li>
+                            ) : null} */}
                           <li>
                             <a href="#" className="btn full-btn">
-                              تمام وقت
+                              {jobsDetailsList.job_type}
                             </a>
                           </li>
                         </ul>
@@ -125,7 +136,7 @@ const ProjectDetails = (props) => {
                         <div className="d-flex align-items-center justify-content-lg-between pro-post job-type">
                           <div>
                             <p>شهر</p>
-                            <h6>تهران</h6>
+                            <h6>{jobsDetailsList.city?.name}</h6>
                           </div>
                           <img
                             className="img-fluid"
@@ -139,7 +150,7 @@ const ProjectDetails = (props) => {
                         <div className="d-flex align-items-center justify-content-lg-between pro-post job-type">
                           <div>
                             <p>سابقه کار</p>
-                            <h6>بدون محدودیت</h6>
+                            <h6>{jobsDetailsList.experience}</h6>
                           </div>
                           <img
                             className="img-fluid"
@@ -153,7 +164,7 @@ const ProjectDetails = (props) => {
                         <div className="d-flex align-items-center justify-content-lg-between pro-post job-type">
                           <div>
                             <p>حقوق</p>
-                            <h6>۱۲ میلیون</h6>
+                            <h6>{jobsDetailsList.salary_amount}میلیون تومان  </h6>
                           </div>
                           <img
                             className="img-fluid"
@@ -173,19 +184,7 @@ const ProjectDetails = (props) => {
                   <h3 className="pro-title">توضیحات</h3>
                   <div className="pro-content">
                     <p>
-                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ،
-                      و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه
-                      روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای
-                      شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-                      بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
-                      درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می
-                      طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه
-                      ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی
-                      ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری
-                      موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                      زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی
-                      سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده
-                      قرار گیرد.
+                   {jobsDetailsList.Company?.about}
                     </p>
                   </div>
                 </div>
@@ -199,7 +198,7 @@ const ProjectDetails = (props) => {
                         <li>
                           عنوان:{" "}
                           <span>
-                            متن
+                          {jobsDetailsList.description}
                             <i
                               className="fa fa-question-circle"
                               data-bs-toggle="tooltip"
@@ -217,12 +216,16 @@ const ProjectDetails = (props) => {
                   <h3 className="pro-title">مهارت های مورد نیاز</h3>
                   <div className="pro-content">
                     <div className="tags">
-                      <a href="">
-                        <span className="badge badge-pill badge-design">
-                          After Effects
-                        </span>
-                      </a>
-                      <a href="">
+                      {jobsDetailsList.skills?.map((items) => (
+                          <a href="">
+                          <span className="badge badge-pill badge-design">
+                          {items.title}
+                          </span>
+                        </a>
+                           )
+                      )
+                      }
+                      {/*<a href="">
                         <span className="badge badge-pill badge-design">
                           Illustrator
                         </span>
@@ -246,7 +249,7 @@ const ProjectDetails = (props) => {
                         <span className="badge badge-pill badge-design">
                           Whiteboard
                         </span>
-                      </a>
+                      </a> */}
                     </div>
                   </div>
                 </div>
@@ -276,14 +279,14 @@ const ProjectDetails = (props) => {
                           to="./company-details"
                           className="author-location"
                         >
-                          فراوب|FaraWeb{" "}
+                          {jobsDetailsList.Company?.Name}
                           <i className="fa fa-check-circle text-success verified" />
                         </Link>
                       </div>
                       <div className="freelance-info">
                         <div className="freelance-location">
                           <i className="fa fa-map-marker ms-1" />
-                          تهران
+                          {jobsDetailsList.city?.name}
                         </div>
                         <div className="rating">
                           <i className="fa fa-star filled" />
@@ -327,7 +330,9 @@ const ProjectDetails = (props) => {
                             <h6 className="text-sm text-end mb-0">عضویت از:</h6>
                           </div>
                           <div className="col-auto">
-                            <span className="text-sm">۲۱ فروردین ۱۴۰۲</span>
+                            {/* <span className="text-sm">{moment(jobsDetailsList.Company?.founded_at, "YYYY/MM/DD")
+                                            .locale("fa")
+                                            .format("YYYY/MM/DD")}</span> */}
                           </div>
                         </div>
                         <hr className="my-3" />
@@ -350,7 +355,7 @@ const ProjectDetails = (props) => {
                             </h6>
                           </div>
                           <div className="col-auto">
-                            <span className="text-sm">faraweb.com</span>
+                            <span className="text-sm">{jobsDetailsList.Company?.Website}</span>
                           </div>
                         </div>
                         <hr className="my-3" />
@@ -362,7 +367,7 @@ const ProjectDetails = (props) => {
                             </h6>
                           </div>
                           <div className="col-auto">
-                            <span className="text-sm">faraweb@</span>
+                            <span className="text-sm">{jobsDetailsList.Company?.linkdin}</span>
                           </div>
                         </div>
                       </div>
