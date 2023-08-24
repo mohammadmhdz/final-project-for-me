@@ -144,13 +144,42 @@ class CompanyViewSet(viewsets.ViewSet):
         Companies = Company.objects.all()
         serializer = CompanySerializer(Companies , many = True)
         return Response(serializer.data)
-    
+      
+    def list(self, request):
+        companies = Company.objects.all()
+        response_data = []
         
+        for company in companies:
+            all_jobs_count = Job.objects.filter(Company=company).count()
+            completed_jobs_count = Job.objects.filter(Company=company, status='تکمیل شده').count()
+            active_jobs_count = Job.objects.filter(Company=company, status='فعال').count()
+            
+            serializer = CompanySerializer(company)
+            company_data = {
+                'company_data': serializer.data,    
+                'all_jobs_count': all_jobs_count,
+                'completed_jobs_count': completed_jobs_count,
+                'active_jobs_count': active_jobs_count
+            }
+            
+            response_data.append(company_data)
+        
+        return Response(response_data)
+
     def retrieve(self, request, pk=None):
-        Companies = Company.objects.all()
-        company = get_object_or_404(Companies, pk=pk)
+        company = get_object_or_404(Company.objects.all(), pk=pk)
+        all_jobs_count = Job.objects.filter(Company=company).count()
+        completed_jobs_count = Job.objects.filter(Company=company, status='تکمیل شده').count()
+        active_jobs_count = Job.objects.filter(Company=company, status='فعال').count()
+        
         serializer = CompanySerializer(company)
-        return Response(serializer.data)
+        response_data = {
+            'company_data': serializer.data,
+            'all_jobs_count': all_jobs_count,
+            'completed_jobs_count': completed_jobs_count,
+            'active_jobs_count': active_jobs_count
+        }
+        return Response(response_data)
     
     def create(self,request):
         serializer = CompanySerializer(data=request.data)
