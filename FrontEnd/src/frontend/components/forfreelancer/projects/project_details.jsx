@@ -32,6 +32,13 @@ const ProjectDetails = (props) => {
   const dispatch = useDispatch();
   const  jobs  = useSelector((state) => state.jobsDetails);
   const {jobsDetailsList} = jobs
+
+  const daysBetween =(input) => {
+    const now = new Date().getDate()
+    const date = new Date(input).getDate()
+    return now - date
+
+  }
   useEffect(() => {
     //redux
     // bejaye 3 id job mored nazar ra ghara midahim
@@ -65,17 +72,16 @@ const ProjectDetails = (props) => {
                         </Link>
                         <div />
                         <ul className="profile-preword align-items-center">
-                          {/* {dispatch?(
-                          <li>
+                          
+                            <li>
                             <i className="fa fa-clock" /> 
+                             
                             <span>
-                                  {moment(jobsDetailsList?.published_at, "YYYY/MM/DD")
-                                            .locale("fa")
-                                            .format("YYYY/MM/DD")}
+                            {daysBetween(jobsDetailsList?.published_at)}
                             </span>
+                            {" "} روز
                               
                           </li>
-                            ) : null} */}
                           <li>
                             <a href="#" className="btn full-btn">
                               {jobsDetailsList.job_type}
@@ -122,7 +128,7 @@ const ProjectDetails = (props) => {
                         <div className="d-flex align-items-center justify-content-lg-between pro-post job-type">
                           <div>
                             <p>مهلت ارسال رزومه </p>
-                            <h6>۵۸ روز</h6>
+                            <h6>{60 - daysBetween(jobsDetailsList?.published_at)} روز</h6>
                           </div>
                           <img
                             className="img-fluid"
@@ -288,14 +294,7 @@ const ProjectDetails = (props) => {
                           <i className="fa fa-map-marker ms-1" />
                           {jobsDetailsList.city?.name}
                         </div>
-                        <div className="rating">
-                          <i className="fa fa-star filled" />
-                          <i className="fa fa-star filled" />
-                          <i className="fa fa-star filled" />
-                          <i className="fa fa-star filled" />
-                          <i className="fa fa-star" />
-                          <span className="average-rating">4.7 (32)</span>
-                        </div>
+                   
                       </div>
                       {/* <button
                       type="button"
@@ -330,9 +329,7 @@ const ProjectDetails = (props) => {
                             <h6 className="text-sm text-end mb-0">عضویت از:</h6>
                           </div>
                           <div className="col-auto">
-                            {/* <span className="text-sm">{moment(jobsDetailsList.Company?.founded_at, "YYYY/MM/DD")
-                                            .locale("fa")
-                                            .format("YYYY/MM/DD")}</span> */}
+                            {daysBetween(jobsDetailsList.Company?.founded_at)} روز پیش
                           </div>
                         </div>
                         <hr className="my-3" />
@@ -375,7 +372,8 @@ const ProjectDetails = (props) => {
                   </div>
                 </div>
                 {/* Link Widget */}
-                <div className="pro-post widget-box post-widget align-right">
+
+                {/* <div className="pro-post widget-box post-widget align-right">
                   <h3 className="pro-title">لینک پروفایل</h3>
                   <div className="pro-content pt-0">
                     <div className="form-group profile-group mb-0">
@@ -396,7 +394,7 @@ const ProjectDetails = (props) => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* /Link Widget */}
                 {/* Attachments Widget */}
                 <div className="pro-post widget-box post-widget pb-0 align-right">
