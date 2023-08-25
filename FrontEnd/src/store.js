@@ -6,6 +6,7 @@ import { jobListReducer, jobsDetailsReducer } from "./reducers/jobsReducer";
 import {
   employeeDetailsReducer,
   employeeFavoriteListReducer,
+  employeeToggleFavoriteListReducer,
 } from "./reducers/employeeReducer";
 import { freelancerRequestReducer } from "./reducers/requestsReducer";
 import { userLoginReducer } from "./reducers/userReducer";
@@ -21,6 +22,7 @@ const reducer = combineReducers({
   //
   employeeDetails: employeeDetailsReducer,
   employeeFavoriteList: employeeFavoriteListReducer,
+  employeeToggleFavorite : employeeToggleFavoriteListReducer,
   //
   freelancerRequest: freelancerRequestReducer,
   userLogin: userLoginReducer,

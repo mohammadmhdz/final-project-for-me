@@ -18,6 +18,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import {
   employeeDetails,
   employeeFavoriteList,
+  employeeToggleFavoriteList,
 } from "../../../../actions/employeeActions";
 import { jobsDetail, listJobs } from "../../../../actions/jobActions";
 import { useState } from "react";
@@ -25,8 +26,16 @@ const FreelancerFavourites = (props) => {
   // redux
   const dispatch = useDispatch();
   const employeeFavorite = useSelector((state) => state.employeeFavoriteList);
+  const employeeFavoriteToggle = useSelector((state) => state.employeeToggleFavorite);
   const { employeeFavorites } = employeeFavorite;
   const localItem = JSON.parse(localStorage.getItem("userInfo"))
+  
+  const handlefavorite = (e) => {
+    // e.preventdefault();
+    
+    // console.log("here")
+    dispatch(employeeToggleFavoriteList(1))
+  }
   // const test = [];
   useEffect(() => {
     // bayad vorodi behesh bedahim(input = employee id)
@@ -36,7 +45,7 @@ const FreelancerFavourites = (props) => {
       document.body.className = "";
     };
   }, [dispatch]);
-  // console.log(employeeFavorites);
+  console.log(employeeFavoriteToggle);
 
   // const test =
   //   employee.favorite_jobs !== undefined
@@ -150,8 +159,8 @@ const FreelancerFavourites = (props) => {
                                         .format("YYYY/MM/DD")}
                                     </td>
                                     <td>
-                                      <a href="" className="fav">
-                                        <i className="fas fa-heart filled" />
+                                      <a className="fav">
+                                        <i className="fas fa-heart filled" onClick={handlefavorite} />
                                       </a>
                                     </td>
                                   </tr>

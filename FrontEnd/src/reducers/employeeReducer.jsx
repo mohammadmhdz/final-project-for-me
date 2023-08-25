@@ -6,6 +6,10 @@ import {
   EMPLOYEE_FAVORITE_REQUEST,
   EMPLOYEE_FAVORITE_SUCCESS,
   EMPLOYEE_FAVORITE_FAIL,
+  //
+  EMPLOYEE_TOGGLE_FAVORITE_REQUEST ,
+EMPLOYEE_TOGGLE_FAVORITE_SUCCESS ,
+ EMPLOYEE_TOGGLE_FAVORITE_FAIL ,
 } from "../constant/employeeConstant";
 
 export const employeeDetailsReducer = (state = { employee: [] }, action) => {
@@ -39,6 +43,22 @@ export const employeeFavoriteListReducer = (
         employeeFavorites: action.payload,
       };
     case EMPLOYEE_FAVORITE_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const employeeToggleFavoriteListReducer = (state = {}, action) => {
+  switch (action.type) {
+    case EMPLOYEE_TOGGLE_FAVORITE_REQUEST  :
+      return { loading: true };
+
+    case EMPLOYEE_TOGGLE_FAVORITE_SUCCESS:
+      return { loading: false, toggleInfo: action.payload };
+
+    case EMPLOYEE_TOGGLE_FAVORITE_FAIL:
       return { loading: false, error: action.payload };
 
     default:

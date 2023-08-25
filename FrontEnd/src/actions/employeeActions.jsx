@@ -6,6 +6,11 @@ import {
   EMPLOYEE_FAVORITE_REQUEST,
   EMPLOYEE_FAVORITE_SUCCESS,
   EMPLOYEE_FAVORITE_FAIL,
+  //
+EMPLOYEE_TOGGLE_FAVORITE_REQUEST ,
+EMPLOYEE_TOGGLE_FAVORITE_SUCCESS ,
+ EMPLOYEE_TOGGLE_FAVORITE_FAIL ,
+
 } from "../constant/employeeConstant";
 import axios from "axios";
 
@@ -45,6 +50,42 @@ export const employeeFavoriteList = (keyword) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: EMPLOYEE_FAVORITE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const employeeToggleFavoriteList = (inputData) => async (dispatch) => {
+  // console.log(data)
+  try {
+    console.log(inputData);
+    dispatch({
+      type: EMPLOYEE_TOGGLE_FAVORITE_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post(
+      `http://127.0.0.1:8000/api/employees/${inputData}/toggle_favorite_job/`,
+      {"job_id": "1"},
+      config
+    );
+
+    dispatch({
+      type: EMPLOYEE_TOGGLE_FAVORITE_SUCCESS,
+      payload: data,
+    });
+
+  } catch (error) {
+    dispatch({
+      type: EMPLOYEE_TOGGLE_FAVORITE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
