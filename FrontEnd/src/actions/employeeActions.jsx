@@ -36,7 +36,7 @@ export const employeeFavoriteList = (keyword) => async (dispatch) => {
     dispatch({ type: EMPLOYEE_FAVORITE_REQUEST });
     // console.log(keyword);
     const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/employees/2/retrieve_favorite_jobs/`
+      `http://127.0.0.1:8000/api/employees/${keyword}/retrieve_favorite_jobs/`
     );
     dispatch({
       type: EMPLOYEE_FAVORITE_SUCCESS,
