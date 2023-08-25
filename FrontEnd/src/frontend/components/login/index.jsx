@@ -10,17 +10,22 @@ import Password from "antd/lib/input/Password";
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  
+  const changeURL = (newURL) => {
+    window.location.href = newURL;
+};
   // redux
   const dispatch = useDispatch();
   //  useEffect(() => {
   const submithandler = (e) => {
-    e.preventDefault();
     // redux
     dispatch(login(email, password));
+    e.preventDefault()
+    // {localStorage.getItem("userInfo") ? pass : e.preventDefault()}
   };
 
   const userLogin = useSelector((state) => state.userLogin);
+
   // const { error, loading, userInfo } = userLogin
   //     document.body.className = 'account-page';
   //     return () => { document.body.className = ''; }
@@ -46,6 +51,10 @@ const Login = (props) => {
                         دنیای حرفه ای مطلع شوید
                       </p>
                     </div>
+                    {userLogin.loading?<p1>...loading</p1> : userLogin.error ?<p1>your email or password is wrong</p1> : userLogin.userInfo? changeURL("/template-reactjs/freelancer-dashboard") : null}
+                    {/* // {userLogin.error?<p1>your email or password is wrong</p1> : null} */}
+                    {/* {userLogin.userInfo ?() => changeURL("/template-reactjs/dashboard"): null} */}
+
                     <form
                       onSubmit={submithandler}
                       action="/template-reactjs/dashboard"
@@ -75,6 +84,8 @@ const Login = (props) => {
                           <span className="checkmark" />
                         </label>
                       </div>
+                        {/* <Link to="/template-reactjs/dashboard" onChange={userLogin.userInfo}>
+                    </Link> */}
                       <button
                         className="btn btn-primary btn-block btn-lg login-btn"
                         type="submit"

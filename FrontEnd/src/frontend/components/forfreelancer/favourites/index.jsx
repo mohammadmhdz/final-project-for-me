@@ -26,10 +26,11 @@ const FreelancerFavourites = (props) => {
   const dispatch = useDispatch();
   const employeeFavorite = useSelector((state) => state.employeeFavoriteList);
   const { employeeFavorites } = employeeFavorite;
+  const localItem = JSON.parse(localStorage.getItem("userInfo"))
   // const test = [];
   useEffect(() => {
     // bayad vorodi behesh bedahim(input = employee id)
-    dispatch(employeeFavoriteList());
+    dispatch(employeeFavoriteList(localItem.id));
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
