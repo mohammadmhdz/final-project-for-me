@@ -17,6 +17,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import status
 
 
+
 # Create your views here
 
 
@@ -335,7 +336,8 @@ class EmployeeViewSet(viewsets.ViewSet):
 
     @action(detail=True, methods=['post'])
     def toggle_favorite_job(self, request, pk=None):
-        employee = self.get_object()
+        # employee = self.get_object()
+        employee = get_object_or_404(Employee, pk=pk)
         job_id = request.data.get('job_id')
 
         try:
@@ -344,7 +346,8 @@ class EmployeeViewSet(viewsets.ViewSet):
                 employee.favorite_jobs.remove(job)
             else:
                 employee.favorite_jobs.add(job)
-            serializer = self.get_serializer(employee)
+            # serializer = self.get_serializer(employee)
+            serializer = EmployeeSerializer(employee)
             return Response(serializer.data)
         except Job.DoesNotExist:
             return Response({'error': 'Job does not exist.'}, status=400)                
