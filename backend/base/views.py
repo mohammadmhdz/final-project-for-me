@@ -17,6 +17,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import status
 
 
+
 # Create your views here
 
 
@@ -144,13 +145,42 @@ class CompanyViewSet(viewsets.ViewSet):
         Companies = Company.objects.all()
         serializer = CompanySerializer(Companies , many = True)
         return Response(serializer.data)
-    
+      
+    def list(self, request):
+        companies = Company.objects.all()
+        response_data = []
         
+        for company in companies:
+            all_jobs_count = Job.objects.filter(Company=company).count()
+            completed_jobs_count = Job.objects.filter(Company=company, status='تکمیل شده').count()
+            active_jobs_count = Job.objects.filter(Company=company, status='فعال').count()
+            
+            serializer = CompanySerializer(company)
+            company_data = {
+                'company_data': serializer.data,    
+                'all_jobs_count': all_jobs_count,
+                'completed_jobs_count': completed_jobs_count,
+                'active_jobs_count': active_jobs_count
+            }
+            
+            response_data.append(company_data)
+        
+        return Response(response_data)
+
     def retrieve(self, request, pk=None):
-        Companies = Company.objects.all()
-        company = get_object_or_404(Companies, pk=pk)
+        company = get_object_or_404(Company.objects.all(), pk=pk)
+        all_jobs_count = Job.objects.filter(Company=company).count()
+        completed_jobs_count = Job.objects.filter(Company=company, status='تکمیل شده').count()
+        active_jobs_count = Job.objects.filter(Company=company, status='فعال').count()
+        
         serializer = CompanySerializer(company)
-        return Response(serializer.data)
+        response_data = {
+            'company_data': serializer.data,
+            'all_jobs_count': all_jobs_count,
+            'completed_jobs_count': completed_jobs_count,
+            'active_jobs_count': active_jobs_count
+        }
+        return Response(response_data)
     
     def create(self,request):
         serializer = CompanySerializer(data=request.data)
@@ -306,7 +336,8 @@ class EmployeeViewSet(viewsets.ViewSet):
 
     @action(detail=True, methods=['post'])
     def toggle_favorite_job(self, request, pk=None):
-        employee = self.get_object()
+        # employee = self.get_object()
+        employee = get_object_or_404(Employee, pk=pk)
         job_id = request.data.get('job_id')
 
         try:
@@ -315,7 +346,8 @@ class EmployeeViewSet(viewsets.ViewSet):
                 employee.favorite_jobs.remove(job)
             else:
                 employee.favorite_jobs.add(job)
-            serializer = self.get_serializer(employee)
+            # serializer = self.get_serializer(employee)
+            serializer = EmployeeSerializer(employee)
             return Response(serializer.data)
         except Job.DoesNotExist:
             return Response({'error': 'Job does not exist.'}, status=400)                
