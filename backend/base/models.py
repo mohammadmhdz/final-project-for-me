@@ -164,7 +164,7 @@ class City(models.Model):
 
 
 class Company(models.Model):  
-     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+     user = models.OneToOneField(User, on_delete=models.CASCADE)
      Name = models.CharField(max_length=100)
      image = models.ImageField(null=True, blank=True)
      about  = models.TextField(max_length=1000)
@@ -204,6 +204,10 @@ class Verification(models.Model):
      def __str__(self):
           return f'{self.registrationـnumber}  is registration number of:  { self.Company.Name}'
      
+
+
+
+
 
 
 
@@ -287,7 +291,7 @@ class Job(models.Model):
 
 
 class Employee(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     perfession_title = models.CharField(max_length=100, null=True)  
     cooperation_type=  models.CharField(max_length=15 , choices=JOB_TYPE ,  null=True)
     image = models.ImageField(null=True, blank=True)
@@ -303,7 +307,14 @@ class Employee(models.Model):
         return self.user.username
     
 
+def validate_user_type(sender, instance, **kwargs):
+    user = instance.user
 
+    if Company.objects.filter(user=user).exists() and Employee.objects.filter(user=user).exists():
+        raise ValidationError("A user cannot be both a company and an employee.")
+
+models.signals.pre_save.connect(validate_user_type, sender=Company)
+models.signals.pre_save.connect(validate_user_type, sender=Employee)
 
 
 
@@ -364,7 +375,14 @@ class Request(models.Model):
     status = models.CharField(max_length=15 , choices=Requststatus , default='درانتظار بررسی')
     status_change_date = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if self.pk:  # Check if the instance has already been saved (is being updated)
+            original_request = Request.objects.get(pk=self.pk)
+            if original_request.status != self.status and self.status == 'استخدام شده' and self.job.status != 'تکمیل شده':
+                self.job.status = 'تکمیل شده'
+                self.job.save()
 
+        super().save(*args, **kwargs)
     class Meta:
         # Define a unique constraint on the combination of employee and job
         constraints = [
@@ -383,14 +401,4 @@ class Request(models.Model):
         return self.job.title if self.job else None    
 
     def __str__(self):
-        return f'{self.employee.user.first_name}{self.employee.user.last_name} is requested to {self.job.title}'
-
-
-def validate_user_type(sender, instance, **kwargs):
-     user = instance.user
-
-     if Company.objects.filter(user=user).exists() and Employee.objects.filter(user=user).exists():
-        raise ValidationError("هر کاربر میتواند فقط نقش کارجو یا کارفرما را داشته باشد")
-
-models.signals.pre_save.connect(validate_user_type, sender=Company)
-models.signals.pre_save.connect(validate_user_type, sender=Employee)
+        return f'{self.employee.user.first_name}{self.employee.user.last_name} is requested to {self.job.title} and the status is {self.status}'
