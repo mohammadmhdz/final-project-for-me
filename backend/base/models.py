@@ -48,7 +48,7 @@ Requststatus = (
     ('در انتظار بررسی','در انتظار بررسی'),
     ('بررسی شده','بررسی شده'),
     ('رد شده','رد شده'),
-    ('رد شده','رد شده'), 
+    ('استخدام شده','استخدام شده'), 
 
     
 
@@ -256,10 +256,24 @@ class Job(models.Model):
     # maplocation
 
 
-    def __str__(self):
-        return self.title
     
+    @property
+    def completed_request_user(self):
+        completed_request = self.request_set.filter(employee__user__isnull=False, status='استخدام شده').first()
+        if completed_request:
+            employee = completed_request.employee
+            return {
+                'user': employee.user.first_name,
+                'id': employee.id
+            }
+        return None
 
+    def __str__(self):
+        return f'{self.title} = {self.status}'
+    
+    @property
+    def num_requests(self):
+        return self.request_set.count()
 
     
 
@@ -369,7 +383,7 @@ class Request(models.Model):
         return self.job.title if self.job else None    
 
     def __str__(self):
-        return self.message
+        return f'{self.employee.user.first_name}{self.employee.user.last_name} is requested to {self.job.title}'
 
 
 def validate_user_type(sender, instance, **kwargs):

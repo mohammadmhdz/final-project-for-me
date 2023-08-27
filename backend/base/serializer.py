@@ -43,10 +43,31 @@ class JobSerializer(serializers.ModelSerializer):
     city = serializers.SerializerMethodField(read_only=True)
     category = serializers.SerializerMethodField(read_only=True)
     skills = serializers.SerializerMethodField(read_only=True)
+    num_requests = serializers.SerializerMethodField()
+    completed_request_user = serializers.SerializerMethodField()
  
     class Meta:
         model = Job
-        fields = '__all__'
+        fields = [
+            'id', 'Company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
+            'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
+            'num_requests','completed_request_user',
+        ]
+
+    def get_completed_request_user(self, obj):
+        completed_request = obj.request_set.filter(status='استخدام شده', employee__user__isnull=False).first()
+        if completed_request:
+            employee = completed_request.employee
+            user = employee.user
+            return {
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'id': employee.id
+            }
+        return None
+    
+    def get_num_requests(self, obj):
+        return obj.request_set.count()
 
     def get_city(self, obj):
         city = obj.city
