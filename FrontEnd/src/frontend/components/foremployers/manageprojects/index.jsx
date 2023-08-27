@@ -188,9 +188,9 @@ const Manageprojects = (props) => {
                                   >
                                   مشاهده بیشتر{" "}
                                 </Link>
-                                <a href="#" className="hired-detail">
+                                {/* <a href="#" className="hired-detail">
                                   استخدام شده در تاریخ ۱۲ بهمن ۱۴۰۱
-                                </a>
+                                </a> */}
                               </div>
                             </div>
                           </div>

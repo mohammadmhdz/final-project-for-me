@@ -1,5 +1,6 @@
-import React from "react";
+import React , {useEffect} from "react";
 import { Link } from "react-router-dom";
+import moment from "jalali-moment";
 import StickyBox from "react-sticky-box";
 // Import Images
 import {
@@ -26,10 +27,29 @@ import {
   Icon_10,
   Icon_11,
 } from "../../imagepath";
+// redux
+import { useDispatch, useSelector} from "react-redux";
+import { employeeDetails } from "../../../../actions/employeeActions"
 
 const DeveloperProfile = (props) => {
+  const dispatch = useDispatch();
+  const employeeDetailsList = useSelector((state) => state.employeeDetails);
+  const {employee } = employeeDetailsList;
+
+  useEffect(() => {
+  // we must take the id from where we reach here
+    dispatch(employeeDetails(2))
+    document.body.className = "dashboard-page";
+    return () => {
+      document.body.className = "";
+    };
+  },[dispatch]);
+
+// console.log(employeeDetailsList)
+  console.log(employee);
   return (
     <>
+    
       {/* Breadcrumb */}
       <div className="breadcrumb-bar" />
       {/* /Breadcrumb */}
@@ -46,11 +66,11 @@ const DeveloperProfile = (props) => {
                         <img src={Img_01} alt="User" />
                       </div>
                       <div className="profile-info">
-                        <h2 className="profile-title">محمد مهدی‌زاده</h2>
-                        <p className="profile-position">front-end Developer</p>
+                        <h2 className="profile-title">{employee.user?.first_name} {employee.user?.last_name}</h2>
+                        <p className="profile-position">{employee.perfession_title} </p>
                         <div>
                           <a href="#" className="btn full-btn">
-                            تمام وقت
+                          {employee.cooperation_type}
                           </a>
                         </div>
                       </div>
@@ -137,19 +157,7 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">درباره</h3>
                   <div className="pro-content">
                     <p>
-                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ،
-                      و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه
-                      روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای
-                      شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-                      بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
-                      درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می
-                      طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه
-                      ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی
-                      ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری
-                      موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                      زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی
-                      سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده
-                      قرار گیرد.
+                     {employee.about}
                     </p>
                   </div>
                 </div>
@@ -160,48 +168,29 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">سوابق شغلی</h3>
                   <div className="pro-content">
                     <div className="row">
-                      <div
-                        className="col-lg-4 col-md-6 d-flex"
-                        style={{ height: "100%" }}
-                      >
+                      {
+                  employee.Experiences?.map((item) => (
+                        <div
+                          className="col-lg-4 col-md-6 d-flex"
+                          style={{ height: "100%" }}
+                          >
                         <div className="experiance-list d-flex  flex-column">
                           <div className="experiance-logo d-flex align-items-center justify-content-center">
                             <img className="img-fluid" alt="" src={Icon_10} />
                           </div>
-                          <h4>توسعه دهنده Front-end</h4>
-                          <h5>آرمان ارتباطات ویرا</h5>
-                          <h5> تابستان ۱۴۰۱</h5>
+                          <h4>{item.title}</h4>
+                          <h5>{item.company_name}</h5>
+                          <h5> {moment(item.from_date, "YYYY/MM/DD")
+                                            .locale("fa")
+                                            .format("YYYY/MM/DD")} الی {moment(item.to_date, "YYYY/MM/DD")
+                                            .locale("fa")
+                                            .format("YYYY/MM/DD")}</h5>
                           <p>{/* description */}</p>
                         </div>
                       </div>
-                      <div
-                        className="col-lg-4 col-md-6 d-flex"
-                        style={{ height: "100%" }}
-                      >
-                        <div className="experiance-list d-flex  flex-column">
-                          <div className="experiance-logo d-flex align-items-center justify-content-center">
-                            <img className="img-fluid" alt="" src={Icon_10} />
-                          </div>
-                          <h4>توسعه دهنده Front-end</h4>
-                          <h5>آرمان ارتباطات ویرا</h5>
-                          <h5> تابستان ۱۴۰۱</h5>
-                          <p>{/* description */}</p>
-                        </div>
-                      </div>
-                      <div
-                        className="col-lg-4 col-md-6 d-flex"
-                        style={{ height: "100%" }}
-                      >
-                        <div className="experiance-list d-flex  flex-column">
-                          <div className="experiance-logo d-flex align-items-center justify-content-center">
-                            <img className="img-fluid" alt="" src={Icon_10} />
-                          </div>
-                          <h4>توسعه دهنده Front-end</h4>
-                          <h5>آرمان ارتباطات ویرا</h5>
-                          <h5> تابستان ۱۴۰۱</h5>
-                          <p>{/* description */}</p>
-                        </div>
-                      </div>
+                          ))
+                      }
+                   
                     </div>
                   </div>
                 </div>
@@ -214,6 +203,7 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">تحصیلات</h3>
                   <div className="pro-content">
                     <div className="row">
+                      { employee.Education?.map((item)=> (
                       <div
                         className="col-lg-6 col-md-6 d-flex"
                         style={{ height: "100%" }}
@@ -222,10 +212,16 @@ const DeveloperProfile = (props) => {
                           <div className="experiance-logo logo-bg d-flex align-items-center justify-content-center">
                             <img className="img-fluid" alt="" src={Icon_11} />
                           </div>
-                          <h4>مهندسی کامپیوتر</h4>
-                          <h5>دانشگاه زنجان ۱۳۹۷-۱۴۰۲</h5>
+                          <h4>{item.degree} </h4>
+                          <h5>{moment(item.from_date, "YYYY/MM/DD")
+                                            .locale("fa")
+                                            .format("YYYY")} الی {moment(item.to_date, "YYYY/MM/DD")
+                                            .locale("fa")
+                                            .format("YYYY")}</h5>
+                          <h5>{item.institute}</h5>
                         </div>
                       </div>
+                      )) }
                     </div>
                   </div>
                 </div>
@@ -274,18 +270,12 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">مهارت های فنی</h3>
                   <div className="pro-content">
                     <div className="tags">
-                      <span className="badge badge-pill badge-skills">
-                        + Web Design
-                      </span>
-                      <span className="badge badge-pill badge-skills">
-                        + UI Design
-                      </span>
-                      <span className="badge badge-pill badge-skills">
-                        + Node Js
-                      </span>
-                      <span className="badge badge-pill badge-skills">
-                        + Javascript
-                      </span>
+                      {employee.skills?.map((item)=> (
+                        <span className="badge badge-pill badge-skills">
+                        {item.title}
+                         </span>
+                          )) }
+
                     </div>
                   </div>
                 </div>
@@ -302,45 +292,22 @@ const DeveloperProfile = (props) => {
                   <div className="col-2 text-end"></div>
                 </div>
                 <ul className="latest-posts pro-content">
+                {employee.Language?.map((item)=> (
+
                   <li>
-                    <p>English</p>
+                    <p>{item.language}</p>
                     <div className="progress progress-md mb-0">
                       <div
                         className="progress-bar"
                         role="progressbar"
-                        style={{ width: "50%" }}
+                        style={{ width: `${item.rate}%` }}
                         aria-valuenow={75}
                         aria-valuemin={0}
                         aria-valuemax={100}
                       />
                     </div>
-                  </li>
-                  <li>
-                    <p>فارسی</p>
-                    <div className="progress progress-md mb-0">
-                      <div
-                        className="progress-bar bg-success"
-                        role="progressbar"
-                        style={{ width: "65%" }}
-                        aria-valuenow={25}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                  </li>
-                  <li>
-                    <p>آلمانی</p>
-                    <div className="progress progress-md mb-0">
-                      <div
-                        className="progress-bar bg-warning"
-                        role="progressbar"
-                        style={{ width: "50%" }}
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                  </li>
+                  </li>   
+                ))}
                 </ul>
               </div>
               <div className="pro-post widget-box about-widget align-right">
@@ -353,15 +320,15 @@ const DeveloperProfile = (props) => {
                 <ul className="latest-posts pro-content pt-0">
                   <li>
                     <p>جنسیت</p>
-                    <h6>زن</h6>
+                    <h6>{employee.gender}</h6>
                   </li>
                   <li>
-                    <p>سابقه کاری</p>
-                    <h6>سال ۱</h6>
+                    <p>ایمیل</p>
+                    <h6>{employee.user?.email}</h6>
                   </li>
                   <li>
                     <p>شهر</p>
-                    <h6>زنجان</h6>
+                    <h6>{employee.city?.name}</h6>
                   </li>
                 </ul>
               </div>
@@ -390,7 +357,7 @@ const DeveloperProfile = (props) => {
               </div>
               {/* /Categories */}
               {/* Link Widget */}
-              <div className="pro-post widget-box post-widget align-right">
+              {/* <div className="pro-post widget-box post-widget align-right">
                 <h3 className="pro-title">لینک پروفایل</h3>
                 <div className="pro-content">
                   <div className="form-group profile-group mb-0">
@@ -411,7 +378,7 @@ const DeveloperProfile = (props) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               {/* /Link Widget */}
             </div>
             {/* /Blog Sidebar */}

@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useEffect} from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 // Import Images
@@ -26,8 +26,24 @@ import {
   Icon_10,
   Icon_11,
 } from "../../imagepath";
+// redux
+import { useDispatch, useSelector} from "react-redux";
+// import { employeeDetails } from "../../../../actions/employeeActions"
 
 const DeveloperDetails = (props) => {
+  const dispatch = useDispatch();
+  // const employeeDetailsList = useSelector((state) => state.employeeDetails);
+  // const {employee} = employeeDetailsList;
+  useEffect(() => {
+    // dispatch(employeeDetails(2))
+    document.body.className = "dashboard-page";
+    return () => {
+      document.body.className = "";
+    };
+  },[dispatch]);
+
+  // console.log(employee);
+  // console.log(employeeDetailsList);
   return (
     <>
       {/* Breadcrumb */}
