@@ -212,7 +212,12 @@ class CompanyViewSet(viewsets.ViewSet):
         serializer = JobSerializer(jobs ,many=True )
         return Response(serializer.data)
     
-
+    @action(detail=True, methods=['get'], name='Get galleries')
+    def get_galleries(self, request, pk=None):
+        company = Company.objects.get(pk=pk)
+        galleries = company.gallery_set.all()
+        serializer = GallerySerializer(galleries, many=True)
+        return Response(serializer.data)
     
 
     @action(detail=True, methods=['get'], name='Get pending jobs')

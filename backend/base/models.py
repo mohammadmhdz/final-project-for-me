@@ -354,11 +354,13 @@ class Language(models.Model):
     
 
 class Gallery(models.Model):
-    Company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
+    company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=100)
 
     def __str__(self):
         return self.title
+
+
 
 
 

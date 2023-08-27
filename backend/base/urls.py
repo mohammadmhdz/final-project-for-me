@@ -27,6 +27,8 @@ router.register('categories' , views.CategoryViewSet , basename="categories")
 router.register('language' , views.LanguageViewSet , basename="language")
 router.register('reviews' , views.ReviewViewSet , basename="reviews")
 router.register('portfolio' , views.PortfolioViewSet , basename="portfolio")
+router.register('gallery' , views.GalleryViewSet , basename="gallery")
+router.register('image' , views.ImageViewSet , basename="image")
 
 urlpatterns = router.urls
 

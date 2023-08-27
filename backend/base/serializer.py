@@ -256,18 +256,21 @@ class ReviewSerializer(serializers.ModelSerializer):
     
 
 
-    
+
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ('id', 'gallery', 'image')
-
-
-
+        fields =  ('id' , 'image')
 
 class GallerySerializer(serializers.ModelSerializer):
-    images = ImageSerializer(many=True, read_only=True)
+    images = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Gallery
-        fields = ('id', 'user', 'title', 'images')
+        fields = '__all__'
+    
+    def get_images(self, obj):
+        images = obj.image_set.all()
+        serializer = ImageSerializer(images, many=True)
+        return serializer.data 
+
