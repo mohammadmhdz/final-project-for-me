@@ -216,7 +216,15 @@ class VerificationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
+
 class ReviewSerializer(serializers.ModelSerializer):
+    users_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Review
-        fields = '__all__'
+        fields = ('id', 'employee', 'Company', 'content', 'date', 'status', 'users_name')
+        read_only_fields = ('id',)
+
+    def get_users_name(self, obj):
+        return obj.users_name
