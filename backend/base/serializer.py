@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Job , Company ,Employee , Education , WorkExperience , Skills ,Category, City  , Language ,Verification , Review , Request ,Portfolio
+from .models import Job , Company ,Employee , Education , WorkExperience , Skills ,Category, City  , Language ,Verification , Review , Request ,Portfolio , Gallery , Image
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -253,3 +253,21 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def get_users_name(self, obj):
         return obj.users_name
+    
+
+
+    
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('id', 'gallery', 'image')
+
+
+
+
+class GallerySerializer(serializers.ModelSerializer):
+    images = ImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Gallery
+        fields = ('id', 'user', 'title', 'images')

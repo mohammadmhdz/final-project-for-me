@@ -8,9 +8,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import Job , Company , Employee , WorkExperience , Education , Language  , Verification , Skills , Category , Review , Request ,Portfolio
+from .models import Job , Company , Employee , WorkExperience , Education , Language  , Verification , Skills , Category , Review , Request ,Portfolio , Gallery , Image
 from django.contrib.auth.models import User
-from .serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer ,RequestSerializer , VerificationSerializer , SkillSerializer , CategorySerializer , ReviewSerializer ,PortfolioSerializer
+from .serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer ,RequestSerializer , VerificationSerializer , SkillSerializer , CategorySerializer , ReviewSerializer ,PortfolioSerializer , GallerySerializer , ImageSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
@@ -722,8 +722,70 @@ class PortfolioViewSet(viewsets.ViewSet):
         portfolio.delete()
         return Response({'msg': 'Data Deleted'})
         
-    
 
+class ImageViewSet(viewsets.ViewSet):
+    def list(self, request):
+        images = Image.objects.all()
+        serializer = ImageSerializer(images, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        images = Image.objects.all()
+        image = get_object_or_404(images, pk=pk)
+        serializer = ImageSerializer(image)
+        return Response(serializer.data)
+
+    def create(self, request):
+        serializer = ImageSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Data created'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk=None):
+        image = get_object_or_404(Image.objects.all(), pk=pk)
+        serializer = ImageSerializer(image, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+        image = Image.objects.get(pk=pk)
+        image.delete()
+        return Response({'msg': 'Data Deleted'})
+
+class GalleryViewSet(viewsets.ViewSet):
+    def list(self, request):
+        galleries = Gallery.objects.all()
+        serializer = GallerySerializer(galleries, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        galleries = Gallery.objects.all()
+        gallery = get_object_or_404(galleries, pk=pk)
+        serializer = GallerySerializer(gallery)
+        return Response(serializer.data)
+
+    def create(self, request):
+        serializer = GallerySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Data created'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk=None):
+        gallery = get_object_or_404(Gallery.objects.all(), pk=pk)
+        serializer = GallerySerializer(gallery, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+        gallery = Gallery.objects.get(pk=pk)
+        gallery.delete()
+        return Response({'msg': 'Data Deleted'})
 
 class ReviewViewSet(viewsets.ViewSet):
 
