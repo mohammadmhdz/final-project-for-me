@@ -10,6 +10,10 @@ import {
   COMPANY_JOBS_LIST_REQUEST,
   COMPANY_JOBS_LIST_SUCCESS,
   COMPANY_JOBS_LIST_FAIL,
+  //
+  COMPANY_FAVORITE_EMPLOYEE_REQUEST ,
+  COMPANY_FAVORITE_EMPLOYEE_SUCCESS ,
+  COMPANY_FAVORITE_EMPLOYEE_FAIL ,
 } from "../constant/companyConstant";
 import axios from "axios";
 
@@ -18,7 +22,7 @@ export const companyDetails = () => async (dispatch) => {
     dispatch({ type: COMPANY_DETAILS_REQUEST });
 
     // const { data } = await axios.get(`/api/products${keyword}`)
-    const { data } = await axios.get(`http://127.0.0.1:8000/api/companies/2`);
+    const { data } = await axios.get(`http://127.0.0.1:8000/api/companies/1`);
     // console.log(data);
     dispatch({
       type: COMPANY_DETAILS_SUCCESS,
@@ -51,6 +55,30 @@ export const companyReviewGet = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: COMPANY_REVIEWS_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const companyFavoriteEmployees = () => async (dispatch) => {
+  try {
+    dispatch({ type: COMPANY_FAVORITE_EMPLOYEE_REQUEST });
+
+    // const { data } = await axios.get(`/api/products${keyword}`)
+    const { data } = await axios.get(
+      `http://127.0.0.1:8000/api/companies/1/retrieve_favorite_employee/`
+    );
+    // console.log(data);
+    dispatch({
+      type: COMPANY_FAVORITE_EMPLOYEE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: COMPANY_FAVORITE_EMPLOYEE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

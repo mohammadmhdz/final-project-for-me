@@ -31,13 +31,13 @@ const ProjectDetails = (props) => {
   // redux
   const dispatch = useDispatch();
   const  jobs  = useSelector((state) => state.jobsDetails);
+  const  toggleFavorite  = useSelector((state) => state.employeeToggleFavorite);
   const {jobsDetailsList} = jobs
 
   const daysBetween =(input) => {
     const now = new Date().getDate()
     const date = new Date(input).getDate()
     return now - date
-
   }
   useEffect(() => {
     //redux

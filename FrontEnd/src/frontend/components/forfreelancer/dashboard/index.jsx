@@ -16,6 +16,49 @@ import { employeeDetails } from "../../../../actions/employeeActions";
 import { freelancerRequest } from "../../../../actions/requestsActions";
 
 const FreelancerDashboard = (props) => {
+  // redux
+  const dispatch = useDispatch();
+  const employeeList = useSelector((state) => state.employeeDetails);
+  const freelancerRequests = useSelector((state) => state.freelancerRequest);
+  const {freelancerRequestsAll} = freelancerRequests ; 
+  const {employee} = employeeList ;
+  
+  const localItem = JSON.parse(localStorage.getItem("userInfo"))
+
+  
+  // const { employee } = employeeList;
+  // const emloyeeDetails = useSelector((state) => state.employeeListDetails);
+  useEffect(() => {
+    // redux
+    // employeeDetails ra taghir dadim
+    dispatch(employeeDetails(localItem.id));
+    dispatch(freelancerRequest());
+    
+    let chartprofileoptionsColumn = document.getElementById("chartprofile");
+    let chartprofileoptionsChart = new ApexCharts(
+      chartprofileoptionsColumn,
+      chartprofileoptions
+      );
+      chartprofileoptionsChart.render();
+      
+      let invoiceColumn = document.getElementById("chartradial");
+      let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
+      invoiceChart.render();
+      document.body.className = "dashboard-page";
+      return () => {
+        document.body.className = "";
+      };
+    }, [dispatch]);
+
+    var x = [freelancerRequestsAll?.filter((items) =>items.employee === employee.id).length
+      , freelancerRequestsAll?.filter((items) => items.status === "بررسی شده" && items.employee === employee.id).length
+      , freelancerRequestsAll?.filter((items) => items.status === "در انتظار بررسی" && items.employee === employee.id).length
+      , freelancerRequestsAll?.filter((items) => items.status === "رد شده" && items.employee === employee.id).length
+    ]
+    console.log(freelancerRequestsAll, "sdsd");
+    // console.log(chartradialOptions.series, "sdsd");
+    // console.log(employee, "sdsd");
+    // console.log(item, "item")
   var chartprofileoptions = {
     series: [
       {
@@ -87,7 +130,13 @@ const FreelancerDashboard = (props) => {
   };
 
   var chartradialOptions = {
-    series: [100, 40, 50, 10],
+    // series: [freelancerRequestsAll?.filter((items) =>items.employee === employee.id).length
+    //         , freelancerRequestsAll?.filter((items) => items.status === "بررسی شده" && items.employee === employee.id).length
+    //         , freelancerRequestsAll?.filter((items) => items.status === "در انتظار بررسی" && items.employee === employee.id).length
+    //         , freelancerRequestsAll?.filter((items) => items.status === "رد شده" && items.employee === employee.id).length
+    // ],
+    series: [x[0], x[1], x[2], x[3]],
+    // series: [3,1,1,1],
     chart: {
       toolbar: {
         show: false,
@@ -150,41 +199,9 @@ const FreelancerDashboard = (props) => {
     ],
   };
 
-  // redux
-  const dispatch = useDispatch();
-  const employeeList = useSelector((state) => state.employeeDetails);
-  const freelancerRequests = useSelector((state) => state.freelancerRequest);
-  const {freelancerRequestsAll} = freelancerRequests ; 
-  const {employee} = employeeList ;
-  
-  const localItem = JSON.parse(localStorage.getItem("userInfo"))
-  // const { employee } = employeeList;
-  // const emloyeeDetails = useSelector((state) => state.employeeListDetails);
-  useEffect(() => {
-    // redux
-    // employeeDetails ra taghir dadim
-    dispatch(employeeDetails(localItem.id));
-    dispatch(freelancerRequest());
+ 
+    console.log(x)
     
-    let chartprofileoptionsColumn = document.getElementById("chartprofile");
-    let chartprofileoptionsChart = new ApexCharts(
-      chartprofileoptionsColumn,
-      chartprofileoptions
-      );
-      chartprofileoptionsChart.render();
-      
-      let invoiceColumn = document.getElementById("chartradial");
-      let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
-      invoiceChart.render();
-      document.body.className = "dashboard-page";
-      return () => {
-        document.body.className = "";
-      };
-    }, [dispatch]);
-    
-    console.log(freelancerRequestsAll, "sdsd");
-    // console.log(employee, "sdsd");
-    // console.log(item, "item")
     return (
     <>
       {/* Page Content */}

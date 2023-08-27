@@ -14,6 +14,7 @@ import {
   companyDetailsReducer,
   companyReviewReducer,
   companyJobsListReducer,
+  companyFavoriteEmployeesReducer,
 } from "./reducers/companyReducer";
 // use selector tu use one of the below reducers
 const reducer = combineReducers({
@@ -30,6 +31,7 @@ const reducer = combineReducers({
   companyDetails: companyDetailsReducer,
   companyJobsList: companyJobsListReducer,
   companyReview: companyReviewReducer,
+  companyFavoriteEmployee : companyFavoriteEmployeesReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

@@ -10,6 +10,10 @@ import {
   COMPANY_JOBS_LIST_REQUEST,
   COMPANY_JOBS_LIST_SUCCESS,
   COMPANY_JOBS_LIST_FAIL,
+  //
+  COMPANY_FAVORITE_EMPLOYEE_REQUEST ,
+  COMPANY_FAVORITE_EMPLOYEE_SUCCESS ,
+  COMPANY_FAVORITE_EMPLOYEE_FAIL ,
 } from "../constant/companyConstant";
 
 export const companyDetailsReducer = (
@@ -44,6 +48,24 @@ export const companyReviewReducer = (state = { companyReview: [] }, action) => {
         companyReview: action.payload,
       };
     case COMPANY_REVIEWS_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const companyFavoriteEmployeesReducer = (state = { companyFavoriteEmployeesList: [] }, action) => {
+  switch (action.type) {
+    case COMPANY_FAVORITE_EMPLOYEE_REQUEST:
+      return { loading: true, companyFavoriteEmployeesList: [] };
+
+    case COMPANY_FAVORITE_EMPLOYEE_SUCCESS:
+      return {
+        loading: false,
+        companyFavoriteEmployeesList: action.payload,
+      };
+    case COMPANY_FAVORITE_EMPLOYEE_FAIL:
       return { loading: false, error: action.payload };
 
     default:
