@@ -26,6 +26,7 @@ router.register('skills' , views.SkillsViewSet , basename="skills")
 router.register('categories' , views.CategoryViewSet , basename="categories")
 router.register('language' , views.LanguageViewSet , basename="language")
 router.register('reviews' , views.ReviewViewSet , basename="reviews")
+router.register('portfolio' , views.PortfolioViewSet , basename="portfolio")
 
 urlpatterns = router.urls
 

@@ -12349,6 +12349,16 @@ label.award-upload input[type="file"] {
 .project-info .customer-info ul li h5 img {
   margin-right: 3px;
 }
+
+.disable-btn{
+
+  background: #888988;
+
+}
+
+.disable-btn:hover {
+ background: #888988;
+}
 .projects-btn {
   font-size: 12px;
   font-weight: 600;
@@ -12361,6 +12371,21 @@ label.award-upload input[type="file"] {
   display: block;
   margin: 0 auto 10px;
 }
+.projects-btn:hover {
+  background-color: #fb451d;
+  color: #fff;
+}
+
+.disable-btn{
+
+  background: #888988;
+
+}
+
+.disable-btn:hover{
+ background-color: #888988;
+}
+
 .projects-btn:hover {
   background-color: #fb451d;
   color: #fff;
@@ -12534,7 +12559,8 @@ label.award-upload input[type="file"] {
   width: 50%;
 }
 .proposer-confirm {
-  width: 50%;
+  display:flex;
+  width: 100%;
 }
 .description-proposal {
   padding: 12px;

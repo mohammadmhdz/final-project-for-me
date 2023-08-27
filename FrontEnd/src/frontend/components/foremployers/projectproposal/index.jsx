@@ -11,6 +11,10 @@ import {
 import { Sidebar } from "../sidebar";
 
 const Projectproposal = (props) => {
+  const hired = true;
+  const hired2 = false;
+  const hired3 = false;
+
   return (
     <>
       {/* Page Content */}
@@ -114,7 +118,21 @@ const Projectproposal = (props) => {
               {/* /project list */}
               {/* Proposals list */}
               <div className="proposals-section mb-4">
-                <h3 className="page-subtitle">درخواست های ارسال شده</h3>
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <h3 className="page-subtitle">درخواست های ارسال شده</h3>
+                  <div className="col-md-3 col-lg-3">
+                    <div className="form-group">
+                      <select
+                        name="price"
+                        className="form-control select-level"
+                      >
+                        <option value="">در انتظار بررسی</option>
+                        <option value="">بررسی شده</option>
+                        <option value="">رد شده</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
                 <div className="proposal-card">
                   {/* Proposals */}
                   <div className="project-proposals align-items-center">
@@ -131,51 +149,62 @@ const Projectproposal = (props) => {
                             <li>
                               {" "}
                               <Link
-                                to="/freelancer-profile"
-                                className="font-semibold text-primary"
+                                to="/developer-profile"
+                                className="font-semibold text-primary "
                               >
                                 مشاهده پروفایل
                               </Link>
                             </li>
+                            <li>وضعیت درخواست : درانتظار بررسی</li>
                           </ul>
                         </div>
                       </div>
                       <div className="proposer-bid-info">
-                        <div className="proposer-bid">
-                          <h3>۱۷ میلیون تومان</h3>
-                          <h5>درخواست دورکاری</h5>
-                        </div>
+                        <div className="proposer-bid"></div>
                         <div className="proposer-confirm">
-                          <a
-                            data-bs-toggle="modal"
-                            href="#hire"
-                            className="projects-btn"
+                          <button
+                            style={hired ? { pointerEvents: "none" } : {}}
+                            disabled={hired ? true : false}
+                            className={
+                              hired
+                                ? "disable-btn projects-btn  ms-1"
+                                : "projects-btn ms-1"
+                            }
                           >
-                            استخدام کنید
-                          </a>
+                            تغییر به استخدام شده
+                          </button>
+                          <button
+                            style={hired2 ? { pointerEvents: "none" } : {}}
+                            disabled={hired2 ? true : false}
+                            className={
+                              hired2
+                                ? "disable-btn projects-btn  ms-1"
+                                : "projects-btn ms-1"
+                            }
+                          >
+                            تغییر به بررسی شده
+                          </button>
+                          <button
+                            style={hired3 ? { pointerEvents: "none" } : {}}
+                            disabled={hired3 ? true : false}
+                            className={
+                              hired3
+                                ? "disable-btn projects-btn  ms-1"
+                                : "projects-btn ms-1"
+                            }
+                          >
+                            تغییر به رد شده
+                          </button>
                         </div>
                       </div>
                     </div>
                     <div className="description-proposal">
-                      <h5 className="desc-title">توضیحات</h5>
+                      <h5 className="desc-title">متن پیام</h5>
                       <p>
                         لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
                         چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون
-                        بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و
-                        برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با
-                        هدف بهبود ابزارهای کاربردی می باشد کتابهای زیادی در شصت
-                        و سه درصد گذشته حال و آینده
-                        <span id="dots">...</span>
-                        <span id="more">
-                          Turpis quam sed in sed curabitur netus laoreet. In
-                          tortor neque sapien praesent porttitor cursus
-                        </span>
-                        <span
-                          id="myBtn"
-                          className="text-primary font-bold readmore"
-                        >
-                          بیشتر
-                        </span>
+                        بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است وو
+                        سه درصد گذشته حال و آینده
                       </p>
                     </div>
                   </div>

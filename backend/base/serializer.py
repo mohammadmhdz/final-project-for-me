@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Job , Company ,Employee , Education , WorkExperience , Skills ,Category, City  , Language ,Verification , Review , Request
+from .models import Job , Company ,Employee , Education , WorkExperience , Skills ,Category, City  , Language ,Verification , Review , Request ,Portfolio
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -139,7 +139,11 @@ class RequestSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
 
-
+class PortfolioSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Portfolio
+        fields = '__all__'
 
 
 
