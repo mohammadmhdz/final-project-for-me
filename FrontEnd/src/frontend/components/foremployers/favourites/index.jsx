@@ -12,14 +12,25 @@ import {
   home_icon,
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
+// redux
+// import {companyFavoriteEmployee}from "../../../../store"
+import { useDispatch, useSelector} from "react-redux";
+import {companyFavoriteEmployees } from "../../../../actions/companyActions"
+import { employeeFavoriteList } from "../../../../actions/employeeActions";
 
 const Favourites = (props) => {
+  // redux
+  const dispatch = useDispatch();
+  const companyEmployeeFavorite = useSelector((state) => state.companyFavoriteEmployee);
+  const {companyFavoriteEmployeesList} = companyEmployeeFavorite 
   useEffect(() => {
+    dispatch(companyFavoriteEmployees())
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
-  });
+  },[dispatch]);
+  console.log(companyFavoriteEmployeesList);
   return (
     <>
       {/* Page Content */}
@@ -55,25 +66,27 @@ const Favourites = (props) => {
                                 <th />
                               </tr>
                             </thead>
-                            <tbody>
+                            {companyFavoriteEmployeesList?.map((item) => (
+
+                              <tbody>
                               <tr>
                                 <td>
                                   <h2 className="table-avatar">
                                     <Link
                                       to="/freelancer-profile"
                                       className="avatar avatar-md tab-imgcircle ms-2"
-                                    >
+                                      >
                                       <img
                                         className="avatar-img rounded-circle"
                                         src={Img_02}
                                         alt="User Image"
-                                      />
+                                        />
                                     </Link>
-                                    <Link to="/freelancer-profile">
+                                    <Link to="/developer-profile">
                                       <span className="profile-name">
-                                        محمد مهدیزاده
+                                        {item.user?.first_name}{" "}{item.user?.last_name}
                                       </span>
-                                      <span>برنامه نویس FullStack</span>
+                                      <span>{item.perfession_title}</span>
                                       {/* <span className="rating mt-2">
                                       <i className="fa fa-star filled" />
                                       <i className="fa fa-star filled" />
@@ -84,10 +97,10 @@ const Favourites = (props) => {
                                     </Link>
                                   </h2>
                                 </td>
-                                <td>۱۵ میلیون</td>
+                                <td>15 milion</td>
                                 <td>۳ سال</td>
                                 <td>
-                                  <h2 className="table-avatar">قزوین</h2>
+                                  <h2 className="table-avatar">{item.city?.name}</h2>
                                 </td>
                                 <td>
                                   <a href="" className="fav">
@@ -96,17 +109,24 @@ const Favourites = (props) => {
                                 </td>
                                 <td className="text-end">
                                   <div className="table-action">
-                                    <a
+                                  <Link className="btn btn-primary btn-invite" to="/developer-profile">
+                                      <span className="profile-name">
+                                        مشاهده پروفایل
+                                      </span>
+                                    </Link>
+                                    {/* <a
                                       data-bs-toggle="modal"
                                       href="#bookmark"
                                       className="btn btn-primary btn-invite"
-                                    >
+                                      >
                                       مشاهده پروفایل
-                                    </a>
+                                    </a> */}
+                                    <Link></Link>
                                   </div>
                                 </td>
                               </tr>
                             </tbody>
+                                      ))}
                           </table>
                         </div>
                       </div>
