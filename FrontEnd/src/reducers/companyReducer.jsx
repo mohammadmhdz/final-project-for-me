@@ -37,15 +37,15 @@ export const companyDetailsReducer = (
   }
 };
 
-export const companyReviewReducer = (state = { companyReview: [] }, action) => {
+export const companyReviewReducer = (state = { companyReviewList: [] }, action) => {
   switch (action.type) {
     case COMPANY_REVIEWS_REQUEST:
-      return { loading: true, companyReview: [] };
+      return { loading: true, companyReviewList: [] };
 
     case COMPANY_REVIEWS_SUCCESS:
       return {
         loading: false,
-        companyReview: action.payload,
+        companyReviewList: action.payload,
       };
     case COMPANY_REVIEWS_FAIL:
       return { loading: false, error: action.payload };

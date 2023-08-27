@@ -45,7 +45,7 @@ export const companyReviewGet = () => async (dispatch) => {
 
     // const { data } = await axios.get(`/api/products${keyword}`)
     const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/companies/2/get_reviews/`
+      `http://127.0.0.1:8000/api/companies/1/get_reviews/`
     );
     // console.log(data);
     dispatch({
