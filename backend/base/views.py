@@ -681,17 +681,30 @@ class CategoryViewSet(viewsets.ViewSet):
 
 class ReviewViewSet(viewsets.ViewSet):
 
+
+    
     def list(self,request):
-        review = Review.objects.all()
-        serializer = ReviewSerializer(review , many = True)
-        return Response(serializer.data)
+        # review = Review.objects.all()
+        queryset = Review.objects.all()
+        serializer = ReviewSerializer(queryset , many = True)
+        data = serializer.data
+        
+        for item in data:
+            instance = Review.objects.get(id=item['id'])
+            users_name = instance.users_name          
+            item['users_name'] = users_name
+
+        return Response(data)       
     
         
     def retrieve(self, request, pk=None):
         reviews = Review.objects.all()
         review = get_object_or_404(reviews, pk=pk)
+        users_name =review.users_name
         serializer = ReviewSerializer(review)
-        return Response(serializer.data)
+        data = serializer.data
+        data['users_name'] = users_name
+        return Response(data)
     
     def create(self,request):
         serializer = ReviewSerializer(data=request.data)

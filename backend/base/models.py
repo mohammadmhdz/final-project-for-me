@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.core import validators
 from django.core.validators import FileExtensionValidator
+from django.core.exceptions import ValidationError
 
 
 
@@ -218,6 +219,9 @@ class Review(models.Model):
     def __str__(self):
         return self.content
 
+    @property
+    def users_name(self):
+        return f'{self.employee.user.first_name}  {self.employee.user.last_name}' if self.employee else None
 
 
 
@@ -284,6 +288,17 @@ class Employee(models.Model):
     def __str__(self):
         return self.user.username
     
+
+
+    def validate_user_type(sender, instance, **kwargs):
+        user = instance.user
+
+        if Company.objects.filter(user=user).exists() and Employee.objects.filter(user=user).exists():
+         raise ValidationError("هر کاربر میتواند فقط نقش کارجو یا کارفرما را داشته باشد")
+
+    models.signals.pre_save.connect(validate_user_type, sender=Company)
+    # models.signals.pre_save.connect(validate_user_type, sender=Employee)
+
 
 class WorkExperience(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
