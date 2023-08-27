@@ -290,14 +290,7 @@ class Employee(models.Model):
     
 
 
-    def validate_user_type(sender, instance, **kwargs):
-        user = instance.user
 
-        if Company.objects.filter(user=user).exists() and Employee.objects.filter(user=user).exists():
-         raise ValidationError("هر کاربر میتواند فقط نقش کارجو یا کارفرما را داشته باشد")
-
-    models.signals.pre_save.connect(validate_user_type, sender=Company)
-    # models.signals.pre_save.connect(validate_user_type, sender=Employee)
 
 
 class WorkExperience(models.Model):
@@ -377,3 +370,13 @@ class Request(models.Model):
 
     def __str__(self):
         return self.message
+
+
+def validate_user_type(sender, instance, **kwargs):
+     user = instance.user
+
+     if Company.objects.filter(user=user).exists() and Employee.objects.filter(user=user).exists():
+        raise ValidationError("هر کاربر میتواند فقط نقش کارجو یا کارفرما را داشته باشد")
+
+models.signals.pre_save.connect(validate_user_type, sender=Company)
+models.signals.pre_save.connect(validate_user_type, sender=Employee)
