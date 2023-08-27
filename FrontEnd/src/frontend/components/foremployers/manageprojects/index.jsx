@@ -5,7 +5,9 @@ import { Developer_01, Flags_en, home_icon } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 import moment from "jalali-moment";
 import Pendingprojects from "../pendingprojects/index"
-import CompletedProjects from "../completedprojects";
+import CompletedProjects from "../completedprojects/index";
+import OngoingProjects from "../ongoingprojects/index";
+import CancelledProjects from "../cancelledprojects/index";
 // redux
 import { companyJobsListAction } from "../../../../actions/companyActions"
 import { useDispatch, useSelector} from "react-redux";
@@ -120,7 +122,7 @@ const Manageprojects = (props) => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className={active? "nav-link active" : "nav-link"} to="/ongoing-projects" onClick={handleActive}>
+                    <Link className={active? "nav-link active" : "nav-link"} onClick={handleActive}>
                       فعال
                     </Link>
                   </li>
@@ -130,7 +132,7 @@ const Manageprojects = (props) => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className={expired? "nav-link active" : "nav-link"} to="/cancelled-projects" onClick={handleExpired}>
+                    <Link className={expired? "nav-link active" : "nav-link"} onClick={handleExpired}>
                       منقضی شده
                     </Link>
                   </li>
@@ -175,7 +177,7 @@ const Manageprojects = (props) => {
                             <div className="project-hire-info">
                               <div className="content-divider" />
                               <div className="projects-amount">
-                                <h3>{item.salary_amount}</h3>
+                                <h3>{item.salary_amount} میلیون</h3>
                                 {/* <h5>in 12 Days</h5> */}
                               </div>
                               <div className="content-divider" />
@@ -195,7 +197,9 @@ const Manageprojects = (props) => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-2 d-flex flex-wrap">
+                    { item.completed_request_user !== null ?
+                    (
+                      <div className="col-lg-2 d-flex flex-wrap">
                       <div className="projects-card flex-fill">
                         <div className="card-body p-2">
                           <div className="prj-proposal-count text-center hired">
@@ -205,18 +209,31 @@ const Manageprojects = (props) => {
                               alt=""
                               className="img-fluid"
                               />
-                            <p className="mb-0">محمد مهدیزاده</p>
+                            <p className="mb-0">{item.completed_request_user.first_name} {item.completed_request_user.last_name}</p>
                           </div>
                         </div>
                       </div>
+                            
+                    </div>   ): ( <div className="col-lg-2 d-flex flex-wrap">
+                    <div className="projects-card flex-fill">
+                      <div className="card-body p-2">
+                        <div className="prj-proposal-count text-center">
+                          <span>{item.num_requests}</span>
+                          <h3>درخواست</h3>
+                        </div>
+                      </div>
                     </div>
+                  </div>)}
                   </div>
                 </div>
               ))): waiting ? 
               (<Pendingprojects data={companyJobsListArray} /> )
               : complete? 
               (<CompletedProjects data={companyJobsListArray}/>
-              ) : null}
+              ): active ? 
+              (<OngoingProjects data={companyJobsListArray} />
+              ): expired ? 
+              (<CancelledProjects data={companyJobsListArray} />) : null}
             
 
               <div className="row">

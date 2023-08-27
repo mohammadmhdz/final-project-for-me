@@ -20,6 +20,8 @@ const CompletedProjects = ({data}) => {
 
   return (
     <>
+      {data.map((item) => (
+        item.status === "تکمیل شده" && (
 
               <div className="my-projects-list">
                 <div className="row align-right">
@@ -28,26 +30,26 @@ const CompletedProjects = ({data}) => {
                       <div className="card-body">
                         <div className="projects-details align-items-center">
                           <div className="project-info">
-                            <span>فراوب|FaraWeb</span>
-                            <h2>برنامه نویس FrontEnd</h2>
+                            <span>{item.Company?.Name}</span>
+                            <h2>{item.title}</h2>
                             <div className="customer-info">
                               <ul className="list-details">
                                 <li>
                                   <div className="slot">
                                     <p>امکان دورکاری</p>
-                                    <h5>دارد</h5>
+                                    <h5>{item.isremote ? "دارد" : "ندارد"}</h5>
                                   </div>
                                 </li>
                                 <li>
                                   <div className="slot">
                                     <p>شهر</p>
-                                    <h5>تهران</h5>
+                                    <h5>{item.city?.name}</h5>
                                   </div>
                                 </li>
                                 <li>
                                   <div className="slot">
                                     <p>انقضای آگهی</p>
-                                    <h5>۲۰ روز </h5>
+                                    <h5>{daysBetween(item.published_at)} روز دبگر </h5>
                                   </div>
                                 </li>
                               </ul>
@@ -56,7 +58,7 @@ const CompletedProjects = ({data}) => {
                           <div className="project-hire-info">
                             <div className="content-divider" />
                             <div className="projects-amount">
-                              <h3>۱۳ میلیون</h3>
+                              <h3>{item.salary_amount} میلیون</h3>
                               {/* <h5>in 12 Days</h5> */}
                             </div>
                             <div className="content-divider" />
@@ -67,9 +69,9 @@ const CompletedProjects = ({data}) => {
                               >
                                 مشاهده بیشتر{" "}
                               </Link>
-                              <a href="#" className="hired-detail">
+                              {/* <a href="#" className="hired-detail">
                                 استخدام شده در تاریخ ۱۲ بهمن ۱۴۰۱
-                              </a>
+                              </a> */}
                             </div>
                           </div>
                         </div>
@@ -86,14 +88,16 @@ const CompletedProjects = ({data}) => {
                             alt=""
                             className="img-fluid"
                           />
-                          <p className="mb-0">محمد مهدیزاده</p>
+                          <p className="mb-0">{item.completed_request_user?.first_name} {item.completed_request_user?.last_name}</p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="row">
+              )))}
+
+              {/* <div className="row">
                 <div className="col-md-12">
                   <ul className="paginations list-pagination">
                     <li>
@@ -122,7 +126,7 @@ const CompletedProjects = ({data}) => {
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
               {/* /pagination */}
    
       {/* /Page Content */}
