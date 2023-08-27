@@ -4,59 +4,23 @@ import StickyBox from "react-sticky-box";
 import { Flags_en, Developer_01 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 
-const CompletedProjects = (props) => {
+const CompletedProjects = ({data}) => {
+  const daysBetween =(input) => {
+    const now = new Date().getDate()
+    const date = new Date(input).getDate()
+    return now - date
+  }
   useEffect(() => {
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
   });
+  console.log(data , "completed-projects")
+
   return (
     <>
-      {/* Page Content */}
-      <div className="content align-right">
-        <div className="container-fluid">
-          <div className="row mt-5 ">
-            {/* sidebar */}
-            <div className="col-xl-3 col-md-4 theiaStickySidebar">
-              <StickyBox offsetTop={20} offsetBottom={20}>
-                <Sidebar />
-              </StickyBox>
-            </div>
-            {/* /sidebar */}
-            <div className="col-xl-9 col-md-8">
-              <div className="page-title">
-                <h3>لیست کار های شما</h3>
-              </div>
-              <nav className="user-tabs project-tabs">
-                <ul className="nav nav-tabs nav-tabs-bottom nav-justified">
-                  <li className="nav-item">
-                    <Link className="nav-link " to="/manage-projects">
-                      همه
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/pending-projects">
-                      در انتظار
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/ongoing-projects">
-                      فعال
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link active" to="/completed-projects">
-                      تکمیل شده
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/cancelled-projects">
-                      منقضی شده
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
+
               <div className="my-projects-list">
                 <div className="row align-right">
                   <div className="col-lg-10 flex-wrap">
@@ -160,10 +124,7 @@ const CompletedProjects = (props) => {
                 </div>
               </div>
               {/* /pagination */}
-            </div>
-          </div>
-        </div>
-      </div>
+   
       {/* /Page Content */}
       {/* The Modal */}
       <div className="modal fade" id="file">

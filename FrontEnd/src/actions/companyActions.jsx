@@ -93,7 +93,7 @@ export const companyJobsListAction = () => async (dispatch) => {
 
     // const { data } = await axios.get(`/api/products${keyword}`)
     const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/companies/2/get_jobs/`
+      `http://127.0.0.1:8000/api/companies/1/get_jobs/`
     );
     // console.log(data);
     dispatch({

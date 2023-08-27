@@ -13,6 +13,7 @@ const Review = (props) => {
    const dispatch = useDispatch();
    const companyReview = useSelector((state) => state.companyReview);
    const {companyReviewList} = companyReview 
+
   useEffect(() => {
     dispatch(companyReviewGet())
     document.body.className = "dashboard-page";
@@ -42,7 +43,7 @@ console.log(companyReviewList)
                     {companyReviewList.map((item) => (
 
                       <div className="review-content no-padding">
-                      <h4>بهترین عملکرد در پاسخ دهی سریع و منظم</h4>
+                      <h4>{item.users_name}</h4>
                       <div className="rating">
                         <span className="average-rating">تاریخ : {moment(item.date, "YYYY/MM/DD")
                                             .locale("fa")
