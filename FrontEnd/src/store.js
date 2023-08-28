@@ -18,7 +18,8 @@ import {
   companyJobsListReducer,
   companyFavoriteEmployeesReducer,
 } from "./reducers/companyReducer";
-// use selector tu use one of the below reducers
+// use selector tu use one of the below reducer
+
 const reducer = combineReducers({
   jobList: jobListReducer,
   jobsDetails: jobsDetailsReducer,

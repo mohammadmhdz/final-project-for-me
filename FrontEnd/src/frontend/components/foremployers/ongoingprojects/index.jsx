@@ -59,7 +59,7 @@ const OngoingProjects = ({data}) => {
                           <div className="project-hire-info">
                             <div className="content-divider" />
                             <div className="projects-amount">
-                              <h3>{item.salary_amount}</h3>
+                            <h4>{item.salary_amount ? `${item.salary_amount} میلیون` : "حقوق توافقی"} </h4>
                               {/* <h5>in 12 Days</h5> */}
                             </div>
                             <div className="content-divider" />

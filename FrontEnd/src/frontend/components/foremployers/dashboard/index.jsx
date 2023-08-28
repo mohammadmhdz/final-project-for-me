@@ -12,6 +12,10 @@ import {
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 
+// redux
+import { companyDetails } from "../../../../actions/companyActions"
+import { useDispatch, useSelector} from "react-redux";
+
 const Dashboard = (props) => {
   var chartprofileoptions = {
     series: [
@@ -84,7 +88,7 @@ const Dashboard = (props) => {
   };
 
   var chartradialOptions = {
-    series: [85, 75, 60, 40],
+    series: [companyDetail?.completed_jobs_count , companyDetail?.completed_jobs_count ,companyDetail?.completed_jobs_count , companyDetail?.completed_jobs_count],
     chart: {
       toolbar: {
         show: false,
@@ -146,7 +150,17 @@ const Dashboard = (props) => {
       },
     ],
   };
+  // redux
+  const dispatch = useDispatch();
+  const companyDetailsList = useSelector((state) => state.companyDetails);
+  const companyJobsAllList = useSelector((state) => state.companyJobsList);
+  const {companyJobsListArray} = companyJobsAllList 
+  const {companyDetail} = companyDetailsList 
+
   useEffect(() => {
+    dispatch(companyDetails(1))
+    // 
+    dispatch(companyJobsListAction())
     let chartprofileoptionsColumn = document.getElementById("chartprofile");
     let chartprofileoptionsChart = new ApexCharts(
       chartprofileoptionsColumn,
@@ -161,7 +175,9 @@ const Dashboard = (props) => {
     return () => {
       document.body.className = "";
     };
-  });
+  }, [dispatch]);
+  console.log(companyDetail)
+
   return (
     <>
       {/* Page Content */}
@@ -184,7 +200,7 @@ const Dashboard = (props) => {
                         <div className="dash-widget-info">
                           فرصت های شغلی منتشر شده
                         </div>
-                        <div className="dash-widget-count">30</div>
+                        <div className="dash-widget-count">{companyDetail.all_jobs_count}</div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
@@ -202,11 +218,11 @@ const Dashboard = (props) => {
                         <div className="dash-widget-info">
                           فرصت های شغلی فعال
                         </div>
-                        <div className="dash-widget-count">5</div>
+                        <div className="dash-widget-count">{companyDetail.active_jobs_count}</div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
-                          to="/ongoing-projects"
+                          to="/manage-projects"
                           className="d-flex justify-content-md-between"
                         >
                           مشاهده بیشتر <i className="fa fa-arrow-left " />
@@ -218,11 +234,11 @@ const Dashboard = (props) => {
                     <div className="dash-widget">
                       <div className="dash-info">
                         <div className="dash-widget-info">استخدام</div>
-                        <div className="dash-widget-count">25</div>
+                        <div className="dash-widget-count">{companyDetail.completed_jobs_count}</div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
-                          to="/completed-projects"
+                          to="/manage-projects"
                           className="d-flex justify-content-md-between"
                         >
                           مشاهده بیشتر <i className="fa fa-arrow-left " />
