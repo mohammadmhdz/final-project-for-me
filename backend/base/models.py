@@ -17,6 +17,12 @@ JOB_TYPE = (
     ('پاره وقت','پاره وقت'),
 )
 
+plan = (
+    ('ینبادی','ینبادی'),
+    ('پیشرفته','پیشرفته'),
+    
+)
+
 Gender = (
     ('خانوم','خانوم'),
     ('آقا','آقا'),
@@ -185,6 +191,8 @@ class Company(models.Model):
      working_hours_from = models.TimeField()
      working_hours_to = models.TimeField()
      favorite_employee = models.ManyToManyField('Employee', null=True , blank= True)
+     active_plan =models.CharField(max_length=15 , choices=Population,null=True , blank= True)
+     available_Job_count =models.IntegerField(max_digits=3,null=True , blank= True)
 
     
 
@@ -206,7 +214,12 @@ class Verification(models.Model):
      
 
 
-
+class Payment(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
+    payment_gateway = models.CharField(max_length=100)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20)
+    date = models.DateField(auto_now_add=True)
 
 
 
@@ -294,7 +307,7 @@ class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     perfession_title = models.CharField(max_length=100, null=True)  
     cooperation_type=  models.CharField(max_length=15 , choices=JOB_TYPE ,  null=True)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(upload_to='profile_images/',null=True, blank=True)
     about=models.TextField(max_length=1000 ,  null=True)  
     gender=models.CharField(max_length=15 , choices=Gender , default='خانوم')
     city = models.ForeignKey(City ,on_delete=models.SET_NULL,null=True)
