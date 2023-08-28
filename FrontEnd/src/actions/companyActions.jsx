@@ -17,13 +17,13 @@ import {
 } from "../constant/companyConstant";
 import axios from "axios";
 
-export const companyDetails = () => async (dispatch) => {
+export const companyDetails = (keyword) => async (dispatch) => {
+  console.log(keyword);
   try {
     dispatch({ type: COMPANY_DETAILS_REQUEST });
 
     // const { data } = await axios.get(`/api/products${keyword}`)
-    const { data } = await axios.get(`http://127.0.0.1:8000/api/companies/1`);
-    // console.log(data);
+    const { data } = await axios.get(`http://127.0.0.1:8000/api/companies/${keyword}`);
     dispatch({
       type: COMPANY_DETAILS_SUCCESS,
       payload: data,

@@ -4,6 +4,7 @@ import StickyBox from "react-sticky-box";
 import { Developer_01, Developer_02, Developer_03 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 import { useLocation } from "react-router-dom";
+import { blueGrey } from "@material-ui/core/colors";
 
 const FreelacerOngoingProjects = ({data}) => {
   // useEffect(() => {
@@ -36,15 +37,24 @@ const FreelacerOngoingProjects = ({data}) => {
                             <img src={Developer_01} alt="" className="img-fluid" />
                           </div>
                           <div className="proposer-detail">
-                            <h4 className="">{items.job_title}</h4>
+                          <Link to={{pathname : "/project-details" ,
+                                               state : {jobIdInput: items.job} 
+                                              }}>
+                          <h4 className="">{items.job_title}</h4>
+                          </Link>
+                           
                             <ul className="proposal-details">
                               <li className="Bold">
                               {" "}
-                                <a href="">ارسال شده برای {items.company_name}</a>
+                              <Link to={{pathname : "/company-profile" ,
+                                               state : {companyIdInput: items.Company} 
+                                              }}>
+                                        <div>ارسال شده برای {items.company_name}</div>
+                              </Link>
                               </li>
                               <li>{daysBetween(items.send_at)} روز پیش</li>
                               <li className=" red">
-                              بررسی شده در تاریخ : <span>در انتظار بررسی</span>
+                              <span style={{color : "#2e7d32"}}>در انتظار بررسی</span>
                               </li>
                               </ul>
                           </div>

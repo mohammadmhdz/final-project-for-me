@@ -27,35 +27,55 @@ const FreelacerCancelledProjects = ({data}) => {
 
         // console.log(items.status === "بررسی شده")
         items.status === "رد شده" && (
-          <div style={{paddingBottom : 10}}>
-                <div className="col-lg-12 flex-wrap">
-                  <div className="projects-card flex-fill">
-                      <div className="card-body">
-                        <div className="projects-details align-items-center">
-                        <div className="proposer-img">
-                            <img src={Developer_01} alt="" className="img-fluid" />
-                          </div>
-                          <div className="proposer-detail">
-                            <h4 className="">{items.job_title}</h4>
-                            <ul className="proposal-details">
-                              <li className="Bold">
-                              {" "}
-                                <a href="">ارسال شده برای {items.company_name}</a>
-                              </li>
-                              <li>{daysBetween(items.send_at)} روز پیش</li>
-                              <li className=" red">
-                              بررسی شده در تاریخ : <span>{moment(items.status_change_date, "YYYY/MM/DD")
+          <div className="my-projects-list">
+                        <div className="row align-right">
+                          <div className="col-lg-12 flex-wrap">
+                            <div className="projects-cancelled-card flex-fill">
+                              <div className="card-body">
+                                <div className="projects-details align-items-center">
+                                  <div className="proposer-img">
+                                    <img
+                                      src={Developer_01}
+                                      alt=""
+                                      className="img-fluid"
+                                    />
+                                  </div>
+                                  <div className="proposer-detail">
+                                  <Link to={{pathname : "/project-details" ,
+                                               state : {jobIdInput: items.job} 
+                                              }}>
+                                    <h4 className="">{items.job_title}</h4>
+                                    </Link>
+                                    <ul className="proposal-details">
+                                      <li className="Bold">
+                                        {" "}<Link to={{pathname : "/company-profile" ,
+                                               state : {companyIdInput: items.Company} 
+                                              }}>
+                                        <div>{items.company_name}</div>
+                                    </Link>
+                                      </li>
+                                      <li>۲ روزپیش</li>
+                                      <li className=" red">
+                                        رد شده به علت :{" "}
+                                        <span>{items.message}</span>
+                                      </li>
+                                      <li className=" red">
+                                        رد شده درتاریخ :{" "}
+                                        <span>
+                                          {" "}
+                                          {moment(items.send_at, "YYYY/MM/DD")
                                             .locale("fa")
-                                            .format("YYYY/MM/DD")}</span>
-                              </li>
-                              </ul>
+                                            .format("YYYY/MM/DD")}
+                                        </span>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        </div>
-                    </div>
-                    </div>
-                {/* </div> */}
-              </div>
+                      </div>
             )
           
           

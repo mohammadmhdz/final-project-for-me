@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import StickyBox from "react-sticky-box";
 import { Developer_02, Developer_01, Developer_03 } from "../../imagepath";
 // import { Sidebar } from "../sidebar";
@@ -36,15 +36,27 @@ const FreelacerCompletedProjects = ({data}) => {
                             <img src={Developer_01} alt="" className="img-fluid" />
                           </div>
                           <div className="proposer-detail">
+                           <Link to={{pathname : "/project-details" ,
+                                               state : {jobIdInput: items.job} 
+                                              }}>
                             <h4 className="">{items.job_title}</h4>
+                           </Link>
                             <ul className="proposal-details">
                               <li className="Bold">
-                              {" "}
-                                <a href="">ارسال شده برای {items.company_name}</a>
+                              <Link to={{pathname : "/company-profile" ,
+                                               state : {companyIdInput: items.Company} 
+                                              }}>
+                              <div>ارسال شده برای {items.company_name}</div>
+                              </Link>
+                                {/* <ahref="">ارسال شده برای {items.company_name}</a> */}
                               </li>
                               <li>{daysBetween(items.send_at)} روز پیش</li>
-                              <li className=" red">
-                              بررسی شده در تاریخ : <span>{moment(items.status_change_date, "YYYY/MM/DD")
+                              <li>
+                              <span style={{color : "green"}}>بررسی شده </span>
+                              </li>
+                              <li >
+                       
+                             <span> تاریخ : {moment(items.status_change_date, "YYYY/MM/DD")
                                             .locale("fa")
                                             .format("YYYY/MM/DD")}</span>
                               </li>

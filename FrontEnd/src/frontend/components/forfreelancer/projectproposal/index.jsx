@@ -48,7 +48,13 @@ const Freelancer = (props) => {
   const dispatch = useDispatch();
   const freelancerRequests = useSelector((state) => state.freelancerRequest);
   const { freelancerRequestsAll } = freelancerRequests;
+  
+  const daysBetween =(input) => {
+    const now = new Date().getDate()
+    const date = new Date(input).getDate()
+    return now - date
 
+  }
   useEffect(() => {
     // redux
     dispatch(freelancerRequest());
@@ -144,14 +150,22 @@ const Freelancer = (props) => {
                                       />
                                     </div>
                                     <div className="proposer-detail">
-                                      <h4 className="">طراح UI/UX</h4>
+                                    <Link to={{pathname : "/project-details" ,
+                                               state : {jobIdInput: items.job} 
+                                              }}>
+                                      <h4 className="">{items.job_title}</h4>
+                                    </Link>
                                       <ul className="proposal-details">
                                         <li className="Bold">
-                                          {" "}
-                                          <a href="">{items.company_name}</a>
+                                          
+                                         <Link to={{pathname : "/company-profile" ,
+                                               state : {companyIdInput: items.Company} 
+                                              }}>
+                                        <div>{items.company_name}</div>
+                                        </Link>
                                         </li>
-                                        <li>۲ روزپیش</li>
-                                        <li className=" red">بررسی نشده</li>
+                                        <li>{daysBetween(items.send_at)} روز پیش</li>
+                                        <li className=" red">{items.status}</li>
                                       </ul>
                                     </div>
                                   </div>
@@ -168,7 +182,7 @@ const Freelancer = (props) => {
                         </div>
                       </div>
                     )}
-                    {items.status === "بررسی شده" && (
+                    {items.status === "رد شده" && (
                       <div className="my-projects-list">
                         <div className="row align-right">
                           <div className="col-lg-12 flex-wrap">
@@ -183,25 +197,31 @@ const Freelancer = (props) => {
                                     />
                                   </div>
                                   <div className="proposer-detail">
+                                  <Link to={{pathname : "/project-details" ,
+                                               state : {jobIdInput: items.job} 
+                                              }}>
                                     <h4 className="">{items.job_title}</h4>
+                                    </Link>
                                     <ul className="proposal-details">
                                       <li className="Bold">
-                                        {" "}
-                                        <a href="">{items.company}</a>
+                                        {" "}<Link to={{pathname : "/company-profile" ,
+                                               state : {companyIdInput: items.Company} 
+                                              }}>
+                                        <div>{items.company_name}</div>
+                                    </Link>
                                       </li>
-                                      <li>۲ روزپیش</li>
-                                      <li className=" red">
+                                      <li>{daysBetween(items.send_at)} روز پیش</li>
+                                      <li className="red">
                                         رد شده به علت :{" "}
                                         <span>{items.message}</span>
                                       </li>
-                                      <li className=" red">
-                                        رد شده درتاریخ :{" "}
-                                        <span>
-                                          {" "}
-                                          {moment(items.send_at, "YYYY/MM/DD")
-                                            .locale("fa")
-                                            .format("YYYY/MM/DD")}
-                                        </span>
+                                      <li>
+                                      <span style={{color : "red"}}>رد شده </span>
+                                      </li>
+                                      <li >
+                                        <span> تاریخ : {moment(items.status_change_date, "YYYY/MM/DD")
+                                                    .locale("fa")
+                                                    .format("YYYY/MM/DD")}</span>
                                       </li>
                                     </ul>
                                   </div>
@@ -211,6 +231,56 @@ const Freelancer = (props) => {
                           </div>
                         </div>
                       </div>
+                    )}
+                    {items.status === "بررسی شده" && (
+                     <div className="my-projects-list">
+                     <div className="row">
+                       <div className="col-lg-12 flex-wrap">
+                         <div className="projects-card flex-fill">
+                           <div className="card-body">
+                             <div className="projects-details align-items-center justify-content-between">
+                               <div className="projects-details align-items-center">
+                                 <div className="proposer-img">
+                                   <img
+                                     src={Developer_01}
+                                     alt=""
+                                     className="img-fluid"
+                                   />
+                                 </div>
+                                 <div className="proposer-detail">
+                                 <Link to={{pathname : "/project-details" ,
+                                            state : {jobIdInput: items.job} 
+                                           }}>
+                                   <h4 className="">{items.job_title}</h4>
+                                 </Link>
+                                   <ul className="proposal-details">
+                                     <li className="Bold">
+                                       
+                                      <Link to={{pathname : "/company-profile" ,
+                                            state : {companyIdInput: items.Company} 
+                                           }}>
+                                     <div>{items.company_name}</div>
+                                     </Link>
+                                     </li>
+                                     <li>{daysBetween(items.send_at)} روز پیش</li>
+                                      <li>
+                                      <span style={{color : "green"}}>بررسی شده </span>
+                                      </li>
+                                      <li >
+                                        <span> تاریخ : {moment(items.status_change_date, "YYYY/MM/DD")
+                                                    .locale("fa")
+                                                    .format("YYYY/MM/DD")}</span>
+                                      </li>
+                                   </ul>
+                                 </div>
+                               </div>
+                           
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
                     )}
                   </div>
                 ))

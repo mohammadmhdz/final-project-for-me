@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link , useLocation } from "react-router-dom";
 import {
   home_icon,
   about_details,
@@ -19,6 +19,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { companyDetails } from "../../../../actions/companyActions";
 
 const CompanyProfile = (props) => {
+  const location = useLocation();
+  const {companyIdInput} = location.state
+  //
   const [activeJobs, setActiveJobs] = useState(false);
   const [activePreview, setActivePreview] = useState(false);
   const [activeAbout, setActiveAbout] = useState(true);
@@ -47,7 +50,7 @@ const CompanyProfile = (props) => {
 
   useEffect(() => {
     // for using redux in our project
-    dispatch(companyDetails());
+    dispatch(companyDetails(companyIdInput));
 
     document.body.className = "dashboard-page";
     return () => {
@@ -55,6 +58,7 @@ const CompanyProfile = (props) => {
     };
   }, [dispatch]);
   console.log(companyDetail, "Xdssd");
+  console.log(companyIdInput, "ss");
   return (
     <>
       {/* Breadcrumb */}
@@ -78,14 +82,14 @@ const CompanyProfile = (props) => {
             <div className="col">
               <div className="profile-main">
                 <h2>
-                  {companyDetail.Name} <i className="fas fa-check-circle" />
+                  {companyDetail.company_data?.Name} <i className="fas fa-check-circle" />
                 </h2>
                 <p>از خرداد ۹۹</p>
                 <div className="about-list">
                   <ul>
                     <li>
                       <i className="fas fa-map-marker-alt m-0" />
-                      {companyDetail.city?.name}
+                      {companyDetail.company_data?.city.name}
                     </li>
                   </ul>
                 </div>
@@ -156,7 +160,7 @@ const CompanyProfile = (props) => {
                   <div className="pro-post widget-box company-post abouts-detail align-right">
                     <h3 className="pro-title">درباره ما</h3>
                     <div className="pro-content">
-                      <p>{companyDetail.about}</p>
+                      <p>{companyDetail.company_data?.about}</p>
                     </div>
                   </div>
                 ) : null}
@@ -173,27 +177,27 @@ const CompanyProfile = (props) => {
                 <ul className="latest-posts pro-content">
                   <li>
                     <p>نام شرکت</p>
-                    <h6>{companyDetail.Name}</h6>
+                    <h6>{companyDetail.company_data?.Name}</h6>
                   </li>
                   <li>
                     <p>سال تاسیس</p>
-                    <h6>{companyDetail.founded_at}</h6>
+                    <h6>{companyDetail.company_data?.founded_at}</h6>
                   </li>
                   <li>
                     <p>جمعیت</p>
-                    <h6>{companyDetail.population}</h6>
+                    <h6>{companyDetail.company_data?.population}</h6>
                   </li>
                   <li>
                     <p>صاحب شرکت</p>
-                    <h6>{companyDetail.Owner_name}</h6>
+                    <h6>{companyDetail.company_data?.Owner_name}</h6>
                   </li>
                   <li>
                     <p>ایمیل</p>
-                    <h6>{companyDetail.Email}</h6>
+                    <h6>{companyDetail.company_data?.Email}</h6>
                   </li>
                   <li>
                     <p>وبسایت</p>
-                    <h6>{companyDetail.Website}</h6>
+                    <h6>{companyDetail.company_data?.Website}</h6>
                   </li>
                 </ul>
                 <div className="contact-btn">
@@ -220,15 +224,15 @@ const CompanyProfile = (props) => {
                 </div>
                 <ul className="latest-posts pro-content">
                   <li>
-                    <p>{companyDetail.Working_days_from}</p>
-                    <h6>{companyDetail.working_hours_from}</h6>
+                    <p>{companyDetail.company_data?.Working_days_from}</p>
+                    <h6>{companyDetail.company_data?.working_hours_from}</h6>
                   </li>
                   <li>
                     <p>الی</p>
                   </li>
                   <li>
-                    <p>{companyDetail.Working_days_to}</p>
-                    <h6>{companyDetail.working_hours_to}</h6>
+                    <p>{companyDetail.company_data?.Working_days_to}</p>
+                    <h6>{companyDetail.company_data?.working_hours_to}</h6>
                   </li>
                   {/* <li>
                     <p>دوشنبه</p>
@@ -262,22 +266,22 @@ const CompanyProfile = (props) => {
                 </div>
                 <ul className="social-link-profile">
                   <li>
-                    <a href={companyDetail.facebook}>
+                    <a href={companyDetail.company_data?.facebook}>
                       <i className="fab fa-facebook" />
                     </a>
                   </li>
                   <li>
-                    <a href={companyDetail.instagram}>
+                    <a href={companyDetail.company_data?.instagram}>
                       <i className="fab fa-twitter" />
                     </a>
                   </li>
                   <li>
-                    <a href={companyDetail.instagram}>
+                    <a href={companyDetail.company_data?.instagram}>
                       <i className="fab fa-instagram" />
                     </a>
                   </li>
                   <li>
-                    <a href={companyDetail.linkdin}>
+                    <a href={companyDetail.company_data?.linkdin}>
                       <i className="fab fa-linkedin" />
                     </a>
                   </li>

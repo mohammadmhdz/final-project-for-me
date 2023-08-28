@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link , useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 // Import Images
 import {
@@ -23,11 +23,14 @@ import {
   Icon_work,
 } from "../../imagepath";
 import moment from "jalali-moment";
+
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { jobsDetail } from "../../../../actions/jobActions";
 
 const ProjectDetails = (props) => {
+  const location = useLocation();
+  const {jobIdInput} = location.state
   // redux
   const dispatch = useDispatch();
   const  jobs  = useSelector((state) => state.jobsDetails);
@@ -42,9 +45,11 @@ const ProjectDetails = (props) => {
   useEffect(() => {
     //redux
     // bejaye 3 id job mored nazar ra ghara midahim
-    dispatch(jobsDetail(3));
+    dispatch(jobsDetail(jobIdInput));
   }, [dispatch]);
+
   console.log(jobsDetailsList)
+  console.log(jobIdInput , "input")
   return (
     <>
       {/* Breadcrumb */}
