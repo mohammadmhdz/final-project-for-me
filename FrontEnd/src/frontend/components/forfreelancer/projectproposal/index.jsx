@@ -183,7 +183,7 @@ const Freelancer = (props) => {
                                     />
                                   </div>
                                   <div className="proposer-detail">
-                                    <h4 className="">طراح UI/UX</h4>
+                                    <h4 className="">{items.job_title}</h4>
                                     <ul className="proposal-details">
                                       <li className="Bold">
                                         {" "}

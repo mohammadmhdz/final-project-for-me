@@ -6835,6 +6835,7 @@ label.file-upload.image-btn {
 }
 .provider-img img {
   border-radius: 5px;
+  width : 100%; 
 }
 .provider-widget .pro-name {
   font-size: 20px;

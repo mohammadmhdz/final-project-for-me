@@ -26,10 +26,11 @@ import {
   Img_01,
   Icon_10,
   Icon_11,
+  Avatar_2,
 } from "../../imagepath";
 // redux
 import { useDispatch, useSelector} from "react-redux";
-import { employeeDetails } from "../../../../actions/employeeActions"
+import { employeeDetails , employeePortfolioDetails } from "../../../../actions/employeeActions"
 
 const DeveloperProfile = (props) => {
   const location = useLocation()
@@ -38,21 +39,24 @@ const DeveloperProfile = (props) => {
   // 
   const dispatch = useDispatch();
   const employeeDetailsList = useSelector((state) => state.employeeDetails);
-  const {employee } = employeeDetailsList;
+  const Portfolio = useSelector((state) => state.employeePortfolio);
+  const { employee } = employeeDetailsList;
+  const { employeePortfolioArray } = Portfolio;
 
   useEffect(() => {
   // we must take the id from where we reach here
     dispatch(employeeDetails(idInfo))
+    dispatch(employeePortfolioDetails(idInfo))
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
   },[dispatch]);
+  // console.log(employee , "EMPLOYEE INFO")
+  console.log(employeePortfolioArray , "EMPLOYEE PORTFOLIO INFO")
 
-// console.log(employeeDetailsList)
-  // console.log(employee);
+
   // console.log(location , "loc");
-  console.log(idInfo);
   return (
     <>
     
@@ -69,7 +73,7 @@ const DeveloperProfile = (props) => {
                   <div className="provider-widget">
                     <div className="pro-info-left">
                       <div className="provider-img">
-                        <img src={Img_01} alt="User" />
+                        <img src={employee.image !== null ? `http://127.0.0.1:8000/${employee.image}`:Img_01 } alt="User" />
                       </div>
                       <div className="profile-info">
                         <h2 className="profile-title">{employee.user?.first_name} {employee.user?.last_name}</h2>
@@ -238,32 +242,30 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">نمونه کارها</h3>
                   <div className="pro-content">
                     <div className="row">
-                      <div className="col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                      
+                    {employeePortfolioArray.length !== 0 ? 
+                     (employeePortfolioArray?.map((item) => (
+                    
+                       <div className="col-sm-6 col-md-6 col-lg-4 col-xl-3">
                         <div className="project-widget">
                           <div className="pro-image">
-                            <a href={Project_img} data-fancybox="gallery2">
+                            <a data-fancybox="gallery2">
                               <img
                                 className="img-fluid"
                                 alt="User Image"
-                                src={Project_img}
+                                src={item.image !== null ? `http://127.0.0.1:8000/${item.image}` : Avatar_2 }
                               />
                             </a>
                           </div>
                           <div className="pro-detail">
-                            <h3 className="pro-name">نام پروژه</h3>
-                            <p className="pro-designation">حوزه</p>
+                            {/* <h3 className="pro-name">{item.description}</h3> */}
+                            <p className="pro-designation">{item.title === null ?  "نمونه جهت نمایش وجود ندارد" : item.title}</p>
                           </div>
                         </div>
                       </div>
-
-                      <div className="col-md-12 text-center">
-                        <Link
-                          to="/freelancer-portfolio"
-                          className="btn more-btn"
-                        >
-                          مشاهده همه{" "}
-                        </Link>
-                      </div>
+                     )))
+                     :(<h5>نمونه کاری جهت نمایش وجود ندارد</h5>) }
+                     
                     </div>
                   </div>
                 </div>

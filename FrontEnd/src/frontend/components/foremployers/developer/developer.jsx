@@ -257,7 +257,7 @@ const Developer = (props) => {
                       </a>
                       <div className="freelance-img">
                         <a href="#">
-                          <img src={Avatar_1} alt="User Image" />
+                          <img src={item.image !== null ? `http://127.0.0.1:8000/${item.image}` : Avatar_2} alt="User Image" />
                           <span className="verified">
                             <i className="fa fa-check-circle" />
                           </span>
