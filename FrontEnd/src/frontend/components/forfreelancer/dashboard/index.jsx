@@ -200,7 +200,8 @@ const FreelancerDashboard = (props) => {
   };
 
  
-    console.log(x)
+    console.log(employeeList)
+    console.log(freelancerRequestsAll)
     
     return (
     <>

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { Sidebar } from "../sidebar";
+import { Image } from "react-bootstrap";
 import {
   home_icon,
   Project_1,
@@ -11,14 +12,25 @@ import {
   Project_5,
   Project_6,
 } from "../../imagepath";
+import {
+  employeePortfolioDetails,
+} from "../../../../actions/employeeActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const FreelancerPortfolio = (props) => {
+ 
+  const dispatch = useDispatch();
+  const portfolio = useSelector((state) => state.employeePortfolio);
+  const localItem = JSON.parse(localStorage.getItem("userInfo"))
+  const {employeePortfolioArray} = portfolio ;
   useEffect(() => {
+    dispatch(employeePortfolioDetails(localItem.id));
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
-  });
+  }, [dispatch]);
+  console.log(employeePortfolioArray, "portfolio");
 
   return (
     <>
@@ -45,13 +57,15 @@ const FreelancerPortfolio = (props) => {
                 </div>
                 <div className="pro-content pt-4 pb-4">
                   <div className="row">
+                    {employeePortfolioArray.map((item) => (
+
                     <div className="col-sm-6 col-lg-4">
                       <div className="project-widget">
                         <div className="portfolio-img">
-                          <img
+                          <Image
                             className="img-fluid"
                             alt="User Image"
-                            src={Project_2}
+                            src={`http://127.0.0.1:8000/${item.image}`}
                           />
                           <div className="portfolio-live">
                             <div className="portfolio-content">
@@ -69,10 +83,12 @@ const FreelancerPortfolio = (props) => {
                           </div>
                         </div>
                         <div className="portfolio-detail">
-                          <h3 className="pro-name">Transport Website</h3>
+                          <h3 className="pro-name">{item.title}</h3>
                         </div>
                       </div>
                     </div>
+                    ))}
+
                   </div>
                   <div className="col-md-12">
                     <ul className="paginations">

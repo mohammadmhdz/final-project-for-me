@@ -32,7 +32,6 @@ const FreelancerFavourites = (props) => {
   
   const handlefavorite = (e) => {
     // e.preventdefault();
-    
     // console.log("here")
     dispatch(employeeToggleFavoriteList(1))
   }
