@@ -1,40 +1,31 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
-import { Sidebar } from '../sidebar';
-import { home_icon, Project_1, Project_2, Project_3, Project_4, Project_5, Project_6 } from "../../imagepath";
+import { Sidebar } from "../sidebar";
+import {
+  home_icon,
+  Project_1,
+  Project_2,
+  Project_3,
+  Project_4,
+  Project_5,
+  Project_6,
+} from "../../imagepath";
 
 const FreelancerPortfolio = (props) => {
   useEffect(() => {
-    document.body.className = 'dashboard-page';
-    return () => { document.body.className = ''; }
+    document.body.className = "dashboard-page";
+    return () => {
+      document.body.className = "";
+    };
   });
 
   return (
     <>
-      {/* Breadcrumb */}
-      <div className="bread-crumb-bar">
-        <div className="container">
-          <div className="row align-items-center inner-banner">
-            <div className="col-md-12 col-12 text-center">
-              <div className="breadcrumb-list">
-                <nav aria-label="breadcrumb" className="page-breadcrumb">
-                  <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><Link to="#"><img src={home_icon} alt="Post Author" /> Home</Link></li>
-                    <li className="breadcrumb-item" aria-current="page">Employee</li>
-                    <li className="breadcrumb-item" aria-current="page">PORTFOLIO</li>
-                  </ol>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Breadcrumb */}
       {/* Page Content */}
       <div className="content content-page">
         <div className="container-fluid">
-          <div className="row">
+          <div className="row mt-5 align-right">
             <div className="col-xl-3 col-md-4 theiaStickySidebar">
               <StickyBox offsetTop={20} offsetBottom={20}>
                 <Sidebar />
@@ -43,45 +34,17 @@ const FreelancerPortfolio = (props) => {
             <div className="col-xl-9 col-md-8">
               <div className="portfolio-item">
                 <div className="pro-head p-0 pb-4">
-                  <h3 className="mb-0">Portfolio</h3>
+                  <h3 className="mb-0">پورتفولیو</h3>
                   <a
                     className="btn btn-primary back-btn br-0"
                     data-bs-toggle="modal"
                     href="#portfolio"
                   >
-                    + Add Portfolio
+                    + اضافه کردن
                   </a>
                 </div>
                 <div className="pro-content pt-4 pb-4">
                   <div className="row">
-                    <div className="col-sm-6 col-lg-4">
-                      <div className="project-widget">
-                        <div className="portfolio-img">
-                          <img
-                            className="img-fluid"
-                            alt="User Image"
-                            src={Project_1}
-                          />
-                          <div className="portfolio-live">
-                            <div className="portfolio-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#portfolio-edit"
-                                className="port-icon"
-                              >
-                                <i className="fas fa-pen" />
-                              </a>
-                              <a href="#" className="port-icon">
-                                <i className="fas fa-trash-alt" />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="portfolio-detail">
-                          <h3 className="pro-name">Razor Website Design</h3>
-                        </div>
-                      </div>
-                    </div>
                     <div className="col-sm-6 col-lg-4">
                       <div className="project-widget">
                         <div className="portfolio-img">
@@ -99,7 +62,7 @@ const FreelancerPortfolio = (props) => {
                               >
                                 <i className="fas fa-pen" />
                               </a>
-                              <a href="#" className="port-icon">
+                              <a href="#" className="port-icon me-2">
                                 <i className="fas fa-trash-alt" />
                               </a>
                             </div>
@@ -110,125 +73,13 @@ const FreelancerPortfolio = (props) => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-sm-6 col-lg-4">
-                      <div className="project-widget">
-                        <div className="portfolio-img">
-                          <img
-                            className="img-fluid"
-                            alt="User Image"
-                            src={Project_3}
-                          />
-                          <div className="portfolio-live">
-                            <div className="portfolio-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#portfolio-edit"
-                                className="port-icon"
-                              >
-                                <i className="fas fa-pen" />
-                              </a>
-                              <a href="#" className="port-icon">
-                                <i className="fas fa-trash-alt" />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="portfolio-detail">
-                          <h3 className="pro-name">Wordpress Website</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                      <div className="project-widget">
-                        <div className="portfolio-img">
-                          <img
-                            className="img-fluid"
-                            alt="User Image"
-                            src={Project_4}
-                          />
-                          <div className="portfolio-live">
-                            <div className="portfolio-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#portfolio-edit"
-                                className="port-icon"
-                              >
-                                <i className="fas fa-pen" />
-                              </a>
-                              <a href="#" className="port-icon">
-                                <i className="fas fa-trash-alt" />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="portfolio-detail">
-                          <h3 className="pro-name">Mobile App</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                      <div className="project-widget">
-                        <div className="portfolio-img">
-                          <img
-                            className="img-fluid"
-                            alt="User Image"
-                            src={Project_5}
-                          />
-                          <div className="portfolio-live">
-                            <div className="portfolio-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#portfolio-edit"
-                                className="port-icon"
-                              >
-                                <i className="fas fa-pen" />
-                              </a>
-                              <a href="#" className="port-icon">
-                                <i className="fas fa-trash-alt" />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="portfolio-detail">
-                          <h3 className="pro-name">Healthcare Website</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                      <div className="project-widget">
-                        <div className="portfolio-img">
-                          <img
-                            className="img-fluid"
-                            alt="User Image"
-                            src={Project_6}
-                          />
-                          <div className="portfolio-live">
-                            <div className="portfolio-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#portfolio-edit"
-                                className="port-icon"
-                              >
-                                <i className="fas fa-pen" />
-                              </a>
-                              <a href="#" className="port-icon">
-                                <i className="fas fa-trash-alt" />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="portfolio-detail">
-                          <h3 className="pro-name">Injury Website</h3>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                   <div className="col-md-12">
                     <ul className="paginations">
                       <li>
                         <a href="#">
                           {" "}
-                          <i className="fas fa-angle-left" /> Previous
+                          <i className="fas fa-angle-right" /> قبلی
                         </a>
                       </li>
                       <li>
@@ -247,7 +98,7 @@ const FreelancerPortfolio = (props) => {
                       </li>
                       <li>
                         <a href="#">
-                          Next <i className="fas fa-angle-right" />
+                          بعدی <i className="fas fa-angle-left" />
                         </a>
                       </li>
                     </ul>
@@ -264,7 +115,7 @@ const FreelancerPortfolio = (props) => {
         <div className="modal-dialog modal-dialog-centered modal-lg">
           <div className="modal-content">
             <div className="modal-header">
-              <h4>Add Portfolio</h4>
+              <h4>اضافه کردن نمونه کار</h4>
               <span className="modal-close">
                 <a href="#" data-bs-dismiss="modal" aria-label="Close">
                   <i className="far fa-times-circle orange-text" />
@@ -273,22 +124,22 @@ const FreelancerPortfolio = (props) => {
             </div>
             <div className="modal-body">
               <div className="port-title">
-                <h3>Simple &amp; Best Way To Showcase Your Work</h3>
+                <h3>
+                  نمونه کارهای خود را اضافه کنید تا شانس بیشتری برای استخدام
+                  داشته باشید
+                </h3>
               </div>
-              <form >
+              <form>
                 <div className="modal-info">
-                  <div className="row">
+                  <div className="row align-right">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label>Title</label>
+                        <label>توضیحات</label>
                         <input type="text" className="form-control" />
                       </div>
-                      <div className="form-group">
-                        <label>Link</label>
-                        <input type="text" className="form-control" />
-                      </div>
+
                       <label className="br-0 file-upload image-upbtn">
-                        upload Files <input type="file" />
+                        بارگذاری تصاویر <input type="file" />
                       </label>
                     </div>
                   </div>
@@ -298,10 +149,10 @@ const FreelancerPortfolio = (props) => {
                     data-bs-dismiss="modal"
                     className="btn btn-primary black-btn submit-btn"
                   >
-                    Cancel
+                    لغو
                   </a>
                   <button type="submit" className="btn btn-primary submit-btn">
-                    Submit
+                    تایید
                   </button>
                 </div>
               </form>
@@ -314,7 +165,7 @@ const FreelancerPortfolio = (props) => {
         <div className="modal-dialog modal-dialog-centered modal-lg">
           <div className="modal-content">
             <div className="modal-header">
-              <h4 className="modal-title">Add Portfolio</h4>
+              <h4 className="modal-title">اضافه کردن نمونه کار</h4>
               <span className="modal-close">
                 <a href="#" data-bs-dismiss="modal" aria-label="Close">
                   <i className="far fa-times-circle orange-text" />
@@ -323,30 +174,22 @@ const FreelancerPortfolio = (props) => {
             </div>
             <div className="modal-body">
               <div className="port-title">
-                <h3>Simple &amp; Best Way To Showcase Your Work</h3>
+                <h3>
+                  نمونه کارهای خود را اضافه کنید تا شانس بیشتری برای استخدام
+                  داشته باشید
+                </h3>
               </div>
-              <form >
+              <form>
                 <div className="modal-info">
-                  <div className="row">
+                  <div className="row align-right">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label>Title</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="Portfolio Name"
-                        />
+                        <label>توضیحات</label>
+                        <input type="text" className="form-control" />
                       </div>
-                      <div className="form-group">
-                        <label>Link</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="Http://www.example.com//john..."
-                        />
-                      </div>
+
                       <label className="br-0 file-upload image-upbtn">
-                        upload Files <input type="file" />
+                        بارگذاری تصاویر <input type="file" />
                       </label>
                     </div>
                   </div>
@@ -354,16 +197,13 @@ const FreelancerPortfolio = (props) => {
                 <div className="submit-section text-right">
                   <a
                     data-bs-dismiss="modal"
-                    className="btn btn-primary black-btn submit-btn"
+                    className="btn btn-primary black-btn submit-btn ms-2"
                   >
-                    Cancel
+                    لغو
                   </a>
-                  <Link
-                    to="/freelancer-portfolio"
-                    className="btn btn-primary submit-btn"
-                  >
-                    Submit
-                  </Link>
+                  <button type="submit" className="btn btn-primary submit-btn">
+                    تایید
+                  </button>
                 </div>
               </form>
             </div>
@@ -371,7 +211,6 @@ const FreelancerPortfolio = (props) => {
         </div>
       </div>
     </>
-  )
-
-}
+  );
+};
 export default FreelancerPortfolio;

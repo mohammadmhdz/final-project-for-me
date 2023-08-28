@@ -353,10 +353,25 @@ class Language(models.Model):
          return self.language
     
 
+class Gallery(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
 
 
 
 
+
+
+
+class Image(models.Model):
+    gallery = models.ForeignKey(Gallery, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='gallery_images/')
+
+    def __str__(self):
+        return self.image.name
 
 class Portfolio(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
