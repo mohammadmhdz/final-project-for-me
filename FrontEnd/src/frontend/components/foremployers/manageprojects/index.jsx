@@ -70,7 +70,7 @@ const Manageprojects = (props) => {
     // redux
     const dispatch = useDispatch();
     const companyJobsAllList = useSelector((state) => state.companyJobsList);
-   const {companyJobsListArray} = companyJobsAllList 
+    const {companyJobsListArray} = companyJobsAllList 
 
   useEffect(() => {
     dispatch(companyJobsListAction())
@@ -177,7 +177,7 @@ const Manageprojects = (props) => {
                             <div className="project-hire-info">
                               <div className="content-divider" />
                               <div className="projects-amount">
-                                <h3>{item.salary_amount} میلیون</h3>
+                                <h4>{item.salary_amount ? `${item.salary_amount} میلیون` : "حقوق توافقی"} </h4>
                                 {/* <h5>in 12 Days</h5> */}
                               </div>
                               <div className="content-divider" />
@@ -227,13 +227,13 @@ const Manageprojects = (props) => {
                   </div>
                 </div>
               ))): waiting ? 
-              (<Pendingprojects data={companyJobsListArray} /> )
+              (<Pendingprojects data={companyJobsListArray}/> )
               : complete? 
               (<CompletedProjects data={companyJobsListArray}/>
               ): active ? 
               (<OngoingProjects data={companyJobsListArray} />
               ): expired ? 
-              (<CancelledProjects data={companyJobsListArray} />) : null}
+              (<CancelledProjects data={companyJobsListArray}/>) : null}
             
 
               <div className="row">
