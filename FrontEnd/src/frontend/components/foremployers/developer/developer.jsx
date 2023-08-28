@@ -296,9 +296,12 @@ const Developer = (props) => {
                     </div>
                     <div className="cart-hover">
                       <Link
-                        state={{ from : "test" }}
-                        to="/developer-profile"
+                        to ={{
+                          pathname: "/developer-profile",
+                          state: { idInfo: item.id}
+                        }}
                         className="btn-cart"
+                        
                         // tabIndex={-1}
                       >
                         مشاهده پروفایل

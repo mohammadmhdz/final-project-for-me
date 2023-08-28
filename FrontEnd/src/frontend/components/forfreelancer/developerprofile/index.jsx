@@ -33,7 +33,7 @@ import { employeeDetails } from "../../../../actions/employeeActions"
 
 const DeveloperProfile = (props) => {
   const location = useLocation()
-  const { idInfo } = location.state.idInfo
+  const  idInfo  = location.state.idInfo
   
   // 
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ const DeveloperProfile = (props) => {
 
   useEffect(() => {
   // we must take the id from where we reach here
-    dispatch(employeeDetails(2))
+    dispatch(employeeDetails(idInfo))
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
@@ -51,8 +51,8 @@ const DeveloperProfile = (props) => {
 
 // console.log(employeeDetailsList)
   // console.log(employee);
-  console.log(location , "loc");
-  console.log(location.state);
+  // console.log(location , "loc");
+  console.log(idInfo);
   return (
     <>
     
