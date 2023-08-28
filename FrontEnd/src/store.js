@@ -4,6 +4,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import { jobListReducer, jobsDetailsReducer } from "./reducers/jobsReducer";
 import {
+  employeeListAllReducer,
   employeeDetailsReducer,
   employeeFavoriteListReducer,
   employeeToggleFavoriteListReducer,
@@ -24,6 +25,7 @@ const reducer = combineReducers({
   employeeDetails: employeeDetailsReducer,
   employeeFavoriteList: employeeFavoriteListReducer,
   employeeToggleFavorite : employeeToggleFavoriteListReducer,
+  employeeListAll: employeeListAllReducer,
   //
   freelancerRequest: freelancerRequestReducer,
   userLogin: userLoginReducer,

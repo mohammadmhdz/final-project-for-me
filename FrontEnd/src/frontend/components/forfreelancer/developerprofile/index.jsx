@@ -1,5 +1,5 @@
 import React , {useEffect} from "react";
-import { Link } from "react-router-dom";
+import { Link , useLocation } from "react-router-dom";
 import moment from "jalali-moment";
 import StickyBox from "react-sticky-box";
 // Import Images
@@ -32,6 +32,10 @@ import { useDispatch, useSelector} from "react-redux";
 import { employeeDetails } from "../../../../actions/employeeActions"
 
 const DeveloperProfile = (props) => {
+  const location = useLocation()
+  const { idInfo } = location.state.idInfo
+  
+  // 
   const dispatch = useDispatch();
   const employeeDetailsList = useSelector((state) => state.employeeDetails);
   const {employee } = employeeDetailsList;
@@ -46,7 +50,9 @@ const DeveloperProfile = (props) => {
   },[dispatch]);
 
 // console.log(employeeDetailsList)
-  console.log(employee);
+  // console.log(employee);
+  console.log(location , "loc");
+  console.log(location.state);
   return (
     <>
     

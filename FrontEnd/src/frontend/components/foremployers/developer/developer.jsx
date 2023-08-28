@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useEffect} from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import Nouislider from "nouislider-react";
@@ -18,8 +18,21 @@ import {
   Avatar_11,
   Avatar_12,
 } from "../../imagepath";
-
+// redux
+import { useDispatch, useSelector} from "react-redux";
+import { employeeListAll } from "../../../../actions/employeeActions"
 const Developer = (props) => {
+  const dispatch = useDispatch();
+  const employeeAllList = useSelector((state) => state.employeeListAll);
+  const { employeeList } = employeeAllList;
+  
+  useEffect(() => {
+    // we must take the id from where we reach here
+      dispatch(employeeListAll())
+    },[dispatch]);
+  
+  // console.log(employeeDetailsList)
+    console.log(employeeList);
   return (
     <>
       {/* Breadcrumb */}
@@ -230,6 +243,8 @@ const Developer = (props) => {
                 </span>
               </div>
               <div className="row">
+                {employeeList.map((item) => (
+
                 <div className="col-md-6 col-lg-6 col-xl-4">
                   <div className="freelance-widget">
                     <div className="freelance-content">
@@ -250,54 +265,48 @@ const Developer = (props) => {
                       </div>
                       <div className="freelance-info">
                         <h3>
-                          <a href="#">محمد مهدیزاده</a>
+                          <a href="#">{item.user?.first_name} {item.user?.last_name}</a>
                         </h3>
                         <div className="freelance-specific">
-                          Front-end developer
+                          {item.perfession_title}
                         </div>
                         <div className="freelance-location">
                           <i className="fa fa-map-marker-alt ms-1" />
-                          قزوین
+                          {item.city?.name}
                         </div>
-                        <div className="rating">
+                        {/* <div className="rating">
                           <i className="fa fa-star filled" />
                           <i className="fa fa-star filled" />
                           <i className="fa fa-star filled" />
                           <i className="fa fa-star filled" />
                           <i className="fa fa-star" />
                           <span className="average-rating">4.7 </span>
-                        </div>
+                        </div> */}
                         <div className="freelance-tags">
-                          <a href="">
+                          {item.skills?.map((skill) => (
+                            <a href="">
                             <span className="badge badge-pill badge-design">
-                              Reactjs
+                            {skill.title}
                             </span>
                           </a>
-                          <a href="">
-                            <span className="badge badge-pill badge-design">
-                              ReactNative
-                            </span>
-                          </a>
-                          <a href="">
-                            <span className="badge badge-pill badge-design">
-                              Node Js
-                            </span>
-                          </a>
+                         ))}
                         </div>
                         {/* <div className="freelancers-price">$25 Hourly</div> */}
                       </div>
                     </div>
                     <div className="cart-hover">
                       <Link
-                        to="/developer-details"
+                        state={{ from : "test" }}
+                        to="/developer-profile"
                         className="btn-cart"
-                        tabIndex={-1}
+                        // tabIndex={-1}
                       >
                         مشاهده پروفایل
                       </Link>
                     </div>
                   </div>
                 </div>
+                ))}
               </div>
             </div>
           </div>

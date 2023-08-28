@@ -1,4 +1,8 @@
 import {
+  EMPLOYEE_LIST_ALL_REQUEST,
+  EMPLOYEE_LIST_ALL_SUCCESS,
+  EMPLOYEE_LIST_ALL_FAIL,
+  //
   EMPLOYEE_DETAILS_REQUEST,
   EMPLOYEE_DETAILS_SUCCESS,
   EMPLOYEE_DETAILS_FAIL,
@@ -8,10 +12,28 @@ import {
   EMPLOYEE_FAVORITE_FAIL,
   //
   EMPLOYEE_TOGGLE_FAVORITE_REQUEST ,
-EMPLOYEE_TOGGLE_FAVORITE_SUCCESS ,
- EMPLOYEE_TOGGLE_FAVORITE_FAIL ,
+  EMPLOYEE_TOGGLE_FAVORITE_SUCCESS ,
+  EMPLOYEE_TOGGLE_FAVORITE_FAIL ,
+ 
 } from "../constant/employeeConstant";
 
+export const employeeListAllReducer = (state = { employeeList: [] }, action) => {
+  switch (action.type) {
+    case EMPLOYEE_LIST_ALL_REQUEST:
+      return { loading: true, employeeList: [] };
+
+    case EMPLOYEE_LIST_ALL_SUCCESS:
+      return {
+        loading: false,
+        employeeList: action.payload,
+      };
+    case EMPLOYEE_LIST_ALL_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 export const employeeDetailsReducer = (state = { employee: [] }, action) => {
   switch (action.type) {
     case EMPLOYEE_DETAILS_REQUEST:
