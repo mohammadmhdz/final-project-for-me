@@ -1,16 +1,55 @@
-import React, { useEffect } from "react";
+import React, { useEffect , useState } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { home_icon, Img, Img_02 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
+import {companyVerification} from "../../../../actions/companyActions"
+import { useDispatch, useSelector } from "react-redux";
 
 const VerifyIdentity = (props) => {
+  const dispatch = useDispatch()
+  const verifyMessage = useSelector(state => state.companyVerify)
+  console.log(verifyMessage)
+
+  const [formData, updateFormData] = useState([]);
+
   useEffect(() => {
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
   });
+
+  const handleFileSelected = (e) => {
+    console.log(e.target.files[0])
+    // const files = Array.from(e.target.files)
+    const files = Array.from(e.target.files[0].name)
+    console.log(typeof(files) , "type")
+    updateFormData({
+      ...formData,
+      // Trimming any whitespace
+      [e.target.id]: e.target.files[0]
+    });
+    console.log("files:", files)
+  }
+
+
+  const handleChange = (e) => {
+    console.log(e)
+    updateFormData({
+      ...formData,
+      // Trimming any whitespace
+      [e.target.id]: e.target.value.trim()
+    });
+  };
+
+  const handleSubmit = (e) => {
+    console.log(e)
+    e.preventDefault()
+    console.log(formData);
+    // dispatch(companyVerification(formData))
+    // ... submit to API or something
+  };
 
   return (
     <>
@@ -44,8 +83,9 @@ const VerifyIdentity = (props) => {
                         <div className="form-group">
                           <label htmlFor="first_name">نام شرکت</label>
                           <input
+                            onChange={handleChange}
                             className="form-control"
-                            id="first_name"
+                            id="company_name"
                             type="text"
                           />
                         </div>
@@ -54,8 +94,9 @@ const VerifyIdentity = (props) => {
                         <div className="form-group">
                           <label htmlFor="last_name">شماره تماس</label>
                           <input
+                            onChange={handleChange}
                             className="form-control"
-                            id="last_name"
+                            id="company_telephone_number"
                             type="text"
                           />
                         </div>
@@ -64,8 +105,9 @@ const VerifyIdentity = (props) => {
                         <div className="form-group">
                           <label htmlFor="card_number">شماره ثبت شرکت</label>
                           <input
+                            onChange={handleChange}
                             className="form-control"
-                            id="card_number"
+                            id="company_verfication_id"
                             type="text"
                           />
                         </div>
@@ -75,7 +117,12 @@ const VerifyIdentity = (props) => {
                           <label>آپلود مدارک</label>
                           <div className="uplod">
                             <label className="file-upload image-upbtn">
-                              انتخاب <input type="file" />
+                              انتخاب 
+                              <input 
+                                  accept="image/jpeg,image/png,image/gif"
+                                  id="company_file" 
+                                  onChange={handleFileSelected} 
+                                  type="file" />
                             </label>
                           </div>
                         </div>
@@ -84,9 +131,10 @@ const VerifyIdentity = (props) => {
                         <div className="form-group">
                           <label htmlFor="comment">آدرس</label>
                           <textarea
+                            onChange={handleChange}
                             className="form-control"
                             rows={5}
-                            id="comment"
+                            id="company_address"
                             defaultValue={""}
                           />
                           <p className="mt-2">
@@ -95,7 +143,7 @@ const VerifyIdentity = (props) => {
                         </div>
                       </div>
                       <div className="col-md-12 text-end">
-                        <button type="submit" className="btn-primary click-btn">
+                        <button onClick={handleSubmit} type="submit" className="btn-primary click-btn">
                           تایید
                         </button>
                       </div>

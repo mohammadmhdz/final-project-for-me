@@ -378,7 +378,7 @@ const AppContainer = function (props) {
                 component={FreelancerInvitations}
               />
               <Route
-                exact
+                exactfreelancer-profile-settings
                 path="/freelancer-membership"
                 component={FreelancerMembership}
               />

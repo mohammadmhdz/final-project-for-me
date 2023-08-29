@@ -41,7 +41,7 @@ const FreelancerDashboard = (props) => {
       );
       chartprofileoptionsChart.render();
       
-      let invoiceColumn = document.getElementById("chartradial");
+    let invoiceColumn = document.getElementById("chartradial");
       let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
       invoiceChart.render();
       document.body.className = "dashboard-page";
