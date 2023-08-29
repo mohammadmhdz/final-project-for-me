@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Job , Company ,Employee , Education , WorkExperience , Skills ,Category, City  , Language ,Verification , Review , Request ,Portfolio , Gallery , Image
+from .models import Job , Company ,Employee , Education , WorkExperience , Skills ,Category, City  , Language ,Verification , Review , Request ,Portfolio , Gallery , Image ,state
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -153,19 +153,22 @@ class PortfolioSerializer(serializers.ModelSerializer):
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skills
-        fields = ['title']     
+        fields = '__all__'     
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['title']   
+        fields = '__all__'   
 
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
         model = City
-        fields = ['name']        
+        fields = '__all__'        
 
-
+class StateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = state
+        fields = '__all__'
 
 
 class EducationSerializer(serializers.ModelSerializer):

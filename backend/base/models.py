@@ -174,7 +174,6 @@ class Company(models.Model):
      Name = models.CharField(max_length=100)
      image = models.ImageField(null=True, blank=True)
      about  = models.TextField(max_length=1000)
-    #  join_at = models.DateTimeField(auto_now=True)
      founded_at =  models.DateField(auto_now_add=True)
      city = models.ForeignKey(City ,on_delete=models.SET_NULL,null=True)
      population =models.CharField(max_length=15 , choices=Population)
@@ -256,7 +255,7 @@ class Skills(models.Model):
         return self.title    
 
 class Job(models.Model):
-    Company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
+    Company = models.ForeignKey(Company, on_delete=models.CASCADE)
     title        = models.CharField(max_length=100)  
     published_at = models.DateTimeField(auto_now=True)
     job_type     = models.CharField(max_length=15 , choices=JOB_TYPE)

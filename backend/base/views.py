@@ -8,9 +8,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import Job , Company , Employee , WorkExperience , Education , Language  , Verification , Skills , Category , Review , Request ,Portfolio , Gallery , Image
+from .models import Job , Company , Employee , WorkExperience , Education , Language  , Verification , Skills , Category , Review , Request ,Portfolio , Gallery , Image , state ,City
 from django.contrib.auth.models import User
-from .serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer ,RequestSerializer , VerificationSerializer , SkillSerializer , CategorySerializer , ReviewSerializer ,PortfolioSerializer , GallerySerializer , ImageSerializer
+from .serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer ,RequestSerializer , VerificationSerializer , SkillSerializer , CategorySerializer , ReviewSerializer ,PortfolioSerializer , GallerySerializer , ImageSerializer ,StateSerializer ,SkillSerializer ,CitySerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
@@ -88,8 +88,26 @@ def getEmployees(request):
 
 
 
+@api_view(['GET'])
+def Dropdown(request):
+    states = state.objects.all()
+    cities = City.objects.all()
+    categories = Category.objects.all()
+    skills = Skills.objects.all()
 
+    state_serializer = StateSerializer(states, many=True)
+    city_serializer = CitySerializer(cities, many=True)
+    category_serializer = CategorySerializer(categories, many=True)
+    skills_serializer = SkillSerializer(skills, many=True)
 
+    data = {
+        'states': state_serializer.data,
+        'cities': city_serializer.data,
+        'categories': category_serializer.data,
+        'skills': skills_serializer.data
+    }
+
+    return Response(data)
 
 
 
@@ -268,6 +286,10 @@ class CompanyViewSet(viewsets.ViewSet):
         reviews = company.review_set.all()
         serializer = ReviewSerializer(reviews ,many=True )
         return Response(serializer.data)    
+
+
+
+
 
 class EmployeeViewSet(viewsets.ViewSet):
     # @permission_classes([IsAdminUser])
@@ -826,5 +848,8 @@ class ReviewViewSet(viewsets.ViewSet):
             return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
     
+
+ 
+
 
  
