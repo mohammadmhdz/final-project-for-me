@@ -89,9 +89,9 @@ export const jobsPostRequirments = () => async (dispatch) => {
 
 // POST
 export const  postJob = (input) => async (dispatch) => {
-
+  // console.log(input)
   try {
-    // console.log(input?.company_verfication_id);
+    console.log(input , "input");
     // console.log(input?.company_name);
     dispatch({
       type: JOBS_POST_REQUEST,
@@ -105,7 +105,7 @@ export const  postJob = (input) => async (dispatch) => {
 
     const { data } = await axios.post(
       "http://127.0.0.1:8000/api/jobs/",
-      {input},
+      input,
       config
     );
 

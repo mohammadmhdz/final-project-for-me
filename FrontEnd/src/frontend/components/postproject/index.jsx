@@ -7,37 +7,69 @@ import { Sidebar } from "../foremployers/sidebar";
 import map from "../../assets/images/map.png";
 // redux
 import { postJob , jobsPostRequirments } from "../../../actions/jobActions";
+import { companyDetails } from "../../../actions/companyActions";
 import { useDispatch ,  useSelector } from "react-redux";
+import { string } from "prop-types";
 
 const PostProject = (props) => {
   const dispatch = useDispatch();
   const postinJob = useSelector((state) => state.jobsPost);
   const Requirments = useSelector((state) => state.jobsPostRequirments);
   const { postJobDetailsRequirments } = Requirments;
+  const companyDetailsReducer = useSelector((state) => state.companyDetails);
+  const { companyDetail } = companyDetailsReducer;
   const [formData, updateFormData] = useState([]);
+  const [skillsArray, updateSkillsArray] = useState([]);
   
   useEffect(() => {
     dispatch(jobsPostRequirments())
+    dispatch(companyDetails(1))
 
   },[dispatch])
   console.log(postJobDetailsRequirments)
 
   const handleChange = (e) => {
-    console.log(e)
+    // console.log(e.target.id)
+
+    e.target.id === "city" ? updateFormData({
+      ...formData,
+      
+      // Trimming any whitespace
+    [e.target.id] : 1
+    }) : 
     updateFormData({
       ...formData,
+      Company : companyDetail.company_data?.id,
+      category : 1,
+      status : "در انتظار بررسی",  
+      skills : 1 ,
+      isremote : true,
       // Trimming any whitespace
-      [e.target.id]: e.target.value.trim()
+      [e.target.id] : e.target.value.trim()
+    });
+  }
+
+  const handleChangeSkills = (e) => {
+    updateSkillsArray([{title : e.target.value} , ...skillsArray])
+    updateFormData({
+      ...formData,
+      
+      // Trimming any whitespace
+      [e.target.id] : [...skillsArray , {title : e.target.value}]
     });
   }
   const handleSubmit = (e) => {
-    console.log(e)
+    // console.log(e)
     e.preventDefault()
-    console.log(formData);
-    // dispatch(postJob(formData))
+    // console.log(formData);
+    dispatch(postJob(formData))
     // ... submit to API or something
 
   }
+  // console.log(skillsArray)
+  // console.log(companyDetail)
+  console.log(formData)
+  
   return (
     <>
       <div className="content content-page">
@@ -130,13 +162,14 @@ const PostProject = (props) => {
                                 <div className="title-detail ">
                                   <h3>دسته بندی حوزه شغلی</h3>
                                   <div className="form-group mb-0 ">
-                                    <select className="form-control select">
+                                    <select id="category" onChange={handleChange} className="form-control select">
                                       <option value={0}>انتخاب کنید</option>
-                                      <option value={1}>
-                                        Apps Development
-                                      </option>
-                                      <option value={2}>UI Development</option>
-                                      <option value={3}>Jaa</option>
+                                      {postJobDetailsRequirments.categories?.map((item) => (
+                                        <option>
+                                          {item.title}
+                                        </option>
+                                          ))}
+
                                     </select>
                                   </div>
                                 </div>
@@ -148,10 +181,9 @@ const PostProject = (props) => {
                                 <div className="title-detail ">
                                   <h3>نوع همکاری</h3>
                                   <div className="form-group mb-0 ">
-                                    <select className="form-control select">
-                                      <option value={0}>انتخاب کنید</option>
-                                      <option value={1}>تمام وقت</option>
-                                      <option value={2}>نیمه وقت</option>
+                                    <select id="job_type" onChange={handleChange} className="form-control select">
+                                      <option >تمام وقت</option>
+                                      <option >پاره وقت</option>
                                     </select>
                                   </div>
                                 </div>
@@ -160,7 +192,7 @@ const PostProject = (props) => {
                             {/* /Category Content */}
                             <div
                               className="d-flex justify-between-md"
-                              style={{ justifyContent: "space-between" }}
+                              style={{ gap: "10px" }}
                             >
                               <div
                                 className="title-content mt-1"
@@ -169,10 +201,9 @@ const PostProject = (props) => {
                                 <div className="title-detail ">
                                   <h3>حقوق </h3>
                                   <div className="form-group mb-0 ">
-                                    <select className="form-control select">
-                                      <option value={0}>انتخاب کنید</option>
-                                      <option value={1}>توافقی</option>
-                                      <option value={2}>مشخص</option>
+                                    <select  id="salary_type" onChange={handleChange} className="form-control select">
+                                      <option >توافقی</option>
+                                      <option >مشخص</option>
                                     </select>
                                   </div>
                                 </div>
@@ -182,49 +213,39 @@ const PostProject = (props) => {
                                 style={{ width: "22%" }}
                               >
                                 <div className="title-detail ">
-                                  <h3>حداقل</h3>
+                                  <h3>مقدار</h3>
                                   <div className="form-group mb-0 ">
                                     <input
+                                      id="salary_amount" 
+                                      onChange={handleChange}
+                                      disabled={formData.salary_type !== "مشخص" ? true : false}
                                       type="text"
                                       className="form-control"
                                     />
                                   </div>
                                 </div>
                               </div>
-                              <div
-                                className="title-content mt-1"
-                                style={{ width: "22%" }}
+                            </div>
+                            <div
+                                className="title-content title-content mt-1"
+                                style={{ width: "48%" }}
                               >
-                                <div className="title-detail ">
-                                  <h3>حداکثر</h3>
-                                  <div className="form-group mb-0 ">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                    />
+                                <div className="title-detail">
+                                  <h3> امکان دورکاری</h3>
+                                  <div className="form-group mb-0">
+                                    <select
+                                    className="form-control select"
+                                      id="isremote" 
+                                      onChange={handleChange}
+                                      name="price"
+                                    >
+                                      <option value={true} >دارد</option>
+                                      <option value={false}>ندارد</option>
+                                      
+                                    </select>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="radio">
-                            <label className="custom_radio">
-                              <span className="checkmark" /> امکان دورکاری
-                                <input
-                                  type="radio"
-                                  id="isremote"
-                                  // defaultChecked
-                                /> 
-                              </label>
-                          
-                                <input
-
-                                  type="radio"
-                                  id="isremote"
-                                  // defaultChecked
-                                />
-                             
-                          
-                            </div>
                             {/* Price Content */}
                             <div className="title-content">
                               <div className="title-detail">
@@ -239,147 +260,24 @@ const PostProject = (props) => {
                                   className="form-group price-cont mb-0"
                                   id="price_type"
                                 >
-                                  <select
-                                    name="price"
-                                    className="form-control select"
-                                  >
-                                    <option value={0}>انتخاب کنید</option>
-                                    <option value={1}>
-                                      Fixed Budget Price
-                                    </option>
-                                    <option value={2}>Hourly Pricing</option>
-                                    <option value={3}>Biding Price</option>
-                                  </select>
+                                    <select id="skills" onChange={handleChangeSkills} className="form-control select">
+                                      <option >انتخاب کنید</option>
+                                      {postJobDetailsRequirments.skills?.map((item) => (
+                                        <option>
+                                          {item.title}
+                                        </option>
+                                          ))}
+
+                                    </select>
                                   <div className=" d-flex tags mt-3">
                                     <div>
-                                      <span className=" d-flex align-items-center badge badge-pill badge-design">
-                                        {/* <img
-                              className="ms-2"
-                              style={{
-                                width: "18px",
-                                height: "18px",
-                                // visibility: "hidden",
-                              }}
-                              src={xmark}
-                            /> */}
-                                        After Effects
-                                      </span>
-                                    </div>
-                                    <div>
-                                      <span className="badge badge-pill badge-design">
-                                        Illustrator
-                                      </span>
-                                    </div>
-                                    <div>
-                                      <span className="badge badge-pill badge-design">
-                                        HTML
-                                      </span>
-                                    </div>
-                                    <div>
-                                      <span className="badge badge-pill badge-design">
-                                        Whiteboard
-                                      </span>
-                                    </div>
-                                    <a>
-                                      <span className="badge badge-pill badge-design">
-                                        HTML
-                                      </span>
-                                    </a>
-                                    <div>
-                                      <span className="badge badge-pill badge-design">
-                                        Whiteboard
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div
-                                  className="form-group mt-3"
-                                  id="price_id"
-                                  style={{ display: "none" }}
-                                >
-                                  <div className="input-group">
-                                    <div className="input-group-prepend">
-                                      <button
-                                        type="button"
-                                        className="btn btn-white dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                      >
-                                        $
-                                      </button>
-                                      <div className="dropdown-menu">
-                                        <a className="dropdown-item" href="#">
-                                          Dollars
-                                        </a>
-                                        <a className="dropdown-item" href="#">
-                                          Euro
-                                        </a>
-                                        <a className="dropdown-item" href="#">
-                                          Bitcoin
-                                        </a>
-                                      </div>
-                                    </div>
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder={20.0}
-                                    />
-                                  </div>
-                                </div>
-                                <div
-                                  className="form-group mt-3"
-                                  id="hour_id"
-                                  style={{ display: "none" }}
-                                >
-                                  <div className="row">
-                                    <div className="col-md-6 mb-2">
-                                      <div className="input-group form-inline">
-                                        <div className="input-group-prepend">
-                                          <button
-                                            type="button"
-                                            className="btn btn-white dropdown-toggle"
-                                            data-bs-toggle="dropdown"
-                                          >
-                                            $
-                                          </button>
-                                          <div className="dropdown-menu">
-                                            <a
-                                              className="dropdown-item"
-                                              href="#"
-                                            >
-                                              Dollars
-                                            </a>
-                                            <a
-                                              className="dropdown-item"
-                                              href="#"
-                                            >
-                                              Euro
-                                            </a>
-                                            <a
-                                              className="dropdown-item"
-                                              href="#"
-                                            >
-                                              Bitcoin
-                                            </a>
-                                          </div>
-                                        </div>
-                                        <input
-                                          type="text"
-                                          className="form-control mr-2"
-                                          placeholder={20.0}
-                                        />{" "}
-                                        <label> / hr</label>
-                                      </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <div className="input-group form-inline">
-                                        <label>For </label>{" "}
-                                        <input
-                                          type="text"
-                                          className="form-control ml-2"
-                                          placeholder=" ( eg: 2 Weeks)"
-                                        />
-                                      </div>
-                                    </div>
+                                      {skillsArray?.map((item , index) => (
+                                        <span className=" align-items-center badge badge-pill badge-design">  
+                                        {item.title}
+                                        </span>
+                                        ))
+                                      }
+                                    </div> 
                                   </div>
                                 </div>
                               </div>
@@ -398,13 +296,15 @@ const PostProject = (props) => {
                                   <h3> سابقه شغلی مورد نیاز</h3>
                                   <div className="form-group mb-0">
                                     <select
+                                      id="experience" 
+                                      onChange={handleChange}
                                       name="price"
                                       className="form-control select"
                                     >
-                                      <option value={0}>انتخاب کنید</option>
-                                      <option value={1}>کمتر از ۲ سال</option>
-                                      <option value={2}>۲ تا ۵ سال</option>
-                                      <option value={3}>بیشتر از ۵ سال</option>
+                                      <option >بدون محدودیت</option>
+                                      <option >کمتر از ۲ سال</option>
+                                      <option >۲ تا ۵ سال</option>
+                                      <option >بیشتر از ۵ سال</option>
                                     </select>
                                   </div>
                                 </div>
@@ -417,16 +317,17 @@ const PostProject = (props) => {
                                   <h3>سطح تجربه</h3>
                                   <div className="form-group mb-0">
                                     <select
+                                      id="level" 
+                                      onChange={handleChange}
                                       name="price"
                                       className="form-control select"
                                     >
-                                      <option value={0}>انتخاب کنید</option>
-                                      <option value={1}>
-                                        Intern (کاراموز){" "}
+                                      <option >
+                                      intern(کاراموز)
                                       </option>
-                                      <option value={1}>Junior(جوان) </option>
-                                      <option value={1}>Senior(ارشد) </option>
-                                      <option value={1}>Lead (راهبر)</option>
+                                      <option >Junior(جوان)</option>
+                                      <option >Senior(ارشد)</option>
+                                      <option >Lead(راهبر)</option>
                                     </select>
                                   </div>
                                 </div>
@@ -435,11 +336,13 @@ const PostProject = (props) => {
                             {/* /Skills Content */}
 
                             {/* /Add Document */}
-                            <div className="title-content">
+                            {/* <div className="title-content">
                               <div className="title-detail">
                                 <h3>اضافه کردن فایل</h3>
                                 <div className="custom-file">
                                   <input
+                                    onChange={handleChange}
+                                    id=""
                                     type="file"
                                     className="custom-file-input"
                                   />
@@ -449,28 +352,11 @@ const PostProject = (props) => {
                                   فرمت فایل PDF و حجم آن کمتر از ۲ مگ باشد
                                 </p>
                               </div>
-                            </div>
+                            </div> */}
                             {/* /Add Document */}
                             {/* /adress */}
 
-                            <div className="title-content">
-                              <div className="title-detail">
-                                <h2
-                                  className="mb-5"
-                                  style={{ color: "#32795b" }}
-                                >
-                                  آدرس
-                                </h2>
-                                <h3>آدرس</h3>
-                                <div className="form-group mb-1">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="آدرس محل مورد نظر برای کار را وارد کنید"
-                                  />
-                                </div>
-                              </div>
-                            </div>
+                          
                             <div
                               className="d-flex justify-between-md"
                               style={{ justifyContent: "space-between" }}
@@ -480,35 +366,24 @@ const PostProject = (props) => {
                                 style={{ width: "48%" }}
                               >
                                 <div className="title-detail ">
-                                  <h3>استان</h3>
-                                  <div className="form-group mb-0 ">
-                                    <select className="form-control select">
-                                      <option value={0}>انتخاب کنید</option>
-                                      <option value={1}>تهران</option>
-                                      <option value={2}>البرز</option>
-                                      <option value={3}>گیلان</option>
-                                    </select>
-                                  </div>
-                                </div>
-                              </div>
-                              <div
-                                className="title-content mt-1"
-                                style={{ width: "48%" }}
-                              >
-                                <div className="title-detail ">
                                   <h3>شهر </h3>
                                   <div className="form-group mb-0 ">
-                                    <select className="form-control select">
-                                      <option value={0}>انتخاب کنید</option>
-                                      <option value={0}>رشت</option>
-                                      <option value={1}> انزلی</option>
-                                      <option value={2}> سقالکسار</option>
+                                    <select  
+                                      id="city" 
+                                      onChange={handleChange} 
+                                      className="form-control select">
+                                      {postJobDetailsRequirments.cities?.map((item) => ( 
+                                          <option>{item.name}</option>
+                                          ))
+                                        }
+                                        <option>قزوین</option>
+                                      
                                     </select>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <img style={{ margin: "auto" }} src={map}></img>
+                            {/* <img style={{ margin: "auto" }} src={map}></img> */}
                             <div className="row">
                               <div className="col-md-12 text-end">
                                 <div className="btn-item">
