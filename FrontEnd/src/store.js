@@ -2,7 +2,10 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import { jobListReducer, jobsDetailsReducer } from "./reducers/jobsReducer";
+import { jobListReducer
+        , jobsDetailsReducer
+        , jobsPostRedducer
+        , jobsPostRequirmentsReducer } from "./reducers/jobsReducer";
 import {
   employeeListAllReducer,
   employeeDetailsReducer,
@@ -25,6 +28,8 @@ import {
 const reducer = combineReducers({
   jobList: jobListReducer,
   jobsDetails: jobsDetailsReducer,
+  jobsPost: jobsPostRedducer,
+  jobsPostRequirments: jobsPostRequirmentsReducer,
   //
   employeeDetails: employeeDetailsReducer,
   employeePortfolio : employeePortfolioDetailsReducer,

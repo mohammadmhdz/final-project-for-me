@@ -1,12 +1,43 @@
-import React from "react";
+import React , {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import ReactSummernote from "react-summernote";
 import "react-summernote/dist/react-summernote.css";
 import StickyBox from "react-sticky-box";
 import { Sidebar } from "../foremployers/sidebar";
 import map from "../../assets/images/map.png";
+// redux
+import { postJob , jobsPostRequirments } from "../../../actions/jobActions";
+import { useDispatch ,  useSelector } from "react-redux";
 
 const PostProject = (props) => {
+  const dispatch = useDispatch();
+  const postinJob = useSelector((state) => state.jobsPost);
+  const Requirments = useSelector((state) => state.jobsPostRequirments);
+  const { postJobDetailsRequirments } = Requirments;
+  const [formData, updateFormData] = useState([]);
+  
+  useEffect(() => {
+    dispatch(jobsPostRequirments())
+
+  },[dispatch])
+  console.log(postJobDetailsRequirments)
+
+  const handleChange = (e) => {
+    console.log(e)
+    updateFormData({
+      ...formData,
+      // Trimming any whitespace
+      [e.target.id]: e.target.value.trim()
+    });
+  }
+  const handleSubmit = (e) => {
+    console.log(e)
+    e.preventDefault()
+    console.log(formData);
+    // dispatch(postJob(formData))
+    // ... submit to API or something
+
+  }
   return (
     <>
       <div className="content content-page">
@@ -39,6 +70,8 @@ const PostProject = (props) => {
                                 <h3>عنوان</h3>
                                 <div className="form-group mb-1">
                                   <input
+                                    onChange={handleChange}
+                                    id="title"
                                     type="text"
                                     className="form-control"
                                     placeholder="عنوانی برای فرصت شغلی خود وارد کنید"
@@ -52,7 +85,14 @@ const PostProject = (props) => {
                               <div className="title-detail">
                                 <h3>توضیحات </h3>
                                 <div className="form-group mb-5">
-                                  <ReactSummernote
+                                  <textarea
+                                    style={{width : "100%"}}
+                                    onChange={handleChange}
+                                    id="description"
+                                  ></textarea>
+                                  {/* <ReactSummernote
+                                  onChange={handleChange}
+                                  id="description"
                                     value="Default value"
                                     options={{
                                       lang: "ru-RU",
@@ -74,7 +114,7 @@ const PostProject = (props) => {
                                         ["view", ["fullscreen", "codeview"]],
                                       ],
                                     }}
-                                  />
+                                  /> */}
                                 </div>
                               </div>
                             </div>
@@ -167,15 +207,23 @@ const PostProject = (props) => {
                               </div>
                             </div>
                             <div className="radio">
-                              <label className="custom_radio">
+                            <label className="custom_radio">
+                              <span className="checkmark" /> امکان دورکاری
                                 <input
                                   type="radio"
-                                  defaultValue="job"
-                                  name="period"
-                                  defaultChecked
-                                />
-                                <span className="checkmark" /> امکان دورکاری
+                                  id="isremote"
+                                  // defaultChecked
+                                /> 
                               </label>
+                          
+                                <input
+
+                                  type="radio"
+                                  id="isremote"
+                                  // defaultChecked
+                                />
+                             
+                          
                             </div>
                             {/* Price Content */}
                             <div className="title-content">
@@ -467,6 +515,7 @@ const PostProject = (props) => {
                                   <button
                                     type="submit"
                                     className="btn next-btn"
+                                    onClick={handleSubmit}
                                   >
                                     تایید
                                   </button>
