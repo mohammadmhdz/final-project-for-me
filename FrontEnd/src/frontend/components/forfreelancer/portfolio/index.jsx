@@ -12,17 +12,14 @@ import {
   Project_5,
   Project_6,
 } from "../../imagepath";
-import {
-  employeePortfolioDetails,
-} from "../../../../actions/employeeActions";
+import { employeePortfolioDetails } from "../../../../actions/employeeActions";
 import { useDispatch, useSelector } from "react-redux";
 
 const FreelancerPortfolio = (props) => {
- 
   const dispatch = useDispatch();
   const portfolio = useSelector((state) => state.employeePortfolio);
-  const localItem = JSON.parse(localStorage.getItem("userInfo"))
-  const {employeePortfolioArray} = portfolio ;
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+  const { employeePortfolioArray } = portfolio;
   useEffect(() => {
     dispatch(employeePortfolioDetails(localItem.id));
     document.body.className = "dashboard-page";
@@ -58,37 +55,35 @@ const FreelancerPortfolio = (props) => {
                 <div className="pro-content pt-4 pb-4">
                   <div className="row">
                     {employeePortfolioArray.map((item) => (
-
-                    <div className="col-sm-6 col-lg-4">
-                      <div className="project-widget">
-                        <div className="portfolio-img">
-                          <Image
-                            className="img-fluid"
-                            alt="User Image"
-                            src={`http://127.0.0.1:8000/${item.image}`}
-                          />
-                          <div className="portfolio-live">
-                            <div className="portfolio-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#portfolio-edit"
-                                className="port-icon"
-                              >
-                                <i className="fas fa-pen" />
-                              </a>
-                              <a href="#" className="port-icon me-2">
-                                <i className="fas fa-trash-alt" />
-                              </a>
+                      <div className="col-sm-6 col-lg-4">
+                        <div className="project-widget">
+                          <div className="portfolio-img">
+                            <Image
+                              className="img-fluid"
+                              alt="User Image"
+                              src={`http://127.0.0.1:8000/${item.image}`}
+                            />
+                            <div className="portfolio-live">
+                              <div className="portfolio-content">
+                                <a
+                                  data-bs-toggle="modal"
+                                  href="#portfolio-edit"
+                                  className="port-icon"
+                                >
+                                  <i className="fas fa-pen" />
+                                </a>
+                                <a href="#" className="port-icon me-2">
+                                  <i className="fas fa-trash-alt" />
+                                </a>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="portfolio-detail">
-                          <h3 className="pro-name">{item.title}</h3>
+                          <div className="portfolio-detail">
+                            <h3 className="pro-name">{item.title}</h3>
+                          </div>
                         </div>
                       </div>
-                    </div>
                     ))}
-
                   </div>
                   <div className="col-md-12">
                     <ul className="paginations">
