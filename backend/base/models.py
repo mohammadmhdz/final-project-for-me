@@ -204,7 +204,7 @@ class Company(models.Model):
 class Verification(models.Model):
      Company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
      registrationـnumber =models.CharField(max_length=15)
-     registration_file = models.ImageField(null=True, blank=True)
+    #  registration_file = models.ImageField(null=True, blank=True)
      status = models.BooleanField(default=False)
 
      
@@ -255,7 +255,7 @@ class Skills(models.Model):
         return self.title    
 
 class Job(models.Model):
-    Company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    Company = models.ForeignKey(Company, on_delete=models.CASCADE,null=True)
     title        = models.CharField(max_length=100)  
     published_at = models.DateTimeField(auto_now=True)
     job_type     = models.CharField(max_length=15 , choices=JOB_TYPE)
