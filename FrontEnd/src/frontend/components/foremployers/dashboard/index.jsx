@@ -13,7 +13,7 @@ import {
 import { Sidebar } from "../sidebar";
 
 // redux
-import { companyDetails } from "../../../../actions/companyActions"
+import { companyDetails ,companyJobsListAction } from "../../../../actions/companyActions"
 import { useDispatch, useSelector} from "react-redux";
 
 const Dashboard = (props) => {
@@ -176,7 +176,8 @@ const Dashboard = (props) => {
       document.body.className = "";
     };
   }, [dispatch]);
-  console.log(companyDetail)
+  console.log(companyDetail , "companyDetail")
+  console.log(companyJobsListArray , "companyJobsListArray")
 
   return (
     <>

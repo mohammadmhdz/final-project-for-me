@@ -14,6 +14,10 @@ import {
   COMPANY_FAVORITE_EMPLOYEE_REQUEST ,
   COMPANY_FAVORITE_EMPLOYEE_SUCCESS ,
   COMPANY_FAVORITE_EMPLOYEE_FAIL ,
+  //POST
+  COMPANY_VERIFICATION_REQUEST,
+  COMPANY_VERIFICATION_SUCCESS,
+  COMPANY_VERIFICATION_FAIL,
 } from "../constant/companyConstant";
 import axios from "axios";
 
@@ -103,6 +107,46 @@ export const companyJobsListAction = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: COMPANY_JOBS_LIST_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+// POST DATA
+export const  companyVerification = (input) => async (dispatch) => {
+  try {
+    console.log(input?.company_verfication_id);
+    console.log(input?.company_name);
+    dispatch({
+      type: COMPANY_VERIFICATION_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await axios.post(
+      "http://127.0.0.1:8000/api/verification/",
+      { Company : input?.company_name ,
+        registrationـnumber: input?.company_verfication_id ,
+        registration_file : input?.company_file ,
+        status: true},
+      config
+    );
+
+    dispatch({
+      type: COMPANY_VERIFICATION_SUCCESS,
+      payload: data,
+    });
+
+  } catch (error) {
+    dispatch({
+      type: COMPANY_VERIFICATION_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

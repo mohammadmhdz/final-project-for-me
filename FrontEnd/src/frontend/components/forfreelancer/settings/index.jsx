@@ -1,17 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect , useState } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { home_icon, Img, Img_02 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { employeeDetails } from "../../../../actions/employeeActions";
 
 const FreelancerSettings = (props) => {
+  // redux
+  const dispatch = useDispatch();
+  const employeeList = useSelector((state) => state.employeeDetails);
+  const {employee} = employeeList ;
+  const [formData, setFormData] = useState({employee});
+
+  
+  const localItem = JSON.parse(localStorage.getItem("userInfo"))
+
   useEffect(() => {
+    // redux
+    dispatch(employeeDetails(localItem.id))
+
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
-  });
+  },[dispatch]);
 
+  console.log(employee)
+  console.log(formData ,'formData')
   return (
     <>
       {/* Page Content */}
@@ -65,7 +82,7 @@ const FreelancerSettings = (props) => {
                         <div className="row">
                           <div className="form-group col-md-6">
                             <label>نام کاربری</label>
-                            <input type="text" className="form-control" />
+                            <input type="text" className="form-control" defaultValue={formData.user?.name} />
                           </div>
                           <div className="form-group col-md-6">
                             <label>آدرس ایمیل</label>

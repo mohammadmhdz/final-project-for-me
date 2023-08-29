@@ -14,6 +14,10 @@ import {
   COMPANY_FAVORITE_EMPLOYEE_REQUEST ,
   COMPANY_FAVORITE_EMPLOYEE_SUCCESS ,
   COMPANY_FAVORITE_EMPLOYEE_FAIL ,
+  //POST
+  COMPANY_VERIFICATION_REQUEST,
+  COMPANY_VERIFICATION_SUCCESS,
+  COMPANY_VERIFICATION_FAIL,
 } from "../constant/companyConstant";
 
 export const companyDetailsReducer = (
@@ -88,6 +92,24 @@ export const companyJobsListReducer = (
       };
     case COMPANY_JOBS_LIST_FAIL:
       return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+//POST
+export const companyVerifyReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COMPANY_VERIFICATION_REQUEST:
+      return { loading: true };
+
+    case COMPANY_VERIFICATION_SUCCESS:
+      return { loading: false, companyVerifyInfo: action.payload };
+
+    case COMPANY_VERIFICATION_FAIL:
+      return { loading: false, error: action.payload };
+
 
     default:
       return state;
