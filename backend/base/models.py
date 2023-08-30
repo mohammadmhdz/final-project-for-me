@@ -190,7 +190,7 @@ class Company(models.Model):
      working_hours_from = models.TimeField()
      working_hours_to = models.TimeField()
      favorite_employee = models.ManyToManyField('Employee', null=True , blank= True)
-     active_plan =models.CharField(max_length=15 , choices=Population,null=True , blank= True)
+     active_plan =models.CharField(max_length=15 , choices=plan,null=True , blank= True)
      available_Job_count =models.IntegerField(null=True , blank= True)
 
     
