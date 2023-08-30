@@ -129,7 +129,7 @@ export const postJob = (input) => async (dispatch) => {
 =======
       {
         Company: 1,
-        title: "i765645این یک تست کار است  toro khoda",
+        title: "i765645این یک تست کار است  toro khodaaaaaaaaa",
         published_at: "2023-08-29T15:47:18",
         job_type: "تمام وقت",
         isremote: true,
