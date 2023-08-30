@@ -271,7 +271,6 @@ class Job(models.Model):
     status = models.CharField(max_length=15 , choices=JobStatus)
     # maplocation
 
-
     
     @property
     def completed_request_user(self):

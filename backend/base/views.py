@@ -80,7 +80,7 @@ def getUsers(request):
 
 
 @api_view(['GET'])
-# @permission_classes([IsAdminUser])
+@permission_classes([IsAdminUser])
 def getEmployees(request):
     Employees = Employee.objects.all()
     serializer = EmployeeSerializer(Employees, many=True)
@@ -159,10 +159,6 @@ class JobViewSet(viewsets.ViewSet):
     
 
 class CompanyViewSet(viewsets.ViewSet):
-    # def list(self,request):
-    #     Companies = Company.objects.all()
-    #     serializer = CompanySerializer(Companies , many = True)
-    #     return Response(serializer.data)
       
     def list(self, request):
         companies = Company.objects.all()
