@@ -89,11 +89,15 @@ export const jobsPostRequirments = () => async (dispatch) => {
 export const postJob = (input) => async (dispatch) => {
   // console.log(input)
   try {
+<<<<<<< HEAD
 
     console.log(input , "input");
 
     // console.log(input.Company, "input");
 
+=======
+    // console.log(input.Company, "input");
+>>>>>>> f73068c21488f2ecb610ec7325b68ee8098c7e0f
     // console.log(input?.company_name);
     dispatch({
       type: JOBS_POST_REQUEST,
@@ -108,6 +112,7 @@ export const postJob = (input) => async (dispatch) => {
     const { data } = await axios.post(
       "http://127.0.0.1:8000/api/jobs/",
       {
+<<<<<<< HEAD
         Company: input?.Company,
         title: input?.title,
         published_at: input?.published_at ,
@@ -123,11 +128,15 @@ export const postJob = (input) => async (dispatch) => {
         skills:  [{id : 1 }, {id : 2}],
         category: +input?.category, // change it to int using +
         status: input?.status,
+
       },
       config
     );
     console.log(data);
+<<<<<<< HEAD
 
+=======
+>>>>>>> f73068c21488f2ecb610ec7325b68ee8098c7e0f
     dispatch({
       type: JOBS_POST_SUCCESS,
       payload: data,

@@ -11,6 +11,30 @@ const Settings = (props) => {
   const dispatch = useDispatch();
   const companyDetailsReducer = useSelector((state) => state.companyDetails);
   const { companyDetail } = companyDetailsReducer;
+
+  const [formData, updateFormData] = useState([]);
+  
+  const handleChange = (e) => {
+    // console.log(e.target.id)
+
+    // e.target.id === "city" ? updateFormData({
+    //   ...formData,
+    // [e.target.id] : e.target.value
+    // }): e.target.id === "isremote" ?  updateFormData({
+    //   ...formData,
+    //   [e.target.id] :  (e.target.value === "true" ? true :e.target.value === "false" ? false : null)   
+    // })  : 
+    updateFormData({
+      ...formData,
+      // Company : companyDetail.company_data?.id,
+      // published_at : "2023-08-29T15:47:18",
+      // status : "درانتظار تایید",  
+      
+      // Trimming any whitespace
+      [e.target.id] : e.target.value
+      // category : 1,
+    });
+  }
   useEffect(() => {
     dispatch(companyDetails(1))
 
@@ -66,7 +90,12 @@ const Settings = (props) => {
                         <div className="form-row pro-pad">
                           <div className="form-group col-md-6">
                             <label>آدرس ایمیل</label>
-                            <input placeholder={companyDetail.company_data?.user.email} type="email" className="form-control" />
+                            <input
+                            onChange={handleChange}
+                            id="Email"
+                            placeholder={companyDetail.company_data?.Email} 
+                            type="email" 
+                            className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>آدرس وبسایت</label>
