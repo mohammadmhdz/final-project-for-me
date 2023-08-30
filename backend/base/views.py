@@ -59,7 +59,7 @@ def registerUser(request):
 
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def getUserProfile(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
@@ -69,7 +69,7 @@ def getUserProfile(request):
 
 
 @api_view(['GET'])
-# @permission_classes([IsAdminUser])
+@permission_classes([IsAdminUser])
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
@@ -113,6 +113,9 @@ def Dropdown(request):
 
 
 class JobViewSet(viewsets.ViewSet):
+
+
+
     def list(self,request):
         jobs = Job.objects.all()
         serializer = JobSerializer(jobs , many = True)
@@ -133,6 +136,8 @@ class JobViewSet(viewsets.ViewSet):
             return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
     
+
+
 
     def update(self, request, pk=None):
         job = get_object_or_404(Job.objects.all(), pk=pk)

@@ -38,22 +38,13 @@ class UserSerializerWithToken(UserSerializer):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
 
-# class JobSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Job
-#         fields = '__all__'  
-#  
-        # fields = [
-        #     'id', 'company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
-        #     'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
-        #     'num_requests','completed_request_user',
-        # ]
+
 
 class JobSerializer(serializers.ModelSerializer):
     company = serializers.SerializerMethodField(read_only=True)
-    city = serializers.SerializerMethodField(read_only=True)
-    category = serializers.SerializerMethodField(read_only=True)
-    skills = serializers.SerializerMethodField(read_only=True)
+    job_city = serializers.SerializerMethodField(read_only=True)
+    job_category = serializers.SerializerMethodField(read_only=True)
+    job_skills = serializers.SerializerMethodField(read_only=True)
     num_requests = serializers.SerializerMethodField()
     completed_request_user = serializers.SerializerMethodField()
  
@@ -61,16 +52,10 @@ class JobSerializer(serializers.ModelSerializer):
         model = Job
         fields = '__all__'
 
-        fields = [
-          'id', 'company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
-          'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
-         'num_requests','completed_request_user',
-        ]
-
         # fields = [
-        #     'id', 'company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
-        #     'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
-        #     'num_requests','completed_request_user',
+        #   'id', 'company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
+        #   'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
+        #  'num_requests','completed_request_user',
         # ]
 
 
@@ -89,14 +74,14 @@ class JobSerializer(serializers.ModelSerializer):
     def get_num_requests(self, obj):
         return obj.request_set.count()
 
-    def get_city(self, obj):
-        city = obj.city
-        serializer = CitySerializer(city, many=False)
+    def get_job_city(self, obj):
+        job_city = obj.city
+        serializer = CitySerializer(job_city, many=False)
         return serializer.data  
     
-    def get_category(self, obj):
-        category = obj.category
-        serializer = CategorySerializer(category, many=False)
+    def get_job_categoryy(self, obj):
+        job_category = obj.category
+        serializer = CategorySerializer(job_category, many=False)
         return serializer.data  
     
 
@@ -105,9 +90,9 @@ class JobSerializer(serializers.ModelSerializer):
         serializer = CompanySerializer(company, many=False)
         return serializer.data  
     
-    def get_skills(self, obj):
-        skills = obj.skills
-        serializer = SkillSerializer(skills, many=True)
+    def get_job_skills(self, obj):
+        job_skills = obj.skills
+        serializer = SkillSerializer(job_skills, many=True)
         return serializer.data 
 
 class CompanySerializer(serializers.ModelSerializer):
