@@ -31,7 +31,6 @@ const PostProject = (props) => {
   const handleChange = (e) => {
     console.log(e.target.id)
 
-<<<<<<< HEAD
     e.target.id === "city" ? updateFormData({
       ...formData,
     [e.target.id] : e.target.value
@@ -54,41 +53,15 @@ const PostProject = (props) => {
   console.log(postinJob)
   console.log(postinJob)
 
-  const handleChangeSkills = (e) => {
-    updateSkillsArray([+e.target.value , ...skillsArray])
-=======
-    e.target.id === "city"
-      ? updateFormData({
-          ...formData,
-
-          // Trimming any whitespace
-          [e.target.id]: 1,
-        })
-      : updateFormData({
-          ...formData,
-          Company: companyDetail.company_data?.id,
-          published_at: "2023-08-29T15:47:18",
-          category: 1,
-          status: "در انتظار بررسی",
-          skills: [1],
-          isremote: true,
-          // Trimming any whitespace
-          [e.target.id]: e.target.value.trim(),
-        });
-  };
 
   const handleChangeSkills = (e) => {
-    updateSkillsArray([{ title: e.target.value }, ...skillsArray]);
->>>>>>> f73068c21488f2ecb610ec7325b68ee8098c7e0f
+    updateSkillsArray([+e.target.value, ...skillsArray]);
+
     updateFormData({
       ...formData,
 
       // Trimming any whitespace
-<<<<<<< HEAD
       [e.target.id] : [...skillsArray , +e.target.value]
-=======
-      [e.target.id]: [...skillsArray, { title: e.target.value }],
->>>>>>> f73068c21488f2ecb610ec7325b68ee8098c7e0f
     });
   };
   const handleSubmit = (e) => {
@@ -200,20 +173,13 @@ const PostProject = (props) => {
                                       className="form-control select"
                                     >
                                       <option value={0}>انتخاب کنید</option>
-<<<<<<< HEAD
                                       {postJobDetailsRequirments.categories?.map((item) => (
                                         <option value={+item.id}>
                                           {item.title}
                                         </option>
                                           ))}
 
-=======
-                                      {postJobDetailsRequirments.categories?.map(
-                                        (item) => (
-                                          <option>{item.title}</option>
-                                        )
-                                      )}
->>>>>>> f73068c21488f2ecb610ec7325b68ee8098c7e0f
+
                                     </select>
                                   </div>
                                 </div>
@@ -315,7 +281,7 @@ const PostProject = (props) => {
                                   className="form-group price-cont mb-0"
                                   id="price_type"
                                 >
-<<<<<<< HEAD
+
                                     <select id="skills" onChange={handleChangeSkills} className="form-control select">
                                       <option >انتخاب کنید</option>
                                       {postJobDetailsRequirments.skills?.map((item) => (
@@ -325,20 +291,7 @@ const PostProject = (props) => {
                                           ))}
 
                                     </select>
-=======
-                                  <select
-                                    id="skills"
-                                    onChange={handleChangeSkills}
-                                    className="form-control select"
-                                  >
-                                    <option>انتخاب کنید</option>
-                                    {postJobDetailsRequirments.skills?.map(
-                                      (item) => (
-                                        <option>{item.title}</option>
-                                      )
-                                    )}
-                                  </select>
->>>>>>> f73068c21488f2ecb610ec7325b68ee8098c7e0f
+
                                   <div className=" d-flex tags mt-3">
                                     <div>
                                       {skillsArray?.map((item, index) => (
@@ -434,7 +387,7 @@ const PostProject = (props) => {
                                 <div className="title-detail ">
                                   <h3>شهر </h3>
                                   <div className="form-group mb-0 ">
-<<<<<<< HEAD
+
                                     <select  
                                       id="city" 
                                       onChange={handleChange} 
@@ -445,19 +398,7 @@ const PostProject = (props) => {
                                         }
                                         <option>قزوین</option>
                                       
-=======
-                                    <select
-                                      id="city"
-                                      onChange={handleChange}
-                                      className="form-control select"
-                                    >
-                                      {postJobDetailsRequirments.cities?.map(
-                                        (item) => (
-                                          <option>{item.name}</option>
-                                        )
-                                      )}
-                                      <option>قزوین</option>
->>>>>>> f73068c21488f2ecb610ec7325b68ee8098c7e0f
+
                                     </select>
                                   </div>
                                 </div>

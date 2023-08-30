@@ -52,15 +52,8 @@ class JobSerializer(serializers.ModelSerializer):
         model = Job
         fields = '__all__'
 
-<<<<<<< HEAD
-        # fields = [
-        #   'id', 'company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
-        #   'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
-        #  'num_requests','completed_request_user',
-        # ]
 
-=======
->>>>>>> f73068c21488f2ecb610ec7325b68ee8098c7e0f
+
         # fields = [
         #   'id', 'company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
         #   'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
@@ -88,7 +81,7 @@ class JobSerializer(serializers.ModelSerializer):
         serializer = CitySerializer(job_city, many=False)
         return serializer.data  
     
-    def get_job_categoryy(self, obj):
+    def get_job_category(self, obj):
         job_category = obj.category
         serializer = CategorySerializer(job_category, many=False)
         return serializer.data  
