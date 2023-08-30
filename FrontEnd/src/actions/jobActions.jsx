@@ -91,7 +91,7 @@ export const jobsPostRequirments = () => async (dispatch) => {
 export const  postJob = (input) => async (dispatch) => {
   // console.log(input)
   try {
-    console.log(input , "input");
+    console.log(input.Company , "input");
     // console.log(input?.company_name);
     dispatch({
       type: JOBS_POST_REQUEST,
@@ -105,10 +105,24 @@ export const  postJob = (input) => async (dispatch) => {
 
     const { data } = await axios.post(
       "http://127.0.0.1:8000/api/jobs/",
-      input,
+      {"Company": 1,
+        "title": input?.title,
+        "published_at": input?.published_at,
+        "job_type": input?.job_type,
+        "isremote": input?.isremote,
+        "city": input?.city,
+        "experience": input?.experience,
+        "level":  input?.level,
+        "salary_type":  input?.salary_type,
+        "salary_amount":  input?.salary_amount,
+        "description":  input?.description,
+        "skills": [1, 2],
+        "category": 1,
+        "status": "فعال"
+      },
       config
     );
-
+      console.log(data)
     dispatch({
       type: JOBS_POST_SUCCESS,
       payload: data,
