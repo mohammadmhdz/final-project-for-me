@@ -89,11 +89,11 @@ export const jobsPostRequirments = () => async (dispatch) => {
 export const postJob = (input) => async (dispatch) => {
   // console.log(input)
   try {
-<<<<<<< HEAD
-    console.log(input.Company , "input");
-=======
-    console.log(input.Company, "input");
->>>>>>> 9fab5992ed66782bcff785672212c0dd3106c35e
+
+    console.log(input , "input");
+
+    // console.log(input.Company, "input");
+
     // console.log(input?.company_name);
     dispatch({
       type: JOBS_POST_REQUEST,
@@ -107,46 +107,27 @@ export const postJob = (input) => async (dispatch) => {
 
     const { data } = await axios.post(
       "http://127.0.0.1:8000/api/jobs/",
-<<<<<<< HEAD
-      {"Company": 1,
-        "title": input?.title,
-        "published_at": input?.published_at,
-        "job_type": input?.job_type,
-        "isremote": input?.isremote,
-        "city": input?.city,
-        "experience": input?.experience,
-        "level":  input?.level,
-        "salary_type":  input?.salary_type,
-        "salary_amount":  input?.salary_amount,
-        "description":  input?.description,
-        "skills": [1, 2],
-        "category": 1,
-        "status": "فعال"
-      },
-      config
-    );
-      console.log(data)
-=======
       {
-        Company: 1,
-        title: "i765645این یک تست کار است  toro khodaaaaaaaaa",
-        published_at: "2023-08-29T15:47:18",
-        job_type: "تمام وقت",
-        isremote: true,
-        city: 1,
-        experience: "کمتر از ۲ سال",
-        level: "intern(کاراموز)",
-        salary_type: "مشخص",
-        salary_amount: "12",
-        description: "Job description",
-        skills: [1, 2],
-        category: 1,
-        status: "فعال",
+        Company: input?.Company,
+        title: input?.title,
+        published_at: input?.published_at ,
+        job_type: input?.job_type,
+        isremote: input?.isremote,
+        city: +input?.city,  // change it to int using +
+        experience: input?.experience,
+        level: input?.level,
+        salary_type: input?.salary_type,
+        salary_amount: input?.salary_amount,
+        description: input?.description,
+        // skills:  [...input?.skills],
+        skills:  [{id : 1 }, {id : 2}],
+        category: +input?.category, // change it to int using +
+        status: input?.status,
       },
       config
     );
     console.log(data);
->>>>>>> 9fab5992ed66782bcff785672212c0dd3106c35e
+
     dispatch({
       type: JOBS_POST_SUCCESS,
       payload: data,

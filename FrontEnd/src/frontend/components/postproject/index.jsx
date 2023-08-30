@@ -28,35 +28,39 @@ useEffect(() => {
   },[dispatch])
   console.log(postJobDetailsRequirments)
 
+  // this will prepare our data for sending and put it in formData useState
   const handleChange = (e) => {
-    // console.log(e.target.id)
+    console.log(e.target.id)
 
     e.target.id === "city" ? updateFormData({
       ...formData,
-      
-      // Trimming any whitespace
-    [e.target.id] : 1
-    }) : 
+    [e.target.id] : e.target.value
+    }): e.target.id === "isremote" ?  updateFormData({
+      ...formData,
+      [e.target.id] :  (e.target.value === "true" ? true :e.target.value === "false" ? false : null)   
+    })  : 
     updateFormData({
       ...formData,
       Company : companyDetail.company_data?.id,
       published_at : "2023-08-29T15:47:18",
-      category : 1,
-      status : "در انتظار بررسی",  
-      skills : [1] ,
-      isremote : true,
+      status : "درانتظار تایید",  
+      
       // Trimming any whitespace
-      [e.target.id] : e.target.value.trim()
+      [e.target.id] : e.target.value
+      // category : 1,
     });
   }
+  
+  console.log(postinJob)
+  console.log(postinJob)
 
   const handleChangeSkills = (e) => {
-    updateSkillsArray([{title : e.target.value} , ...skillsArray])
+    updateSkillsArray([+e.target.value , ...skillsArray])
     updateFormData({
       ...formData,
       
       // Trimming any whitespace
-      [e.target.id] : [...skillsArray , {title : e.target.value}]
+      [e.target.id] : [...skillsArray , +e.target.value]
     });
   }
   const handleSubmit = (e) => {
@@ -166,7 +170,7 @@ useEffect(() => {
                                     <select id="category" onChange={handleChange} className="form-control select">
                                       <option value={0}>انتخاب کنید</option>
                                       {postJobDetailsRequirments.categories?.map((item) => (
-                                        <option>
+                                        <option value={+item.id}>
                                           {item.title}
                                         </option>
                                           ))}
@@ -264,7 +268,7 @@ useEffect(() => {
                                     <select id="skills" onChange={handleChangeSkills} className="form-control select">
                                       <option >انتخاب کنید</option>
                                       {postJobDetailsRequirments.skills?.map((item) => (
-                                        <option>
+                                        <option value={item.id}>
                                           {item.title}
                                         </option>
                                           ))}
@@ -374,7 +378,7 @@ useEffect(() => {
                                       onChange={handleChange} 
                                       className="form-control select">
                                       {postJobDetailsRequirments.cities?.map((item) => ( 
-                                          <option>{item.name}</option>
+                                          <option value={item.id}>{item.name}</option>
                                           ))
                                         }
                                         <option>قزوین</option>

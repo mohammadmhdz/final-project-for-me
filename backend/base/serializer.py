@@ -61,11 +61,11 @@ class JobSerializer(serializers.ModelSerializer):
         model = Job
         fields = '__all__'
 
-        fields = [
-          'id', 'company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
-          'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
-         'num_requests','completed_request_user',
-        ]
+        # fields = [
+        #   'id', 'company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
+        #   'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
+        #  'num_requests','completed_request_user',
+        # ]
 
         # fields = [
         #     'id', 'company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
