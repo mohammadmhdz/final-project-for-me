@@ -66,11 +66,9 @@ export const jobsDetail = (keyword) => async (dispatch) => {
 export const jobsPostRequirments = () => async (dispatch) => {
   try {
     dispatch({ type: JOBS_POST_REQUIREMENTS_REQUEST });
-    
+
     // const { data } = await axios.get(`/api/products${keyword}`)
-    const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/dropdown/`
-    );
+    const { data } = await axios.get(`http://127.0.0.1:8000/api/dropdown/`);
     // console.log(data);
     dispatch({
       type: JOBS_POST_REQUIREMENTS_SUCCESS,
@@ -88,10 +86,10 @@ export const jobsPostRequirments = () => async (dispatch) => {
 };
 
 // POST
-export const  postJob = (input) => async (dispatch) => {
+export const postJob = (input) => async (dispatch) => {
   // console.log(input)
   try {
-    console.log(input , "input");
+    console.log(input.Company, "input");
     // console.log(input?.company_name);
     dispatch({
       type: JOBS_POST_REQUEST,
@@ -105,15 +103,29 @@ export const  postJob = (input) => async (dispatch) => {
 
     const { data } = await axios.post(
       "http://127.0.0.1:8000/api/jobs/",
-      input,
+      {
+        Company: 1,
+        title: "i765645این یک تست کار است  toro khoda",
+        published_at: "2023-08-29T15:47:18",
+        job_type: "تمام وقت",
+        isremote: true,
+        city: 1,
+        experience: "کمتر از ۲ سال",
+        level: "intern(کاراموز)",
+        salary_type: "مشخص",
+        salary_amount: "12",
+        description: "Job description",
+        skills: [1, 2],
+        category: 1,
+        status: "فعال",
+      },
       config
     );
-
+    console.log(data);
     dispatch({
       type: JOBS_POST_SUCCESS,
       payload: data,
     });
-
   } catch (error) {
     dispatch({
       type: JOBS_POST_FAIL,
