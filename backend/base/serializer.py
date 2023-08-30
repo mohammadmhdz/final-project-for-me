@@ -41,8 +41,13 @@ class UserSerializerWithToken(UserSerializer):
 # class JobSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Job
-#         fields = '__all__'   
-
+#         fields = '__all__'  
+#  
+        # fields = [
+        #     'id', 'company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
+        #     'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
+        #     'num_requests','completed_request_user',
+        # ]
 
 class JobSerializer(serializers.ModelSerializer):
     company = serializers.SerializerMethodField(read_only=True)
@@ -54,12 +59,12 @@ class JobSerializer(serializers.ModelSerializer):
  
     class Meta:
         model = Job
-        fields = '__all__'
-        # fields = [
-        #     'id', 'Company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
-        #     'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
-        #     'num_requests','completed_request_user',
-        # ]
+        # fields = '__all__'
+        fields = [
+            'id', 'company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
+            'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
+            'num_requests','completed_request_user',
+        ]
 
     def get_completed_request_user(self, obj):
         completed_request = obj.request_set.filter(status='استخدام شده', employee__user__isnull=False).first()
@@ -89,7 +94,7 @@ class JobSerializer(serializers.ModelSerializer):
 
     def get_company(self, obj):
         company = obj.Company
-        serializer = CompanySerializer(Company, many=False)
+        serializer = CompanySerializer(company, many=False)
         return serializer.data  
     
     def get_skills(self, obj):
