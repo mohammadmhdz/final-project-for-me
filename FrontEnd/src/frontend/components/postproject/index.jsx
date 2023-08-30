@@ -21,7 +21,7 @@ const PostProject = (props) => {
   const [formData, updateFormData] = useState([]);
   const [skillsArray, updateSkillsArray] = useState([]);
   
-  useEffect(() => {
+useEffect(() => {
     dispatch(jobsPostRequirments())
     dispatch(companyDetails(1))
 
@@ -40,9 +40,10 @@ const PostProject = (props) => {
     updateFormData({
       ...formData,
       Company : companyDetail.company_data?.id,
+      published_at : "2023-08-29T15:47:18",
       category : 1,
       status : "در انتظار بررسی",  
-      skills : 1 ,
+      skills : [1] ,
       isremote : true,
       // Trimming any whitespace
       [e.target.id] : e.target.value.trim()

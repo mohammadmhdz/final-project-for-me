@@ -255,7 +255,7 @@ class Skills(models.Model):
         return self.title    
 
 class Job(models.Model):
-    Company = models.ForeignKey(Company, on_delete=models.CASCADE,null=True)
+    Company = models.ForeignKey(Company, on_delete=models.CASCADE)
     title        = models.CharField(max_length=100)  
     published_at = models.DateTimeField(auto_now=True)
     job_type     = models.CharField(max_length=15 , choices=JOB_TYPE)
