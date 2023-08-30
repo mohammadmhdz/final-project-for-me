@@ -111,7 +111,7 @@ class JobSerializer(serializers.ModelSerializer):
         return serializer.data 
 
 class CompanySerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField(read_only=True)
+    userr = serializers.SerializerMethodField(read_only=True)
     city = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -119,9 +119,9 @@ class CompanySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-    def get_user(self, obj):
-        user = obj.user
-        serializer = UserSerializer(user, many=False)
+    def get_userr(self, obj):
+        userr = obj.user
+        serializer = UserSerializer(userr, many=False)
         return serializer.data
     
 

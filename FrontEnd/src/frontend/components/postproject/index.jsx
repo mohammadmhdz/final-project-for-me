@@ -1,4 +1,4 @@
-import React , {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ReactSummernote from "react-summernote";
 import "react-summernote/dist/react-summernote.css";
@@ -6,9 +6,9 @@ import StickyBox from "react-sticky-box";
 import { Sidebar } from "../foremployers/sidebar";
 import map from "../../assets/images/map.png";
 // redux
-import { postJob , jobsPostRequirments } from "../../../actions/jobActions";
+import { postJob, jobsPostRequirments } from "../../../actions/jobActions";
 import { companyDetails } from "../../../actions/companyActions";
-import { useDispatch ,  useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { string } from "prop-types";
 
 const PostProject = (props) => {
@@ -20,57 +20,56 @@ const PostProject = (props) => {
   const { companyDetail } = companyDetailsReducer;
   const [formData, updateFormData] = useState([]);
   const [skillsArray, updateSkillsArray] = useState([]);
-  
-useEffect(() => {
-    dispatch(jobsPostRequirments())
-    dispatch(companyDetails(1))
 
-  },[dispatch])
-  console.log(postJobDetailsRequirments)
+  useEffect(() => {
+    dispatch(jobsPostRequirments());
+    dispatch(companyDetails(1));
+  }, [dispatch]);
+  console.log(postJobDetailsRequirments);
 
   const handleChange = (e) => {
     // console.log(e.target.id)
 
-    e.target.id === "city" ? updateFormData({
-      ...formData,
-      
-      // Trimming any whitespace
-    [e.target.id] : 1
-    }) : 
-    updateFormData({
-      ...formData,
-      Company : companyDetail.company_data?.id,
-      published_at : "2023-08-29T15:47:18",
-      category : 1,
-      status : "در انتظار بررسی",  
-      skills : [1] ,
-      isremote : true,
-      // Trimming any whitespace
-      [e.target.id] : e.target.value.trim()
-    });
-  }
+    e.target.id === "city"
+      ? updateFormData({
+          ...formData,
+
+          // Trimming any whitespace
+          [e.target.id]: 1,
+        })
+      : updateFormData({
+          ...formData,
+          Company: companyDetail.company_data?.id,
+          published_at: "2023-08-29T15:47:18",
+          category: 1,
+          status: "در انتظار بررسی",
+          skills: [1],
+          isremote: true,
+          // Trimming any whitespace
+          [e.target.id]: e.target.value.trim(),
+        });
+  };
 
   const handleChangeSkills = (e) => {
-    updateSkillsArray([{title : e.target.value} , ...skillsArray])
+    updateSkillsArray([{ title: e.target.value }, ...skillsArray]);
     updateFormData({
       ...formData,
-      
+
       // Trimming any whitespace
-      [e.target.id] : [...skillsArray , {title : e.target.value}]
+      [e.target.id]: [...skillsArray, { title: e.target.value }],
     });
-  }
+  };
   const handleSubmit = (e) => {
     // console.log(e)
-    e.preventDefault()
+    e.preventDefault();
     // console.log(formData);
-    dispatch(postJob(formData))
+    dispatch(postJob(formData));
     // ... submit to API or something
-
-  }
+  };
   // console.log(skillsArray)
   // console.log(companyDetail)
-  console.log(formData)
-  
+  console.log(formData);
+
   return (
     <>
       <div className="content content-page">
@@ -119,7 +118,7 @@ useEffect(() => {
                                 <h3>توضیحات </h3>
                                 <div className="form-group mb-5">
                                   <textarea
-                                    style={{width : "100%"}}
+                                    style={{ width: "100%" }}
                                     onChange={handleChange}
                                     id="description"
                                   ></textarea>
@@ -163,14 +162,17 @@ useEffect(() => {
                                 <div className="title-detail ">
                                   <h3>دسته بندی حوزه شغلی</h3>
                                   <div className="form-group mb-0 ">
-                                    <select id="category" onChange={handleChange} className="form-control select">
+                                    <select
+                                      id="category"
+                                      onChange={handleChange}
+                                      className="form-control select"
+                                    >
                                       <option value={0}>انتخاب کنید</option>
-                                      {postJobDetailsRequirments.categories?.map((item) => (
-                                        <option>
-                                          {item.title}
-                                        </option>
-                                          ))}
-
+                                      {postJobDetailsRequirments.categories?.map(
+                                        (item) => (
+                                          <option>{item.title}</option>
+                                        )
+                                      )}
                                     </select>
                                   </div>
                                 </div>
@@ -182,9 +184,13 @@ useEffect(() => {
                                 <div className="title-detail ">
                                   <h3>نوع همکاری</h3>
                                   <div className="form-group mb-0 ">
-                                    <select id="job_type" onChange={handleChange} className="form-control select">
-                                      <option >تمام وقت</option>
-                                      <option >پاره وقت</option>
+                                    <select
+                                      id="job_type"
+                                      onChange={handleChange}
+                                      className="form-control select"
+                                    >
+                                      <option>تمام وقت</option>
+                                      <option>پاره وقت</option>
                                     </select>
                                   </div>
                                 </div>
@@ -202,9 +208,13 @@ useEffect(() => {
                                 <div className="title-detail ">
                                   <h3>حقوق </h3>
                                   <div className="form-group mb-0 ">
-                                    <select  id="salary_type" onChange={handleChange} className="form-control select">
-                                      <option >توافقی</option>
-                                      <option >مشخص</option>
+                                    <select
+                                      id="salary_type"
+                                      onChange={handleChange}
+                                      className="form-control select"
+                                    >
+                                      <option>توافقی</option>
+                                      <option>مشخص</option>
                                     </select>
                                   </div>
                                 </div>
@@ -217,9 +227,13 @@ useEffect(() => {
                                   <h3>مقدار</h3>
                                   <div className="form-group mb-0 ">
                                     <input
-                                      id="salary_amount" 
+                                      id="salary_amount"
                                       onChange={handleChange}
-                                      disabled={formData.salary_type !== "مشخص" ? true : false}
+                                      disabled={
+                                        formData.salary_type !== "مشخص"
+                                          ? true
+                                          : false
+                                      }
                                       type="text"
                                       className="form-control"
                                     />
@@ -228,25 +242,24 @@ useEffect(() => {
                               </div>
                             </div>
                             <div
-                                className="title-content title-content mt-1"
-                                style={{ width: "48%" }}
-                              >
-                                <div className="title-detail">
-                                  <h3> امکان دورکاری</h3>
-                                  <div className="form-group mb-0">
-                                    <select
+                              className="title-content title-content mt-1"
+                              style={{ width: "48%" }}
+                            >
+                              <div className="title-detail">
+                                <h3> امکان دورکاری</h3>
+                                <div className="form-group mb-0">
+                                  <select
                                     className="form-control select"
-                                      id="isremote" 
-                                      onChange={handleChange}
-                                      name="price"
-                                    >
-                                      <option value={true} >دارد</option>
-                                      <option value={false}>ندارد</option>
-                                      
-                                    </select>
-                                  </div>
+                                    id="isremote"
+                                    onChange={handleChange}
+                                    name="price"
+                                  >
+                                    <option value={true}>دارد</option>
+                                    <option value={false}>ندارد</option>
+                                  </select>
                                 </div>
                               </div>
+                            </div>
                             {/* Price Content */}
                             <div className="title-content">
                               <div className="title-detail">
@@ -261,24 +274,26 @@ useEffect(() => {
                                   className="form-group price-cont mb-0"
                                   id="price_type"
                                 >
-                                    <select id="skills" onChange={handleChangeSkills} className="form-control select">
-                                      <option >انتخاب کنید</option>
-                                      {postJobDetailsRequirments.skills?.map((item) => (
-                                        <option>
-                                          {item.title}
-                                        </option>
-                                          ))}
-
-                                    </select>
+                                  <select
+                                    id="skills"
+                                    onChange={handleChangeSkills}
+                                    className="form-control select"
+                                  >
+                                    <option>انتخاب کنید</option>
+                                    {postJobDetailsRequirments.skills?.map(
+                                      (item) => (
+                                        <option>{item.title}</option>
+                                      )
+                                    )}
+                                  </select>
                                   <div className=" d-flex tags mt-3">
                                     <div>
-                                      {skillsArray?.map((item , index) => (
-                                        <span className=" align-items-center badge badge-pill badge-design">  
-                                        {item.title}
+                                      {skillsArray?.map((item, index) => (
+                                        <span className=" align-items-center badge badge-pill badge-design">
+                                          {item.title}
                                         </span>
-                                        ))
-                                      }
-                                    </div> 
+                                      ))}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -297,15 +312,15 @@ useEffect(() => {
                                   <h3> سابقه شغلی مورد نیاز</h3>
                                   <div className="form-group mb-0">
                                     <select
-                                      id="experience" 
+                                      id="experience"
                                       onChange={handleChange}
                                       name="price"
                                       className="form-control select"
                                     >
-                                      <option >بدون محدودیت</option>
-                                      <option >کمتر از ۲ سال</option>
-                                      <option >۲ تا ۵ سال</option>
-                                      <option >بیشتر از ۵ سال</option>
+                                      <option>بدون محدودیت</option>
+                                      <option>کمتر از ۲ سال</option>
+                                      <option>۲ تا ۵ سال</option>
+                                      <option>بیشتر از ۵ سال</option>
                                     </select>
                                   </div>
                                 </div>
@@ -318,17 +333,15 @@ useEffect(() => {
                                   <h3>سطح تجربه</h3>
                                   <div className="form-group mb-0">
                                     <select
-                                      id="level" 
+                                      id="level"
                                       onChange={handleChange}
                                       name="price"
                                       className="form-control select"
                                     >
-                                      <option >
-                                      intern(کاراموز)
-                                      </option>
-                                      <option >Junior(جوان)</option>
-                                      <option >Senior(ارشد)</option>
-                                      <option >Lead(راهبر)</option>
+                                      <option>intern(کاراموز)</option>
+                                      <option>Junior(جوان)</option>
+                                      <option>Senior(ارشد)</option>
+                                      <option>Lead(راهبر)</option>
                                     </select>
                                   </div>
                                 </div>
@@ -357,7 +370,6 @@ useEffect(() => {
                             {/* /Add Document */}
                             {/* /adress */}
 
-                          
                             <div
                               className="d-flex justify-between-md"
                               style={{ justifyContent: "space-between" }}
@@ -369,16 +381,17 @@ useEffect(() => {
                                 <div className="title-detail ">
                                   <h3>شهر </h3>
                                   <div className="form-group mb-0 ">
-                                    <select  
-                                      id="city" 
-                                      onChange={handleChange} 
-                                      className="form-control select">
-                                      {postJobDetailsRequirments.cities?.map((item) => ( 
+                                    <select
+                                      id="city"
+                                      onChange={handleChange}
+                                      className="form-control select"
+                                    >
+                                      {postJobDetailsRequirments.cities?.map(
+                                        (item) => (
                                           <option>{item.name}</option>
-                                          ))
-                                        }
-                                        <option>قزوین</option>
-                                      
+                                        )
+                                      )}
+                                      <option>قزوین</option>
                                     </select>
                                   </div>
                                 </div>
