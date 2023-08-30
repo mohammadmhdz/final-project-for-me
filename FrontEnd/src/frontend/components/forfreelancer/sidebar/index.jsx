@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 const Sidebar = (props) => {
   const dispatch = useDispatch();
 
-  const item = JSON.parse(localStorage.getItem("userInfo"))
+  const item = JSON.parse(localStorage.getItem("userInfo"));
   // console.log(item, "item")
 
   const handleLogout = () => {

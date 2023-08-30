@@ -141,7 +141,7 @@ class JobViewSet(viewsets.ViewSet):
 
     def update(self, request, pk=None):
         job = get_object_or_404(Job.objects.all(), pk=pk)
-        serializer = JobSerializer(job, data=request.data)
+        serializer = JobSerializer(job, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

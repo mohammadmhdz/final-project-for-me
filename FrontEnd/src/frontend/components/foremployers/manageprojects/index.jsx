@@ -1,16 +1,16 @@
-import React, { useEffect ,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { Developer_01, Flags_en, home_icon } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 import moment from "jalali-moment";
-import Pendingprojects from "../pendingprojects/index"
+import Pendingprojects from "../pendingprojects/index";
 import CompletedProjects from "../completedprojects/index";
 import OngoingProjects from "../ongoingprojects/index";
 import CancelledProjects from "../cancelledprojects/index";
 // redux
-import { companyJobsListAction } from "../../../../actions/companyActions"
-import { useDispatch, useSelector} from "react-redux";
+import { companyJobsListAction } from "../../../../actions/companyActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const Manageprojects = (props) => {
   const [allRequest, setAllRequest] = useState(true);
@@ -32,7 +32,6 @@ const Manageprojects = (props) => {
     setWaiting(true);
     setActive(false);
     setExpired(false);
-
   };
   const handleActive = () => {
     setAllRequest(false);
@@ -40,7 +39,6 @@ const Manageprojects = (props) => {
     setWaiting(false);
     setExpired(false);
     setActive(true);
-
   };
   const handleComplete = () => {
     setAllRequest(false);
@@ -48,7 +46,6 @@ const Manageprojects = (props) => {
     setActive(false);
     setComplete(true);
     setExpired(false);
-
   };
   const handleExpired = () => {
     setAllRequest(false);
@@ -57,29 +54,26 @@ const Manageprojects = (props) => {
     setComplete(false);
     setExpired(false);
     setExpired(true);
-
-
   };
 
-  const daysBetween =(input) => {
-      const now = new Date().getDate()
-      const date = new Date(input).getDate()
-      return now - date
-
-    }
-    // redux
-    const dispatch = useDispatch();
-    const companyJobsAllList = useSelector((state) => state.companyJobsList);
-    const {companyJobsListArray} = companyJobsAllList 
+  const daysBetween = (input) => {
+    const now = new Date().getDate();
+    const date = new Date(input).getDate();
+    return now - date;
+  };
+  // redux
+  const dispatch = useDispatch();
+  const companyJobsAllList = useSelector((state) => state.companyJobsList);
+  const { companyJobsListArray } = companyJobsAllList;
 
   useEffect(() => {
-    dispatch(companyJobsListAction())
+    dispatch(companyJobsListAction());
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
-  } , [dispatch]);
-  console.log(companyJobsListArray)
+  }, [dispatch]);
+  console.log(companyJobsListArray);
   return (
     <>
       {/* Page Content */}
@@ -112,129 +106,158 @@ const Manageprojects = (props) => {
               <nav className="user-tabs project-tabs">
                 <ul className="nav nav-tabs nav-tabs-bottom nav-justified">
                   <li className="nav-item">
-                    <Link className={allRequest? "nav-link active" : "nav-link"} to="/manage-projects" onClick={handleAllRequest}>
+                    <Link
+                      className={allRequest ? "nav-link active" : "nav-link"}
+                      to="/manage-projects"
+                      onClick={handleAllRequest}
+                    >
                       همه
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className={waiting? "nav-link active" : "nav-link"} onClick={handleWaiting}>
+                    <Link
+                      className={waiting ? "nav-link active" : "nav-link"}
+                      onClick={handleWaiting}
+                    >
                       در انتظار
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className={active? "nav-link active" : "nav-link"} onClick={handleActive}>
+                    <Link
+                      className={active ? "nav-link active" : "nav-link"}
+                      onClick={handleActive}
+                    >
                       فعال
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className={complete? "nav-link active" : "nav-link"} onClick={handleComplete}>
+                    <Link
+                      className={complete ? "nav-link active" : "nav-link"}
+                      onClick={handleComplete}
+                    >
                       تکمیل شده
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className={expired? "nav-link active" : "nav-link"} onClick={handleExpired}>
+                    <Link
+                      className={expired ? "nav-link active" : "nav-link"}
+                      onClick={handleExpired}
+                    >
                       منقضی شده
                     </Link>
                   </li>
                 </ul>
               </nav>
               {/* project list */}
-            {allRequest ? 
-                (companyJobsListArray.map((item) => (
-                <div className="my-projects-list">
-                  <div className="row">
-                    <div className="col-lg-10 flex-wrap">
-                      <div className="projects-card flex-fill">
-                        <div className="card-body">
-                          <div className="projects-details align-items-center">
-
-                            <div className="project-info">
-                              <span>{item.Company?.Name}</span>
-                              <h2>{item.title}</h2>
-                              <div className="customer-info">
-                                <ul className="list-details">
-                                  <li>
-                                    <div className="slot">
-                                      <p>امکان دورکاری</p>
-                                      <h5>{item.isremote ? "دارد" : "ندارد"}</h5>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div className="slot">
-                                      <p>شهر</p>
-                                      <h5>{item.city?.name}</h5>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div className="slot">
-                                      <p>انقضای آگهی</p>
-                                      <h5>{daysBetween(item.published_at)} روز دبگر </h5>
-                                    </div>
-                                  </li>
-                                </ul>
+              {allRequest ? (
+                companyJobsListArray.map((item) => (
+                  <div className="my-projects-list">
+                    <div className="row">
+                      <div className="col-lg-10 flex-wrap">
+                        <div className="projects-card flex-fill">
+                          <div className="card-body">
+                            <div className="projects-details align-items-center">
+                              <div className="project-info">
+                                <span>{item.Company?.Name}</span>
+                                <h2>{item.title}</h2>
+                                <div className="customer-info">
+                                  <ul className="list-details">
+                                    <li>
+                                      <div className="slot">
+                                        <p>امکان دورکاری</p>
+                                        <h5>
+                                          {item.isremote ? "دارد" : "ندارد"}
+                                        </h5>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div className="slot">
+                                        <p>شهر</p>
+                                        <h5>{item.city?.name}</h5>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div className="slot">
+                                        <p>انقضای آگهی</p>
+                                        <h5>
+                                          {daysBetween(item.published_at)} روز
+                                          دبگر{" "}
+                                        </h5>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
                               </div>
-                            </div>
-                            <div className="project-hire-info">
-                              <div className="content-divider" />
-                              <div className="projects-amount">
-                                <h4>{item.salary_amount ? `${item.salary_amount} میلیون` : "حقوق توافقی"} </h4>
-                                {/* <h5>in 12 Days</h5> */}
-                              </div>
-                              <div className="content-divider" />
-                              <div className="projects-action text-center">
-                                <Link
-                                  to="/view-project-detail"
-                                  className="projects-btn"
+                              <div className="project-hire-info">
+                                <div className="content-divider" />
+                                <div className="projects-amount">
+                                  <h4>
+                                    {item.salary_amount
+                                      ? `${item.salary_amount} میلیون`
+                                      : "حقوق توافقی"}{" "}
+                                  </h4>
+                                  {/* <h5>in 12 Days</h5> */}
+                                </div>
+                                <div className="content-divider" />
+                                <div className="projects-action text-center">
+                                  <Link
+                                    to="/view-project-detail"
+                                    className="projects-btn"
                                   >
-                                  مشاهده بیشتر{" "}
-                                </Link>
-                                {/* <a href="#" className="hired-detail">
+                                    مشاهده بیشتر{" "}
+                                  </Link>
+                                  {/* <a href="#" className="hired-detail">
                                   استخدام شده در تاریخ ۱۲ بهمن ۱۴۰۱
                                 </a> */}
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    { item.completed_request_user !== null ?
-                    (
-                      <div className="col-lg-2 d-flex flex-wrap">
-                      <div className="projects-card flex-fill">
-                        <div className="card-body p-2">
-                          <div className="prj-proposal-count text-center hired">
-                            <h3>استخدام شده</h3>
-                            <img
-                              src={Developer_01}
-                              alt=""
-                              className="img-fluid"
-                              />
-                            <p className="mb-0">{item.completed_request_user.first_name} {item.completed_request_user.last_name}</p>
+                      {item.completed_request_user !== null ? (
+                        <div className="col-lg-2 d-flex flex-wrap">
+                          <div className="projects-card flex-fill">
+                            <div className="card-body p-2">
+                              <div className="prj-proposal-count text-center hired">
+                                <h3>استخدام شده</h3>
+                                <img
+                                  src={Developer_01}
+                                  alt=""
+                                  className="img-fluid"
+                                />
+                                <p className="mb-0">
+                                  {item.completed_request_user.first_name}{" "}
+                                  {item.completed_request_user.last_name}
+                                </p>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                            
-                    </div>   ): ( <div className="col-lg-2 d-flex flex-wrap">
-                    <div className="projects-card flex-fill">
-                      <div className="card-body p-2">
-                        <div className="prj-proposal-count text-center">
-                          <span>{item.num_requests}</span>
-                          <h3>درخواست</h3>
+                      ) : (
+                        <div className="col-lg-2 d-flex flex-wrap">
+                          <div className="projects-card flex-fill">
+                            <div className="card-body p-2">
+                              <div className="prj-proposal-count text-center">
+                                <span>{item.num_requests}</span>
+                                <h3>درخواست</h3>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
-                  </div>)}
                   </div>
-                </div>
-              ))): waiting ? 
-              (<Pendingprojects data={companyJobsListArray}/> )
-              : complete? 
-              (<CompletedProjects data={companyJobsListArray}/>
-              ): active ? 
-              (<OngoingProjects data={companyJobsListArray} />
-              ): expired ? 
-              (<CancelledProjects data={companyJobsListArray}/>) : null}
-            
+                ))
+              ) : waiting ? (
+                <Pendingprojects data={companyJobsListArray} />
+              ) : complete ? (
+                <CompletedProjects data={companyJobsListArray} />
+              ) : active ? (
+                <OngoingProjects data={companyJobsListArray} />
+              ) : expired ? (
+                <CancelledProjects data={companyJobsListArray} />
+              ) : null}
 
               <div className="row">
                 <div className="col-md-12">

@@ -205,7 +205,7 @@ const Dashboard = () => {
                       <div className="card wizard-card flex-fill">
                         <div className="card-body">
                           <p className="text-primary mt-0 mb-2">کارجویان</p>
-                          <h5>1682</h5>
+                          <h5>۱۲</h5>
                           <p>
                             <Link to="/admin/users">مشاهده جزییات</Link>
                           </p>
@@ -221,7 +221,7 @@ const Dashboard = () => {
                           <p className="text-primary mt-0 mb-2">
                             فرصت های شغلی
                           </p>
-                          <h5>۱۵۰۰۰</h5>
+                          <h5>۲۲</h5>
                           <p>
                             <Link to="/admin/projects">مشاهده جزییات </Link>
                           </p>
@@ -237,7 +237,7 @@ const Dashboard = () => {
                           <p className="text-primary mt-0 mb-2">
                             فرصت های شغلی فعال
                           </p>
-                          <h5>۱۵۶۸</h5>
+                          <h5>۱۴</h5>
                           <p>
                             <Link to="/admin/projects">مشاهده جزییات </Link>
                           </p>
@@ -285,10 +285,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="account-balance">
-                        <p>موجودی</p>
-                        <h6>$50,000,00 </h6>
-                      </div>
+
                       <div className="mt-3">
                         <h6 className="text-primary">پرداخت ها</h6>
                         <div className="table-responsive">
@@ -303,32 +300,19 @@ const Dashboard = () => {
                             <tbody>
                               <tr>
                                 <td className="text-nowrap">علی خزایی</td>
-                                <td>$2222</td>
+                                <td>۲۱۰ هزار تومان</td>
                                 <td className="text-end">پرداخت شده</td>
                               </tr>
                               <tr>
                                 <td className="text-nowrap">شرکت فراوب</td>
-                                <td>$750</td>
-                                <td className="text-end">
-                                  <Link
-                                    to="#"
-                                    className="btn btn-sm btn-success me-2"
-                                  >
-                                    <i className="far fa-edit" />
-                                  </Link>
-                                  <Link
-                                    to="#"
-                                    className="btn btn-sm btn-danger me-2"
-                                  >
-                                    <i className="far fa-trash-alt" />
-                                  </Link>
-                                </td>
+                                <td>۲۱۰ هزار تومان</td>
+                                <td className="text-end">پرداخت شده</td>
                               </tr>
                               <tr>
                                 <td className="text-nowrap">
                                   امیررضا فلاح نژاد
                                 </td>
-                                <td>$3150</td>
+                                <td>۲۱۰ هزار تومان</td>
                                 <td className="text-end text-nowrap">
                                   انصراف از پرداخت
                                 </td>

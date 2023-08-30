@@ -79,7 +79,7 @@ class JobSerializer(serializers.ModelSerializer):
         serializer = CitySerializer(job_city, many=False)
         return serializer.data  
     
-    def get_job_categoryy(self, obj):
+    def get_job_category(self, obj):
         job_category = obj.category
         serializer = CategorySerializer(job_category, many=False)
         return serializer.data  

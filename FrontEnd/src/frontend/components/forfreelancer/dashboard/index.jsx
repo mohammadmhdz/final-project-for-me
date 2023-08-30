@@ -20,12 +20,11 @@ const FreelancerDashboard = (props) => {
   const dispatch = useDispatch();
   const employeeList = useSelector((state) => state.employeeDetails);
   const freelancerRequests = useSelector((state) => state.freelancerRequest);
-  const {freelancerRequestsAll} = freelancerRequests ; 
-  const {employee} = employeeList ;
-  
-  const localItem = JSON.parse(localStorage.getItem("userInfo"))
+  const { freelancerRequestsAll } = freelancerRequests;
+  const { employee } = employeeList;
 
-  
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
   // const { employee } = employeeList;
   // const emloyeeDetails = useSelector((state) => state.employeeListDetails);
   useEffect(() => {
@@ -33,32 +32,41 @@ const FreelancerDashboard = (props) => {
     // employeeDetails ra taghir dadim
     dispatch(employeeDetails(localItem.id));
     dispatch(freelancerRequest());
-    
+
     let chartprofileoptionsColumn = document.getElementById("chartprofile");
     let chartprofileoptionsChart = new ApexCharts(
       chartprofileoptionsColumn,
       chartprofileoptions
-      );
-      chartprofileoptionsChart.render();
-      
-    let invoiceColumn = document.getElementById("chartradial");
-      let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
-      invoiceChart.render();
-      document.body.className = "dashboard-page";
-      return () => {
-        document.body.className = "";
-      };
-    }, [dispatch]);
+    );
+    chartprofileoptionsChart.render();
 
-    var x = [freelancerRequestsAll?.filter((items) =>items.employee === employee.id).length
-      , freelancerRequestsAll?.filter((items) => items.status === "بررسی شده" && items.employee === employee.id).length
-      , freelancerRequestsAll?.filter((items) => items.status === "در انتظار بررسی" && items.employee === employee.id).length
-      , freelancerRequestsAll?.filter((items) => items.status === "رد شده" && items.employee === employee.id).length
-    ]
-    console.log(freelancerRequestsAll, "sdsd");
-    // console.log(chartradialOptions.series, "sdsd");
-    // console.log(employee, "sdsd");
-    // console.log(item, "item")
+    let invoiceColumn = document.getElementById("chartradial");
+    let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
+    invoiceChart.render();
+    document.body.className = "dashboard-page";
+    return () => {
+      document.body.className = "";
+    };
+  }, [dispatch]);
+
+  var x = [
+    freelancerRequestsAll?.filter((items) => items.employee === employee.id)
+      .length,
+    freelancerRequestsAll?.filter(
+      (items) => items.status === "بررسی شده" && items.employee === employee.id
+    ).length,
+    freelancerRequestsAll?.filter(
+      (items) =>
+        items.status === "در انتظار بررسی" && items.employee === employee.id
+    ).length,
+    freelancerRequestsAll?.filter(
+      (items) => items.status === "رد شده" && items.employee === employee.id
+    ).length,
+  ];
+  console.log(freelancerRequestsAll, "sdsd");
+  // console.log(chartradialOptions.series, "sdsd");
+  // console.log(employee, "sdsd");
+  // console.log(item, "item")
   var chartprofileoptions = {
     series: [
       {
@@ -105,18 +113,18 @@ const FreelancerDashboard = (props) => {
     },
     xaxis: {
       categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
+        "فروردین",
+        "اردیبهشت",
+        "خرداد",
+        "تبر",
+        "مرداد",
+        "شهریور",
+        "مهر",
+        "آبان",
+        "آذر",
+        "دی",
+        "بهمن",
+        "اسفند",
       ],
       lines: {
         show: false,
@@ -135,8 +143,8 @@ const FreelancerDashboard = (props) => {
     //         , freelancerRequestsAll?.filter((items) => items.status === "در انتظار بررسی" && items.employee === employee.id).length
     //         , freelancerRequestsAll?.filter((items) => items.status === "رد شده" && items.employee === employee.id).length
     // ],
-    series: [x[0], x[1], x[2], x[3]],
-    // series: [3,1,1,1],
+    // series: [x[0] * 10, x[1] * 10, x[2] * 10, x[3] * 10],
+    series: [100, 30, 30, 0],
     chart: {
       toolbar: {
         show: false,
@@ -199,11 +207,10 @@ const FreelancerDashboard = (props) => {
     ],
   };
 
- 
-    console.log(employeeList)
-    console.log(freelancerRequestsAll)
-    
-    return (
+  console.log(employeeList);
+  console.log(freelancerRequestsAll);
+
+  return (
     <>
       {/* Page Content */}
       <div className="content">
@@ -211,7 +218,7 @@ const FreelancerDashboard = (props) => {
           <div className="row mt-lg-5">
             <div className="col-xl-3 col-md-4 theiaStickySidebar">
               <StickyBox offsetTop={20} offsetBottom={20}>
-                <Sidebar items={localItem}/>
+                <Sidebar items={localItem} />
               </StickyBox>
             </div>
             <div className="col-xl-9 col-md-8">
@@ -223,7 +230,13 @@ const FreelancerDashboard = (props) => {
                         <div className="dash-widget-info">
                           درخواست های ارسال شده
                         </div>
-                        <div className="dash-widget-count">{freelancerRequestsAll.filter((items) =>items.employee === employee.id).length}</div>
+                        <div className="dash-widget-count">
+                          {
+                            freelancerRequestsAll.filter(
+                              (items) => items.employee === employee.id
+                            ).length
+                          }
+                        </div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
@@ -242,7 +255,18 @@ const FreelancerDashboard = (props) => {
                         <div className="dash-widget-info">
                           درخواست های تعیین وضعیت شده
                         </div>
-                        <div className="dash-widget-count">{freelancerRequestsAll.filter((items) => items.status === "رد شده" && items.employee === employee.id).length + freelancerRequestsAll.filter((items) => items.status === "بررسی شده" && items.employee === employee.id).length}</div>
+                        <div className="dash-widget-count">
+                          {freelancerRequestsAll.filter(
+                            (items) =>
+                              items.status === "رد شده" &&
+                              items.employee === employee.id
+                          ).length +
+                            freelancerRequestsAll.filter(
+                              (items) =>
+                                items.status === "بررسی شده" &&
+                                items.employee === employee.id
+                            ).length}
+                        </div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
@@ -261,7 +285,15 @@ const FreelancerDashboard = (props) => {
                         <div className="dash-widget-info">
                           درخواست های درحال بررسی
                         </div>
-                        <div className="dash-widget-count">{freelancerRequestsAll.filter((items) => items.status === "در انتظار بررسی" && items.employee === employee.id).length}</div>
+                        <div className="dash-widget-count">
+                          {
+                            freelancerRequestsAll.filter(
+                              (items) =>
+                                items.status === "در انتظار بررسی" &&
+                                items.employee === employee.id
+                            ).length
+                          }
+                        </div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
@@ -298,7 +330,7 @@ const FreelancerDashboard = (props) => {
                   <div className="col-xl-4 d-flex">
                     <div className="flex-fill card">
                       <div className="pro-head b-0">
-                        <h5  className="card-title mb-0">آنالیز آماری</h5>
+                        <h5 className="card-title mb-0">آنالیز آماری</h5>
                       </div>
                       <div className="pro-body">
                         <div id="chartradial" />
@@ -308,28 +340,58 @@ const FreelancerDashboard = (props) => {
                               <i className="fa fa-circle text-violet me-1" /> کل
                               درخواست ها
                             </span>{" "}
-                            <span className="sta-count">{freelancerRequestsAll.filter((items) => items.employee === employee.id).length}</span>
+                            <span className="sta-count">
+                              {
+                                freelancerRequestsAll.filter(
+                                  (items) => items.employee === employee.id
+                                ).length
+                              }
+                            </span>
                           </li>
                           <li>
                             <span>
                               <i className="fa fa-circle text-pink me-1" />{" "}
                               بررسی شده
                             </span>{" "}
-                            <span className="sta-count">{freelancerRequestsAll.filter((items) => items.status === "بررسی شده" && items.employee === employee.id).length}</span>
+                            <span className="sta-count">
+                              {
+                                freelancerRequestsAll.filter(
+                                  (items) =>
+                                    items.status === "بررسی شده" &&
+                                    items.employee === employee.id
+                                ).length
+                              }
+                            </span>
                           </li>
                           <li>
                             <span>
                               <i className="fa fa-circle text-yellow me-1" /> در
                               انتظار بررسی
                             </span>{" "}
-                            <span className="sta-count">{freelancerRequestsAll.filter((items) => items.status === "در انتظار بررسی" && items.employee === employee.id).length}</span>
+                            <span className="sta-count">
+                              {
+                                freelancerRequestsAll.filter(
+                                  (items) =>
+                                    items.status === "در انتظار بررسی" &&
+                                    items.employee === employee.id
+                                ).length
+                              }
+                            </span>
                           </li>
                           <li>
                             <span>
                               <i className="fa fa-circle text-blue me-1" /> رد
                               شده
                             </span>{" "}
-                            <span className="sta-count">{freelancerRequestsAll.filter((items) => items.status === "رد شده" && items.employee === employee.id).length}</span>
+                            <span className="sta-count">
+                              {
+                                freelancerRequestsAll.filter(
+                                  (items) =>
+                                    items.status === "رد شده" &&
+                                    items.employee === employee.id
+                                ).length
+                              }
+                            </span>
                           </li>
                         </ul>
                       </div>
@@ -524,46 +586,44 @@ const FreelancerDashboard = (props) => {
                         </Link>
                       </div>
                       <div className="pro-body p-0">
-                        {freelancerRequestsAll?.map((items) => (
-                          // console.log(items , items.employee , employee.id)
-                          items.employee === employee.id &&(
-
-                            <div className="earn-feature">
-                          <div className="row flex-column-reverse">
-                            <div className="col-lg-7 col-md-6">
-                              <div className="earn-info">
-                                {/* <p>برنامه نویس frontend</p> */}
-                                {/* <div className="date">تمام وقت,تهران </div> */}
-                              </div>
-                            </div>
-                            <div className="col-lg-5 col-md-6">
-                              <div className="earn-img">
-                                <span className=" d-flex  align-center">
-                                  <img
-                                    src={Avatar_1}
-                                    alt="logo"
-                                    className="img-fluid avatar-xl rounded-circle"
-                                    />{" "}
-                                  {/* فناوران جوان آینده | Fanavaran Javan Ayandeh */}
-                                  <div className=" earn-info d-flex flex-column me-3">
-                                    <div className="titlee">
-                                    {items.job_title}
-                                    </div>
-                                    <div className="date text-secondary">
-                                    {items.company_name}
+                        {freelancerRequestsAll?.map(
+                          (items) =>
+                            // console.log(items , items.employee , employee.id)
+                            items.employee === employee.id && (
+                              <div className="earn-feature">
+                                <div className="row flex-column-reverse">
+                                  <div className="col-lg-7 col-md-6">
+                                    <div className="earn-info">
+                                      {/* <p>برنامه نویس frontend</p> */}
+                                      {/* <div className="date">تمام وقت,تهران </div> */}
                                     </div>
                                   </div>
-                                </span>
+                                  <div className="col-lg-5 col-md-6">
+                                    <div className="earn-img">
+                                      <span className=" d-flex  align-center">
+                                        <img
+                                          src={Avatar_1}
+                                          alt="logo"
+                                          className="img-fluid avatar-xl rounded-circle"
+                                        />{" "}
+                                        {/* فناوران جوان آینده | Fanavaran Javan Ayandeh */}
+                                        <div className=" earn-info d-flex flex-column me-3">
+                                          <div className="titlee">
+                                            {items.job_title}
+                                          </div>
+                                          <div className="date text-secondary">
+                                            {items.company_name}
+                                          </div>
+                                        </div>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                          )
-                        ))
-                        }
-
-                        </div>
-                        </div>
+                            )
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
                 {/* /Past Earnings */}

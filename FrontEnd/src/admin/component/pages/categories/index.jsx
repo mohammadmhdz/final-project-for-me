@@ -22,23 +22,23 @@ const Categories = () => {
   const data = [
     {
       id: 1,
-      categoryname: "Graphics & Design",
+      categoryname: "طراحی و گرافیک",
     },
     {
       id: 2,
-      categoryname: "Cartoons",
+      categoryname: "انیمیشن",
     },
     {
       id: 3,
-      categoryname: "Flyers & Brochures",
+      categoryname: "برنامه نویسی وب",
     },
     {
       id: 4,
-      categoryname: "Illustration",
+      categoryname: "ایلاستریشن",
     },
     {
       id: 5,
-      categoryname: "Sales & Marketing",
+      categoryname: "فروش و مارکتینگ",
     },
     {
       id: 6,
@@ -46,7 +46,7 @@ const Categories = () => {
     },
     {
       id: 7,
-      categoryname: "Telecommunications",
+      categoryname: "حسابداری",
     },
   ];
 

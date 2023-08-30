@@ -13,8 +13,11 @@ import {
 import { Sidebar } from "../sidebar";
 
 // redux
-import { companyDetails ,companyJobsListAction } from "../../../../actions/companyActions"
-import { useDispatch, useSelector} from "react-redux";
+import {
+  companyDetails,
+  companyJobsListAction,
+} from "../../../../actions/companyActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const Dashboard = (props) => {
   var chartprofileoptions = {
@@ -88,7 +91,12 @@ const Dashboard = (props) => {
   };
 
   var chartradialOptions = {
-    series: [companyDetail?.completed_jobs_count , companyDetail?.completed_jobs_count ,companyDetail?.completed_jobs_count , companyDetail?.completed_jobs_count],
+    series: [
+      companyDetail?.completed_jobs_count,
+      companyDetail?.completed_jobs_count,
+      companyDetail?.completed_jobs_count,
+      companyDetail?.completed_jobs_count,
+    ],
     chart: {
       toolbar: {
         show: false,
@@ -154,13 +162,13 @@ const Dashboard = (props) => {
   const dispatch = useDispatch();
   const companyDetailsList = useSelector((state) => state.companyDetails);
   const companyJobsAllList = useSelector((state) => state.companyJobsList);
-  const {companyJobsListArray} = companyJobsAllList 
-  const {companyDetail} = companyDetailsList 
+  const { companyJobsListArray } = companyJobsAllList;
+  const { companyDetail } = companyDetailsList;
 
   useEffect(() => {
-    dispatch(companyDetails(1))
-    // 
-    dispatch(companyJobsListAction())
+    dispatch(companyDetails(1));
+    //
+    dispatch(companyJobsListAction());
     let chartprofileoptionsColumn = document.getElementById("chartprofile");
     let chartprofileoptionsChart = new ApexCharts(
       chartprofileoptionsColumn,
@@ -176,8 +184,8 @@ const Dashboard = (props) => {
       document.body.className = "";
     };
   }, [dispatch]);
-  console.log(companyDetail , "companyDetail")
-  console.log(companyJobsListArray , "companyJobsListArray")
+  console.log(companyDetail, "companyDetail");
+  console.log(companyJobsListArray, "companyJobsListArray");
 
   return (
     <>
@@ -201,7 +209,9 @@ const Dashboard = (props) => {
                         <div className="dash-widget-info">
                           فرصت های شغلی منتشر شده
                         </div>
-                        <div className="dash-widget-count">{companyDetail.all_jobs_count}</div>
+                        <div className="dash-widget-count">
+                          {companyDetail.all_jobs_count}
+                        </div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
@@ -219,7 +229,9 @@ const Dashboard = (props) => {
                         <div className="dash-widget-info">
                           فرصت های شغلی فعال
                         </div>
-                        <div className="dash-widget-count">{companyDetail.active_jobs_count}</div>
+                        <div className="dash-widget-count">
+                          {companyDetail.active_jobs_count}
+                        </div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
@@ -235,7 +247,9 @@ const Dashboard = (props) => {
                     <div className="dash-widget">
                       <div className="dash-info">
                         <div className="dash-widget-info">استخدام</div>
-                        <div className="dash-widget-count">{companyDetail.completed_jobs_count}</div>
+                        <div className="dash-widget-count">
+                          {companyDetail.completed_jobs_count}
+                        </div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
