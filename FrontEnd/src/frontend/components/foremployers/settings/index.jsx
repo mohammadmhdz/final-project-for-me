@@ -3,15 +3,23 @@ import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { home_icon, Img_02 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
+// redux
+import { companyDetails } from "../../../../actions/companyActions";
+import { useDispatch ,  useSelector } from "react-redux";
 
 const Settings = (props) => {
+  const dispatch = useDispatch();
+  const companyDetailsReducer = useSelector((state) => state.companyDetails);
+  const { companyDetail } = companyDetailsReducer;
   useEffect(() => {
+    dispatch(companyDetails(1))
+
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
-  });
-
+  }, [dispatch]);
+  console.log(companyDetail , "companyDetail")
   return (
     <>
       {/* Page Content */}
@@ -58,27 +66,27 @@ const Settings = (props) => {
                         <div className="form-row pro-pad">
                           <div className="form-group col-md-6">
                             <label>آدرس ایمیل</label>
-                            <input type="email" className="form-control" />
+                            <input placeholder={companyDetail.company_data?.user.email} type="email" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>آدرس وبسایت</label>
-                            <input type="email" className="form-control" />
+                            <input placeholder={companyDetail.company_data?.Website} type="email" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>نام و نام خانوادگی</label>
-                            <input type="text" className="form-control" />
+                            <input placeholder={companyDetail.company_data?.user.first_name + companyDetail.company_data?.user.first_name} type="text" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>نام شرکت</label>
-                            <input type="email" className="form-control" />
+                            <input placeholder={companyDetail.company_data?.Name}  type="email" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>شماره تماس</label>
-                            <input type="email" className="form-control" />
+                            <input placeholder={companyDetail.company_data?.Phone} type="email" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>جمعیت شرکت</label>
-                            <input type="email" className="form-control" />
+                            <input  placeholder={companyDetail.company_data?.population} type="email" className="form-control" />
                           </div>
                         </div>
                         <div className="form-row pro-pad pt-0">
@@ -114,7 +122,7 @@ const Settings = (props) => {
                       <div className="row">
                         <div className="form-group col-md-12">
                           <label>آدرس</label>
-                          <input type="text" className="form-control" />
+                          <input placeholder={companyDetail.company_data?.Adress} type="text" className="form-control" />
                         </div>
 
                         <div className="form-group col-md-6">
@@ -142,6 +150,7 @@ const Settings = (props) => {
                       <div className="row">
                         <div className="form-group col-md-12">
                           <textarea
+                          placeholder={companyDetail.company_data?.about}
                             className="form-control"
                             rows={5}
                             defaultValue={""}
@@ -160,18 +169,18 @@ const Settings = (props) => {
                       <div className="row">
                         <div className="form-group col-md-6">
                           <label>فیس بوک</label>
-                          <input type="text" className="form-control" />
+                          <input placeholder={companyDetail.company_data?.facebook} type="text" className="form-control" />
                         </div>
                         <div className="form-group col-md-6">
                           <label>لینکداین</label>
-                          <input type="text" className="form-control" />
+                          <input placeholder={companyDetail.company_data?.linkdin} type="text" className="form-control" />
                         </div>
                         <div className="form-group col-md-6">
                           <label>اینستاگرام</label>
-                          <input type="text" className="form-control" />
+                          <input placeholder={companyDetail.company_data?.instagram}  type="text" className="form-control" />
                         </div>
                       </div>
-                    </div>
+                    </div>z``
                   </div>
                   <div className="card">
                     <div className="text-end">
