@@ -159,10 +159,10 @@ class JobViewSet(viewsets.ViewSet):
     
 
 class CompanyViewSet(viewsets.ViewSet):
-    def list(self,request):
-        Companies = Company.objects.all()
-        serializer = CompanySerializer(Companies , many = True)
-        return Response(serializer.data)
+    # def list(self,request):
+    #     Companies = Company.objects.all()
+    #     serializer = CompanySerializer(Companies , many = True)
+    #     return Response(serializer.data)
       
     def list(self, request):
         companies = Company.objects.all()
@@ -207,6 +207,7 @@ class CompanyViewSet(viewsets.ViewSet):
             return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
     
+
 
     def update(self, request, pk=None):
         Company = get_object_or_404(Company.objects.all(), pk=pk)
@@ -620,6 +621,7 @@ class VerificationViewSet(viewsets.ViewSet):
             return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
     
+
 
     def update(self, request, pk=None):
         verification = get_object_or_404(Verification.objects.all(), pk=pk)

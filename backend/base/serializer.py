@@ -38,8 +38,14 @@ class UserSerializerWithToken(UserSerializer):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
 
+# class JobSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Job
+#         fields = '__all__'   
+
+
 class JobSerializer(serializers.ModelSerializer):
-    Company = serializers.SerializerMethodField(read_only=True)
+    company = serializers.SerializerMethodField(read_only=True)
     city = serializers.SerializerMethodField(read_only=True)
     category = serializers.SerializerMethodField(read_only=True)
     skills = serializers.SerializerMethodField(read_only=True)
@@ -48,11 +54,12 @@ class JobSerializer(serializers.ModelSerializer):
  
     class Meta:
         model = Job
-        fields = [
-            'id', 'Company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
-            'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
-            'num_requests','completed_request_user',
-        ]
+        fields = '__all__'
+        # fields = [
+        #     'id', 'Company', 'title', 'published_at', 'job_type', 'isremote', 'city', 'experience',
+        #     'level', 'salary_type', 'salary_amount', 'description', 'skills', 'category', 'status',
+        #     'num_requests','completed_request_user',
+        # ]
 
     def get_completed_request_user(self, obj):
         completed_request = obj.request_set.filter(status='استخدام شده', employee__user__isnull=False).first()
@@ -80,8 +87,8 @@ class JobSerializer(serializers.ModelSerializer):
         return serializer.data  
     
 
-    def get_Company(self, obj):
-        Company = obj.Company
+    def get_company(self, obj):
+        company = obj.Company
         serializer = CompanySerializer(Company, many=False)
         return serializer.data  
     
@@ -111,23 +118,7 @@ class CompanySerializer(serializers.ModelSerializer):
         serializer = CitySerializer(city, many=False)
         return serializer.data  
 
-  
-
-
-
-
-    city = serializers.SerializerMethodField(read_only=True)
-    class Meta:
-        model = Company
-        fields = '__all__'
-
-    
-
-        
-    def get_city(self, obj):
-        city = obj.city
-        serializer = CitySerializer(city, many=False)
-        return serializer.data  
+ 
 
 
 class RequestSerializer(serializers.ModelSerializer):
@@ -163,7 +154,9 @@ class CategorySerializer(serializers.ModelSerializer):
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
         model = City
-        fields = '__all__'        
+        fields = '__all__'     
+
+        
 
 class StateSerializer(serializers.ModelSerializer):
     class Meta:
