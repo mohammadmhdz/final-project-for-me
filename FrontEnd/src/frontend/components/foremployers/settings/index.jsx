@@ -16,24 +16,10 @@ const Settings = (props) => {
 
   
   const handleChange = (e) => {
-    // console.log(e.target.id)
-
-    // e.target.id === "city" ? updateFormData({
-    //   ...formData,
-    // [e.target.id] : e.target.value
-    // }): e.target.id === "isremote" ?  updateFormData({
-    //   ...formData,
-    //   [e.target.id] :  (e.target.value === "true" ? true :e.target.value === "false" ? false : null)   
-    // })  : 
+     
     updateFormData({
-      ...formData,
-      // Company : companyDetail.company_data?.id,
-      // published_at : "2023-08-29T15:47:18",
-      // status : "درانتظار تایید",  
-      
-      // Trimming any whitespace
+      ...formData, 
       [e.target.id] : e.target.value.trim()
-      // category : 1,
     });
   }
   const handleSubmit = (e) => {
@@ -139,11 +125,17 @@ const Settings = (props) => {
                             placeholder={companyDetail.company_data?.Phone} type="email" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
-                            <label>جمعیت شرکت</label>
-                            <input
-                            onChange={handleChange}
-                            id="population" 
-                            placeholder={companyDetail.company_data?.population} type="email" className="form-control" />
+                                    <select
+                                      id="population"
+                                      onChange={handleChange}
+                                      className="form-control select"
+                                    >
+                                      <option>1-10</option>
+                                      <option>10-50</option>
+                                      <option>50-100</option>
+                                      <option>100-500</option>
+                                      <option>بیشتر از 500</option>
+                                    </select> 
                           </div>
                         </div>
                         <div className="form-row pro-pad pt-0">
@@ -151,7 +143,10 @@ const Settings = (props) => {
                             <label>لوگو شرکت</label>
                             <div className="d-flex align-items-center">
                               <div className="upload-images">
-                                <img src={Img_02} alt="Image" />
+                                <img 
+                                id="image"
+                                onChange={handleChangeImage}
+                                src={Img_02} alt="Image" />
                                 <a
                                   href=""
                                   className="btn btn-icon btn-danger btn-sm"
