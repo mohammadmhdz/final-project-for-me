@@ -18,6 +18,10 @@ import {
   COMPANY_VERIFICATION_REQUEST,
   COMPANY_VERIFICATION_SUCCESS,
   COMPANY_VERIFICATION_FAIL,
+  // PUT
+  COMPANY_DETAILS_UPDATE_REQUEST,
+  COMPANY_DETAILS_UPDATE_SUCCESS,
+  COMPANY_DETAILS_UPDATE_FAIL
 } from "../constant/companyConstant";
 import axios from "axios";
 
@@ -46,111 +50,147 @@ export const companyDetails = (keyword) => async (dispatch) => {
 export const companyReviewGet = () => async (dispatch) => {
   try {
     dispatch({ type: COMPANY_REVIEWS_REQUEST });
-
+    
     // const { data } = await axios.get(`/api/products${keyword}`)
     const { data } = await axios.get(
       `http://127.0.0.1:8000/api/companies/1/get_reviews/`
-    );
-    // console.log(data);
-    dispatch({
-      type: COMPANY_REVIEWS_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: COMPANY_REVIEWS_FAIL,
-      payload:
+      );
+      // console.log(data);
+      dispatch({
+        type: COMPANY_REVIEWS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: COMPANY_REVIEWS_FAIL,
+        payload:
         error.response && error.response.data.detail
+        ? error.response.data.detail
+        : error.message,
+      });
+    }
+  };
+  
+  export const companyFavoriteEmployees = () => async (dispatch) => {
+    try {
+      dispatch({ type: COMPANY_FAVORITE_EMPLOYEE_REQUEST });
+      
+      // const { data } = await axios.get(`/api/products${keyword}`)
+      const { data } = await axios.get(
+        `http://127.0.0.1:8000/api/companies/1/retrieve_favorite_employee/`
+        );
+        // console.log(data);
+        dispatch({
+          type: COMPANY_FAVORITE_EMPLOYEE_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: COMPANY_FAVORITE_EMPLOYEE_FAIL,
+          payload:
+          error.response && error.response.data.detail
           ? error.response.data.detail
           : error.message,
-    });
-  }
-};
-
-export const companyFavoriteEmployees = () => async (dispatch) => {
-  try {
-    dispatch({ type: COMPANY_FAVORITE_EMPLOYEE_REQUEST });
-
-    // const { data } = await axios.get(`/api/products${keyword}`)
-    const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/companies/1/retrieve_favorite_employee/`
-    );
-    // console.log(data);
-    dispatch({
-      type: COMPANY_FAVORITE_EMPLOYEE_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: COMPANY_FAVORITE_EMPLOYEE_FAIL,
-      payload:
-        error.response && error.response.data.detail
-          ? error.response.data.detail
-          : error.message,
-    });
-  }
-};
-
-export const companyJobsListAction = () => async (dispatch) => {
-  try {
-    dispatch({ type: COMPANY_JOBS_LIST_REQUEST });
-
-    // const { data } = await axios.get(`/api/products${keyword}`)
-    const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/companies/1/get_jobs/`
-    );
-    // console.log(data);
-    dispatch({
-      type: COMPANY_JOBS_LIST_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: COMPANY_JOBS_LIST_FAIL,
-      payload:
-        error.response && error.response.data.detail
-          ? error.response.data.detail
-          : error.message,
-    });
-  }
-};
-
-// POST DATA
-export const  companyVerification = (input) => async (dispatch) => {
-  try {
-    console.log(input?.company_verfication_id);
-    console.log(input?.company_name);
-    dispatch({
-      type: COMPANY_VERIFICATION_REQUEST,
-    });
-
-    const config = {
-      headers: {
-        "Content-type": "multipart/form-data",
-      },
+        });
+      }
     };
+    
+    export const companyJobsListAction = () => async (dispatch) => {
+      try {
+        dispatch({ type: COMPANY_JOBS_LIST_REQUEST });
+        
+        // const { data } = await axios.get(`/api/products${keyword}`)
+        const { data } = await axios.get(
+          `http://127.0.0.1:8000/api/companies/1/get_jobs/`
+          );
+          // console.log(data);
+          dispatch({
+            type: COMPANY_JOBS_LIST_SUCCESS,
+            payload: data,
+          });
+        } catch (error) {
+          dispatch({
+            type: COMPANY_JOBS_LIST_FAIL,
+            payload:
+            error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+          });
+        }
+      };
+      
+      // POST DATA
+      export const  companyVerification = (input) => async (dispatch) => {
+        try {
+          console.log(input?.company_verfication_id);
+          console.log(input?.company_name);
+          dispatch({
+            type: COMPANY_VERIFICATION_REQUEST,
+          });
+          
+          const config = {
+            headers: {
+              "Content-type": "multipart/form-data",
+            },
+          };
+          
+          const { data } = await axios.post(
+            "http://127.0.0.1:8000/api/verification/",
+            { Company : input?.company_name ,
+              registrationـnumber: input?.company_verfication_id ,
+              registration_file : input?.company_file ,
+              status: true},
+              config
+              );
+              
+              dispatch({
+                type: COMPANY_VERIFICATION_SUCCESS,
+                payload: data,
+              });
+              
+            } catch (error) {
+              dispatch({
+                type: COMPANY_VERIFICATION_FAIL,
+                payload:
+                error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+              });
+            }}
 
-    const { data } = await axios.post(
-      "http://127.0.0.1:8000/api/verification/",
-      { Company : input?.company_name ,
-        registrationـnumber: input?.company_verfication_id ,
-        registration_file : input?.company_file ,
-        status: true},
-      config
-    );
+// update using PUT
+export const updateCompanyDetails = (input) => async (dispatch) => {
+console.log(input);
+// console.log(input?.company_name);
+try{
+dispatch({
+      type: COMPANY_DETAILS_UPDATE_REQUEST,
+              });
 
-    dispatch({
-      type: COMPANY_VERIFICATION_SUCCESS,
-      payload: data,
-    });
+              const config = {
+                headers: {
+                  "Content-type": "application/json",
+                },
+              };
 
-  } catch (error) {
-    dispatch({
-      type: COMPANY_VERIFICATION_FAIL,
-      payload:
-        error.response && error.response.data.detail
-          ? error.response.data.detail
-          : error.message,
-    });
-  }
-};
+              const { data } = await axios.put(
+                `http://127.0.0.1:8000/api/companies/${input.id}`,
+                { input },
+                config
+              );
+            
+              dispatch({
+                type: COMPANY_DETAILS_UPDATE_SUCCESS,
+                payload: data,
+              });
+            
+            } catch (error) {
+              dispatch({
+                type: COMPANY_DETAILS_UPDATE_FAIL,
+                payload:
+                  error.response && error.response.data.detail
+                    ? error.response.data.detail
+                    : error.message,
+              });
+            }
+            };

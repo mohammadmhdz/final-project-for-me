@@ -4,15 +4,16 @@ import StickyBox from "react-sticky-box";
 import { home_icon, Img_02 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 // redux
-import { companyDetails } from "../../../../actions/companyActions";
+import { companyDetails , updateCompanyDetails } from "../../../../actions/companyActions";
 import { useDispatch ,  useSelector } from "react-redux";
 
 const Settings = (props) => {
   const dispatch = useDispatch();
   const companyDetailsReducer = useSelector((state) => state.companyDetails);
+  const companyDetailsUpdate = useSelector((state) => state.companyUpdateDetail);
   const { companyDetail } = companyDetailsReducer;
+  const [formData, updateFormData] = useState([]);
 
-  const [formData, updateFormData] = useState();
   
   const handleChange = (e) => {
     // console.log(e.target.id)
@@ -31,23 +32,30 @@ const Settings = (props) => {
       // status : "درانتظار تایید",  
       
       // Trimming any whitespace
-      [e.target.id] : e.target.value.trim() === "" ? e.target.defaultValue : e.target.value.trim()
+      [e.target.id] : e.target.value.trim()
       // category : 1,
     });
   }
   const handleSubmit = (e) => {
-    {}
+    dispatch(updateCompanyDetails(formData))
     console.log(formData)
   }
   useEffect(() => {
     dispatch(companyDetails(1))
+    // updateFormData(company_data)
 
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
   }, [dispatch]);
+  
+  useEffect(() => {
+    updateFormData({...companyDetail?.company_data})
+  }, [companyDetail]);
+
   console.log(companyDetail , "companyDetail")
+  console.log(companyDetailsUpdate , "companyDetail")
   console.log(formData , "formData")
   return (
     <>

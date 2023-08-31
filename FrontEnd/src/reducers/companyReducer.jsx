@@ -18,6 +18,10 @@ import {
   COMPANY_VERIFICATION_REQUEST,
   COMPANY_VERIFICATION_SUCCESS,
   COMPANY_VERIFICATION_FAIL,
+  // put
+  COMPANY_DETAILS_UPDATE_REQUEST,
+  COMPANY_DETAILS_UPDATE_SUCCESS,
+  COMPANY_DETAILS_UPDATE_FAIL,
 } from "../constant/companyConstant";
 
 export const companyDetailsReducer = (
@@ -108,6 +112,23 @@ export const companyVerifyReducer = (state = {}, action) => {
       return { loading: false, companyVerifyInfo: action.payload };
 
     case COMPANY_VERIFICATION_FAIL:
+      return { loading: false, error: action.payload };
+
+
+    default:
+      return state;
+  }
+};
+// put
+export const companyUpdateDetailsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COMPANY_DETAILS_UPDATE_REQUEST:
+      return { loading: true };
+
+    case COMPANY_DETAILS_UPDATE_SUCCESS:
+      return { loading: false, companyVerifyInfo: action.payload };
+
+    case COMPANY_DETAILS_UPDATE_FAIL:
       return { loading: false, error: action.payload };
 
 
