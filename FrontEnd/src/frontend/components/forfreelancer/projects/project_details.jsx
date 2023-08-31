@@ -147,7 +147,7 @@ const ProjectDetails = (props) => {
                         <div className="d-flex align-items-center justify-content-lg-between pro-post job-type">
                           <div>
                             <p>شهر</p>
-                            <h6>{jobsDetailsList.city?.name}</h6>
+                            <h6>{jobsDetailsList.job_city?.name}</h6>
                           </div>
                           <img
                             className="img-fluid"
@@ -195,7 +195,7 @@ const ProjectDetails = (props) => {
                   <h3 className="pro-title">توضیحات</h3>
                   <div className="pro-content">
                     <p>
-                   {jobsDetailsList.Company?.about}
+                   {jobsDetailsList.company?.about}
                     </p>
                   </div>
                 </div>
@@ -227,7 +227,7 @@ const ProjectDetails = (props) => {
                   <h3 className="pro-title">مهارت های مورد نیاز</h3>
                   <div className="pro-content">
                     <div className="tags">
-                      {jobsDetailsList.skills?.map((items) => (
+                      {jobsDetailsList.job_skills?.map((items) => (
                           <a href="">
                           <span className="badge badge-pill badge-design">
                           {items.title}
@@ -282,7 +282,7 @@ const ProjectDetails = (props) => {
                     <div className="author-heading">
                       <div className="profile-img">
                         <a href="#">
-                          <img src={company_img1} alt="author" />
+                          <img src={`http://127.0.0.1:8000/${jobsDetailsList.company?.image}`} alt="author" />
                         </a>
                       </div>
                       <div className="profile-name">
@@ -290,14 +290,14 @@ const ProjectDetails = (props) => {
                           to="./company-details"
                           className="author-location"
                         >
-                          {jobsDetailsList.Company?.Name}
+                          {jobsDetailsList.company?.Name}
                           <i className="fa fa-check-circle text-success verified" />
                         </Link>
                       </div>
                       <div className="freelance-info">
                         <div className="freelance-location">
                           <i className="fa fa-map-marker ms-1" />
-                          {jobsDetailsList.city?.name}
+                          {jobsDetailsList.job_city?.name}
                         </div>
                    
                       </div>
@@ -334,7 +334,7 @@ const ProjectDetails = (props) => {
                             <h6 className="text-sm text-end mb-0">عضویت از:</h6>
                           </div>
                           <div className="col-auto">
-                            {daysBetween(jobsDetailsList.Company?.founded_at)} روز پیش
+                            {daysBetween(jobsDetailsList.company?.founded_at)} روز پیش
                           </div>
                         </div>
                         <hr className="my-3" />
@@ -357,7 +357,7 @@ const ProjectDetails = (props) => {
                             </h6>
                           </div>
                           <div className="col-auto">
-                            <span className="text-sm">{jobsDetailsList.Company?.Website}</span>
+                            <span className="text-sm">{jobsDetailsList.company?.Website}</span>
                           </div>
                         </div>
                         <hr className="my-3" />
@@ -369,7 +369,7 @@ const ProjectDetails = (props) => {
                             </h6>
                           </div>
                           <div className="col-auto">
-                            <span className="text-sm">{jobsDetailsList.Company?.linkdin}</span>
+                            <span className="text-sm">{jobsDetailsList.company?.linkdin}</span>
                           </div>
                         </div>
                       </div>
