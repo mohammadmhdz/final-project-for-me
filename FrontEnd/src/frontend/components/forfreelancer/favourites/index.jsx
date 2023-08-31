@@ -26,15 +26,17 @@ const FreelancerFavourites = (props) => {
   // redux
   const dispatch = useDispatch();
   const employeeFavorite = useSelector((state) => state.employeeFavoriteList);
-  const employeeFavoriteToggle = useSelector((state) => state.employeeToggleFavorite);
+  const employeeFavoriteToggle = useSelector(
+    (state) => state.employeeToggleFavorite
+  );
   const { employeeFavorites } = employeeFavorite;
-  const localItem = JSON.parse(localStorage.getItem("userInfo"))
-  
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
   const handlefavorite = (e) => {
     // e.preventdefault();
     // console.log("here")
-    dispatch(employeeToggleFavoriteList(1))
-  }
+    dispatch(employeeToggleFavoriteList(1));
+  };
   // const test = [];
   useEffect(() => {
     // bayad vorodi behesh bedahim(input = employee id)
@@ -159,7 +161,10 @@ const FreelancerFavourites = (props) => {
                                     </td>
                                     <td>
                                       <a className="fav">
-                                        <i className="fas fa-heart filled" onClick={handlefavorite} />
+                                        <i
+                                          className="fas fa-heart filled"
+                                          onClick={handlefavorite}
+                                        />
                                       </a>
                                     </td>
                                   </tr>

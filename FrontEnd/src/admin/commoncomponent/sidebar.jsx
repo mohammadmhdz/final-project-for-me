@@ -165,11 +165,11 @@ const Sidebar = (props) => {
                     <FeatherIcon icon="pie-chart" /> <span>گزارش ها</span>
                   </Link>
                 </li>
-                <li className={pathname === "/admin/roles" ? "active" : ""}>
+                {/* <li className={pathname === "/admin/roles" ? "active" : ""}>
                   <Link to="/admin/roles">
                     <FeatherIcon icon="clipboard" /> <span>دسترسی ها</span>
                   </Link>
-                </li>
+                </li> */}
                 <li className={pathname === "/admin/skills" ? "active" : ""}>
                   <Link to="/admin/skills">
                     <FeatherIcon icon="award" /> <span>مهارت ها</span>
@@ -184,11 +184,11 @@ const Sidebar = (props) => {
                     <FeatherIcon icon="user-check" /> <span>احراز هویت</span>
                   </Link>
                 </li>
-                <li className={pathname === "/admin/settings" ? "active" : ""}>
+                {/* <li className={pathname === "/admin/settings" ? "active" : ""}>
                   <Link to="/admin/settings">
                     <FeatherIcon icon="settings" /> <span>تنظیمات</span>
                   </Link>
-                </li>
+                </li> */}
                 {/* <li className="menu-title">
                   <span>UI Interface</span>
                 </li> */}
