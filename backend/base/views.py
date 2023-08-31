@@ -211,8 +211,8 @@ class CompanyViewSet(viewsets.ViewSet):
 
 
     def update(self, request, pk=None):
-        Company = get_object_or_404(Company.objects.all(), pk=pk)
-        serializer = CompanySerializer(Company, data=request.data)
+        company = get_object_or_404(Company.objects.all(), pk=pk)
+        serializer = CompanySerializer(company, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

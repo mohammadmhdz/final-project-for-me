@@ -59,15 +59,15 @@ const Dashboard = () => {
   });
   const [series] = useState([
     {
-      name: "freelance Developers",
+      name: "کارجویان",
       data: [31, 40, 28, 51, 42, 109, 100],
     },
     {
-      name: "Developers per project",
+      name: "شرکت ها",
       data: [11, 32, 45, 32, 34, 52, 41],
     },
     {
-      name: "completed projects",
+      name: "استخدام ها",
       data: [12, 36, 42, 30, 39, 58, 40],
     },
   ]);
