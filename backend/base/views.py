@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import Job , Company , Employee , WorkExperience , Education , Language  , Verification , Skills , Category , Review , Request ,Portfolio , Gallery , Image , state ,City
 from django.contrib.auth.models import User
-from .serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer ,RequestSerializer , VerificationSerializer , SkillSerializer , CategorySerializer , ReviewSerializer ,PortfolioSerializer , GallerySerializer , ImageSerializer ,StateSerializer ,SkillSerializer ,CitySerializer
+from .serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer ,RequestSerializer , VerificationSerializer , SkillSerializer , CategorySerializer , ReviewSerializer ,PortfolioSerializer , GallerySerializer , ImageSerializer ,StateSerializer ,SkillSerializer ,CitySerializer , EmployeepostSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
@@ -69,7 +69,7 @@ def getUserProfile(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
+# @permission_classes([IsAdminUser])
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
@@ -308,7 +308,7 @@ class EmployeeViewSet(viewsets.ViewSet):
         return Response(serializer.data)
     
     def create(self,request):
-        serializer = EmployeeSerializer(data=request.data)
+        serializer = EmployeepostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
@@ -317,7 +317,7 @@ class EmployeeViewSet(viewsets.ViewSet):
 
     def update(self, request, pk=None):
         employee = get_object_or_404(Employee.objects.all(), pk=pk)
-        serializer = EmployeeSerializer(employee, data=request.data)
+        serializer = EmployeepostSerializer(employee, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -855,4 +855,3 @@ class ReviewViewSet(viewsets.ViewSet):
  
 
 
- 
