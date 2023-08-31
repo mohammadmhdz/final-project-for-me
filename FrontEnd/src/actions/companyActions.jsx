@@ -160,7 +160,7 @@ export const companyReviewGet = () => async (dispatch) => {
 
 // update using PUT
 export const updateCompanyDetails = (input) => async (dispatch) => {
-console.log(input);
+console.log(input , "input");
 // console.log(input?.company_name);
 try{
 dispatch({
@@ -174,8 +174,30 @@ dispatch({
               };
 
               const { data } = await axios.put(
-                `http://127.0.0.1:8000/api/companies/${input.id}`,
-                { input },
+                `http://127.0.0.1:8000/api/companies/${input.id}/`,
+                {
+                  user: input.user,
+                  Name: input.Name,
+                  image: null,
+                  about: input.about,
+                  founded_at: input.founded_at,
+                  city: +input.city,
+                  population: input.population,
+                  Owner_name: input.Owner_name,
+                  Email: input.Email,
+                  Website: input?.Website,
+                  facebook: input.facebook,
+                  linkdin: input.linkdin,
+                  instagram: input.instagram,
+                  Phone: input.Phone,
+                  Adress: input.Adress,
+                  Working_days_from: input.Working_days_from,
+                  Working_days_to: input.Working_days_to,
+                  working_hours_from: input.working_hours_from,
+                  working_hours_to: input.working_hours_to,
+                  active_plan: input.active_plan,
+                  available_Job_count: +input.available_Job_count,
+                },
                 config
               );
             

@@ -126,7 +126,7 @@ export const companyUpdateDetailsReducer = (state = {}, action) => {
       return { loading: true };
 
     case COMPANY_DETAILS_UPDATE_SUCCESS:
-      return { loading: false, companyVerifyInfo: action.payload };
+      return { loading: false, companyUpdateSuccesfull: action.payload };
 
     case COMPANY_DETAILS_UPDATE_FAIL:
       return { loading: false, error: action.payload };

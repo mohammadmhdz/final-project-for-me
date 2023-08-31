@@ -6,20 +6,92 @@ import { Sidebar } from "../sidebar";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { employeeDetails } from "../../../../actions/employeeActions";
+import { jobsPostRequirments } from "../../../../actions/jobActions";
 
 const FreelancerSettings = (props) => {
   // redux
   const dispatch = useDispatch();
   const employeeList = useSelector((state) => state.employeeDetails);
+  const Requirments = useSelector((state) => state.jobsPostRequirments);
+  const { postJobDetailsRequirments } = Requirments;
   const {employee} = employeeList ;
-  const [formData, setFormData] = useState({employee});
+  const [formData, updateFormData] = useState();
 
-  
   const localItem = JSON.parse(localStorage.getItem("userInfo"))
+
+  const changeArray = (e) => {
+
+     
+    // updateFormData(formData?.language?.map({
+    //   ...formData,
+    //   language : [...formData.language ,e.target.value ]   
+    // })
+    // )
+    
+    // updateFormData(formData.language?.map((item , index) =>{
+    //     [...formData],
+    //     [e.target.id ===index ?  e.target.name ===e.target.value : pass]
+    // }) )
+  }
+  const addInput = (e) => {
+    e.preventDefault()
+    console.log(e.target.id)
+    const newSkillInput =   {
+      id: "text",
+      title: ""
+    }
+    const newExprienceInput =   {
+      company_name : "",
+      employee: "",
+      from_date: "",
+      id: "",
+      title: "",
+      to_date : "",
+    }
+    const newEducationInput ={
+      degree: "",
+      from_date: "",
+      institute: "",
+      to_date: "",}
+    
+      const newLanguageInput ={
+        employee: "",
+        id : "",
+        language: "",
+        rate: "",}
+
+    e.target.id === "addExprience" ? 
+    updateFormData({
+      ...formData,
+      ["Experiences"] : [...formData.Experiences ,newExprienceInput]
+    }): e.target.id === "addSkills" ?
+    updateFormData({
+      ...formData,
+      ["skills"] : [...formData.skills ,newSkillInput]
+    }) : e.target.id === "addLanguage" ?
+    updateFormData({
+      ...formData,
+      ["Language"] : [...formData.Language ,newLanguageInput ]
+    }) : 
+    updateFormData({
+      ...formData,
+      ["Education"] : [...formData.Education ,newEducationInput]
+    }) ;
+  };
+
+  const handleChange = (e) => {
+     
+    updateFormData({
+      ...formData, 
+      [e.target.id] : e.target.value.trim()
+    });
+  }
+
 
   useEffect(() => {
     // redux
     dispatch(employeeDetails(localItem.id))
+    dispatch(jobsPostRequirments());
 
     document.body.className = "dashboard-page";
     return () => {
@@ -27,8 +99,15 @@ const FreelancerSettings = (props) => {
     };
   },[dispatch]);
 
+
+  useEffect(() => {
+    updateFormData({...employeeList?.employee})
+  }, [employeeList]);
+
+
   console.log(employee)
   console.log(formData ,'formData')
+  console.log(postJobDetailsRequirments ,'formData')
   return (
     <>
       {/* Page Content */}
@@ -82,45 +161,106 @@ const FreelancerSettings = (props) => {
                         <div className="row">
                           <div className="form-group col-md-6">
                             <label>نام کاربری</label>
-                            <input type="text" className="form-control" defaultValue={formData.user?.name} />
+                            <input
+                             onChange={handleChange}
+                             id="formatData?.username"
+                             placeholder={formData?.user?.username}
+                             type="text" className="form-control"  />
                           </div>
                           <div className="form-group col-md-6">
                             <label>آدرس ایمیل</label>
-                            <input type="email" className="form-control" />
+                            <input
+                             onChange={handleChange}
+                             id="email"
+                             placeholder={formData?.user?.email}
+                             type="email" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
-                            <label>نام و نام خانوادگی</label>
-                            <input type="text" className="form-control" />
+                            <label>نام  </label>
+                            <input
+                            onChange={handleChange}
+                            id="first_name"
+                            placeholder={formData?.user?.first_name}
+                            type="text" className="form-control" />
                           </div>
 
                           <div className="form-group col-md-6">
-                            <label>شماره تماس</label>
-                            <input type="email" className="form-control" />
+                            <label>نام خانوادگی</label>
+                            <input 
+                            onChange={handleChange}
+                            id="last_name"
+                            placeholder={formData?.user?.last_name}
+                            type="email" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>جنسیت</label>
                             <select
+                              onChange={handleChange}
+                              id="gender"
+                              placeholder={formData?.user?.gender}
                               name="price"
                               className="form-control select"
                             >
-                              <option value={0}>مرد</option>
-                              <option value={1}>زن</option>
+                              <option>انتخاب شما : {formData?.gender}</option>
+                              <option >آقا</option>
+                              <option >خانوم</option>
                             </select>
                           </div>
                           <div className="form-group col-md-6">
                             <label>نوع همکاری</label>
                             <select
-                              name="price"
+                              onChange={handleChange}
+                              id="cooperation_type"
+                              placeholder={formData?.user?.gender}
                               className="form-control select"
                             >
-                              <option value={0}>تمام وقت</option>
-                              <option value={1}>پاره وقت</option>
-                              <option value={2}>ساعتی </option>
+                            <option>انتخاب شما : {formData?.cooperation_type}</option>
+                              <option>تمام وقت</option>
+                              <option>پاره وقت</option>
                             </select>
                           </div>
+                          
+                          <div className="pro-body">
+                          {formData?.Language?.map((item , index) => (
+
+                            <div  className="row">
                           <div className="form-group col-md-6">
                             <label> زبان </label>
-                            <input type="text" className="form-control" />
+                            <input
+                            onChange={changeArray}
+                            placeholder={item.language}
+                            id={index}
+                            name="language"
+                            type="text" className="form-control" />
+                          </div>
+                            <div className="form-group col-md-6">
+                            <label> سطح دانش شما</label>
+                            <select
+                              name="rate"
+                              className="form-control select"
+                            >
+                              <option >انتخاب شما : {item.rate}</option>
+                              <option >10</option>
+                              <option >20</option>
+                              <option >30</option>
+                              <option >40</option>
+                              <option >50</option>
+                              <option >60</option>
+                              <option >70</option>
+                              <option >80</option>
+                              <option >90</option>
+                              <option >100</option>
+                            </select>
+                          </div>
+                          </div>
+                          ))
+                        }
+                          <button 
+                                id="addLanguage"
+                                onClick={(e) =>addInput(e)}
+                                className="btn fund-btn skill-add">
+                              اضافه کردن
+                            </button>
                           </div>
                         </div>
                         <div className="form-row pro-pad pt-0">
@@ -128,7 +268,7 @@ const FreelancerSettings = (props) => {
                             <label>تصویر حساب کاربری</label>
                             <div className="d-flex align-items-center">
                               <div className="upload-images">
-                                <img src={Img_02} alt="Image" />
+                                {/* <img src={`http://127.0.0.1:8000/${formData?.image}`} alt="Image" /> */}
                                 <a
                                   href=""
                                   className="btn btn-icon btn-danger btn-sm"
@@ -153,25 +293,23 @@ const FreelancerSettings = (props) => {
                       </div>
                       <div className="pro-body">
                         <div className="row">
-                          <div className="form-group col-md-12">
-                            <label>آدرس</label>
-                            <input type="text" className="form-control" />
-                          </div>
-                          <div className="form-group col-md-6">
-                            <label>استان</label>
-                            <select
-                              name="price"
-                              className="form-control select"
-                            >
-                              <option value={0}>تهران</option>
-                              <option value={1}>البرز</option>
-                              <option value={2}>گیلان</option>
-                            </select>
-                          </div>
+                          
                           <div className="form-group col-md-6">
                             <label>شهر</label>
-                            <input type="text" className="form-control" />
-                          </div>
+                            <select
+                            onChange={handleChange}
+                            id="city"
+                            name="price"
+                            className="form-control select"
+                            >
+                              <option >انتخاب شما : {formData?.city?.name}</option>
+                              { postJobDetailsRequirments.cities?.map((item) => (                               
+                                <option value={item.id}>{item.name}</option>
+                                ))
+                              }
+                              
+                            </select>
+                          </div> 
                         </div>
                       </div>
                     </div>
@@ -185,6 +323,9 @@ const FreelancerSettings = (props) => {
                         <div className="row">
                           <div className="form-group col-md-12">
                             <textarea
+                              onChange={handleChange}
+                              id="about"
+                              placeholder={formData?.about}
                               className="form-control"
                               rows={5}
                               defaultValue={""}
@@ -200,295 +341,73 @@ const FreelancerSettings = (props) => {
                             <h3 className="pro-title without-border mb-0">
                               مهارت ها
                             </h3>
-                            <a href="#" className="btn fund-btn skill-add">
+                            <button 
+                                id="addSkills"
+                                onClick={(e) =>addInput(e)}
+                                className="btn fund-btn skill-add">
                               اضافه کردن
-                            </a>
+                            </button>
                           </div>
-                          <div className="pro-body skill-info">
+                          {formData?.skills?.map((items) => (
+
+                            <div className="pro-body skill-info">
                             <div className="form-row align-items-center skill-cont">
                               <div className="form-group col-md-10">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue="Front End Developer"
-                                />
-                              </div>
+                              <select  id="skills" defaultValue={"placeholder"} className="form-control select">
+                                    <option value={"placeholder"}>{items.title}</option>
+                                      {postJobDetailsRequirments.skills?.map((item) => (
+                                        <option  value={item.id}>
+                                          {item.title}
+                                        </option>
+                                          ))}
+
+                                    </select>
+                            </div>     
                               <div className="form-group col-md-2">
                                 <a href="#" className="btn trash-icon">
                                   <i className="fa fa-trash" />
                                 </a>
                               </div>
                             </div>
-                            <div className="form-row align-items-center skill-cont">
-                              <div className="form-group col-md-10">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue="Front End Developer"
-                                />
-                              </div>
-                              <div className="form-group col-md-2">
-                                <a href="#" className="btn trash-icon">
-                                  <i className="fa fa-trash" />
-                                </a>
-                              </div>
                             </div>
-                            <div className="form-row align-items-center skill-cont">
-                              <div className="form-group col-md-10">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue="Front End Developer"
-                                />
-                              </div>
-                              <div className="form-group col-md-2">
-                                <a href="#" className="btn trash-icon">
-                                  <i className="fa fa-trash" />
-                                </a>
-                              </div>
-                            </div>
-                            <div className="form-row align-items-center skill-cont">
-                              <div className="form-group col-md-10">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue="Front End Developer"
-                                />
-                              </div>
-                              <div className="form-group col-md-2">
-                                <a href="#" className="btn trash-icon">
-                                  <i className="fa fa-trash" />
-                                </a>
-                              </div>
-                            </div>
-                            <div className="form-row align-items-center skill-cont">
-                              <div className="form-group col-md-10">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue="Front End Developer"
-                                />
-                              </div>
-                              <div className="form-group col-md-2">
-                                <a href="#" className="btn trash-icon">
-                                  <i className="fa fa-trash" />
-                                </a>
-                              </div>
-                            </div>
-                            <div className="form-row align-items-center skill-cont">
-                              <div className="form-group col-md-10">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue="Front End Developer"
-                                />
-                              </div>
-                              <div className="form-group col-md-2">
-                                <a href="#" className="btn trash-icon">
-                                  <i className="fa fa-trash" />
-                                </a>
-                              </div>
-                            </div>
+                           ))} 
+
                           </div>
                         </div>
                       </div>
-                      <div className="col-md-12 col-xl-8">
-                        <div className="card">
-                          <div className="pro-head">
-                            <h3 className="pro-title without-border mb-0">
-                              مدارک رسمی /جوایز
-                            </h3>
-                            <a href="#" className="btn fund-btn add-award">
-                              اضافه کردن
-                            </a>
-                          </div>
-                          <div className="pro-body  award-info">
-                            <div className="form-row align-items-center award-cont">
-                              <div className="form-group col-md-2">
-                                <img
-                                  alt="profile image"
-                                  src={Img}
-                                  className="avatar-medium"
-                                />
-                              </div>
-                              <div className="form-group col-md-5">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue="Best Game Designer"
-                                />
-                              </div>
-                              <div className="form-group col-md-3">
-                                <input
-                                  type="text"
-                                  className="form-control datetimepicker"
-                                  defaultValue="05/10/2020"
-                                />
-                              </div>
-                              <div className="form-group col-md-2">
-                                <a href="#" className="btn trash-icon">
-                                  <i className="fa fa-trash" />
-                                </a>
-                              </div>
-                            </div>
-                            <div className="form-row align-items-center award-cont">
-                              <div className="form-group col-md-2">
-                                <img
-                                  alt="profile image"
-                                  src={Img}
-                                  className="avatar-medium"
-                                />
-                              </div>
-                              <div className="form-group col-md-5">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue="Best Game Designer"
-                                />
-                              </div>
-                              <div className="form-group col-md-3">
-                                <input
-                                  type="text"
-                                  className="form-control datetimepicker"
-                                  defaultValue="05/10/2020"
-                                />
-                              </div>
-                              <div className="form-group col-md-2">
-                                <a href="#" className="btn trash-icon">
-                                  <i className="fa fa-trash" />
-                                </a>
-                              </div>
-                            </div>
-                            <div className="form-row align-items-center award-cont">
-                              <div className="form-group col-md-2">
-                                <img
-                                  alt="profile image"
-                                  src={Img}
-                                  className="avatar-medium"
-                                />
-                              </div>
-                              <div className="form-group col-md-5">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue="Best Game Designer"
-                                />
-                              </div>
-                              <div className="form-group col-md-3">
-                                <input
-                                  type="text"
-                                  className="form-control datetimepicker"
-                                  defaultValue="05/10/2020"
-                                />
-                              </div>
-                              <div className="form-group col-md-2">
-                                <a href="#" className="btn trash-icon">
-                                  <i className="fa fa-trash" />
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="card">
-                          <div className="pro-head">
-                            <h3 className="pro-title without-border mb-0">
-                              زبان
-                            </h3>
-                            <a href="#" className="btn fund-btn add-lang">
-                              اضافه کردن
-                            </a>
-                          </div>
-                          <div className="pro-body  lang-info">
-                            <div className="form-row align-items-center lang-cont">
-                              <div className="form-group col-md-7">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue="انگلیسی"
-                                />
-                              </div>
-                              <div className="form-group col-md-3">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue={100}
-                                />
-                              </div>
-                              <div className="form-group col-md-2">
-                                <a href="#" className="btn trash-icon">
-                                  <i className="fa fa-trash" />
-                                </a>
-                              </div>
-                            </div>
-                            <div className="form-row align-items-center lang-cont">
-                              <div className="form-group col-md-7">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue="روسی"
-                                />
-                              </div>
-                              <div className="form-group col-md-3">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue={90}
-                                />
-                              </div>
-                              <div className="form-group col-md-2">
-                                <a href="#" className="btn trash-icon">
-                                  <i className="fa fa-trash" />
-                                </a>
-                              </div>
-                            </div>
-                            <div className="form-row align-items-center lang-cont">
-                              <div className="form-group col-md-7">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue="آلمانی"
-                                />
-                              </div>
-                              <div className="form-group col-md-3">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue={90}
-                                />
-                              </div>
-                              <div className="form-group col-md-2">
-                                <a href="#" className="btn trash-icon">
-                                  <i className="fa fa-trash" />
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="card">
+
+                    <div  className="card">
                       <div className="pro-head">
                         <h3 className="pro-title without-border mb-0">
                           سوابق شغلی
-                        </h3>
-                        <a href="#" className="btn fund-btn add-exp">
-                          اضافه کردن
-                        </a>
+                          </h3>
+                        <button 
+                                id="addExprience"
+                                onClick={(e) =>addInput(e)}
+                                className="btn fund-btn skill-add">
+                              اضافه کردن
+                         </button>
+                        
                       </div>
+                      {formData?.Experiences?.map((item) => (
                       <div className="pro-body">
                         <div className="exp-info">
                           <div className="row exp-cont">
                             <div className="form-group col-md-6">
                               <label>عنوان</label>
-                              <input type="text" className="form-control" />
+                              <input 
+                              defaultValue={item.title}
+                              type="text" 
+                              className="form-control" />
                             </div>
                             <div className="form-group col-md-6">
                               <label>نام شرکت </label>
-                              <input type="text" className="form-control" />
+                              <input defaultValue={item.company_name} type="text" className="form-control" />
                             </div>
                             <div className="form-group col-md-6">
                               <label>از تاریخ</label>
                               <input
+                              defaultValue={item.from_date}
                                 type="text"
                                 className="form-control datetimepicker"
                                 placeholder="Select Date"
@@ -497,59 +416,75 @@ const FreelancerSettings = (props) => {
                             <div className="form-group col-md-6">
                               <label>تا تاریخ</label>
                               <input
+                              defaultValue={item.to_date}
                                 type="text"
                                 className="form-control datetimepicker"
                                 placeholder="Select Date"
                               />
                             </div>
-                            <div className="form-group col-md-12">
+                            {/* <div className="form-group col-md-12">
                               <label className="custom_check">
                                 <input type="checkbox" name="rem_password" />
                                 <span className="checkmark" /> هم اکنون مشغول
                                 کار هستم
                               </label>
-                            </div>
-                            <div className="form-group col-md-12">
+                            </div> */}
+
+                            {/* <div className="form-group col-md-12">
                               <label>خلاصه</label>
                               <textarea
                                 className="form-control"
                                 rows={5}
                                 defaultValue={""}
                               />
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>
+                      )) }
                     </div>
+
                     <div className="card">
                       <div className="pro-head">
                         <h3 className="pro-title without-border mb-0">
                           سوابق تحصیلی
                         </h3>
-                        <a href="#" className="btn fund-btn">
-                          اضافه کردن
-                        </a>
+                        <button 
+                                id="addEducation"
+                                onClick={(e) =>addInput(e)}
+                                className="btn fund-btn skill-add">
+                              اضافه کردن
+                         </button>
                       </div>
+
+                      {formData?.Education?.map((item)=> (
+
                       <div className="pro-body">
                         <div className="row">
                           <div className="form-group col-md-12">
-                            <label>مقطع تحصیلی</label>
-                            <input type="text" className="form-control" />
+                            <label>نام دانشگاه / موسسه آموزشی</label>
+                            <input
+                             defaultValue={item.institute}
+                             type="text" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
-                            <label>نام دانشگاه / موسسه آموزشی</label>
+                            <label>مقطع تحصیلی</label>
                             <select
                               name="price"
                               className="form-control select"
                             >
-                              <option value={0}>انتخاب کنید </option>
-                              <option value={1}>University</option>
-                              <option value={2}>University</option>
+                              <option>انتخاب شما :{item.degree}</option>
+                              <option>دیپلم</option>
+                              <option>کاردانی</option>
+                              <option>کارشناسی</option>
+                              <option>کارشناسی ارشد</option>
+                              <option>دکترا</option>
                             </select>
                           </div>
                           <div className="form-group col-md-6">
                             <label>از سال</label>
                             <input
+                            defaultValue={item.from_date}
                               type="text"
                               className="form-control datetimepicker"
                             />
@@ -557,20 +492,14 @@ const FreelancerSettings = (props) => {
                           <div className="form-group col-md-6">
                             <label>تا سال</label>
                             <input
+                              defaultValue={item.to_date}
                               type="text"
                               className="form-control datetimepicker"
                             />
-                          </div>
-                          <div className="form-group col-md-12">
-                            <label>خلاصه</label>
-                            <textarea
-                              className="form-control"
-                              rows={5}
-                              defaultValue={""}
-                            />
-                          </div>
+                          </div> 
                         </div>
                       </div>
+                    )) }
                     </div>
                     <div className="card">
                       <div className="pro-head">
@@ -582,7 +511,11 @@ const FreelancerSettings = (props) => {
                         <div className="row">
                           <div className="form-group col-md-6">
                             <label>فیس بوک</label>
-                            <input type="text" className="form-control" />
+                            <input
+                            onChange={handleChange}
+                            id="about"
+                            placeholder={formData?.about}
+                            type="text" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>دریبل</label>
