@@ -40,12 +40,9 @@ const Categories = () => {
       id: 5,
       categoryname: "فروش و مارکتینگ",
     },
+
     {
       id: 6,
-      categoryname: "Accounting / Finance",
-    },
-    {
-      id: 7,
       categoryname: "حسابداری",
     },
   ];

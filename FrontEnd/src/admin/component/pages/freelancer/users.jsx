@@ -35,7 +35,7 @@ const Users = () => {
           <h5>
             <Link to="/admin/profile">محمد مهدیزاده</Link>
           </h5>
-          <p> Mhdz@example.com</p>
+          <p> Mhdz@gmail.com</p>
         </div>
       ),
       expertise: "Frontend Developer",
@@ -59,12 +59,12 @@ const Users = () => {
       freelancer: (
         <div>
           <h5>
-            <Link to="/admin/profile">محمد مهدیزاده</Link>
+            <Link to="/admin/profile">آیسان قاسمی</Link>
           </h5>
-          <p> Mhdz@example.com</p>
+          <p> aysan_gh@gmail.com</p>
         </div>
       ),
-      expertise: "Frontend Developer",
+      expertise: "مهندس برق",
       verified: (
         <div className="verify-mail">
           <FeatherIcon
@@ -75,8 +75,8 @@ const Users = () => {
         </div>
       ),
 
-      joineddate: "۱ خرداد ۱۴۰۲",
-      lastlogin: "۲ شهریور ۱۴۰۲",
+      joineddate: "۱ فرودین ۱۴۰۲",
+      lastlogin: "۲ تیز ۱۴۰۲",
       status: "فعال",
       image: avatar_14,
     },
@@ -85,12 +85,12 @@ const Users = () => {
       freelancer: (
         <div>
           <h5>
-            <Link to="/admin/profile">محمد مهدیزاده</Link>
+            <Link to="/admin/profile">علی کلهر</Link>
           </h5>
-          <p> Mhdz@example.com</p>
+          <p> kalhorali@yahoo.com</p>
         </div>
       ),
-      expertise: "Frontend Developer",
+      expertise: "وکیل دادگستری",
       verified: (
         <div className="verify-mail">
           <FeatherIcon
@@ -102,7 +102,7 @@ const Users = () => {
       ),
 
       joineddate: "۱ خرداد ۱۴۰۲",
-      lastlogin: "۲ شهریور ۱۴۰۲",
+      lastlogin: "۲ مرداد ۱۴۰۲",
       status: "فعال",
       image: avatar_14,
     },
@@ -111,12 +111,12 @@ const Users = () => {
       freelancer: (
         <div>
           <h5>
-            <Link to="/admin/profile">محمد مهدیزاده</Link>
+            <Link to="/admin/profile"> مژده زینال‌زادگان</Link>
           </h5>
-          <p> Mhdz@example.com</p>
+          <p> mozhde_106@gmail.com</p>
         </div>
       ),
-      expertise: "Frontend Developer",
+      expertise: "مدیریت",
       verified: (
         <div className="verify-mail">
           <FeatherIcon
@@ -127,7 +127,7 @@ const Users = () => {
         </div>
       ),
 
-      joineddate: "۱ خرداد ۱۴۰۲",
+      joineddate: "۱ بهمن ۱۴۰۱",
       lastlogin: "۲ شهریور ۱۴۰۲",
       status: "غیر فعال",
       image: avatar_14,
