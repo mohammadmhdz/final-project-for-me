@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect , useState  } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { home_icon, Img_02 } from "../../imagepath";
@@ -12,7 +12,7 @@ const Settings = (props) => {
   const companyDetailsReducer = useSelector((state) => state.companyDetails);
   const { companyDetail } = companyDetailsReducer;
 
-  const [formData, updateFormData] = useState([]);
+  const [formData, updateFormData] = useState();
   
   const handleChange = (e) => {
     // console.log(e.target.id)
@@ -31,9 +31,13 @@ const Settings = (props) => {
       // status : "درانتظار تایید",  
       
       // Trimming any whitespace
-      [e.target.id] : e.target.value
+      [e.target.id] : e.target.value.trim() === "" ? e.target.defaultValue : e.target.value.trim()
       // category : 1,
     });
+  }
+  const handleSubmit = (e) => {
+    {}
+    console.log(formData)
   }
   useEffect(() => {
     dispatch(companyDetails(1))
@@ -44,6 +48,7 @@ const Settings = (props) => {
     };
   }, [dispatch]);
   console.log(companyDetail , "companyDetail")
+  console.log(formData , "formData")
   return (
     <>
       {/* Page Content */}
@@ -99,23 +104,38 @@ const Settings = (props) => {
                           </div>
                           <div className="form-group col-md-6">
                             <label>آدرس وبسایت</label>
-                            <input placeholder={companyDetail.company_data?.Website} type="email" className="form-control" />
+                            <input
+                            onChange={handleChange}
+                            id="Website" 
+                            placeholder={companyDetail.company_data?.Website} type="email" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>نام و نام خانوادگی</label>
-                            <input placeholder={companyDetail.company_data?.user.first_name + companyDetail.company_data?.user.first_name} type="text" className="form-control" />
+                            <input 
+                            onChange={handleChange}
+                            id="Owner_name"
+                            placeholder={companyDetail.company_data?.user.Owner_name} type="text" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>نام شرکت</label>
-                            <input placeholder={companyDetail.company_data?.Name}  type="email" className="form-control" />
+                            <input 
+                            onChange={handleChange}
+                            id="Name"
+                            placeholder={companyDetail.company_data?.Name}  type="email" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>شماره تماس</label>
-                            <input placeholder={companyDetail.company_data?.Phone} type="email" className="form-control" />
+                            <input 
+                            onChange={handleChange}
+                            id="Phone"
+                            placeholder={companyDetail.company_data?.Phone} type="email" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>جمعیت شرکت</label>
-                            <input  placeholder={companyDetail.company_data?.population} type="email" className="form-control" />
+                            <input
+                            onChange={handleChange}
+                            id="population" 
+                            placeholder={companyDetail.company_data?.population} type="email" className="form-control" />
                           </div>
                         </div>
                         <div className="form-row pro-pad pt-0">
@@ -151,21 +171,27 @@ const Settings = (props) => {
                       <div className="row">
                         <div className="form-group col-md-12">
                           <label>آدرس</label>
-                          <input placeholder={companyDetail.company_data?.Adress} type="text" className="form-control" />
+                          <input 
+                          onChange={handleChange}
+                          id="Adress"
+                          placeholder={companyDetail.company_data?.Adress} type="text" className="form-control" />
                         </div>
 
                         <div className="form-group col-md-6">
-                          <label>استان</label>
-                          <select className="form-control select">
+                          <label>شهر</label>
+                          <select
+                          onChange={handleChange}
+                          id="city"
+                          className="form-control select">
                             <option value={0}>تهران</option>
                             <option value={1}>البرز</option>
                             <option value={2}>گیلان</option>
                           </select>
                         </div>
-                        <div className="form-group col-md-6">
+                        {/* <div className="form-group col-md-6">
                           <label>شهر</label>
                           <input type="text" className="form-control" />
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>
@@ -179,7 +205,9 @@ const Settings = (props) => {
                       <div className="row">
                         <div className="form-group col-md-12">
                           <textarea
-                          placeholder={companyDetail.company_data?.about}
+                            onChange={handleChange}
+                            id="about"
+                            placeholder={companyDetail.company_data?.about}
                             className="form-control"
                             rows={5}
                             defaultValue={""}
@@ -198,23 +226,33 @@ const Settings = (props) => {
                       <div className="row">
                         <div className="form-group col-md-6">
                           <label>فیس بوک</label>
-                          <input placeholder={companyDetail.company_data?.facebook} type="text" className="form-control" />
+                          <input 
+                          onChange={handleChange}
+                          id="facebook"
+                          placeholder={companyDetail.company_data?.facebook} type="text" className="form-control" />
                         </div>
                         <div className="form-group col-md-6">
                           <label>لینکداین</label>
-                          <input placeholder={companyDetail.company_data?.linkdin} type="text" className="form-control" />
+                          <input
+                          onChange={handleChange}
+                          id="linkdin"
+                          placeholder={companyDetail.company_data?.linkdin} type="text" className="form-control" />
                         </div>
                         <div className="form-group col-md-6">
                           <label>اینستاگرام</label>
-                          <input placeholder={companyDetail.company_data?.instagram}  type="text" className="form-control" />
+                          <input
+                          onChange={handleChange}
+                          id="instagram"
+                          placeholder={companyDetail.company_data?.instagram}  type="text" className="form-control" />
                         </div>
                       </div>
-                    </div>z``
+                    </div>
                   </div>
                   <div className="card">
                     <div className="text-end">
                       <div className="pro-body">
                         <button
+                          onClick={handleSubmit}
                           className="btn btn-secondary click-btn btn-plan"
                           type="submit"
                         >
