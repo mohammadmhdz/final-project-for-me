@@ -7,7 +7,8 @@ import { Sidebar } from "../sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeDetails } from "../../../../actions/employeeActions";
 import { jobsPostRequirments } from "../../../../actions/jobActions";
-
+// datePicker
+import {CustomizedDatePicker} from "../../../../datePicker/DatePicker/index"
 const FreelancerSettings = (props) => {
   // redux
   const dispatch = useDispatch();
@@ -19,20 +20,106 @@ const FreelancerSettings = (props) => {
 
   const localItem = JSON.parse(localStorage.getItem("userInfo"))
 
-  const changeArray = (e) => {
+  const handleLanguageArray = (e) => {
 
-     
-    // updateFormData(formData?.language?.map({
-    //   ...formData,
-    //   language : [...formData.language ,e.target.value ]   
-    // })
-    // )
-    
-    // updateFormData(formData.language?.map((item , index) =>{
-    //     [...formData],
-    //     [e.target.id ===index ?  e.target.name ===e.target.value : pass]
-    // }) )
+    const changeLanguage = formData.Language?.map((item , index) =>{
+      if(index === +e.target.id){
+        return item = {
+          employee : localItem.id, 
+          id : e.target.id,
+          [e.target.name]: e.target.value,
+        }
+      }  
+        else { 
+          return item
+        }  
+      }
+      )
+    // console.log(changeLanguage , "change")
+    updateFormData(formData =>({
+      ...formData, 
+      ["Language"]: [...changeLanguage]
+    })
+    )
   }
+
+  const handleEducationArray = (e) => {
+
+    const changeEducation = formData.Education?.map((item , index) =>{
+      if(index === +e.target.id){
+        return item = {
+          ...item ,
+          [e.target.name]: e.target.value,
+        }
+      }  
+        else { 
+          return item
+        }  
+      }
+      )
+    // console.log(changeEducation , "change")
+    updateFormData(formData =>({
+      ...formData, 
+      ["Education"]: [...changeEducation]
+    })
+    )
+  }
+
+  const handleExperiencesArray = (e) => {
+
+    const changeExperiences = formData.Experiences?.map((item , index) =>{
+      if(index === +e.target.id){
+        return item = {
+          employee : localItem.id, 
+          id : e.target.id,
+          [e.target.name]: e.target.value,
+        }
+      }  
+        else { 
+          return item
+        }  
+      }
+      )
+    // console.log(changeExperiences , "change")
+    updateFormData(formData =>({
+      ...formData, 
+      ["Experiences"]: [...changeExperiences]
+    })
+    )
+  }
+  const handleSkillsArray = (e) => {
+    // for getting option id :)
+    const index = e.target.selectedIndex;
+    const el = e.target.childNodes[index]
+    const inputId =  el.getAttribute('id');  
+  
+    const changeSkills = formData.skills?.map((item , index) =>{
+      if(index === +e.target.id){
+        return item = {
+          id : +inputId,
+          [e.target.name]: e.target.value,
+        }
+      }  
+        else { 
+          return item
+        }  
+      }
+      )
+    // console.log(changeExperiences , "change")
+    updateFormData(formData =>({
+      ...formData, 
+      ["skills"]: [...changeSkills]
+    })
+    )
+    // updateSkillsArray([+e.target.value, ...formData.skills]);
+
+    // updateFormData({
+    //   ...formData,
+
+    //   // Trimming any whitespace
+    //   [e.target.id] : [...skillsArray , +e.target.value]
+    // });
+  };
   const addInput = (e) => {
     e.preventDefault()
     console.log(e.target.id)
@@ -227,7 +314,7 @@ const FreelancerSettings = (props) => {
                           <div className="form-group col-md-6">
                             <label> زبان </label>
                             <input
-                            onChange={changeArray}
+                            onChange={(e) =>handleLanguageArray(e)}
                             placeholder={item.language}
                             id={index}
                             name="language"
@@ -236,6 +323,8 @@ const FreelancerSettings = (props) => {
                             <div className="form-group col-md-6">
                             <label> سطح دانش شما</label>
                             <select
+                              onChange={handleLanguageArray}
+                              id={index}
                               name="rate"
                               className="form-control select"
                             >
@@ -348,19 +437,18 @@ const FreelancerSettings = (props) => {
                               اضافه کردن
                             </button>
                           </div>
-                          {formData?.skills?.map((items) => (
+                          {formData?.skills?.map((items , index) => (
 
                             <div className="pro-body skill-info">
                             <div className="form-row align-items-center skill-cont">
                               <div className="form-group col-md-10">
-                              <select  id="skills" defaultValue={"placeholder"} className="form-control select">
-                                    <option value={"placeholder"}>{items.title}</option>
+                              <select name="title" onChange={handleSkillsArray} id={index}  className="form-control select">
+                                    <option  value={"placeholder"}>{items.title}</option>
                                       {postJobDetailsRequirments.skills?.map((item) => (
-                                        <option  value={item.id}>
+                                        <option  id={+item.id} value={item.title}>
                                           {item.title}
                                         </option>
                                           ))}
-
                                     </select>
                             </div>     
                               <div className="form-group col-md-2">
@@ -389,24 +477,34 @@ const FreelancerSettings = (props) => {
                          </button>
                         
                       </div>
-                      {formData?.Experiences?.map((item) => (
+                      {formData?.Experiences?.map((item , index) => (
                       <div className="pro-body">
                         <div className="exp-info">
                           <div className="row exp-cont">
                             <div className="form-group col-md-6">
                               <label>عنوان</label>
                               <input 
+                              id={index}
+                              name="title"
+                              onChange={handleExperiencesArray}
                               defaultValue={item.title}
                               type="text" 
                               className="form-control" />
                             </div>
                             <div className="form-group col-md-6">
                               <label>نام شرکت </label>
-                              <input defaultValue={item.company_name} type="text" className="form-control" />
+                              <input 
+                              id={index}
+                              name="company_name"
+                              onChange={handleExperiencesArray}
+                              defaultValue={item.company_name} type="text" className="form-control" />
                             </div>
                             <div className="form-group col-md-6">
                               <label>از تاریخ</label>
                               <input
+                              id={index}
+                              name="from_date"
+                              onChange={handleExperiencesArray}
                               defaultValue={item.from_date}
                                 type="text"
                                 className="form-control datetimepicker"
@@ -416,11 +514,16 @@ const FreelancerSettings = (props) => {
                             <div className="form-group col-md-6">
                               <label>تا تاریخ</label>
                               <input
+                              id={index}
+                              name="to_date"
+                              onChange={handleExperiencesArray}
                               defaultValue={item.to_date}
                                 type="text"
                                 className="form-control datetimepicker"
                                 placeholder="Select Date"
                               />
+                            <CustomizedDatePicker/>
+
                             </div>
                             {/* <div className="form-group col-md-12">
                               <label className="custom_check">
@@ -457,20 +560,25 @@ const FreelancerSettings = (props) => {
                          </button>
                       </div>
 
-                      {formData?.Education?.map((item)=> (
+                      {formData?.Education?.map((item , index)=> (
 
                       <div className="pro-body">
                         <div className="row">
                           <div className="form-group col-md-12">
                             <label>نام دانشگاه / موسسه آموزشی</label>
                             <input
+                            id={index}
+                            onChange={handleEducationArray}
+                            name="institute"
                              defaultValue={item.institute}
                              type="text" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
                             <label>مقطع تحصیلی</label>
                             <select
-                              name="price"
+                              id={index}
+                              onChange={handleEducationArray}
+                              name="degree"
                               className="form-control select"
                             >
                               <option>انتخاب شما :{item.degree}</option>
@@ -484,7 +592,10 @@ const FreelancerSettings = (props) => {
                           <div className="form-group col-md-6">
                             <label>از سال</label>
                             <input
-                            defaultValue={item.from_date}
+                            id={index}
+                            onChange={handleEducationArray}
+                            name="from_date"
+                              defaultValue={item.from_date}
                               type="text"
                               className="form-control datetimepicker"
                             />
@@ -492,6 +603,9 @@ const FreelancerSettings = (props) => {
                           <div className="form-group col-md-6">
                             <label>تا سال</label>
                             <input
+                            id={index}
+                            onChange={handleEducationArray}
+                            name="to_date"
                               defaultValue={item.to_date}
                               type="text"
                               className="form-control datetimepicker"
