@@ -270,3 +270,41 @@ class GallerySerializer(serializers.ModelSerializer):
         serializer = ImageSerializer(images, many=True)
         return serializer.data 
 
+
+
+
+
+
+
+class EmployeepostSerializer(serializers.ModelSerializer):
+    work_experience = ExperienceSerializer(many=True)
+    education = EducationSerializer(many=True)
+    languages = LanguageSerializer(many=True)
+
+    class Meta:
+        model = Employee
+        fields = '__all__'
+
+    def create(self, validated_data):
+        work_experience_data = validated_data.pop('work_experience')
+        education_data = validated_data.pop('education')
+        languages_data = validated_data.pop('languages')
+
+        skills_data = validated_data.pop('skills')
+        favorite_jobs_data = validated_data.pop('favorite_jobs')  # Remove favorite_jobs from validated_data
+
+        employee = Employee.objects.create(**validated_data)
+
+        for experience_data in work_experience_data:
+            WorkExperience.objects.create(employee=employee, **experience_data)
+
+        for education_data in education_data:
+            Education.objects.create(employee=employee, **education_data)
+
+        for language_data in languages_data:
+            Language.objects.create(employee=employee, **language_data)
+
+        employee.skills.set(skills_data)
+        employee.favorite_jobs.set(favorite_jobs_data)  # Assign favorite_jobs using set() method
+
+        return employee
