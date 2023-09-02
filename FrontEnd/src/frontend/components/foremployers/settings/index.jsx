@@ -259,14 +259,14 @@ const Settings = (props) => {
                           className="btn btn-secondary click-btn btn-plan"
                           type="submit"
                         >
-                          بازگشت
+                          تایید
                         </button>
                         &nbsp;
                         <button
                           className="btn btn-primary click-btn btn-plan"
                           type="submit"
                         >
-                          تایید
+                          بازگشت
                         </button>
                       </div>
                     </div>

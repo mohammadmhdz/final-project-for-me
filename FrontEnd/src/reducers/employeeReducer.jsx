@@ -18,6 +18,10 @@ import {
   EMPLOYEE_TOGGLE_FAVORITE_REQUEST ,
   EMPLOYEE_TOGGLE_FAVORITE_SUCCESS ,
   EMPLOYEE_TOGGLE_FAVORITE_FAIL ,
+  // put
+  EMPLOYEE_DETAILS_EDIT_REQUEST,
+  EMPLOYEE_DETAILS_EDIT_SUCCESS,
+  EMPLOYEE_DETAILS_EDIT_FAIL, 
  
 } from "../constant/employeeConstant";
 
@@ -106,6 +110,23 @@ export const employeeToggleFavoriteListReducer = (state = {}, action) => {
 
     case EMPLOYEE_TOGGLE_FAVORITE_FAIL:
       return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+// put
+export const employeeUpdateDetailsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case EMPLOYEE_DETAILS_EDIT_REQUEST:
+      return { loading: true };
+
+    case EMPLOYEE_DETAILS_EDIT_SUCCESS:
+      return { loading: false, employeeUpdateSuccesfull: action.payload };
+
+    case EMPLOYEE_DETAILS_EDIT_FAIL:
+      return { loading: false, error: action.payload };
+
 
     default:
       return state;

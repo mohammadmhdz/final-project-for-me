@@ -5,22 +5,25 @@ import { home_icon, Img, Img_02 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { employeeDetails } from "../../../../actions/employeeActions";
+import { employeeDetails , updateEmployeeDetails} from "../../../../actions/employeeActions";
 import { jobsPostRequirments } from "../../../../actions/jobActions";
 // datePicker
 import { DatePicker} from "zaman";
+import moment from "moment";
 
 const FreelancerSettings = (props) => {
   const inputRef = useRef();
   // redux
   const dispatch = useDispatch();
   const employeeList = useSelector((state) => state.employeeDetails);
+  const employeeUpdateResult = useSelector((state) => state.employeeUpdateDetails);
   const Requirments = useSelector((state) => state.jobsPostRequirments);
   const { postJobDetailsRequirments } = Requirments;
   const {employee} = employeeList ;
 
   const [formData, updateFormData] = useState();
-  const [date , setDate] = useState()
+  const [ExperienceDate , setExperienceDate] = useState()
+  const [EducationDate , setEducationDate] = useState()
 
   const localItem = JSON.parse(localStorage.getItem("userInfo"))
 
@@ -29,9 +32,9 @@ const FreelancerSettings = (props) => {
     const changeLanguage = formData.Language?.map((item , index) =>{
       if(index === +e.target.id){
         return item = {
-          employee : localItem.id, 
-          id : e.target.id,
-          [e.target.name]: e.target.value,
+          
+          ["id"]: "10",
+          ["title"]: e.target.value,
         }
       }  
         else { 
@@ -54,6 +57,8 @@ const FreelancerSettings = (props) => {
         return item = {
           ...item ,
           [e.target.name]: e.target.value,
+          ["from_date"]: moment(new Date(EducationDate?.[+e.target.id].from_date_education).toISOString()).utc().format('YYYY-MM-DD'),
+          ["to_date"] : moment( new Date(EducationDate?.[+e.target.id].to_date_education).toISOString()).utc().format('YYYY-MM-DD'),
         }
       }  
         else { 
@@ -75,12 +80,13 @@ const FreelancerSettings = (props) => {
     const changeExperiences = formData.Experiences?.map((item , index) =>{
       if(index === +e.target.id){
         return item = {
-          ...item,
-          employee : localItem.id, 
-          id : +e.target.id,
-          [e.target.name]: e.target.value,
-          ["from_date"]: date?.[+e.target.id].from_date_experience, 
-          ["to_date"] :  date?.[+e.target.id].to_date_experience,
+          ["title"] : e.target.value ,
+          ["company_name"]: e.target.value,
+          ["employee"] : 3,
+          // ["from_date"]: (ExperienceDate?.[+e.target.id].from_date_experience.getDate()), 
+          ["from_date"]: moment(new Date(ExperienceDate?.[+e.target.id].from_date_experience).toISOString()).utc().format('YYYY-MM-DD'),
+          ["to_date"] : moment( new Date(ExperienceDate?.[+e.target.id].from_date_experience).toISOString()).utc().format('YYYY-MM-DD'),
+          
         }
       }  
         else { 
@@ -140,9 +146,7 @@ const FreelancerSettings = (props) => {
     }
     const newExprienceInput =   {
       company_name : "",
-      employee: "",
       from_date: "",
-      id: "",
       title: "",
       to_date : "",
     }
@@ -176,14 +180,20 @@ const FreelancerSettings = (props) => {
       ["Education"] : [...formData.Education ,newEducationInput]
     }) ;
   };
-
+// ===============
   const handleChange = (e) => {
-     
+     console.log(e.target.value)
     updateFormData({
       ...formData, 
       [e.target.id] : e.target.value.trim()
     });
   }
+// ==============
+const handleSubmit = (e) => {
+  e.preventDefault()
+  dispatch(updateEmployeeDetails(formData))
+  console.log(formData);
+}
 
 
   useEffect(() => {
@@ -208,7 +218,8 @@ const FreelancerSettings = (props) => {
   // console.log(employee)
   console.log(formData ,'formData')
   // console.log(postJobDetailsRequirments ,'formData')
-  console.log(date ,'setdata')
+  console.log(ExperienceDate ,'setdata')
+  console.log(employeeUpdateResult  ,'put result')
   return (
     <>
       {/* Page Content */}
@@ -371,7 +382,7 @@ const FreelancerSettings = (props) => {
                             <label>تصویر حساب کاربری</label>
                             <div className="d-flex align-items-center">
                               <div className="upload-images">
-                                {/* <img src={`http://127.0.0.1:8000/${formData?.image}`} alt="Image" /> */}
+                                <img src={`http://127.0.0.1:8000/${formData?.image}`} alt="Image" />
                                 <a
                                   href=""
                                   className="btn btn-icon btn-danger btn-sm"
@@ -380,7 +391,7 @@ const FreelancerSettings = (props) => {
                                 </a>
                               </div>
                               <label className="file-upload image-upbtn me-3">
-                                تغییر تصویر <input type="file" />
+                                تغییر تصویر <input id="image" onChange={handleChange} type="file" />
                               </label>
                             </div>
                             <p>اندازه تصویر : ۳۰۰*۳۰۰</p>
@@ -525,7 +536,7 @@ const FreelancerSettings = (props) => {
                                 placeholder="Select Date"
                               /> */}
                               <DatePicker 
-                              onChange={(e) => setDate({...date , [index]:{[`from_date_experience`]: e.value , [`to_date_experience`]: date?.[index]?.[`to_date_experience`] }})} 
+                              onChange={(e) => setExperienceDate({...ExperienceDate , [index]:{[`from_date_experience`]: e.value , [`to_date_experience`]: ExperienceDate?.[index]?.[`to_date_experience`] }})} 
                               round="x1" 
                               inputClass="form-control datetimepicker" 
                               accentColor="#32795b" 
@@ -547,7 +558,7 @@ const FreelancerSettings = (props) => {
                             /> */}
 
                               <DatePicker 
-                              onChange={(e) => setDate({...date , [index] :{[`to_date_experience`]: e.value , [`from_date_experience`]: date?.[index]?.[`from_date_experience`] }})} 
+                              onChange={(e) => setExperienceDate({...ExperienceDate , [index] :{[`to_date_experience`]: e.value , [`from_date_experience`]: ExperienceDate?.[index]?.[`from_date_experience`] }})} 
                               round="x1" 
                               inputClass="form-control datetimepicker" 
                               accentColor="#32795b" 
@@ -593,7 +604,7 @@ const FreelancerSettings = (props) => {
 
                       <div className="pro-body">
                         <div className="row">
-                          <div className="form-group col-md-12">
+                          <div className="form-group col-md-6">
                             <label>نام دانشگاه / موسسه آموزشی</label>
                             <input
                             id={index}
@@ -620,69 +631,28 @@ const FreelancerSettings = (props) => {
                           </div>
                           <div className="form-group col-md-6">
                             <label>از سال</label>
-                            <input
-                            id={index}
-                            onChange={handleEducationArray}
-                            name="from_date"
-                              defaultValue={item.from_date}
-                              type="text"
-                              className="form-control datetimepicker"
-                            />
+                            <DatePicker 
+                              onChange={(e) => setEducationDate({...EducationDate , [index] :{[`from_date_education`]: e.value , [`to_date_education`]: EducationDate?.[index]?.[`to_date_education`] }})} 
+                              round="x1" 
+                              inputClass="form-control datetimepicker" 
+                              accentColor="#32795b" 
+                              defaultValue={item.to_date ? item.to_date : undefined}/>
                           </div>
+
                           <div className="form-group col-md-6">
                             <label>تا سال</label>
-                            <input
-                            id={index}
-                            onChange={handleEducationArray}
-                            name="to_date"
-                              defaultValue={item.to_date}
-                              type="text"
-                              className="form-control datetimepicker"
-                            />
+                            <DatePicker 
+                              onChange={(e) => setEducationDate({...EducationDate , [index] :{[`to_date_education`]: e.value , [`from_date_education`]: EducationDate?.[index]?.[`from_date_education`] }})} 
+                              round="x1" 
+                              inputClass="form-control datetimepicker" 
+                              accentColor="#32795b" 
+                              defaultValue={item.to_date ? item.to_date : undefined}/>
                           </div> 
                         </div>
                       </div>
                     )) }
                     </div>
-                    <div className="card">
-                      <div className="pro-head">
-                        <h3 className="pro-title without-border mb-0">
-                          شبکه های اجتماعی
-                        </h3>
-                      </div>
-                      <div className="pro-body">
-                        <div className="row">
-                          <div className="form-group col-md-6">
-                            <label>فیس بوک</label>
-                            <input
-                            onChange={handleChange}
-                            id="about"
-                            placeholder={formData?.about}
-                            type="text" className="form-control" />
-                          </div>
-                          <div className="form-group col-md-6">
-                            <label>دریبل</label>
-                            <input type="text" className="form-control" />
-                          </div>
-                          <div className="form-group col-md-6">
-                            <label>توییتر</label>
-                            <input type="text" className="form-control" />
-                          </div>
-                          <div className="form-group col-md-6">
-                            <label>لینکداین</label>
-                            <input type="text" className="form-control" />
-                          </div>
-                          <div className="form-group col-md-6">
-                            <label>گیت</label>
-                            <input type="text" className="form-control" />
-                          </div>
-                          <div className="form-group col-md-6">
-                            <label>بی هنس</label>
-                            <input type="text" className="form-control" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
                     <div className="card text-end">
                       <div className="pro-body">
                         <button className="btn btn-secondary click-btn btn-plan">
@@ -692,6 +662,7 @@ const FreelancerSettings = (props) => {
                         <button
                           className="btn btn-primary click-btn btn-plan"
                           type="submit"
+                          onClick={handleSubmit}
                         >
                           تایید
                         </button>
