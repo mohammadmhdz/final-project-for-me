@@ -32,10 +32,12 @@ const FreelancerFavourites = (props) => {
   const { employeeFavorites } = employeeFavorite;
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
 
-  const handlefavorite = (e) => {
+
+  const handlefavorite = (e , toggleFavoriteId) => {
     // e.preventdefault();
-    // console.log("here")
-    dispatch(employeeToggleFavoriteList(1));
+    console.log(toggleFavoriteId)
+    console.log(e)
+    dispatch(employeeToggleFavoriteList(localItem.id , toggleFavoriteId));
   };
   // const test = [];
   useEffect(() => {
@@ -47,6 +49,7 @@ const FreelancerFavourites = (props) => {
     };
   }, [dispatch]);
   console.log(employeeFavoriteToggle);
+  console.log(employeeFavorites);
 
   // const test =
   //   employee.favorite_jobs !== undefined
@@ -104,8 +107,8 @@ const FreelancerFavourites = (props) => {
                           <table className="table table-hover table-center mb-0  mt-4 datatable">
                             <thead className="thead-pink">
                               <tr>
+                                <th>عنوان شغلی</th>
                                 <th>شرکت</th>
-                                <th>توضیحات</th>
                                 <th>شهر</th>
                                 <th>تاریخ انتشار</th>
                                 <th></th>
@@ -127,31 +130,41 @@ const FreelancerFavourites = (props) => {
                                             alt="User Image"
                                           />
                                         </Link>
+                                        <Link
+                                            to ={{
+                                              pathname: "/project-details",
+                                              state: { jobIdInput: items.id}
+                                            }}
+                                            className="profile-name"
+                                            // tabIndex={-1}
+                                          >
+                                          <span >{items.title}</span>
+                                          </Link>
                                         <Link to="/project-details">
-                                          <span className="profile-name">
-                                            {items.Company?.Name}
-                                          </span>
-                                          <span>{items.title}</span>
-                                          <span className="rating mt-2">
-                                            <i className="fas fa-star filled" />
+                                          {/* <span className="profile-name">
+                                            
+                                          </span> */}
+                                          {/* <span className="rating mt-2">
+                                          <i className="fas fa-star filled" />
                                             <i className="fas fa-star filled" />
                                             <i className="fas fa-star filled" />
                                             <i className="fas fa-star filled" />
                                             <i className="fas fa-star" />
-                                          </span>
+                                          </span> */}
                                         </Link>
                                       </h2>
                                     </td>
                                     <td>
                                       <div style={{ display: "flex" }}>
-                                        {items.skills?.map((item) => (
-                                          <div>{item.title},</div>
-                                        ))}
+                                      {items.company?.Name}
+                                        {/* {items.job_skills?.map((item) => (
+                                          <div>{item.title}</div>
+                                        ))} */}
                                       </div>
                                     </td>
                                     <td>
                                       <h2 className="table-avatar">
-                                        {items.city?.name}
+                                        {items.company?.city?.name}
                                       </h2>
                                     </td>
                                     <td>
@@ -163,7 +176,7 @@ const FreelancerFavourites = (props) => {
                                       <a className="fav">
                                         <i
                                           className="fas fa-heart filled"
-                                          onClick={handlefavorite}
+                                          onClick={(e) => handlefavorite(e , items.id)}
                                         />
                                       </a>
                                     </td>

@@ -12,6 +12,7 @@ const FreelacerCancelledProjects = ({data}) => {
   //     document.body.className = "";
   //   };
   // });
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
   const daysBetween =(input) => {
     const now = new Date().getDate()
     const date = new Date(input).getDate()
@@ -42,7 +43,7 @@ const FreelacerCancelledProjects = ({data}) => {
                                   </div>
                                   <div className="proposer-detail">
                                   <Link to={{pathname : "/project-details" ,
-                                               state : {jobIdInput: items.job} 
+                                               state : {jobIdInput: items.job , employeeId : +localItem.id}  
                                               }}>
                                     <h4 className="">{items.job_title}</h4>
                                     </Link>

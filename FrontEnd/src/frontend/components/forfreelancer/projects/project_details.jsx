@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link , useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 // Import Images
@@ -27,15 +27,26 @@ import moment from "jalali-moment";
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { jobsDetail } from "../../../../actions/jobActions";
+import { freelancerRequest ,postApply } from "../../../../actions/requestsActions";
+import { employeeFavoriteList ,  employeeToggleFavoriteList } from "../../../../actions/employeeActions";
 
 const ProjectDetails = (props) => {
+  const localItem = JSON.parse(localStorage?.getItem("userInfo"));
+
   const location = useLocation();
   const {jobIdInput} = location.state
   // redux
   const dispatch = useDispatch();
   const  jobs  = useSelector((state) => state.jobsDetails);
+  const freelancerRequests = useSelector((state) => state.freelancerRequest);
   const  toggleFavorite  = useSelector((state) => state.employeeToggleFavorite);
+  const employeeFavorite = useSelector((state) => state.employeeFavoriteList);
+  const postApplyResult = useSelector((state) => state.postApplyList);
+
+  const { employeeFavorites } = employeeFavorite;
+  const { freelancerRequestsAll } = freelancerRequests;
   const {jobsDetailsList} = jobs
+  const [requestSendingDetail ,setRequestSendingDetail] = useState()
 
   const daysBetween =(input) => {
     const now = new Date().getDate()
@@ -46,10 +57,57 @@ const ProjectDetails = (props) => {
     //redux
     // bejaye 3 id job mored nazar ra ghara midahim
     dispatch(jobsDetail(jobIdInput));
-  }, [dispatch]);
+    dispatch(freelancerRequest());
+    dispatch(employeeFavoriteList(localItem?.id));
 
-  console.log(jobsDetailsList)
-  console.log(jobIdInput , "input")
+  },[dispatch]);
+
+  const favoriteStatus = employeeFavorites?.map((item) => {
+     if(item.id === jobIdInput){
+       return true 
+    }
+    else return false  
+  })
+  
+  const cvStatus = freelancerRequestsAll.map((item) => {
+        if(+item.employee === +localItem?.id){
+          if(+jobIdInput === +item.job){
+            return  true
+          }
+        }
+        else  return false
+      })
+
+  const handleFavorite = (e , toggleFavoriteId) => {
+    // e.preventdefault();
+    console.log(toggleFavoriteId)
+    console.log(e)
+    dispatch(employeeToggleFavoriteList(localItem.id , toggleFavoriteId));
+  };
+
+  const handleChange = (e) => {
+    console.log(e.target.value)
+    setRequestSendingDetail({ 
+      employee: +localItem?.id,
+      Company: +jobsDetailsList.company?.id, 
+      job: +jobIdInput,
+      status: "درانتظار بررسی" ,
+     [e.target.id] : e.target.value
+   });
+ }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(requestSendingDetail)
+    dispatch(postApply(requestSendingDetail))
+  }
+
+  // console.log(jobsDetailsList , "jobDetail")
+  console.log(freelancerRequestsAll , "allreques")
+  // console.log(localItem?.id, "input")
+  // console.log(favoriteStatus, "favorites")
+  console.log(cvStatus, "cvStatus")
+  // console.log(postApplyResult, "post result")
+
   return (
     <>
       {/* Breadcrumb */}
@@ -104,17 +162,35 @@ const ProjectDetails = (props) => {
                         </li>
                       </ul>
                       <div className="d-flex align-items-center justify-content-md-end justify-content-center">
-                        <a href="">
+                        {favoriteStatus?.includes(true) ? 
+                        (<a onClick={(e) => handleFavorite(e , jobIdInput)}>
                           <i className="fa fa-heart heart fa-2x ms-2 red-text" />
+                        </a>) : 
+                        <a onClick={(e) => handleFavorite(e , jobIdInput)}>
+                          <i className="far fa-heart heart fa-2x ms-2 red-text" />
+                        </a>}
+                        {cvStatus.includes(true) ? (
+                          <a
+                          className="btn bid-btn"
+                          data-bs-toggle="modal"
+                          
+                          >
+                          در حال بررسی{" "}
+                          <i className="fa fa-long-arrow-alt-left me-1" />
                         </a>
-                        <a
+                        ) : localItem ? (
+                          <a
+                          className="btn bid-btn"
                           data-bs-toggle="modal"
                           href="#file"
-                          className="btn bid-btn"
-                        >
+ 
+                          >
                           ارسال رزومه{" "}
                           <i className="fa fa-long-arrow-alt-left me-1" />
                         </a>
+
+                        ) : <Link to="/login" className="btn bid-btn" >لطفا وارد شوید</Link>
+                        }
                       </div>
                     </div>
                   </div>
@@ -465,6 +541,8 @@ const ProjectDetails = (props) => {
                       <div className="row">
                         <div className="col-md-12 form-group">
                           <textarea
+                            onChange={handleChange}
+                            id="message"
                             rows={5}
                             className="form-control"
                             placeholder="متن درخواست"
@@ -477,6 +555,7 @@ const ProjectDetails = (props) => {
                     <div className="row">
                       <div className="col-md-12 submit-section text-end">
                         <button
+                          onClick={handleSubmit}
                           className="btn btn-primary submit-btn"
                           type="submit"
                         >

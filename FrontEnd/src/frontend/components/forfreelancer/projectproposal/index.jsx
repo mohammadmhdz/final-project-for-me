@@ -47,7 +47,9 @@ const Freelancer = (props) => {
   // redux
   const dispatch = useDispatch();
   const freelancerRequests = useSelector((state) => state.freelancerRequest);
-  const { freelancerRequestsAll } = freelancerRequests;
+  const { freelancerRequestsAll} = freelancerRequests;
+  
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
   
   const daysBetween =(input) => {
     const now = new Date().getDate()
@@ -64,7 +66,7 @@ const Freelancer = (props) => {
       document.body.className = "";
     };
   }, [dispatch]);
-  console.log(freelancerRequestsAll[0]?.company_name);
+  // console.log(freelancerRequestsAll[0]?.company_name);
   console.log(freelancerRequestsAll);
   // console.log();
 
@@ -72,6 +74,8 @@ const Freelancer = (props) => {
   // const filterEmployee = freelancerRequestsAll.map((items) => {
   //   console.log(items.status);
   // });
+  const requestForEmployee = freelancerRequestsAll.filter ((item) => {return (item.employee === +localItem.id)} )
+  console.log(requestForEmployee , "request form employee");
 
   return (
     <>
@@ -132,7 +136,7 @@ const Freelancer = (props) => {
               {/* Proposals list */}
               {/* Proposals */}
               {allRequest ? (
-                freelancerRequestsAll.map((items) => (
+                requestForEmployee.map((items) => (
                   <div className="proposals-section">
                     {items.status === "در انتظار بررسی" && (
                       <div className="my-projects-list">
@@ -151,7 +155,7 @@ const Freelancer = (props) => {
                                     </div>
                                     <div className="proposer-detail">
                                     <Link to={{pathname : "/project-details" ,
-                                               state : {jobIdInput: items.job} 
+                                               state : {jobIdInput: items.job , employeeId : +localItem.id} 
                                               }}>
                                       <h4 className="">{items.job_title}</h4>
                                     </Link>
@@ -198,7 +202,7 @@ const Freelancer = (props) => {
                                   </div>
                                   <div className="proposer-detail">
                                   <Link to={{pathname : "/project-details" ,
-                                               state : {jobIdInput: items.job} 
+                                               state : {jobIdInput: items.job , employeeId : +localItem.id}  
                                               }}>
                                     <h4 className="">{items.job_title}</h4>
                                     </Link>
@@ -249,9 +253,9 @@ const Freelancer = (props) => {
                                  </div>
                                  <div className="proposer-detail">
                                  <Link to={{pathname : "/project-details" ,
-                                            state : {jobIdInput: items.job} 
+                                            state : {jobIdInput: items.job , employeeId : +localItem.id} 
                                            }}>
-                                   <h4 className="">{items.job_title}</h4>
+                                  <h4 className="">{items.job_title}</h4>
                                  </Link>
                                    <ul className="proposal-details">
                                      <li className="Bold">
@@ -285,11 +289,11 @@ const Freelancer = (props) => {
                   </div>
                 ))
               ) : waiting ? (
-                <FreelacerOngoingProjects data={freelancerRequestsAll} />
+                <FreelacerOngoingProjects data={requestForEmployee} />
               ) : denied ? (
-                <FreelacerCancelledProjects data={freelancerRequestsAll} />
+                <FreelacerCancelledProjects data={requestForEmployee} />
               ) : read ? (
-                <FreelacerCompletedProjects data={freelancerRequestsAll} />
+                <FreelacerCompletedProjects data={requestForEmployee} />
               ) : null}
               {/* Proposals */}
               {/* /Proposals list */}

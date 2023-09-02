@@ -16,21 +16,26 @@ import {
   company_img10,
   home_icon,
 } from "../../imagepath";
+// redux
+import { useDispatch , useSelector } from "react-redux";
+import { listJobs } from "../../../../actions/jobActions";
 
 const Projects = (props) => {
+  const dispatch = useDispatch();
+  const listAllJobs = useSelector(state => state.jobList)
+  const {jobs} = listAllJobs;
   const [users, setUsers] = useState([]);
 
+  const daysBetween =(input) => {
+    const now = new Date().getDate()
+    const date = new Date(input).getDate()
+    return now - date
+  }
+
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/jobs/")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setUsers(data);
-      })
-      .catch((err) => console.log(err, "errrrrrr"));
-  }, []);
-  console.log(users, "Xdssd");
+    dispatch(listJobs())
+  }, [dispatch]);
+  console.log(jobs, "Xdssd");
   return (
     <>
       {/* Breadcrumb */}
@@ -213,6 +218,9 @@ const Projects = (props) => {
               </div>
               <div className="row">
                 {/* Project Content */}
+                {jobs.map((item) => (
+
+              
                 <div className="col-md-6 col-lg-12 col-xl-4">
                   <div className="freelance-widget widget-author">
                     <div className="freelance-content">
@@ -231,38 +239,32 @@ const Projects = (props) => {
                         </div>
                         <div className="profile-name">
                           <div className="author-location">
-                            فناوری سروین | Sarveen Technologies{" "}
+                            {item.company?.Name}
                             <i className="fa fa-check-circle text-success verified" />
                           </div>
                         </div>
                         <div className="freelance-info">
                           <h3>
-                            <a href="#">طراح UI/UX</a>
+                            <a href="#">{item.title}</a>
                           </h3>
                           <div className="freelance-location mb-1">
-                            <i className="fa fa-clock" /> ۲ روز پیش
+                            <i className="fa fa-clock" /> {daysBetween(item?.published_at)} روز
                           </div>
                           <div className="freelance-location">
                             <i className="fa fa-map-marker-alt ms-1" />
-                            تهران
+                            {item.company.city?.name} 
                           </div>
                         </div>
                         <div className="freelance-tags">
-                          <a href="">
+                          {item.job_skills?.map((item) => ( 
+
+                            <a href="">
                             <span className="badge badge-pill badge-design">
-                              After Effects
+                              {item.title}
                             </span>
-                          </a>
-                          <a href="">
-                            <span className="badge badge-pill badge-design">
-                              Illustrator
-                            </span>
-                          </a>
-                          <a href="">
-                            <span className="badge badge-pill badge-design">
-                              HTML
-                            </span>
-                          </a>
+                            </a>
+                              ))
+                          }
                         </div>
                         {/* <div className="freelancers-price">حقوق</div> */}
                         {/* <div className="freelancers-price">$40-$500</div> */}
@@ -271,29 +273,30 @@ const Projects = (props) => {
                         <ul>
                           <li>
                             <h5> حقوق</h5>
-                            <h3 className="counter-value">۱۵ میلیون</h3>
+                            <h3 className="counter-value">{item.salary_amount === null ? item.salary_type : `${item.salary_amount}میلیون تومان`}</h3>
                           </li>
 
                           <li>
                             <h3 className="counter-value">
                               <h5>نوع همکاری</h5>
-                              <span className="jobtype">تمام وقت</span>
+                              <span className="jobtype">{item.job_type}</span>
                             </h3>
                           </li>
                         </ul>
                       </div>
                     </div>
                     <div className="cart-hover">
-                      <Link
-                        to="/project-details"
-                        className="btn-cart"
-                        tabIndex={-1}
-                      >
-                        مشاهده بیشتر
-                      </Link>
+                    <Link  to={{pathname : "/project-details" ,
+                        state : {jobIdInput: item.id} 
+                         }}>
+                    <h4 className="btn-cart">مشاهده بیشتر</h4>
+                    </Link>
+                        
+                        
                     </div>
                   </div>
                 </div>
+              )) }
               </div>
             </div>
           </div>

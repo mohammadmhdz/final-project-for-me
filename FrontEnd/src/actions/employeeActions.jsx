@@ -112,7 +112,7 @@ export const employeeFavoriteList = (keyword) => async (dispatch) => {
   }
 };
 
-export const employeeToggleFavoriteList = (inputData) => async (dispatch) => {
+export const employeeToggleFavoriteList = (inputData , jobId) => async (dispatch) => {
   // console.log(data)
   try {
     console.log(inputData);
@@ -128,7 +128,7 @@ export const employeeToggleFavoriteList = (inputData) => async (dispatch) => {
 
     const { data } = await axios.post(
       `http://127.0.0.1:8000/api/employees/${inputData}/toggle_favorite_job/`,
-      {"job_id": "1"},
+      {"job_id": jobId},
       config
     );
 
