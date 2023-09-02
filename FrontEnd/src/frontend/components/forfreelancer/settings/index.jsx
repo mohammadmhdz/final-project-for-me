@@ -1,4 +1,4 @@
-import React, { useEffect , useState } from "react";
+import React, { useEffect , useState , useRef } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { home_icon, Img, Img_02 } from "../../imagepath";
@@ -8,15 +8,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { employeeDetails } from "../../../../actions/employeeActions";
 import { jobsPostRequirments } from "../../../../actions/jobActions";
 // datePicker
-import {CustomizedDatePicker} from "../../../../datePicker/DatePicker/index"
+import { DatePicker} from "zaman";
+
 const FreelancerSettings = (props) => {
+  const inputRef = useRef();
   // redux
   const dispatch = useDispatch();
   const employeeList = useSelector((state) => state.employeeDetails);
   const Requirments = useSelector((state) => state.jobsPostRequirments);
   const { postJobDetailsRequirments } = Requirments;
   const {employee} = employeeList ;
+
   const [formData, updateFormData] = useState();
+  const [date , setDate] = useState()
 
   const localItem = JSON.parse(localStorage.getItem("userInfo"))
 
@@ -64,15 +68,19 @@ const FreelancerSettings = (props) => {
     })
     )
   }
+  //====================
+
 
   const handleExperiencesArray = (e) => {
-
     const changeExperiences = formData.Experiences?.map((item , index) =>{
       if(index === +e.target.id){
         return item = {
+          ...item,
           employee : localItem.id, 
-          id : e.target.id,
+          id : +e.target.id,
           [e.target.name]: e.target.value,
+          ["from_date"]: date?.[+e.target.id].from_date_experience, 
+          ["to_date"] :  date?.[+e.target.id].to_date_experience,
         }
       }  
         else { 
@@ -87,6 +95,9 @@ const FreelancerSettings = (props) => {
     })
     )
   }
+
+  // =================
+
   const handleSkillsArray = (e) => {
     // for getting option id :)
     const index = e.target.selectedIndex;
@@ -192,9 +203,12 @@ const FreelancerSettings = (props) => {
   }, [employeeList]);
 
 
-  console.log(employee)
+
+
+  // console.log(employee)
   console.log(formData ,'formData')
-  console.log(postJobDetailsRequirments ,'formData')
+  // console.log(postJobDetailsRequirments ,'formData')
+  console.log(date ,'setdata')
   return (
     <>
       {/* Page Content */}
@@ -501,7 +515,7 @@ const FreelancerSettings = (props) => {
                             </div>
                             <div className="form-group col-md-6">
                               <label>از تاریخ</label>
-                              <input
+                              {/* <input
                               id={index}
                               name="from_date"
                               onChange={handleExperiencesArray}
@@ -509,20 +523,35 @@ const FreelancerSettings = (props) => {
                                 type="text"
                                 className="form-control datetimepicker"
                                 placeholder="Select Date"
-                              />
+                              /> */}
+                              <DatePicker 
+                              onChange={(e) => setDate({...date , [index]:{[`from_date_experience`]: e.value , [`to_date_experience`]: date?.[index]?.[`to_date_experience`] }})} 
+                              round="x1" 
+                              inputClass="form-control datetimepicker" 
+                              accentColor="#32795b" 
+                              defaultValue={item.to_date ? item.to_date : undefined}/>
+
                             </div>
                             <div className="form-group col-md-6">
                               <label>تا تاریخ</label>
-                              <input
+                          
+
+                              {/* <input
                               id={index}
                               name="to_date"
                               onChange={handleExperiencesArray}
                               defaultValue={item.to_date}
-                                type="text"
-                                className="form-control datetimepicker"
-                                placeholder="Select Date"
-                              />
-                            <CustomizedDatePicker/>
+                              type="text"
+                              className="form-control datetimepicker"
+                              placeholder="Select Date"
+                            /> */}
+
+                              <DatePicker 
+                              onChange={(e) => setDate({...date , [index] :{[`to_date_experience`]: e.value , [`from_date_experience`]: date?.[index]?.[`from_date_experience`] }})} 
+                              round="x1" 
+                              inputClass="form-control datetimepicker" 
+                              accentColor="#32795b" 
+                              defaultValue={item.to_date ? item.to_date : undefined}/>
 
                             </div>
                             {/* <div className="form-group col-md-12">
