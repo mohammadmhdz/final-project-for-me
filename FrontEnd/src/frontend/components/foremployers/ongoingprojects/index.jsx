@@ -64,12 +64,12 @@ const OngoingProjects = ({data}) => {
                             </div>
                             <div className="content-divider" />
                             <div className="projects-action text-center">
-                              <Link
-                                to="/view-project-detail"
-                                className="projects-btn"
-                                >
-                                مشاهده بیشتر{" "}
-                              </Link>
+                            <Link  className="projects-btn" 
+                                         to={{pathname : "/project-proposals" ,
+                                         state : {job: item} 
+                                      }}>
+                                  مشاهده بیشتر
+                                  </Link>
                             </div>
                           </div>
                         </div>

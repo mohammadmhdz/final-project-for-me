@@ -16,7 +16,9 @@ import {
   employeeToggleFavoriteListReducer,
   employeeUpdateDetailsReducer,
 } from "./reducers/employeeReducer";
-import { freelancerRequestReducer , postAplliesReducer } from "./reducers/requestsReducer";
+import { freelancerRequestReducer ,
+         postAplliesReducer ,
+         companyChangeStatusReducer } from "./reducers/requestsReducer";
 import { userLoginReducer } from "./reducers/userReducer";
 import {
   companyDetailsReducer,
@@ -50,6 +52,7 @@ const reducer = combineReducers({
   //
   freelancerRequest: freelancerRequestReducer,
   postApplyList : postAplliesReducer,
+  companyChangeStatus : companyChangeStatusReducer ,
   //
   userLogin: userLoginReducer,
   //

@@ -9,34 +9,55 @@ import {
   Logo_01,
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
-import moment from "jalali-moment";
+// import { alias as moment } from "jalali-moment";
+import moment from "moment";
+
 
 // redux
-import { freelancerRequest } from "../../../../actions/requestsActions";
+import { freelancerRequest , companyChangeRequestStatus  } from "../../../../actions/requestsActions";
 import { useDispatch , useSelector } from "react-redux";
 
 const Projectproposal = (props) => {
   const dispatch = useDispatch();
   const allRequest = useSelector(state => state.freelancerRequest);
+  const postStatusChange = useSelector(state => state.companyChangeStatus);
   const {freelancerRequestsAll} = allRequest
   const location = useLocation();
   const {job} = location.state
   const [statusShow , setStatusShow] = useState("در انتظار بررسی")
+  const [statusChange , setStatusChange] = useState()
   console.log(job , "project-proposal-job")
   console.log(statusShow , "status")
+  console.log(postStatusChange , "post change status")
 
   const daysBetween = (input) => {
     const now = new Date().getDate();
     const date = new Date(input).getDate();
-    return now -date;
+    return now - date;
   };
+
 
   useEffect(() => {
     dispatch(freelancerRequest())
   }, [dispatch]);
+ 
+  useEffect(() => {
+     dispatch(companyChangeRequestStatus(statusChange))
+  }, [statusChange]);
 
+  const handleChangeStatus = (e) => {
+    console.log(e.target.value);
+    setStatusChange(({
+      ["id"] : e.target.id , 
+      ["status"]: e.target.value,
+      ["status_change_date"]: moment(new Date().toISOString()).utc().format(),
+    })
+    )
+  }
+
+  console.log(statusChange , "status change")
   console.log(freelancerRequestsAll)
-  
+
   const hired = true;
   const hired2 = false;
   const hired3 = false;
@@ -130,7 +151,8 @@ const Projectproposal = (props) => {
                     </div>
                   </div>
                   <div className="col-lg-2 d-flex flex-wrap">
-                    <div className="projects-card flex-fill">
+                    {job.completed_request_user === null ? (
+                      <div className="projects-card flex-fill">
                       <div className="card-body p-2">
                         <div className="prj-proposal-count text-center">
                           <span>{job.num_requests}</span>
@@ -138,6 +160,22 @@ const Projectproposal = (props) => {
                         </div>
                       </div>
                     </div>
+                      ) : (
+                    <div className="projects-card flex-fill">
+                      <div className="card-body p-2">
+                      <div className="prj-proposal-count text-center">
+                      <h3 style={{color : "orange"}}>استخدام شده</h3> 
+                      <Link className="font-semibold text-primary"
+                                to={{
+                                  pathname : "/developer-profile" ,
+                                  state : {idInfo: +job.completed_request_user?.id} 
+                                  }}>
+                          <p className="mb-0">{job.completed_request_user?.first_name} {job.completed_request_user?.last_name}</p>
+                        </Link>
+                        </div>
+                        </div>
+                    </div>)
+                    }
                   </div>
                 </div>
               </div>
@@ -158,6 +196,7 @@ const Projectproposal = (props) => {
                         <option value="در انتظار بررسی">در انتظار بررسی</option>
                         <option value="بررسی شده">بررسی شده</option>
                         <option value="رد شده">رد شده</option>
+                        <option value="استخدام شده">استخدام شده</option>
                       </select>
                     </div>
                   </div>
@@ -177,7 +216,7 @@ const Projectproposal = (props) => {
                           <img src={Avatar_1} alt="" className="img-fluid" />
                         </div>
                         <div className="proposer-detail">
-                          <h4>{job.title}</h4>
+                          <h4>{item.employee_user}</h4>
                           <ul className="proposal-details">
                             <li>تاریخ : {moment(item.send_at, "YYYY/MM/DD")
                                             .locale("fa")
@@ -197,44 +236,58 @@ const Projectproposal = (props) => {
                           </ul>
                         </div>
                       </div>
-                      <div className="proposer-bid-info">
-                        <div className="proposer-bid"></div>
-                        <div className="proposer-confirm">
-                          <button
-                            style={hired ? { pointerEvents: "none" } : {}}
-                            disabled={hired ? true : false}
-                            className={
-                              hired
-                                ? "disable-btn projects-btn  ms-1"
-                                : "projects-btn ms-1"
-                            }
-                          >
-                            تغییر به استخدام شده
-                          </button>
-                          <button
-                            style={hired2 ? { pointerEvents: "none" } : {}}
-                            disabled={hired2 ? true : false}
-                            className={
-                              hired2
-                                ? "disable-btn projects-btn  ms-1"
-                                : "projects-btn ms-1"
-                            }
-                          >
-                            تغییر به بررسی شده
-                          </button>
-                          <button
-                            style={hired3 ? { pointerEvents: "none" } : {}}
-                            disabled={hired3 ? true : false}
-                            className={
-                              hired3
-                                ? "disable-btn projects-btn  ms-1"
-                                : "projects-btn ms-1"
-                            }
-                          >
-                            تغییر به رد شده
-                          </button>
-                        </div>
-                      </div>
+                      {item.status === "استخدام شده" ?
+                      (<button
+                        style={hired3 ? { pointerEvents: "none" } : {}}
+                        className={"disable-btn projects-btn  ms-1" }
+                      >
+                        استخدام شده
+                      </button>)
+                      
+                     : (<div className="proposer-bid-info">
+                     <div className="proposer-bid"></div>
+                     <div className="proposer-confirm">
+                       <button
+                         onClick={(e) => handleChangeStatus(e)}
+                         id={item.id}
+                        //  onClick={(e) =>handleSubmitChangeStatus(e)}
+                         value="استخدام شده"
+                        //  style={hired ? { pointerEvents: "none" } : {}}
+                        //  disabled={hired ? true : false}
+                         className={"projects-btn ms-1"}
+                       >
+                         تغییر به استخدام شده
+                       </button>
+                       <button
+                         onClick={(e) => handleChangeStatus(e)}
+                         id={item.id}
+                         value="بررسی شده"
+                         style={hired2 ? { pointerEvents: "none" } : {}}
+                         disabled={hired2 ? true : false}
+                         className={
+                           hired2
+                             ? "disable-btn projects-btn  ms-1"
+                             : "projects-btn ms-1"
+                         }
+                       >
+                         تغییر به بررسی شده
+                       </button>
+                       <button
+                         onClick={(e) => handleChangeStatus(e)}
+                         id={item.id}
+                         value="رد شده"
+                         style={hired3 ? { pointerEvents: "none" } : {}}
+                         disabled={hired3 ? true : false}
+                         className={
+                           hired3
+                             ? "disable-btn projects-btn  ms-1"
+                             : "projects-btn ms-1"
+                         }
+                       >
+                         تغییر به رد شده
+                       </button>
+                     </div>
+                   </div>)}
                     </div>
                     <div className="description-proposal">
                       <h5 className="desc-title">متن پیام</h5>

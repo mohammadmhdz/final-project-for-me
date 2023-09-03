@@ -5,7 +5,11 @@ import {
   //post
   FREELANCER_APPLY_POST_REQUEST,
   FREELANCER_APPLY_POST_SUCCESS,
-  FREELANCER_APPLY_POST_FAIL
+  FREELANCER_APPLY_POST_FAIL,
+  //PUT
+  COMPANY_EDIT_APPLY_REQUEST ,
+  COMPANY_EDIT_APPLY_SUCCESS ,
+  COMPANY_EDIT_APPLY_FAIL 
 } from "../constant/requestsConstant";
 
 export const freelancerRequestReducer = (
@@ -43,6 +47,28 @@ export const postAplliesReducer = (
         postApplyResult: action.payload,
       };
     case FREELANCER_APPLY_POST_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+// put change apply status
+export const companyChangeStatusReducer = (
+  state = { changeStatusArray: [] },
+  action
+) => {
+  switch (action.type) {
+    case COMPANY_EDIT_APPLY_REQUEST:
+      return { loading: true, changeStatusArray: [] };
+
+    case COMPANY_EDIT_APPLY_SUCCESS:
+      return {
+        loading: false,
+        changeStatusArray: action.payload,
+      };
+    case COMPANY_EDIT_APPLY_FAIL:
       return { loading: false, error: action.payload };
 
     default:

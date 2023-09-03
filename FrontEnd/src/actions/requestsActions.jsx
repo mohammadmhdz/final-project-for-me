@@ -5,7 +5,11 @@ import {
   //post
   FREELANCER_APPLY_POST_REQUEST,
   FREELANCER_APPLY_POST_SUCCESS,
-  FREELANCER_APPLY_POST_FAIL
+  FREELANCER_APPLY_POST_FAIL,
+  //PUT
+  COMPANY_EDIT_APPLY_REQUEST ,
+  COMPANY_EDIT_APPLY_SUCCESS ,
+  COMPANY_EDIT_APPLY_FAIL 
 } from "../constant/requestsConstant";
 import axios from "axios";
 
@@ -35,7 +39,7 @@ export const freelancerRequest = () => async (dispatch) => {
 export const postApply = (inputData) => async (dispatch) => {
   // console.log(data)
   try {
-    console.log(inputData , "action data");
+    // console.log(inputData , "action data");
     dispatch({
       type: FREELANCER_APPLY_POST_REQUEST,
     });
@@ -65,6 +69,45 @@ export const postApply = (inputData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FREELANCER_APPLY_POST_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const companyChangeRequestStatus = (inputData) => async (dispatch) => {
+  // console.log(data)
+  try {
+    console.log(inputData , "action data");
+    dispatch({
+      type: COMPANY_EDIT_APPLY_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.put(
+      `http://127.0.0.1:8000/api/apply/${inputData.id}/`,
+      {
+        status : inputData?.status , 
+        status_change_date : inputData?.status_change_date,
+      },
+      config
+    );
+
+    dispatch({
+      type: COMPANY_EDIT_APPLY_SUCCESS,
+      payload: data,
+    });
+
+  } catch (error) {
+    dispatch({
+      type: COMPANY_EDIT_APPLY_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

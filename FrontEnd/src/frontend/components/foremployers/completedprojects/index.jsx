@@ -63,12 +63,12 @@ const CompletedProjects = ({data}) => {
                             </div>
                             <div className="content-divider" />
                             <div className="projects-action text-center">
-                              <Link
-                                to="/view-project-detail"
-                                className="projects-btn"
-                              >
-                                مشاهده بیشتر{" "}
-                              </Link>
+                            <Link  className="projects-btn" 
+                                         to={{pathname : "/project-proposals" ,
+                                         state : {job: item} 
+                                      }}>
+                                  مشاهده بیشتر
+                                  </Link>
                               {/* <a href="#" className="hired-detail">
                                 استخدام شده در تاریخ ۱۲ بهمن ۱۴۰۱
                               </a> */}
@@ -83,11 +83,7 @@ const CompletedProjects = ({data}) => {
                       <div className="card-body p-2">
                         <div className="prj-proposal-count text-center hired">
                           <h3>استخدام شده</h3>
-                          <img
-                            src={Developer_01}
-                            alt=""
-                            className="img-fluid"
-                          />
+                          
                           <p className="mb-0">{item.completed_request_user?.first_name} {item.completed_request_user?.last_name}</p>
                         </div>
                       </div>
