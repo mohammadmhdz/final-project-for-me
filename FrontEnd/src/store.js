@@ -31,6 +31,7 @@ import {
   categoryListReducer,
   categoryUpdateDetailsReducer,
   categoryPostRedducer,
+  categoryDeleteReducer,
 } from "./reducers/adminReducer";
 // use selector tu use one of the below reducer
 
@@ -59,6 +60,7 @@ const reducer = combineReducers({
   categoryListAll: categoryListReducer,
   categoryUpdateDetail: categoryUpdateDetailsReducer,
   categorypost: categoryPostRedducer,
+  categorydelete: categoryDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

@@ -8,6 +8,9 @@ import {
   CATEGORY_POST_REQUEST,
   CATEGORY_POST_SUCCESS,
   CATEGORY_POST_FAIL,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
+  PRODUCT_DELETE_FAIL,
 } from "../constant/adminConstant";
 import axios from "axios";
 
@@ -96,6 +99,37 @@ export const postCategory = (input) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CATEGORY_POST_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const deletecategory = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCT_DELETE_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.delete(
+      `http://127.0.0.1:8000/api/categories/${id}/`,
+      config
+    );
+
+    dispatch({
+      type: PRODUCT_DELETE_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_DELETE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

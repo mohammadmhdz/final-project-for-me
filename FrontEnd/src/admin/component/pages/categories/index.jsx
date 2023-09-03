@@ -11,6 +11,7 @@ import {
   categoryListAction,
   updateCategoryDetails,
   postCategory,
+  deletecategory,
 } from "../../../../actions/adminAction";
 
 const Categories = (props) => {
@@ -28,6 +29,7 @@ const Categories = (props) => {
   const [editedCategoryName, setEditedCategoryName] = useState("");
   const [editedCategoryid, setEditedCategoryid] = useState("");
   const [addedCategoryName, setAddedCategoryName] = useState("");
+  const [deletedCategoryid, setdeletedCategoryid] = useState("");
 
   const addhandleSubmit = (e) => {
     dispatch(postCategory({ title: addedCategoryName }));
@@ -44,6 +46,11 @@ const Categories = (props) => {
     const closeButton = document.querySelector("#edit-category .close");
     closeButton.click();
   };
+
+  const handledeleteSubmit = (e) => {
+    dispatch(deletecategory(deletedCategoryid));
+  };
+
   const data = categories;
 
   const columns = [
@@ -83,6 +90,10 @@ const Categories = (props) => {
               className="btn btn-sm btn-danger"
               data-bs-toggle="modal"
               data-bs-target="#delete_category"
+              onClick={() => {
+                setdeletedCategoryid(record.id);
+                console.log("id", deletedCategoryid);
+              }}
             >
               <i className="far fa-trash-alt" />
             </Link>
@@ -267,7 +278,14 @@ const Categories = (props) => {
                     <div className="modal-btn delete-action">
                       <div className="row">
                         <div className="col-6">
-                          <Link to="#" className="btn btn-primary continue-btn">
+                          <Link
+                            to="#"
+                            className="btn btn-primary continue-btn"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              handledeleteSubmit();
+                            }}
+                          >
                             حذف
                           </Link>
                         </div>
