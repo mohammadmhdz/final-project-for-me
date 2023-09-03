@@ -11,9 +11,9 @@ import {
   COMPANY_JOBS_LIST_SUCCESS,
   COMPANY_JOBS_LIST_FAIL,
   //
-  COMPANY_FAVORITE_EMPLOYEE_REQUEST ,
-  COMPANY_FAVORITE_EMPLOYEE_SUCCESS ,
-  COMPANY_FAVORITE_EMPLOYEE_FAIL ,
+  COMPANY_FAVORITE_EMPLOYEE_REQUEST,
+  COMPANY_FAVORITE_EMPLOYEE_SUCCESS,
+  COMPANY_FAVORITE_EMPLOYEE_FAIL,
   //POST
   COMPANY_VERIFICATION_REQUEST,
   COMPANY_VERIFICATION_SUCCESS,
@@ -45,7 +45,10 @@ export const companyDetailsReducer = (
   }
 };
 
-export const companyReviewReducer = (state = { companyReviewList: [] }, action) => {
+export const companyReviewReducer = (
+  state = { companyReviewList: [] },
+  action
+) => {
   switch (action.type) {
     case COMPANY_REVIEWS_REQUEST:
       return { loading: true, companyReviewList: [] };
@@ -63,7 +66,10 @@ export const companyReviewReducer = (state = { companyReviewList: [] }, action) 
   }
 };
 
-export const companyFavoriteEmployeesReducer = (state = { companyFavoriteEmployeesList: [] }, action) => {
+export const companyFavoriteEmployeesReducer = (
+  state = { companyFavoriteEmployeesList: [] },
+  action
+) => {
   switch (action.type) {
     case COMPANY_FAVORITE_EMPLOYEE_REQUEST:
       return { loading: true, companyFavoriteEmployeesList: [] };
@@ -114,7 +120,6 @@ export const companyVerifyReducer = (state = {}, action) => {
     case COMPANY_VERIFICATION_FAIL:
       return { loading: false, error: action.payload };
 
-
     default:
       return state;
   }
@@ -130,7 +135,6 @@ export const companyUpdateDetailsReducer = (state = {}, action) => {
 
     case COMPANY_DETAILS_UPDATE_FAIL:
       return { loading: false, error: action.payload };
-
 
     default:
       return state;

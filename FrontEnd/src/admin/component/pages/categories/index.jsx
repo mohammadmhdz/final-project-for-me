@@ -1,51 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Sidebar from "../../../commoncomponent/sidebar";
 import { Table } from "antd";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import { itemRender, onShowSizeChange } from "../../../paginationfunction";
 import "../../../antdstyle.css";
-const Categories = () => {
-  const [date, setDate] = useState(new Date());
+import {
+  categoryListAction,
+  updateCategoryDetails,
+  postCategory,
+} from "../../../../actions/adminAction";
+
+const Categories = (props) => {
+  const dispatch = useDispatch();
+  const categoryListAll = useSelector((state) => state.categoryListAll);
+  const categoryDetailsUpdate = useSelector(
+    (state) => state.categoryUpdateDetailsReducer
+  );
+  const categorypost = useSelector((state) => state.categoryPostRedducer);
+  const { categories } = categoryListAll;
+
   const [inputfilter, setInputfilter] = useState(false);
 
-  const handleChange = (date) => {
-    setDate(date);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [editedCategoryName, setEditedCategoryName] = useState("");
+  const [editedCategoryid, setEditedCategoryid] = useState("");
+  const [addedCategoryName, setAddedCategoryName] = useState("");
+
+  const addhandleSubmit = (e) => {
+    dispatch(postCategory({ title: addedCategoryName }));
+
+    const closeButton = document.querySelector("#add-category .close");
+    closeButton.click();
   };
 
-  const togglefilter = (value) => {
-    setInputfilter(value);
+  const handleSubmit = (e) => {
+    dispatch(
+      updateCategoryDetails({ id: editedCategoryid, title: editedCategoryName })
+    );
+
+    const closeButton = document.querySelector("#edit-category .close");
+    closeButton.click();
   };
-
-  const data = [
-    {
-      id: 1,
-      categoryname: "طراحی و گرافیک",
-    },
-    {
-      id: 2,
-      categoryname: "انیمیشن",
-    },
-    {
-      id: 3,
-      categoryname: "برنامه نویسی وب",
-    },
-    {
-      id: 4,
-      categoryname: "ایلاستریشن",
-    },
-    {
-      id: 5,
-      categoryname: "فروش و مارکتینگ",
-    },
-
-    {
-      id: 6,
-      categoryname: "حسابداری",
-    },
-  ];
+  const data = categories;
 
   const columns = [
     {
@@ -56,13 +55,12 @@ const Categories = () => {
     },
     {
       title: "نام دسته بندی",
-      dataIndex: "categoryname",
+      dataIndex: "title",
       render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.categoryname.length - b.categoryname.length,
+      sorter: (a, b) => a.title.length - b.title.length,
     },
 
     {
-      //   title: "عملیات",
       dataIndex: "action",
       render: (text, record) => (
         <>
@@ -72,6 +70,11 @@ const Categories = () => {
               className="btn btn-sm btn-secondary ms-2"
               data-bs-toggle="modal"
               data-bs-target="#edit-category"
+              onClick={() => {
+                setSelectedCategory(record);
+                setEditedCategoryName(record.title);
+                setEditedCategoryid(record.id);
+              }}
             >
               <i className="far fa-edit" />
             </Link>
@@ -89,12 +92,15 @@ const Categories = () => {
     },
   ];
 
+  useEffect(() => {
+    dispatch(categoryListAction());
+  }, [dispatch, categoryDetailsUpdate]);
+
   return (
     <>
       <>
         <div className="main-wrapper">
           {/* Page Wrapper */}
-
           <Sidebar />
           <div className="page-wrapper">
             <div className="content container-fluid">
@@ -113,12 +119,6 @@ const Categories = () => {
                     >
                       <i className="fas fa-plus" />
                     </Link>
-                    <Link className="btn filter-btn" to="#" id="filter_search">
-                      <i
-                        className="fas fa-filter"
-                        onClick={() => togglefilter(!inputfilter)}
-                      />
-                    </Link>
                   </div>
                 </div>
               </div>
@@ -128,54 +128,7 @@ const Categories = () => {
                 className="card filter-card"
                 id="filter_inputs"
                 style={{ display: inputfilter ? "block" : "none" }}
-              >
-                <div className="card-body pb-0">
-                  <form>
-                    <div className="row filter-row">
-                      <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                          <label>اضافه کردن دسته بندی</label>
-                          <input className="form-control" type="text" />
-                        </div>
-                      </div>
-                      <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                          <label>From Date</label>
-                          <div className="cal-icon">
-                            <DatePicker
-                              selected={date}
-                              onChange={handleChange}
-                              className="form-control datetimepicker"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                          <label>To Date</label>
-                          <div className="cal-icon">
-                            <DatePicker
-                              selected={date}
-                              onChange={handleChange}
-                              className="form-control datetimepicker"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                          <button
-                            className="btn btn-primary btn-block"
-                            type="submit"
-                          >
-                            Submit
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
+              ></div>
               {/* /Search Filter */}
               <div className="row">
                 <div className="col-sm-12">
@@ -230,12 +183,17 @@ const Categories = () => {
                           type="text"
                           className="form-control"
                           placeholder="نام دسته بندی را وارد کنید"
+                          onChange={(e) => setAddedCategoryName(e.target.value)}
                         />
                       </div>
                       <div className="mt-4">
                         <button
                           type="submit"
                           className="btn btn-primary btn-block"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            addhandleSubmit();
+                          }}
                         >
                           تایید
                         </button>
@@ -269,13 +227,20 @@ const Categories = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="Graphic & Design"
+                          defaultValue={editedCategoryName}
+                          onChange={(e) =>
+                            setEditedCategoryName(e.target.value)
+                          }
                         />
                       </div>
                       <div className="mt-4">
                         <button
                           type="submit"
                           className="btn btn-primary btn-block"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            handleSubmit();
+                          }}
                         >
                           تایید
                         </button>

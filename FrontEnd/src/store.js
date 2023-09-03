@@ -2,10 +2,12 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import { jobListReducer
-        , jobsDetailsReducer
-        , jobsPostRedducer
-        , jobsPostRequirmentsReducer } from "./reducers/jobsReducer";
+import {
+  jobListReducer,
+  jobsDetailsReducer,
+  jobsPostRedducer,
+  jobsPostRequirmentsReducer,
+} from "./reducers/jobsReducer";
 import {
   employeeListAllReducer,
   employeeDetailsReducer,
@@ -26,6 +28,11 @@ import {
   //put
   companyUpdateDetailsReducer,
 } from "./reducers/companyReducer";
+import {
+  categoryListReducer,
+  categoryUpdateDetailsReducer,
+  categoryPostRedducer,
+} from "./reducers/adminReducer";
 // use selector tu use one of the below reducer
 
 const reducer = combineReducers({
@@ -35,9 +42,9 @@ const reducer = combineReducers({
   jobsPostRequirments: jobsPostRequirmentsReducer,
   //
   employeeDetails: employeeDetailsReducer,
-  employeePortfolio : employeePortfolioDetailsReducer,
+  employeePortfolio: employeePortfolioDetailsReducer,
   employeeFavoriteList: employeeFavoriteListReducer,
-  employeeToggleFavorite : employeeToggleFavoriteListReducer,
+  employeeToggleFavorite: employeeToggleFavoriteListReducer,
   employeeListAll: employeeListAllReducer,
   employeeUpdateDetails : employeeUpdateDetailsReducer,
   //
@@ -49,9 +56,13 @@ const reducer = combineReducers({
   companyDetails: companyDetailsReducer,
   companyJobsList: companyJobsListReducer,
   companyReview: companyReviewReducer,
-  companyFavoriteEmployee : companyFavoriteEmployeesReducer,
-  companyVerify : companyVerifyReducer ,
-  companyUpdateDetail : companyUpdateDetailsReducer
+  companyFavoriteEmployee: companyFavoriteEmployeesReducer,
+  companyVerify: companyVerifyReducer,
+  companyUpdateDetail: companyUpdateDetailsReducer,
+  //
+  categoryListAll: categoryListReducer,
+  categoryUpdateDetail: categoryUpdateDetailsReducer,
+  categorypost: categoryPostRedducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
