@@ -284,7 +284,7 @@ class Job(models.Model):
         return None
 
     def __str__(self):
-        return f'{self.title} = {self.status}'
+        return f'{self.title} برای شرکت   {self.Company.Name} در وضعیت {self.status}'
     
     @property
     def num_requests(self):
@@ -433,6 +433,10 @@ class Request(models.Model):
     @property
     def job_title(self):
         return self.job.title if self.job else None    
+
+    @property
+    def employee_user(self):
+        return f'{self.employee.user.first_name}{self.employee.user.last_name}' if self.employee else None 
 
     def __str__(self):
         return f'{self.employee.user.first_name}{self.employee.user.last_name} is requested to {self.job.title} and the status is {self.status}'
