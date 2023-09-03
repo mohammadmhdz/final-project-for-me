@@ -4,17 +4,20 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Job , Company ,Employee , Education , WorkExperience , Skills ,Category, City  , Language ,Verification , Review , Request ,Portfolio , Gallery , Image ,state
 
 
+
+
+
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
-    _id = serializers.SerializerMethodField(read_only=True)
+   
     isAdmin = serializers.SerializerMethodField(read_only=True)
+    role = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', '_id', 'username','first_name','last_name', 'email', 'name', 'isAdmin','last_login']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'name', 'isAdmin', 'last_login', 'role']
 
-    def get__id(self, obj):
-        return obj.id
+  
 
     def get_isAdmin(self, obj):
         return obj.is_staff
@@ -23,8 +26,22 @@ class UserSerializer(serializers.ModelSerializer):
         name = obj.first_name
         if name == '':
             name = obj.email
-
         return name
+
+    def get_role(self, obj):
+        try:
+            _ = obj.employee  # Check if the user is an employee
+            return 'employee'
+        except Employee.DoesNotExist:
+            pass
+
+        try:
+            _ = obj.company  # Check if the user is associated with a company
+            return 'employer'
+        except Company.DoesNotExist:
+            pass
+
+        return None
 
 
 class UserSerializerWithToken(UserSerializer):
