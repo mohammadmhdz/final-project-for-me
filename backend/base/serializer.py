@@ -9,16 +9,15 @@ from .models import Job , Company ,Employee , Education , WorkExperience , Skill
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
-    _id = serializers.SerializerMethodField(read_only=True)
+   
     isAdmin = serializers.SerializerMethodField(read_only=True)
     role = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', '_id', 'username', 'first_name', 'last_name', 'email', 'name', 'isAdmin', 'last_login', 'role']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'name', 'isAdmin', 'last_login', 'role']
 
-    def get__id(self, obj):
-        return obj.id
+  
 
     def get_isAdmin(self, obj):
         return obj.is_staff
