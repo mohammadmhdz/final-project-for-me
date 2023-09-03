@@ -78,7 +78,7 @@ const Favourites = (props) => {
                                       >
                                       <img
                                         className="avatar-img rounded-circle"
-                                        src={Img_02}
+                                        src={`http://127.0.0.1:8000/${item?.image}`}
                                         alt="User Image"
                                         />
                                     </Link>
@@ -109,11 +109,14 @@ const Favourites = (props) => {
                                 </td>
                                 <td className="text-end">
                                   <div className="table-action">
-                                  <Link className="btn btn-primary btn-invite" to="/developer-profile">
-                                      <span className="profile-name">
-                                        مشاهده پروفایل
-                                      </span>
-                                    </Link>
+                                  
+                                    <Link className="btn btn-primary btn-invite" 
+                                         to={{pathname : "/developer-profile" ,
+                                         state : {idInfo: item.id} 
+                                                  }}>
+                                      <span className="profile-name">مشاهده بیشتر</span>
+                                     </Link>
+                        
                                     {/* <a
                                       data-bs-toggle="modal"
                                       href="#bookmark"

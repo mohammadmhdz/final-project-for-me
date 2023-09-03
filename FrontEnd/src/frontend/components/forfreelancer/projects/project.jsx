@@ -226,7 +226,7 @@ const Projects = (props) => {
                     <div className="freelance-content">
                       <a
                         data-bs-toggle="modal"
-                        href="#rating"
+                      href="#rating"
                         className="favourite"
                       >
                         <i className="fa fa-star" />
@@ -234,7 +234,7 @@ const Projects = (props) => {
                       <div className="author-heading">
                         <div className="profile-img">
                           <a href="#">
-                            <img src={company_img1} alt="author" />
+                            <img src={item.image ? `http://127.0.0.1:8000/${item?.image}` : company_img1} alt="author" />
                           </a>
                         </div>
                         <div className="profile-name">
@@ -283,7 +283,7 @@ const Projects = (props) => {
                             </h3>
                           </li>
                         </ul>
-                      </div>
+                    </div>
                     </div>
                     <div className="cart-hover">
                     <Link  to={{pathname : "/project-details" ,

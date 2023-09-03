@@ -49,7 +49,7 @@ export const postApply = (inputData) => async (dispatch) => {
     const { data } = await axios.post(
       `http://127.0.0.1:8000/api/apply/`,
       { 
-      employee: inputData.employee,
+       employee: inputData.employee,
        Company: inputData.Company, 
        job: inputData.job, 
        message: inputData.message,

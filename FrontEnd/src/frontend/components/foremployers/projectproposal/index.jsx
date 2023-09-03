@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link  ,useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import {
   Avatar_1,
@@ -9,8 +9,34 @@ import {
   Logo_01,
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
+import moment from "jalali-moment";
+
+// redux
+import { freelancerRequest } from "../../../../actions/requestsActions";
+import { useDispatch , useSelector } from "react-redux";
 
 const Projectproposal = (props) => {
+  const dispatch = useDispatch();
+  const allRequest = useSelector(state => state.freelancerRequest);
+  const {freelancerRequestsAll} = allRequest
+  const location = useLocation();
+  const {job} = location.state
+  const [statusShow , setStatusShow] = useState("در انتظار بررسی")
+  console.log(job , "project-proposal-job")
+  console.log(statusShow , "status")
+
+  const daysBetween = (input) => {
+    const now = new Date().getDate();
+    const date = new Date(input).getDate();
+    return now -date;
+  };
+
+  useEffect(() => {
+    dispatch(freelancerRequest())
+  }, [dispatch]);
+
+  console.log(freelancerRequestsAll)
+  
   const hired = true;
   const hired2 = false;
   const hired3 = false;
@@ -19,7 +45,7 @@ const Projectproposal = (props) => {
     <>
       {/* Page Content */}
       <div className="content">
-        <div className="container">
+      <div className="container">
           <div className="row mt-5 align-right">
             {/* sidebar */}
             <div className="col-xl-3 col-md-4 theiaStickySidebar">
@@ -32,7 +58,7 @@ const Projectproposal = (props) => {
               <div className="page-title">
                 <h3>درخواست ها</h3>
               </div>
-              <nav className="user-tabs mb-4">
+              {/* <nav className="user-tabs mb-4">
                 <ul className="nav nav-tabs nav-tabs-bottom nav-justified">
                   <li className="nav-item">
                     <Link className="nav-link active" to="/manage-projects">
@@ -60,7 +86,7 @@ const Projectproposal = (props) => {
                     </Link>
                   </li>
                 </ul>
-              </nav>
+              </nav> */}
               {/* project list */}
               <div className="my-projects-list">
                 <div className="row">
@@ -69,26 +95,26 @@ const Projectproposal = (props) => {
                       <div className="card-body">
                         <div className="projects-details align-items-center">
                           <div className="project-info">
-                            <span>فراوب|FaraWeb</span>
-                            <h2>توسعه دهنده فرانت اند</h2>
+                            <span>{job.company.Name}</span>
+                            <h2>{job.title}</h2>
                             <div className="customer-info">
                               <ul className="list-details">
                                 <li>
                                   <div className="slot">
                                     <p>امکان دورکاری</p>
-                                    <h5>ندار</h5>
+                                    <h5>{job?.isremote ? "دارد" : "ندارد"}</h5>
                                   </div>
                                 </li>
                                 <li>
                                   <div className="slot">
                                     <p>شهر</p>
-                                    <h5>تهران</h5>
+                                    <h5>{job?.company.city.name}</h5>
                                   </div>
                                 </li>
                                 <li>
                                   <div className="slot">
                                     <p>انقضای اگهی</p>
-                                    <h5>۱۰ روز</h5>
+                                    <h5>{60 - daysBetween(job.published_at)}</h5>
                                   </div>
                                 </li>
                               </ul>
@@ -96,7 +122,7 @@ const Projectproposal = (props) => {
                           </div>
                           <div className="project-hire-info">
                             <div className="projects-amount proposals">
-                              <h3>۱۷ میلیون</h3>
+                              <h3>{job.salary_amount ? `${job.salary_amount} میلیون تومان` : "توافقی"}</h3>
                             </div>
                           </div>
                         </div>
@@ -107,7 +133,7 @@ const Projectproposal = (props) => {
                     <div className="projects-card flex-fill">
                       <div className="card-body p-2">
                         <div className="prj-proposal-count text-center">
-                          <span>5</span>
+                          <span>{job.num_requests}</span>
                           <h3>درخواست</h3>
                         </div>
                       </div>
@@ -117,23 +143,32 @@ const Projectproposal = (props) => {
               </div>
               {/* /project list */}
               {/* Proposals list */}
+              
+
               <div className="proposals-section mb-4">
                 <div className="d-flex justify-content-between align-items-center mb-2">
                   <h3 className="page-subtitle">درخواست های ارسال شده</h3>
                   <div className="col-md-3 col-lg-3">
                     <div className="form-group">
                       <select
+                      onChange={(e) => setStatusShow(e.target.value)}
                         name="price"
                         className="form-control select-level"
                       >
-                        <option value="">در انتظار بررسی</option>
-                        <option value="">بررسی شده</option>
-                        <option value="">رد شده</option>
+                        <option value="در انتظار بررسی">در انتظار بررسی</option>
+                        <option value="بررسی شده">بررسی شده</option>
+                        <option value="رد شده">رد شده</option>
                       </select>
                     </div>
                   </div>
                 </div>
-                <div className="proposal-card">
+                
+                {freelancerRequestsAll.map((item) => (
+                  (+item.job === +job.id) &&
+                  (item.Company === job.Company) &&
+                  (statusShow === item.status) && (
+
+                  <div className="proposal-card">
                   {/* Proposals */}
                   <div className="project-proposals align-items-center">
                     <div className="proposals-info">
@@ -142,20 +177,23 @@ const Projectproposal = (props) => {
                           <img src={Avatar_1} alt="" className="img-fluid" />
                         </div>
                         <div className="proposer-detail">
-                          <h4>محمد مهدی زاده</h4>
+                          <h4>{job.title}</h4>
                           <ul className="proposal-details">
-                            <li> ۲۹ تیر ۱۴۰۲</li>
+                            <li>تاریخ : {moment(item.send_at, "YYYY/MM/DD")
+                                            .locale("fa")
+                                            .format("YYYY/MM/DD")}</li>
 
                             <li>
                               {" "}
-                              <Link
-                                to="/developer-profile"
-                                className="font-semibold text-primary "
-                              >
-                                مشاهده پروفایل
-                              </Link>
+                              <Link className="font-semibold text-primary"
+                                    to={{
+                                      pathname : "/developer-profile" ,
+                                      state : {idInfo: +item.employee} 
+                                      }}>
+                             مشاهده پروفایل
+                            </Link>
                             </li>
-                            <li>وضعیت درخواست : درانتظار بررسی</li>
+                            <li>وضعیت درخواست :{item.status}</li>
                           </ul>
                         </div>
                       </div>
@@ -201,15 +239,16 @@ const Projectproposal = (props) => {
                     <div className="description-proposal">
                       <h5 className="desc-title">متن پیام</h5>
                       <p>
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
-                        چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون
-                        بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است وو
-                        سه درصد گذشته حال و آینده
+                        {item.message}
                       </p>
                     </div>
                   </div>
                 </div>
+                  )
+                  ))}
               </div>
+                
+
               {/* /Proposals list */}
               {/* pagination */}
               <div className="row">

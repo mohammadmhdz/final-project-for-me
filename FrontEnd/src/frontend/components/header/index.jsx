@@ -1,9 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Logo, Img_04, avatar_1 } from "../imagepath";
-import config from "config";
+import { Logo, avatar_1 } from "../imagepath";
+// redux
+import { logout } from "../../../actions/userActions";
+import { useDispatch , useSelector } from "react-redux";
 
 const Header = (props) => {
+  // add by mhdz
+  const localItem = JSON.parse(localStorage?.getItem("userInfo"));
+  const dispatch = useDispatch();
+  
+  console.log(localItem)
+
+
   const [isSideMenu, setSideMenu] = useState("");
   const [isSideMenu1, setSideMenu1] = useState("");
   const [isSideMenu2, setSideMenu2] = useState("");
@@ -69,6 +78,10 @@ const Header = (props) => {
       setNavbar(false);
     }
   };
+
+  const handleLogout = (e) => {
+    dispatch(logout())
+  }
   window.addEventListener("scroll", changeBackground);
   return (
     <>
@@ -149,23 +162,23 @@ const Header = (props) => {
                       <span className="user-img  ms-2">
                         <img src={avatar_1} alt="" />
                       </span>
-                      <span className=" ms-2">پروفایل</span>
+                      <span className=" ms-2">{localItem?.username}</span>
                     </Link>
 
                     <div className="dropdown-menu emp">
                       <Link
                         className="dropdown-item"
-                        to="/user-account-details"
+                        to="/freelancer-dashboard"
                       >
                         <i className="material-icons  ms-1">verified_user</i>{" "}
                         پروفایل من
                       </Link>
-                      <Link className="dropdown-item " to="/profile-settings">
+                      <Link className="dropdown-item " to="/freelancer-profile-settings">
                         {" "}
                         <i className="material-icons  ms-1">settings</i>
                         تنظیمات
                       </Link>
-                      <Link className="dropdown-item" to="/">
+                      <Link onClick={handleLogout} className="dropdown-item" to="/">
                         <i className="material-icons  ms-1">
                           power_settings_new
                         </i>{" "}
@@ -174,9 +187,14 @@ const Header = (props) => {
                     </div>
                   </li>
                   <li className={pathname === "post-project" ? "active" : ""}>
-                    <Link to="/post-project" className="login-btn">
-                      Post a Project{" "}
+                    {localItem ? 
+                    <Link to="/project" className="login-btn">
+                      لیست کارها
                     </Link>
+                     : 
+                     (<Link to="/post-project" className="login-btn">
+                     Post a Project
+                   </Link>)}
                   </li>
                 </ul>
               ) : (

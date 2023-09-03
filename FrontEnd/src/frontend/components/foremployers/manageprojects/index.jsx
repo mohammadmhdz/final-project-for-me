@@ -73,7 +73,7 @@ const Manageprojects = (props) => {
       document.body.className = "";
     };
   }, [dispatch]);
-  console.log(companyJobsListArray);
+   console.log(companyJobsListArray);
   return (
     <>
       {/* Page Content */}
@@ -173,7 +173,7 @@ const Manageprojects = (props) => {
                                     <li>
                                       <div className="slot">
                                         <p>شهر</p>
-                                        <h5>{item.city?.name}</h5>
+                                        <h5>{item.company?.city.name}</h5>
                                       </div>
                                     </li>
                                     <li>
@@ -200,12 +200,14 @@ const Manageprojects = (props) => {
                                 </div>
                                 <div className="content-divider" />
                                 <div className="projects-action text-center">
-                                  <Link
-                                    to="/view-project-detail"
-                                    className="projects-btn"
-                                  >
-                                    مشاهده بیشتر{" "}
+                                
+                                  <Link  className="projects-btn" 
+                                         to={{pathname : "/project-proposals" ,
+                                         state : {job: item} 
+                                      }}>
+                                  مشاهده بیشتر
                                   </Link>
+                                  
                                   {/* <a href="#" className="hired-detail">
                                   استخدام شده در تاریخ ۱۲ بهمن ۱۴۰۱
                                 </a> */}
