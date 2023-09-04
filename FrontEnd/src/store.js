@@ -30,7 +30,7 @@ import {
 import {
   categoryListReducer,
   categoryUpdateDetailsReducer,
-  categoryPostRedducer,
+  categoryPost,
   categoryDeleteReducer,
 } from "./reducers/adminReducer";
 // use selector tu use one of the below reducer
@@ -59,7 +59,7 @@ const reducer = combineReducers({
   //
   categoryListAll: categoryListReducer,
   categoryUpdateDetail: categoryUpdateDetailsReducer,
-  categorypost: categoryPostRedducer,
+  categorypost: categoryPost,
   categorydelete: categoryDeleteReducer,
 });
 

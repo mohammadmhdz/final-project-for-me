@@ -4,6 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.core import validators
 from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
+from datetime import timedelta
 
 
 
@@ -289,6 +290,10 @@ class Job(models.Model):
     @property
     def num_requests(self):
         return self.request_set.count()
+    
+    @property
+    def due_to(self):
+        return self.published_at + timedelta(days=60)
 
     
 

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Sidebar from "../../../commoncomponent/sidebar";
 import { Table } from "antd";
+import Loader from "../../../../Loader";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { itemRender, onShowSizeChange } from "../../../paginationfunction";
@@ -20,11 +21,9 @@ const Categories = (props) => {
   const categoryDetailsUpdate = useSelector(
     (state) => state.categoryUpdateDetailsReducer
   );
-  const categorypost = useSelector((state) => state.categoryPostRedducer);
-  const { categories } = categoryListAll;
-
-  const [inputfilter, setInputfilter] = useState(false);
-
+  const categorypost = useSelector((state) => state.categoryPost);
+  const categorydelete = useSelector((state) => state.categorydelete);
+  const { categories, loading } = categoryListAll;
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [editedCategoryName, setEditedCategoryName] = useState("");
   const [editedCategoryid, setEditedCategoryid] = useState("");
@@ -33,7 +32,7 @@ const Categories = (props) => {
 
   const addhandleSubmit = (e) => {
     dispatch(postCategory({ title: addedCategoryName }));
-
+    dispatch(categoryListAction());
     const closeButton = document.querySelector("#add-category .close");
     closeButton.click();
   };
@@ -42,13 +41,16 @@ const Categories = (props) => {
     dispatch(
       updateCategoryDetails({ id: editedCategoryid, title: editedCategoryName })
     );
-
+    dispatch(categoryListAction());
     const closeButton = document.querySelector("#edit-category .close");
     closeButton.click();
   };
 
   const handledeleteSubmit = (e) => {
     dispatch(deletecategory(deletedCategoryid));
+    dispatch(categoryListAction());
+    const cancelLink = document.querySelector("#cancelLink");
+    cancelLink.click();
   };
 
   const data = categories;
@@ -105,7 +107,7 @@ const Categories = (props) => {
 
   useEffect(() => {
     dispatch(categoryListAction());
-  }, [dispatch, categoryDetailsUpdate]);
+  }, [dispatch]);
 
   return (
     <>
@@ -135,33 +137,33 @@ const Categories = (props) => {
               </div>
               {/* /Page Header */}
               {/* Search Filter */}
-              <div
-                className="card filter-card"
-                id="filter_inputs"
-                style={{ display: inputfilter ? "block" : "none" }}
-              ></div>
+
               {/* /Search Filter */}
               <div className="row">
                 <div className="col-sm-12">
                   <div className="card">
                     <div className="card-body">
-                      <div className="table-responsive">
-                        <Table
-                          pagination={{
-                            total: data.length,
-                            showTotal: (total, range) =>
-                              `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه`,
-                            showSizeChanger: true,
-                            onShowSizeChange: onShowSizeChange,
-                            itemRender: itemRender,
-                          }}
-                          className="table role"
-                          style={{ overflowX: "auto" }}
-                          columns={columns}
-                          dataSource={data}
-                          rowKey={(record) => record.id}
-                        />
-                      </div>
+                      {loading ? (
+                        <Loader />
+                      ) : (
+                        <div className="table-responsive">
+                          <Table
+                            pagination={{
+                              total: data.length,
+                              showTotal: (total, range) =>
+                                `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه`,
+                              showSizeChanger: true,
+                              onShowSizeChange: onShowSizeChange,
+                              itemRender: itemRender,
+                            }}
+                            className="table role"
+                            style={{ overflowX: "auto" }}
+                            columns={columns}
+                            dataSource={data}
+                            rowKey={(record) => record.id}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -291,6 +293,7 @@ const Categories = (props) => {
                         </div>
                         <div className="col-6">
                           <Link
+                            id="cancelLink"
                             to="#"
                             data-bs-dismiss="modal"
                             className="btn btn-primary cancel-btn"

@@ -2,22 +2,23 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Job , Company ,Employee , Education , WorkExperience , Skills ,Category, City  , Language ,Verification , Review , Request ,Portfolio , Gallery , Image ,state
-
+from datetime import timedelta
 
 
 
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
-   
+    _id = serializers.SerializerMethodField(read_only=True)
     isAdmin = serializers.SerializerMethodField(read_only=True)
     role = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'name', 'isAdmin', 'last_login', 'role']
+        fields = ['id','_id', 'username', 'first_name', 'last_name', 'email', 'name', 'isAdmin', 'last_login', 'role']
 
-  
+    def get__id(self, obj):
+        return obj.id
 
     def get_isAdmin(self, obj):
         return obj.is_staff
@@ -64,6 +65,7 @@ class JobSerializer(serializers.ModelSerializer):
     job_skills = serializers.SerializerMethodField(read_only=True)
     num_requests = serializers.SerializerMethodField()
     completed_request_user = serializers.SerializerMethodField()
+    due_to = serializers.SerializerMethodField()
  
     class Meta:
         model = Job
@@ -102,6 +104,9 @@ class JobSerializer(serializers.ModelSerializer):
         job_category = obj.category
         serializer = CategorySerializer(job_category, many=False)
         return serializer.data  
+    
+    def get_due_to(self, obj):
+        return obj.published_at + timedelta(days=60)
     
 
     def get_company(self, obj):
