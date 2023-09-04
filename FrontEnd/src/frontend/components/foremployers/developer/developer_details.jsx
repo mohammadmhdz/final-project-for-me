@@ -1,4 +1,4 @@
-import React ,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 // Import Images
@@ -27,7 +27,7 @@ import {
   Icon_11,
 } from "../../imagepath";
 // redux
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { employeeDetails } from "../../../../actions/employeeActions"
 
 const DeveloperDetails = (props) => {
@@ -40,7 +40,7 @@ const DeveloperDetails = (props) => {
     return () => {
       document.body.className = "";
     };
-  },[dispatch]);
+  }, [dispatch]);
 
   // console.log(employee);
   // console.log(employeeDetailsList);
@@ -72,12 +72,7 @@ const DeveloperDetails = (props) => {
                       </div>
                     </div>
                     <div className="pro-info-right profile-inf">
-                      <Link
-                        className="btn profile-edit-btn"
-                        to="/freelancer-profile-settings"
-                      >
-                        ویرایش پروفایل
-                      </Link>
+                      <Link className="" to="#"></Link>
                     </div>
                   </div>
                 </div>

@@ -1,5 +1,5 @@
-import React , {useEffect} from "react";
-import { Link , useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import moment from "jalali-moment";
 import StickyBox from "react-sticky-box";
 // Import Images
@@ -29,16 +29,21 @@ import {
   Avatar_2,
 } from "../../imagepath";
 // redux
-import { useDispatch, useSelector} from "react-redux";
-import { employeeDetails , employeePortfolioDetails } from "../../../../actions/employeeActions"
+import { useDispatch, useSelector } from "react-redux";
+import {
+  employeeDetails,
+  employeePortfolioDetails,
+} from "../../../../actions/employeeActions";
 
 const DeveloperProfile = (props) => {
+
   const location = useLocation()
   const  idInfo  = location.state.idInfo
   
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
   
-  // 
+
+
   const dispatch = useDispatch();
   const employeeDetailsList = useSelector((state) => state.employeeDetails);
   const Portfolio = useSelector((state) => state.employeePortfolio);
@@ -59,15 +64,13 @@ const DeveloperProfile = (props) => {
     return () => {
       document.body.className = "";
     };
-  },[dispatch]);
+  }, [dispatch]);
   // console.log(employee , "EMPLOYEE INFO")
-  console.log(employeePortfolioArray , "EMPLOYEE PORTFOLIO INFO")
-
+  console.log(employeePortfolioArray, "EMPLOYEE PORTFOLIO INFO");
 
   // console.log(location , "loc");
   return (
     <>
-    
       {/* Breadcrumb */}
       <div className="breadcrumb-bar" />
       {/* /Breadcrumb */}
@@ -81,14 +84,33 @@ const DeveloperProfile = (props) => {
                   <div className="provider-widget">
                     <div className="pro-info-left">
                       <div className="provider-img">
-                        <img src={employee.image !== null ? `http://127.0.0.1:8000/${employee.image}`:Img_01 } alt="User" />
+                        <img
+                          src={
+                            employee.image !== null
+                              ? `http://127.0.0.1:8000/${employee.image}`
+                              : Img_01
+                          }
+                          alt="User"
+                        />
                       </div>
                       <div className="profile-info">
-                        <h2 className="profile-title">{employee.user?.first_name} {employee.user?.last_name}</h2>
-                        <p className="profile-position">{employee.perfession_title} </p>
+                        <h2 className="profile-title">
+                          {employee.user?.first_name} {employee.user?.last_name}
+                        </h2>
+                        <p className="profile-position">
+                          {employee.perfession_title}{" "}
+                        </p>
                         <div>
-                          <a href="#" onClick={handleToggleFavorite} className="btn full-btn">
-                          {employee.cooperation_type}
+
+                          <a href="#" className="btn full-btn ms-3">
+                            {employee.cooperation_type}
+                          </a>
+                          <a href="#" className="btn full-btn ms-3">
+                            دانلود رزومه
+                          </a>
+                          <a href="#">
+                            <i className="fa fa-heart heart fa-2x ms-2 red-text" />
+
                           </a>
                         </div>
                       </div>
@@ -174,9 +196,7 @@ const DeveloperProfile = (props) => {
                 <div className="pro-post widget-box align-right" id="overview">
                   <h3 className="pro-title">درباره</h3>
                   <div className="pro-content">
-                    <p>
-                     {employee.about}
-                    </p>
+                    <p>{employee.about}</p>
                   </div>
                 </div>
                 <div
@@ -186,29 +206,31 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">سوابق شغلی</h3>
                   <div className="pro-content">
                     <div className="row">
-                      {
-                  employee.Experiences?.map((item) => (
+                      {employee.Experiences?.map((item) => (
                         <div
                           className="col-lg-4 col-md-6 d-flex"
                           style={{ height: "100%" }}
-                          >
-                        <div className="experiance-list d-flex  flex-column">
-                          <div className="experiance-logo d-flex align-items-center justify-content-center">
-                            <img className="img-fluid" alt="" src={Icon_10} />
+                        >
+                          <div className="experiance-list d-flex  flex-column">
+                            <div className="experiance-logo d-flex align-items-center justify-content-center">
+                              <img className="img-fluid" alt="" src={Icon_10} />
+                            </div>
+                            <h4>{item.title}</h4>
+                            <h5>{item.company_name}</h5>
+                            <h5>
+                              {" "}
+                              {moment(item.from_date, "YYYY/MM/DD")
+                                .locale("fa")
+                                .format("YYYY/MM/DD")}{" "}
+                              الی{" "}
+                              {moment(item.to_date, "YYYY/MM/DD")
+                                .locale("fa")
+                                .format("YYYY/MM/DD")}
+                            </h5>
+                            <p>{/* description */}</p>
                           </div>
-                          <h4>{item.title}</h4>
-                          <h5>{item.company_name}</h5>
-                          <h5> {moment(item.from_date, "YYYY/MM/DD")
-                                            .locale("fa")
-                                            .format("YYYY/MM/DD")} الی {moment(item.to_date, "YYYY/MM/DD")
-                                            .locale("fa")
-                                            .format("YYYY/MM/DD")}</h5>
-                          <p>{/* description */}</p>
                         </div>
-                      </div>
-                          ))
-                      }
-                   
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -221,25 +243,29 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">تحصیلات</h3>
                   <div className="pro-content">
                     <div className="row">
-                      { employee.Education?.map((item)=> (
-                      <div
-                        className="col-lg-6 col-md-6 d-flex"
-                        style={{ height: "100%" }}
-                      >
-                        <div className="experiance-list">
-                          <div className="experiance-logo logo-bg d-flex align-items-center justify-content-center">
-                            <img className="img-fluid" alt="" src={Icon_11} />
+                      {employee.Education?.map((item) => (
+                        <div
+                          className="col-lg-6 col-md-6 d-flex"
+                          style={{ height: "100%" }}
+                        >
+                          <div className="experiance-list">
+                            <div className="experiance-logo logo-bg d-flex align-items-center justify-content-center">
+                              <img className="img-fluid" alt="" src={Icon_11} />
+                            </div>
+                            <h4>{item.degree} </h4>
+                            <h5>
+                              {moment(item.from_date, "YYYY/MM/DD")
+                                .locale("fa")
+                                .format("YYYY")}{" "}
+                              الی{" "}
+                              {moment(item.to_date, "YYYY/MM/DD")
+                                .locale("fa")
+                                .format("YYYY")}
+                            </h5>
+                            <h5>{item.institute}</h5>
                           </div>
-                          <h4>{item.degree} </h4>
-                          <h5>{moment(item.from_date, "YYYY/MM/DD")
-                                            .locale("fa")
-                                            .format("YYYY")} الی {moment(item.to_date, "YYYY/MM/DD")
-                                            .locale("fa")
-                                            .format("YYYY")}</h5>
-                          <h5>{item.institute}</h5>
                         </div>
-                      </div>
-                      )) }
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -250,30 +276,37 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">نمونه کارها</h3>
                   <div className="pro-content">
                     <div className="row">
-                      
-                    {employeePortfolioArray.length !== 0 ? 
-                     (employeePortfolioArray?.map((item) => (
-                    
-                       <div className="col-sm-6 col-md-6 col-lg-4 col-xl-3">
-                        <div className="project-widget">
-                          <div className="pro-image">
-                            <a data-fancybox="gallery2">
-                              <img
-                                className="img-fluid"
-                                alt="User Image"
-                                src={item.image !== null ? `http://127.0.0.1:8000/${item.image}` : Avatar_2 }
-                              />
-                            </a>
+                      {employeePortfolioArray.length !== 0 ? (
+                        employeePortfolioArray?.map((item) => (
+                          <div className="col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                            <div className="project-widget">
+                              <div className="pro-image">
+                                <a data-fancybox="gallery2">
+                                  <img
+                                    className="img-fluid"
+                                    alt="User Image"
+                                    src={
+                                      item.image !== null
+                                        ? `http://127.0.0.1:8000/${item.image}`
+                                        : Avatar_2
+                                    }
+                                  />
+                                </a>
+                              </div>
+                              <div className="pro-detail">
+                                {/* <h3 className="pro-name">{item.description}</h3> */}
+                                <p className="pro-designation">
+                                  {item.title === null
+                                    ? "نمونه جهت نمایش وجود ندارد"
+                                    : item.title}
+                                </p>
+                              </div>
+                            </div>
                           </div>
-                          <div className="pro-detail">
-                            {/* <h3 className="pro-name">{item.description}</h3> */}
-                            <p className="pro-designation">{item.title === null ?  "نمونه جهت نمایش وجود ندارد" : item.title}</p>
-                          </div>
-                        </div>
-                      </div>
-                     )))
-                     :(<h5>نمونه کاری جهت نمایش وجود ندارد</h5>) }
-                     
+                        ))
+                      ) : (
+                        <h5>نمونه کاری جهت نمایش وجود ندارد</h5>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -286,12 +319,11 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">مهارت های فنی</h3>
                   <div className="pro-content">
                     <div className="tags">
-                      {employee.skills?.map((item)=> (
+                      {employee.skills?.map((item) => (
                         <span className="badge badge-pill badge-skills">
-                        {item.title}
-                         </span>
-                          )) }
-
+                          {item.title}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -308,22 +340,21 @@ const DeveloperProfile = (props) => {
                   <div className="col-2 text-end"></div>
                 </div>
                 <ul className="latest-posts pro-content">
-                {employee.Language?.map((item)=> (
-
-                  <li>
-                    <p>{item.language}</p>
-                    <div className="progress progress-md mb-0">
-                      <div
-                        className="progress-bar"
-                        role="progressbar"
-                        style={{ width: `${item.rate}%` }}
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                  </li>   
-                ))}
+                  {employee.Language?.map((item) => (
+                    <li>
+                      <p>{item.language}</p>
+                      <div className="progress progress-md mb-0">
+                        <div
+                          className="progress-bar"
+                          role="progressbar"
+                          style={{ width: `${item.rate}%` }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="pro-post widget-box about-widget align-right">
