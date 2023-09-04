@@ -47,10 +47,7 @@ export const categoryUpdateDetailsReducer = (state = {}, action) => {
   }
 };
 
-export const categoryPostRedducer = (
-  state = { categoryPostList: [] },
-  action
-) => {
+export const categoryPost = (state = { categoryPostList: [] }, action) => {
   switch (action.type) {
     case CATEGORY_POST_REQUEST:
       return { loading: true, categoryPostList: [] };
@@ -58,6 +55,7 @@ export const categoryPostRedducer = (
     case CATEGORY_POST_SUCCESS:
       return {
         loading: false,
+        success: true,
         categoryPostList: action.payload,
       };
     case CATEGORY_POST_FAIL:
