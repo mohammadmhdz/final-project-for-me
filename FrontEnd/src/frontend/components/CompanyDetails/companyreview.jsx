@@ -31,7 +31,7 @@ export const CompanyReview = ({companyId}) => {
   const handleChange = (e) => {
     setReviewData({
       ["employee"] : 1,
-      ["company"] : companyId ,
+      ["Company"] : companyId ,
       ["date"] : null ,
       [e.target.id] : e.target.value ,
       ["status"] : "درانتظار تایید" ,

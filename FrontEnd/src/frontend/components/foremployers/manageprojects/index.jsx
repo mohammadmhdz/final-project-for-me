@@ -67,7 +67,7 @@ const Manageprojects = (props) => {
   const { companyJobsListArray } = companyJobsAllList;
 
   useEffect(() => {
-    dispatch(companyJobsListAction());
+    dispatch(companyJobsListAction(1));
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
