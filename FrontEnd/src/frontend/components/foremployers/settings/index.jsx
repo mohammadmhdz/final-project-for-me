@@ -163,7 +163,7 @@ const Settings = (props) => {
                               <div className="upload-images">
                                 <img
                                   id="image"
-                                  onChange={handleChangeImage}
+                                  // onChange={handleChangeImage}
                                   src={Img_02}
                                   alt="Image"
                                 />

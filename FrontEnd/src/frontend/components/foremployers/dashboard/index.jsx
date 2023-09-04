@@ -11,6 +11,7 @@ import {
   Img_05,
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
+import  moment from "jalali-moment";
 
 // redux
 import {
@@ -165,10 +166,16 @@ const Dashboard = (props) => {
   const { companyJobsListArray } = companyJobsAllList;
   const { companyDetail } = companyDetailsList;
 
+  const daysBetween =(input) => {
+    const now = new Date().getDate()
+    const date = new Date(input).getDate()
+    return now - date
+  }
+
   useEffect(() => {
     dispatch(companyDetails(1));
     //
-    dispatch(companyJobsListAction());
+    dispatch(companyJobsListAction(1));
     let chartprofileoptionsColumn = document.getElementById("chartprofile");
     let chartprofileoptionsChart = new ApexCharts(
       chartprofileoptionsColumn,
@@ -330,33 +337,33 @@ const Dashboard = (props) => {
                       <div className="card-body">
                         <div id="chartradial" />
                         <ul className="static-list">
-                          <li>
+                          {/* <li>
                             <span>
                               <i className="fa fa-circle text-violet me-1" />{" "}
                               درخواست های ارسال شده
                             </span>{" "}
-                            <span className="sta-count">30</span>
+                            <span className="sta-count">{companyDetail.completed_jobs_count}</span>
+                          </li> */}
+                          <li>
+                            <span>
+                              <i className="fa fa-circle text-blue me-1" /> 
+                              فرصت های شغلی منتشر شده
+                            </span>{" "}
+                            <span className="sta-count">{companyDetail.all_jobs_count}</span>
                           </li>
                           <li>
                             <span>
                               <i className="fa fa-circle text-pink me-1" /> فرصت
                               های شغلی فعال
                             </span>{" "}
-                            <span className="sta-count">30</span>
+                            <span className="sta-count">{companyDetail.active_jobs_count}</span>
                           </li>
                           <li>
                             <span>
                               <i className="fa fa-circle text-yellow me-1" />{" "}
                               استخدام
                             </span>{" "}
-                            <span className="sta-count">30</span>
-                          </li>
-                          <li>
-                            <span>
-                              <i className="fa fa-circle text-blue me-1" /> فرصت
-                              های شغلی ذخیره شده
-                            </span>{" "}
-                            <span className="sta-count">30</span>
+                            <span className="sta-count">{companyDetail.completed_jobs_count}</span>
                           </li>
                         </ul>
                       </div>
@@ -399,114 +406,41 @@ const Dashboard = (props) => {
                               </tr>
                             </thead>
                             <tbody>
+                              {companyJobsListArray.map((item) => (
+
+
                               <tr>
                                 <td>
                                   <span className="detail-text">
-                                    برنامه نویس Python-Django
+                                    {item.title}
                                   </span>
                                   <span className="d-block text-expiry">
-                                    تاریخ انقضا : ۲۲ مرداد
+                                   تاریخ انقضا : {daysBetween(item.published_at)}
                                   </span>
                                 </td>
-                                <td>تمام وقت</td>
+                                <td>{item.job_type}</td>
                                 <td>
                                   <span className="table-budget">حقوق</span>{" "}
                                   <span className="d-block text-danger">
-                                    ۱۵ تومان
+                                    {item.salary_type === "توافقی" ? item.salary_type : `${item.salary_amount} میلیون `}
                                   </span>
                                 </td>
-                                <td>۱۲ تیر ۱۴۰۲</td>
-                                <td>47</td>
+                                <td>{moment(item.published_at, "YYYY/MM/DD")
+                                            .locale("fa")
+                                            .format("YYYY/MM/DD")}</td>
+                              <td>{item.num_requests}</td>
                                 <td className="text-end">
-                                  <Link
-                                    to="/view-project-detail"
-                                    className="text-success"
-                                  >
-                                    مشاهده
+                                <Link   className="text-success" 
+                                         to={{pathname : "/project-proposals" ,
+                                         state : {job: item} 
+                                      }}>
+                                  مشاهده
                                   </Link>
                                 </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <span className="detail-text">
-                                    برنامه نویس Python-Django
-                                  </span>
-                                  <span className="d-block text-expiry">
-                                    تاریخ انقضا : ۲۲ مرداد
-                                  </span>
-                                </td>
-                                <td>تمام وقت</td>
-                                <td>
-                                  <span className="table-budget">حقوق</span>{" "}
-                                  <span className="d-block text-danger">
-                                    ۱۵ تومان
-                                  </span>
-                                </td>
-                                <td>۱۲ تیر ۱۴۰۲</td>
-                                <td>47</td>
-                                <td className="text-end">
-                                  <Link
-                                    to="/view-project-detail"
-                                    className="text-success"
-                                  >
-                                    مشاهده
-                                  </Link>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <span className="detail-text">
-                                    برنامه نویس Python-Django
-                                  </span>
-                                  <span className="d-block text-expiry">
-                                    تاریخ انقضا : ۲۲ مرداد
-                                  </span>
-                                </td>
-                                <td>تمام وقت</td>
-                                <td>
-                                  <span className="table-budget">حقوق</span>{" "}
-                                  <span className="d-block text-danger">
-                                    ۱۵ تومان
-                                  </span>
-                                </td>
-                                <td>۱۲ تیر ۱۴۰۲</td>
-                                <td>47</td>
-                                <td className="text-end">
-                                  <Link
-                                    to="/view-project-detail"
-                                    className="text-success"
-                                  >
-                                    مشاهده
-                                  </Link>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <span className="detail-text">
-                                    برنامه نویس Python-Django
-                                  </span>
-                                  <span className="d-block text-expiry">
-                                    تاریخ انقضا : ۲۲ مرداد
-                                  </span>
-                                </td>
-                                <td>تمام وقت</td>
-                                <td>
-                                  <span className="table-budget">حقوق</span>{" "}
-                                  <span className="d-block text-danger">
-                                    ۱۵ تومان
-                                  </span>
-                                </td>
-                                <td>۱۲ تیر ۱۴۰۲</td>
-                                <td>47</td>
-                                <td className="text-end">
-                                  <Link
-                                    to="/view-project-detail"
-                                    className="text-success"
-                                  >
-                                    مشاهده
-                                  </Link>
-                                </td>
-                              </tr>
+                              </tr> 
+                              ))  
+                            }
+
                             </tbody>
                           </table>
                         </div>

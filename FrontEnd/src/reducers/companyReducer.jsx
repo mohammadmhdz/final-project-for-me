@@ -18,6 +18,10 @@ import {
   COMPANY_VERIFICATION_REQUEST,
   COMPANY_VERIFICATION_SUCCESS,
   COMPANY_VERIFICATION_FAIL,
+  //
+  COMPANY_POST_REVIEW_REQUEST,
+  COMPANY_POST_REVIEW_SUCCESS,
+  COMPANY_POST_REVIEW_FAIL,
   // put
   COMPANY_DETAILS_UPDATE_REQUEST,
   COMPANY_DETAILS_UPDATE_SUCCESS,
@@ -118,6 +122,22 @@ export const companyVerifyReducer = (state = {}, action) => {
       return { loading: false, companyVerifyInfo: action.payload };
 
     case COMPANY_VERIFICATION_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const postReviewReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COMPANY_POST_REVIEW_REQUEST:
+      return { loading: true };
+
+    case COMPANY_POST_REVIEW_SUCCESS:
+      return { loading: false, postDataArray: action.payload };
+
+    case COMPANY_POST_REVIEW_FAIL:
       return { loading: false, error: action.payload };
 
     default:

@@ -18,6 +18,10 @@ import {
   COMPANY_VERIFICATION_REQUEST,
   COMPANY_VERIFICATION_SUCCESS,
   COMPANY_VERIFICATION_FAIL,
+  //
+  COMPANY_POST_REVIEW_REQUEST,
+  COMPANY_POST_REVIEW_SUCCESS,
+  COMPANY_POST_REVIEW_FAIL,
   // PUT
   COMPANY_DETAILS_UPDATE_REQUEST,
   COMPANY_DETAILS_UPDATE_SUCCESS,
@@ -47,13 +51,13 @@ export const companyDetails = (keyword) => async (dispatch) => {
   }
 };
 
-export const companyReviewGet = () => async (dispatch) => {
+export const companyReviewGet = (keyword) => async (dispatch) => {
   try {
     dispatch({ type: COMPANY_REVIEWS_REQUEST });
     
     // const { data } = await axios.get(`/api/products${keyword}`)
     const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/companies/1/get_reviews/`
+      `http://127.0.0.1:8000/api/companies/${keyword}/get_reviews/`
       );
       // console.log(data);
       dispatch({
@@ -95,13 +99,13 @@ export const companyReviewGet = () => async (dispatch) => {
       }
     };
     
-    export const companyJobsListAction = () => async (dispatch) => {
+    export const companyJobsListAction = (keyword) => async (dispatch) => {
       try {
         dispatch({ type: COMPANY_JOBS_LIST_REQUEST });
         
         // const { data } = await axios.get(`/api/products${keyword}`)
         const { data } = await axios.get(
-          `http://127.0.0.1:8000/api/companies/1/get_jobs/`
+          `http://127.0.0.1:8000/api/companies/${keyword}/get_jobs/`
           );
           // console.log(data);
           dispatch({
@@ -151,6 +155,41 @@ export const companyReviewGet = () => async (dispatch) => {
             } catch (error) {
               dispatch({
                 type: COMPANY_VERIFICATION_FAIL,
+                payload:
+                error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+              });
+            }}
+
+      export const  postReview = (input) => async (dispatch) => {
+        try {
+          console.log(input)
+          
+          dispatch({
+            type:   COMPANY_POST_REVIEW_REQUEST,
+          });
+          
+          const config = {
+            headers: {
+              "Content-type": "application/json",
+            },
+          };
+          
+          const { data } = await axios.post(
+            "http://127.0.0.1:8000/api/reviews/",
+            input,
+              config
+              );
+              
+              dispatch({
+                type:   COMPANY_POST_REVIEW_SUCCESS,
+                payload: data,
+              });
+              
+            } catch (error) {
+              dispatch({
+                type:   COMPANY_POST_REVIEW_FAIL,
                 payload:
                 error.response && error.response.data.detail
                 ? error.response.data.detail

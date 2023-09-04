@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   about_details,
@@ -18,37 +18,64 @@ import {
 import { useEffect } from "react";
 import moment from "jalali-moment";
 // redux
-import { companyReviewGet } from "../../../actions/companyActions";
+import { companyReviewGet , postReview} from "../../../actions/companyActions";
 import { useDispatch, useSelector } from "react-redux";
-export const CompanyReview = () => {
+export const CompanyReview = ({companyId}) => {
   const dispatch = useDispatch();
-  const companyReviewList = useSelector((state) => state.companyReview);
-  const { companyReview } = companyReviewList;
-  console.log(companyReview, "review list");
+  const companyReviewReducer = useSelector((state) => state.companyReview);
+  const companyPostReviewReducer = useSelector((state) => state.companyReviewPost);
+  const { companyReviewList } = companyReviewReducer;
+  const { postDataArray } = companyPostReviewReducer;
+  const [reviewData , setReviewData ] = useState()
+
+  const handleChange = (e) => {
+    setReviewData({
+      ["employee"] : 1,
+      ["company"] : companyId ,
+      ["date"] : null ,
+      [e.target.id] : e.target.value ,
+      ["status"] : "درانتظار تایید" ,
+    });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+   dispatch(postReview(reviewData))
+  }
+
   useEffect(() => {
-    dispatch(companyReviewGet());
+    dispatch(companyReviewGet(companyId));
   }, [dispatch]);
+  console.log(companyReviewList, "review list");
+  console.log(reviewData, "id");
+
   return (
     <>
-      {companyReview.map((items, index) => {
+      {companyReviewList?.map((items, index) => {
         return (
           <div className="pro-post widget-box company-post align-right">
             <h3 className="pro-title">نظرات</h3>
             <div className="reviews company-review">
               <div className="review-content no-padding">
                 <div className="review-top tab-reviews d-flex align-items-center">
-                  <div className="review-img">
-                    <Link to="#">
+                  {/* <div className="review-img">
+                    {/* <Link to="#">
                       <img
                         className="img-fluid"
                         src={Review_01}
                         alt="Post Image"
                       />
-                    </Link>
-                  </div>
+                    </Link> 
+                  </div> */}
                   <div className="review-info">
                     <h3>
-                      <Link to="#">علی کلهر</Link>
+                    <Link className="font-semibold text-primary"
+                                    to={{
+                                     pathname : "/developer-profile" ,
+                                      state : {idInfo: +items.employee} 
+                                      }}>
+                             <span>{items.users_name}</span>
+                            </Link>
                     </h3>
                     <p className="mb-0">{items.content}</p>
                     {/* <h5>۲۲ مرداد • ۹:۳۰ </h5> */}
@@ -88,6 +115,9 @@ export const CompanyReview = () => {
 
           <div className="form-group">
             <textarea
+            onChange={handleChange}
+            id="content"
+            // value={reviewData?.content}
               className="form-control"
               rows={4}
               placeholder="نظر"
@@ -95,7 +125,7 @@ export const CompanyReview = () => {
             />
           </div>
           <div className="post-btn">
-            <button className="btn more-btn">ثبت</button>
+            <button onClick={handleSubmit} className="btn more-btn">ثبت</button>
           </div>
         </form>
       </div>

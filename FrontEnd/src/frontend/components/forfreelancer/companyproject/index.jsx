@@ -12,19 +12,20 @@ import {
   Tab_icon_12,
   Tab_icon_13,
 } from "../../imagepath";
+import moment from "jalali-moment";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { companyJobsListAction } from "../../../../actions/companyActions";
 
-const CompanyProject = (props) => {
+const CompanyProject = ({companyId}) => {
   // for using redux in our project
   const dispatch = useDispatch();
   const companyJobs = useSelector((state) => state.companyJobsList);
   const { companyJobsListArray } = companyJobs;
   console.log(companyJobsListArray);
   useEffect(() => {
-    dispatch(companyJobsListAction());
+    dispatch(companyJobsListAction(companyId));
 
     // document.body.className = "dashboard-page";
     // return () => {
@@ -41,18 +42,31 @@ const CompanyProject = (props) => {
   // test();
   return (
     <>
-      {companyJobsListArray.map((items, index) => {
-        return (
           <div className="pro-post widget-box company-post align-right">
             <h3 className="pro-title">فرصت های شغلی</h3>
-            <div className="projects-card flex-fill project-company">
+      {companyJobsListArray.map((items, index) => {
+        return (
+          <div className="projects-card flex-fill project-company">
               <div className="card-body">
                 <div className="projects-details align-items-center">
                   <div className="project-info">
-                    <span>{items.Company?.Name}</span>
-                    <h2>{items.Company?.Name}</h2>
+                  <Link className="font-semibold text-primary"
+                                    to={{
+                                     pathname : "/project-details" ,
+                                      state : {jobIdInput: +items.id} 
+                                      }}>
+                             <span>{items.title}</span>
+                            </Link>
+                    
+                    <h2>{items.company?.Name}</h2>
                     <div className="customer-info">
                       <ul className="list-details">
+                        <li>
+                          <div className="slot">
+                            <p>نام شرکت</p>
+                            <h2>{items.company?.Name}</h2>
+                          </div>
+                        </li>
                         <li>
                           <div className="slot">
                             <p>Price type</p>
@@ -62,13 +76,15 @@ const CompanyProject = (props) => {
                         <li>
                           <div className="slot">
                             <p>شهر</p>
-                            <h5>{items.city?.name}</h5>
+                            <h5>{items.company.city?.name}</h5>
                           </div>
                         </li>
                         <li>
                           <div className="slot">
-                            <p>تاریخ انقضا</p>
-                            <h5>۱۰ روز</h5>
+                            <p>تاریخ انتشار</p>
+                            <h5>{moment(items.published_at, "YYYY/MM/DD")
+                                            .locale("fa")
+                                            .format("YYYY/MM/DD")}</h5>
                           </div>
                         </li>
                       </ul>
@@ -79,7 +95,7 @@ const CompanyProject = (props) => {
                     <div className="projects-amount">
                       <h3>
                         {items.salary_amount === null
-                          ? null
+                          ? items.salary_type
                           : `${items.salary_amount} میلیون تومان`}
                       </h3>
                       {/* <h5>in 12 Days</h5> */}
@@ -107,9 +123,10 @@ const CompanyProject = (props) => {
                 </div>
               </div>
             </div>
-          </div>
-        );
+              );
       })}
+          </div>
+      
 
       {/* Pagination */}
       <div className="row">

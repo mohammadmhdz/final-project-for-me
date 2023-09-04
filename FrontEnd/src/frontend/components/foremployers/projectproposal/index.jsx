@@ -116,7 +116,12 @@ const Projectproposal = (props) => {
                       <div className="card-body">
                         <div className="projects-details align-items-center">
                           <div className="project-info">
-                            <span>{job.company.Name}</span>
+                          <Link   className="text-success" 
+                                         to={{pathname : "/company-profile" ,
+                                         state : {companyIdInput: +job.Company } 
+                                    }}>
+                                 {job.company.Name}
+                                  </Link>
                             <h2>{job.title}</h2>
                             <div className="customer-info">
                               <ul className="list-details">

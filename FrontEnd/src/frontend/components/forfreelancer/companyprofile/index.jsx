@@ -12,6 +12,7 @@ import {
   Tab_icon_11,
   Tab_icon_13,
 } from "../../imagepath";
+import moment from "jalali-moment";
 import CompanyProject from "../companyproject";
 import { CompanyReview } from "../../CompanyDetails/companyreview";
 // for redux using
@@ -76,7 +77,7 @@ const CompanyProfile = (props) => {
           <div className="row align-right">
             <div className="col-auto">
               <div className="profile-img">
-                <img src={profile_details} alt="" />
+                <img src={companyDetail.company_data?.image ? `http://127.0.0.1:8000${companyDetail.company_data?.image}` : profile_details} alt="" />
               </div>
             </div>
             <div className="col">
@@ -119,7 +120,7 @@ const CompanyProfile = (props) => {
                     <li className="nav-item">
                       <Link
                         onClick={handleAbout}
-                        className="nav-link active-about"
+                        className={activeAbout ? "nav-link active-about" : "nav-link" }
                         to="/company-profile"
                       >
                         <img src={Tab_icon_13} alt="User Image" />
@@ -129,7 +130,7 @@ const CompanyProfile = (props) => {
                     <li className="nav-item">
                       <Link
                         onClick={handleJobList}
-                        className="nav-link"
+                        className={activeJobs ? "nav-link active-about" : "nav-link" }
                         // to="/company-project"
                         // state={{ item: companyDetail }}
                       >
@@ -141,7 +142,7 @@ const CompanyProfile = (props) => {
                     <li className="nav-item">
                       <Link
                         onClick={handlePreviewList}
-                        className="nav-link"
+                        className={activePreview ? "nav-link active-about" : "nav-link" }
                         // to="/company-review"
                       >
                         <img src={Tab_icon_11} alt="User Image" />
@@ -153,9 +154,9 @@ const CompanyProfile = (props) => {
                 {/* /Tab Detail */}
                 {/* About Tab Content */}
                 {activeJobs ? (
-                  <CompanyProject />
+                  <CompanyProject companyId={companyIdInput} />
                 ) : activePreview ? (
-                  <CompanyReview />
+                  <CompanyReview companyId={companyIdInput} />
                 ) : activeAbout ? (
                   <div className="pro-post widget-box company-post abouts-detail align-right">
                     <h3 className="pro-title">درباره ما</h3>
@@ -181,7 +182,10 @@ const CompanyProfile = (props) => {
                   </li>
                   <li>
                     <p>سال تاسیس</p>
-                    <h6>{companyDetail.company_data?.founded_at}</h6>
+                    <h6>{companyDetail?.company_data?.founded_at}</h6>
+                    {/* <h6>{moment(companyDetail?.company_data?.founded_at, "YYYY/MM/DD")
+                                            .locale("fa")
+                                            .format("YYYY/MM/DD")}</h6> */}
                   </li>
                   <li>
                     <p>جمعیت</p>
@@ -208,14 +212,7 @@ const CompanyProfile = (props) => {
               </div>
               {/* /About Widget */}
               {/* Company Location */}
-              <div className="pro-post widget-box location-widget">
-                <div className="profile-head">
-                  <h4 className="pro-title">آدرس</h4>
-                </div>
-                <div className="map-location">
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d2965.0824050173574!2d-93.63905729999999!3d41.998507000000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sWebFilings%2C+University+Boulevard%2C+Ames%2C+IA!5e0!3m2!1sen!2sus!4v1390839289319" />
-                </div>
-              </div>
+
               {/* /Company Location */}
               {/* Working Widget */}
               <div className="pro-post widget-box  working-days">
