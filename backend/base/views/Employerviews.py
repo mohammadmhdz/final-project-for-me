@@ -198,6 +198,24 @@ class CompanyViewSet(viewsets.ViewSet):
         serializer = ReviewSerializer(reviews ,many=True )
         return Response(serializer.data) 
     
+    @action(detail=True, methods=['post'])
+    def toggle_favorite_employee(self, request, pk=None):
+        # employee = self.get_object()
+        company = get_object_or_404(Company, pk=pk)
+        employee_id = request.data.get('employee_id')
+
+        try:
+            employee = Employee.objects.get(pk=employee_id)
+            if employee in company.favorite_employee.all():
+                company.favorite_employee.remove(employee)
+            else:
+                company.favorite_employee.add(employee)
+            # serializer = self.get_serializer(employee)
+            serializer = CompanySerializer(company)
+            return Response(serializer.data)
+        except Job.DoesNotExist:
+            return Response({'error': 'employee does not exist.'}, status=400)  
+    
 
 
 

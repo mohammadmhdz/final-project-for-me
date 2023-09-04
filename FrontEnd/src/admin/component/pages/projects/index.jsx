@@ -8,21 +8,44 @@ import Sidebar from "../../../commoncomponent/sidebar";
 import { itemRender, onShowSizeChange } from "../../../paginationfunction";
 import "../../../antdstyle.css";
 import Loader from "../../../../Loader";
-import { listJobs } from "../../../../actions/jobActions";
+import {
+  listJobs,
+  updateJobDetails,
+  deletejob,
+} from "../../../../actions/jobActions";
 
 const Projects = () => {
   const dispatch = useDispatch();
   const jobListAll = useSelector((state) => state.jobList);
   const { jobs, loading } = jobListAll;
 
-  const [date, setDate] = useState(new Date());
-  const [inputfilter, setInputfilter] = useState(false);
+  const jobDetailsUpdate = useSelector((state) => state.jobUpdateDetail);
+  const jobdelete = useSelector((state) => state.jobdelete);
 
-  const handleChange = (date) => {
-    setDate(date);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [deletedJobid, setdeletedJobid] = useState("");
+  const [editedJobName, setEditedJobName] = useState("");
+  const [editedJobStatus, setEditedJobStatus] = useState("");
+  const [editedJobid, setEditedJobid] = useState("");
+
+  const handleSubmit = (e) => {
+    dispatch(
+      updateJobDetails({
+        id: editedJobid,
+        title: editedJobName,
+        status: editedJobStatus,
+      })
+    );
+    dispatch(listJobs());
+    const closeButton = document.querySelector("#add-category .close");
+    closeButton.click();
   };
-  const togglefilter = (value) => {
-    setInputfilter(value);
+
+  const handledeleteSubmit = (e) => {
+    dispatch(deletejob(deletedJobid));
+    dispatch(listJobs());
+    const cancelLink = document.querySelector("#cancelLink");
+    cancelLink.click();
   };
 
   const data = jobs;
@@ -45,6 +68,12 @@ const Projects = () => {
       dataIndex: "title",
       render: (text, record) => <>{text}</>,
       sorter: (a, b) => a.title.length - b.title.length,
+    },
+    {
+      title: "وضعیت",
+      dataIndex: "status",
+      render: (text, record) => <>{text}</>,
+      sorter: (a, b) => a.status.length - b.status.length,
     },
     {
       title: "حقوق",
@@ -89,6 +118,12 @@ const Projects = () => {
             className="btn btn-sm btn-secondary ms-2"
             data-bs-toggle="modal"
             data-bs-target="#add-category"
+            onClick={() => {
+              setSelectedJob(record);
+              setEditedJobStatus(record.status);
+              setEditedJobName(record.title);
+              setEditedJobid(record.id);
+            }}
           >
             <i className="far fa-edit"></i>
           </Link>
@@ -97,6 +132,9 @@ const Projects = () => {
             className="btn btn-sm btn-danger"
             data-bs-toggle="modal"
             data-bs-target="#delete_category"
+            onClick={() => {
+              setdeletedJobid(record.id);
+            }}
           >
             <i className="far fa-trash-alt"></i>
           </Link>
@@ -140,75 +178,10 @@ const Projects = () => {
                     <div className="col">
                       <h3 className="page-title">فرصت های شغلی</h3>
                     </div>
-                    <div className="col-auto">
-                      <Link
-                        className="btn filter-btn"
-                        to="#"
-                        id="filter_search"
-                      >
-                        <i
-                          className="fas fa-filter"
-                          onClick={() => togglefilter(!inputfilter)}
-                        />
-                      </Link>
-                    </div>
+                    <div className="col-auto"></div>
                   </div>
                 </div>
                 {/* /Page Header */}
-                {/* Search Filter */}
-                <div
-                  className="card filter-card"
-                  id="filter_inputs"
-                  style={{ display: inputfilter ? "block" : "none" }}
-                >
-                  <div className="card-body pb-0">
-                    <form action="#" method="post">
-                      <div className="row filter-row">
-                        <div className="col-sm-6 col-md-3">
-                          <div className="form-group">
-                            <label>نام شرکت</label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-sm-6 col-md-3">
-                          <div className="form-group">
-                            <label>From Date</label>
-                            <div className="cal-icon">
-                              <DatePicker
-                                selected={date}
-                                onChange={handleChange}
-                                className="form-control datetimepicker"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-sm-6 col-md-3">
-                          <div className="form-group">
-                            <label>To Date</label>
-                            <div className="cal-icon">
-                              <DatePicker
-                                selected={date}
-                                onChange={handleChange}
-                                className="form-control datetimepicker"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-sm-6 col-md-3">
-                          <div className="form-group">
-                            <button
-                              className="btn btn-primary btn-block"
-                              type="submit"
-                            >
-                              Submit
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                {/* /Search Filter */}
                 <div className="card bg-white projects-card">
                   <div className="card-body pt-0">
                     <div className="card-header"></div>
@@ -223,7 +196,7 @@ const Projects = () => {
                             data-bs-toggle="tab"
                             className="nav-link active"
                           >
-                            همه (272)
+                            همه
                           </Link>
                         </li>
                         <li className="nav-item">
@@ -232,7 +205,7 @@ const Projects = () => {
                             data-bs-toggle="tab"
                             className="nav-link"
                           >
-                            فعال (218)
+                            فعال
                           </Link>
                         </li>
                         <li className="nav-item">
@@ -242,7 +215,7 @@ const Projects = () => {
                             className="nav-link"
                           >
                             {" "}
-                            غیرفعال (03)
+                            در انتظار بررسی
                           </Link>
                         </li>
                         <li className="nav-item">
@@ -251,7 +224,7 @@ const Projects = () => {
                             data-bs-toggle="tab"
                             className="nav-link"
                           >
-                            حذف شده (0)
+                            منقضی شده
                           </Link>
                         </li>
                       </ul>
@@ -358,7 +331,7 @@ const Projects = () => {
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h4 className="modal-title">فرصت های شغلی</h4>
+                    <h4 className="modal-title"> ویرایش </h4>
                     <button
                       type="button"
                       className="close"
@@ -374,7 +347,8 @@ const Projects = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="توسعه دهنده Front-end "
+                          defaultValue={editedJobName}
+                          onChange={(e) => setEditedJobName(e.target.value)}
                         />
                       </div>
 
@@ -383,39 +357,26 @@ const Projects = () => {
                         <select
                           name="price"
                           className="form-control select-level"
+                          value={editedJobStatus}
+                          onChange={(e) => setEditedJobStatus(e.target.value)}
                         >
-                          <option value="">فعال</option>
-                          <option value="">منقضی شده</option>
-                          <option value="">درانتظار تایید</option>
-                          <option value="">تکمیل شده</option>
+                          <option value="فعال">فعال</option>
+                          <option value="منقضی شده">منقضی شده</option>
+                          <option value="درانتظار تایید">درانتظار تایید</option>
+                          <option value="تکمیل شده">تکمیل شده</option>
                         </select>
                       </div>
-                      <div className="form-group">
-                        <label>تاریخ انتشار</label>
-                        <div className="cal-icon">
-                          <DatePicker
-                            selected={date}
-                            onChange={handleChange}
-                            className="form-control datetimepicker"
-                          />
-                        </div>
-                      </div>
-                      <div className="form-group">
-                        <label>تاریخ اتقضا</label>
-                        <div className="cal-icon">
-                          <DatePicker
-                            selected={date}
-                            onChange={handleChange}
-                            className="form-control datetimepicker"
-                          />
-                        </div>
-                      </div>
+
                       <div className="mt-4">
                         <button
                           type="submit"
                           className="btn btn-primary btn-block"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            handleSubmit();
+                          }}
                         >
-                          Submit
+                          تایید
                         </button>
                       </div>
                     </form>
@@ -440,17 +401,25 @@ const Projects = () => {
                     <div className="modal-btn delete-action">
                       <div className="row">
                         <div className="col-6">
-                          <Link to="#" className="btn btn-primary continue-btn">
+                          <Link
+                            to="#"
+                            className="btn btn-primary continue-btn"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              handledeleteSubmit();
+                            }}
+                          >
                             حذف
                           </Link>
                         </div>
                         <div className="col-6">
                           <Link
+                            id="cancelLink"
                             to="#"
                             data-bs-dismiss="modal"
                             className="btn btn-primary cancel-btn"
                           >
-                            لفو
+                            لغو
                           </Link>
                         </div>
                       </div>

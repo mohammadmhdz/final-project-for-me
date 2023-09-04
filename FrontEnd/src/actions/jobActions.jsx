@@ -14,6 +14,14 @@ import {
   JOBS_POST_REQUEST,
   JOBS_POST_SUCCESS,
   JOBS_POST_FAIL,
+  // update
+  JOB_DETAILS_UPDATE_REQUEST,
+  JOB_DETAILS_UPDATE_SUCCESS,
+  JOB_DETAILS_UPDATE_FAIL,
+  //
+  JOB_DELETE_REQUEST,
+  JOB_DELETE_SUCCESS,
+  JOB_DELETE_FAIL,
 } from "../constant/jobConstant";
 import axios from "axios";
 
@@ -89,7 +97,7 @@ export const jobsPostRequirments = () => async (dispatch) => {
 export const postJob = (input) => async (dispatch) => {
   // console.log(input)
   try {
-    console.log(input , "input");
+    console.log(input, "input");
     dispatch({
       type: JOBS_POST_REQUEST,
     });
@@ -103,22 +111,20 @@ export const postJob = (input) => async (dispatch) => {
     const { data } = await axios.post(
       "http://127.0.0.1:8000/api/jobs/",
       {
-
         Company: input?.Company,
         title: input?.title,
-        published_at: input?.published_at ,
+        published_at: input?.published_at,
         job_type: input?.job_type,
         isremote: input?.isremote,
-        city: +input?.city,  // change it to int using +
+        city: +input?.city, // change it to int using +
         experience: input?.experience,
         level: input?.level,
         salary_type: input?.salary_type,
         salary_amount: input?.salary_amount,
         description: input?.description,
-        skills:  [...input?.skills],
+        skills: [...input?.skills],
         category: +input?.category, // change it to int using +
         status: input?.status,
-
       },
       config
     );
@@ -130,6 +136,75 @@ export const postJob = (input) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: JOBS_POST_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const updateJobDetails = (input) => async (dispatch) => {
+  console.log(input, "input");
+  // console.log(input?.company_name);
+  try {
+    dispatch({
+      type: JOB_DETAILS_UPDATE_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.put(
+      `http://127.0.0.1:8000/api/jobs/${input.id}/`,
+      {
+        title: input.title,
+        status: input.status,
+      },
+      config
+    );
+
+    dispatch({
+      type: JOB_DETAILS_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: JOB_DETAILS_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const deletejob = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: JOB_DELETE_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.delete(
+      `http://127.0.0.1:8000/api/jobs/${id}/`,
+      config
+    );
+
+    dispatch({
+      type: JOB_DELETE_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: JOB_DELETE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

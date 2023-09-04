@@ -8,9 +8,9 @@ import {
   CATEGORY_POST_REQUEST,
   CATEGORY_POST_SUCCESS,
   CATEGORY_POST_FAIL,
-  PRODUCT_DELETE_REQUEST,
-  PRODUCT_DELETE_SUCCESS,
-  PRODUCT_DELETE_FAIL,
+  CATEGORY_DELETE_REQUEST,
+  CATEGORY_DELETE_SUCCESS,
+  CATEGORY_DELETE_FAIL,
 } from "../constant/adminConstant";
 
 export const categoryListReducer = (state = { categories: [] }, action) => {
@@ -68,13 +68,13 @@ export const categoryPost = (state = { categoryPostList: [] }, action) => {
 
 export const categoryDeleteReducer = (state = {}, action) => {
   switch (action.type) {
-    case PRODUCT_DELETE_REQUEST:
+    case CATEGORY_DELETE_REQUEST:
       return { loading: true };
 
-    case PRODUCT_DELETE_SUCCESS:
+    case CATEGORY_DELETE_SUCCESS:
       return { loading: false, success: true };
 
-    case PRODUCT_DELETE_FAIL:
+    case CATEGORY_DELETE_FAIL:
       return { loading: false, error: action.payload };
 
     default:

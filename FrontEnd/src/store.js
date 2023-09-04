@@ -7,6 +7,8 @@ import {
   jobsDetailsReducer,
   jobsPostRedducer,
   jobsPostRequirmentsReducer,
+  jobDeleteReducer,
+  jobUpdateDetailsReducer,
 } from "./reducers/jobsReducer";
 import {
   employeeListAllReducer,
@@ -44,6 +46,8 @@ const reducer = combineReducers({
   jobsDetails: jobsDetailsReducer,
   jobsPost: jobsPostRedducer,
   jobsPostRequirments: jobsPostRequirmentsReducer,
+  jobUpdateDetail: jobDeleteReducer,
+  jobdelete: jobUpdateDetailsReducer,
   //
   employeeDetails: employeeDetailsReducer,
   employeePortfolio: employeePortfolioDetailsReducer,

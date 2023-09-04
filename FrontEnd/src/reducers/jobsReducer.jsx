@@ -14,6 +14,14 @@ import {
   JOBS_POST_REQUEST,
   JOBS_POST_SUCCESS,
   JOBS_POST_FAIL,
+  // update
+  JOB_DETAILS_UPDATE_REQUEST,
+  JOB_DETAILS_UPDATE_SUCCESS,
+  JOB_DETAILS_UPDATE_FAIL,
+  //
+  JOB_DELETE_REQUEST,
+  JOB_DELETE_SUCCESS,
+  JOB_DELETE_FAIL,
 } from "../constant/jobConstant";
 
 export const jobListReducer = (state = { jobs: [] }, action) => {
@@ -52,7 +60,10 @@ export const jobsDetailsReducer = (state = { jobsDetailsList: [] }, action) => {
   }
 };
 
-export const jobsPostRequirmentsReducer = (state = { postJobDetailsRequirments: [] }, action) => {
+export const jobsPostRequirmentsReducer = (
+  state = { postJobDetailsRequirments: [] },
+  action
+) => {
   switch (action.type) {
     case JOBS_POST_REQUIREMENTS_REQUEST:
       return { loading: true, postJobDetailsRequirments: [] };
@@ -81,6 +92,38 @@ export const jobsPostRedducer = (state = { jobsPostList: [] }, action) => {
         jobsPostList: action.payload,
       };
     case JOBS_POST_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const jobDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case JOB_DELETE_REQUEST:
+      return { loading: true };
+
+    case JOB_DELETE_SUCCESS:
+      return { loading: false, success: true };
+
+    case JOB_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const jobUpdateDetailsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case JOB_DETAILS_UPDATE_REQUEST:
+      return { loading: true };
+
+    case JOB_DETAILS_UPDATE_SUCCESS:
+      return { loading: false, categoryUpdateSuccesfull: action.payload };
+
+    case JOB_DETAILS_UPDATE_FAIL:
       return { loading: false, error: action.payload };
 
     default:
