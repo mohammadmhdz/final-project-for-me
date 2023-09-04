@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Sidebar from "../../../commoncomponent/sidebar";
 import { itemRender, onShowSizeChange } from "../../../paginationfunction";
 import "../../../antdstyle.css";
+import Loader from "../../../../Loader";
 import { listJobs } from "../../../../actions/jobActions";
 
 const Projects = () => {
