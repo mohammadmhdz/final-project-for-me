@@ -22,6 +22,10 @@ import {
   COMPANY_POST_REVIEW_REQUEST,
   COMPANY_POST_REVIEW_SUCCESS,
   COMPANY_POST_REVIEW_FAIL,
+  //
+  COMPANY_TOGGLE_FAVORITE_REQUEST,
+  COMPANY_TOGGLE_FAVORITE_SUCCESS,
+  COMPANY_TOGGLE_FAVORITE_FAIL,
   // put
   COMPANY_DETAILS_UPDATE_REQUEST,
   COMPANY_DETAILS_UPDATE_SUCCESS,
@@ -138,6 +142,22 @@ export const postReviewReducer = (state = {}, action) => {
       return { loading: false, postDataArray: action.payload };
 
     case COMPANY_POST_REVIEW_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const companyToggleFavoriteListReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COMPANY_TOGGLE_FAVORITE_REQUEST:
+      return { loading: true };
+
+    case COMPANY_TOGGLE_FAVORITE_SUCCESS:
+      return { loading: false,  toggleFavoriteResult: action.payload };
+
+    case COMPANY_TOGGLE_FAVORITE_FAIL:
       return { loading: false, error: action.payload };
 
     default:
