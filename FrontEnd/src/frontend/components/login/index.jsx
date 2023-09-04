@@ -51,7 +51,9 @@ const Login = (props) => {
                         دنیای حرفه ای مطلع شوید
                       </p>
                     </div>
-                    {userLogin.loading?<p1>لطفا صبر کنید...</p1> : userLogin.error ?<p1>رمز شما نادرست میباشد</p1> : userLogin.userInfo? changeURL("/template-reactjs/freelancer-dashboard") : null}
+                    {userLogin.loading?<p1>لطفا صبر کنید...</p1> : 
+                    userLogin.error ? <p1>رمز شما نادرست میباشد</p1> : 
+                    userLogin.userInfo?.role === "employee"? changeURL("/template-reactjs/freelancer-dashboard") :userLogin.userInfo?.role === "employer"?  changeURL("/template-reactjs/dashboard") : null}
                     {/* // {userLogin.error?<p1>your email or password is wrong</p1> : null} */}
                     {/* {userLogin.userInfo ?() => changeURL("/template-reactjs/dashboard"): null} */}
 

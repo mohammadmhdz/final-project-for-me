@@ -24,11 +24,16 @@ import {
 import AOS from "aos";
 import "aos/dist/aos.css";
 import config from "config";
-
+// redux
+import { useDispatch , useSelector } from "react-redux";
+import { listJobs } from "../../../actions/jobActions";
 const Home = () => {
+  const dispatch = useDispatch();
+  const jobListReducer = useSelector(state => state.jobList)
+  const {jobs} = jobListReducer
   //Aos
-
   useEffect(() => {
+dispatch(listJobs())
     AOS.init({
       duration: 1200,
       once: true,
@@ -39,6 +44,7 @@ const Home = () => {
     { id: 1, text: "کارجویان" },
     { id: 2, text: "فرصت های شغلی" },
   ];
+  console.log(jobs)
   return (
     <>
       {/* Home Banner */}
@@ -174,6 +180,8 @@ const Home = () => {
               </div>
             </div>
           </div>
+          {jobs?.map((item) =>(
+
           <div className="row">
             {/*- Project Item  */}
             <div className="col-md-6 col-lg-12 col-xl-4">
@@ -259,6 +267,8 @@ const Home = () => {
             </div>
             {/*- /Project Item  */}
           </div>
+          ))
+        }
           <div className="row">
             <div className="col-md-12 text-center">
               <div className="see-all aos" data-aos="fade-up">
