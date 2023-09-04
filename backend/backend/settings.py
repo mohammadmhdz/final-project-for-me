@@ -140,9 +140,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'komakar',
         'USER': 'root',
-        'PASSWORD': 'uBk2VrG0LyItUywweHvgr5db',
-        'HOST': 'finn.iran.liara.ir',
-        'PORT': '34058',
+        'PASSWORD': '38HPgnpw7ZCIioVAof2jTMur',
+        'HOST': 'billy.iran.liara.ir',
+        'PORT': '34486',
     }
 }
 
