@@ -28,6 +28,8 @@ const Projects = () => {
   const [editedJobStatus, setEditedJobStatus] = useState("");
   const [editedJobid, setEditedJobid] = useState("");
 
+  const [activeJobs, setactiveJobs] = useState("");
+
   const handleSubmit = (e) => {
     dispatch(
       updateJobDetails({
@@ -48,6 +50,9 @@ const Projects = () => {
     cancelLink.click();
   };
 
+  // const filteredJobs = jobs.filter((job) => job.status === "فعال");
+  // setactiveJobs(filteredJobs);
+
   const data = jobs;
 
   const columns = [
@@ -56,7 +61,13 @@ const Projects = () => {
       dataIndex: "company",
       render: (text, record) => (
         <>
-          <Link to="#" className="avatar">
+          <Link
+            to={{
+              pathname: "/company-profile",
+              state: { companyIdInput: text.id },
+            }}
+            className="avatar"
+          >
             <img alt="" src={"http://127.0.0.1:8000" + text.image} />
           </Link>
         </>
@@ -66,7 +77,19 @@ const Projects = () => {
     {
       title: "عنوان",
       dataIndex: "title",
-      render: (text, record) => <>{text}</>,
+      render: (text, record) => (
+        <>
+          <Link
+            to={{
+              pathname: "/project-details",
+              state: { jobIdInput: text.id },
+            }}
+            style={{ color: "black" }}
+          >
+            {text}
+          </Link>
+        </>
+      ),
       sorter: (a, b) => a.title.length - b.title.length,
     },
     {
@@ -215,7 +238,7 @@ const Projects = () => {
                             className="nav-link"
                           >
                             {" "}
-                            در انتظار بررسی
+                            در انتظار تایید
                           </Link>
                         </li>
                         <li className="nav-item">
@@ -274,7 +297,9 @@ const Projects = () => {
                             className="table"
                             style={{ overflowX: "auto" }}
                             columns={columns}
-                            dataSource={data}
+                            dataSource={jobs.filter(
+                              (job) => job.status === "فعال"
+                            )}
                             rowKey={(record) => record.id}
                           />
                         </div>
@@ -294,7 +319,9 @@ const Projects = () => {
                             className="table"
                             style={{ overflowX: "auto" }}
                             columns={columns}
-                            dataSource={data}
+                            dataSource={jobs.filter(
+                              (job) => job.status === "درانتظار تایید"
+                            )}
                             rowKey={(record) => record.id}
                           />
                         </div>
@@ -314,6 +341,9 @@ const Projects = () => {
                             className="table"
                             style={{ overflowX: "auto" }}
                             columns={columns}
+                            dataSource={jobs.filter(
+                              (job) => job.status === "منقضی شده"
+                            )}
                             rowKey={(record) => record.id}
                           />
                         </div>

@@ -1,4 +1,8 @@
 import {
+  COMPANY_LIST_REQUEST,
+  COMPANY_LIST_SUCCESS,
+  COMPANY_LIST_FAIL,
+  //
   COMPANY_DETAILS_REQUEST,
   COMPANY_DETAILS_SUCCESS,
   COMPANY_DETAILS_FAIL,
@@ -26,7 +30,30 @@ import {
   COMPANY_DETAILS_UPDATE_REQUEST,
   COMPANY_DETAILS_UPDATE_SUCCESS,
   COMPANY_DETAILS_UPDATE_FAIL,
+  //
+  COMPANY_DELETE_REQUEST,
+  COMPANY_DELETE_SUCCESS,
+  COMPANY_DELETE_FAIL,
 } from "../constant/companyConstant";
+
+export const companyListReducer = (state = { compnanies: [] }, action) => {
+  switch (action.type) {
+    case COMPANY_LIST_REQUEST:
+      return { loading: true, compnanies: [] };
+
+    case COMPANY_LIST_SUCCESS:
+      return {
+        loading: false,
+        compnanies: action.payload,
+      };
+
+    case COMPANY_LIST_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 
 export const companyDetailsReducer = (
   state = { companyDetail: [] },
@@ -154,6 +181,22 @@ export const companyUpdateDetailsReducer = (state = {}, action) => {
       return { loading: false, companyUpdateSuccesfull: action.payload };
 
     case COMPANY_DETAILS_UPDATE_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const companyDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COMPANY_DELETE_REQUEST:
+      return { loading: true };
+
+    case COMPANY_DELETE_SUCCESS:
+      return { loading: false, success: true };
+
+    case COMPANY_DELETE_FAIL:
       return { loading: false, error: action.payload };
 
     default:

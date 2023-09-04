@@ -11,6 +11,18 @@ import {
   CATEGORY_DELETE_REQUEST,
   CATEGORY_DELETE_SUCCESS,
   CATEGORY_DELETE_FAIL,
+  SKILL_LIST_REQUEST,
+  SKILL_LIST_SUCCESS,
+  SKILL_LIST_FAIL,
+  SKILL_DETAILS_UPDATE_REQUEST,
+  SKILL_DETAILS_UPDATE_SUCCESS,
+  SKILL_DETAILS_UPDATE_FAIL,
+  SKILL_POST_REQUEST,
+  SKILL_POST_SUCCESS,
+  SKILL_POST_FAIL,
+  SKILL_DELETE_REQUEST,
+  SKILL_DELETE_SUCCESS,
+  SKILL_DELETE_FAIL,
 } from "../constant/adminConstant";
 
 export const categoryListReducer = (state = { categories: [] }, action) => {
@@ -75,6 +87,75 @@ export const categoryDeleteReducer = (state = {}, action) => {
       return { loading: false, success: true };
 
     case CATEGORY_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const skillListReducer = (state = { skills: [] }, action) => {
+  switch (action.type) {
+    case SKILL_LIST_REQUEST:
+      return { loading: true, skills: [] };
+
+    case SKILL_LIST_SUCCESS:
+      return {
+        loading: false,
+        skills: action.payload,
+      };
+    case SKILL_LIST_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const skillUpdateDetailsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SKILL_DETAILS_UPDATE_REQUEST:
+      return { loading: true };
+
+    case SKILL_DETAILS_UPDATE_SUCCESS:
+      return { loading: false, skillUpdateSuccessful: action.payload };
+
+    case SKILL_DETAILS_UPDATE_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const skillPostReducer = (state = { skillPostList: [] }, action) => {
+  switch (action.type) {
+    case SKILL_POST_REQUEST:
+      return { loading: true, skillPostList: [] };
+
+    case SKILL_POST_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        skillPostList: action.payload,
+      };
+    case SKILL_POST_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const skillDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SKILL_DELETE_REQUEST:
+      return { loading: true };
+
+    case SKILL_DELETE_SUCCESS:
+      return { loading: false, success: true };
+
+    case SKILL_DELETE_FAIL:
       return { loading: false, error: action.payload };
 
     default:

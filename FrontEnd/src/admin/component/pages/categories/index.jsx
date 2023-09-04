@@ -19,7 +19,7 @@ const Categories = (props) => {
   const dispatch = useDispatch();
   const categoryListAll = useSelector((state) => state.categoryListAll);
   const categoryDetailsUpdate = useSelector(
-    (state) => state.categoryUpdateDetailsReducer
+    (state) => state.categoryUpdateDetail
   );
   const categorypost = useSelector((state) => state.categoryPost);
   const categorydelete = useSelector((state) => state.categorydelete);

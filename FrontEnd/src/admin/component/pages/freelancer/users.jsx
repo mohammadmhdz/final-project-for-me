@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import FeatherIcon from "feather-icons-react";
 import "react-datepicker/dist/react-datepicker.css";
 import Sidebar from "../../../commoncomponent/sidebar";
+import Loader from "../../../../Loader";
 import { itemRender, onShowSizeChange } from "../../../paginationfunction";
 import "../../../antdstyle.css";
 import AddFreelancer from "./addfreelancer";
 import ViewDetails from "../../../commoncomponent/viewdetails";
+import { employeeListAll } from "../../../../actions/employeeActions";
 import {
   icon_01,
   avatar_10,
@@ -20,165 +23,71 @@ import {
   icon_04,
   export_icon,
 } from "../../pages/imagepath";
-
 const Users = () => {
-  const [inputfilter, setInputfilter] = useState(false);
-  const togglefilter = (value) => {
-    setInputfilter(value);
-  };
-
-  const data = [
-    {
-      id: 1,
-      freelancer: (
-        <div>
-          <h5>
-            <Link to="/admin/profile">محمد مهدیزاده</Link>
-          </h5>
-          <p> Mhdz@gmail.com</p>
-        </div>
-      ),
-      expertise: "Frontend Developer",
-      verified: (
-        <div className="verify-mail">
-          <FeatherIcon
-            icon="check-circle"
-            className="feather me-1 text-success"
-          />
-          Email{" "}
-        </div>
-      ),
-
-      joineddate: "۱ خرداد ۱۴۰۲",
-      lastlogin: "۲ شهریور ۱۴۰۲",
-      status: "فعال",
-      image: avatar_14,
-    },
-    {
-      id: 2,
-      freelancer: (
-        <div>
-          <h5>
-            <Link to="/admin/profile">آیسان قاسمی</Link>
-          </h5>
-          <p> aysan_gh@gmail.com</p>
-        </div>
-      ),
-      expertise: "مهندس برق",
-      verified: (
-        <div className="verify-mail">
-          <FeatherIcon
-            icon="check-circle"
-            className="feather me-1 text-success"
-          />
-          Email{" "}
-        </div>
-      ),
-
-      joineddate: "۱ فرودین ۱۴۰۲",
-      lastlogin: "۲ تیز ۱۴۰۲",
-      status: "فعال",
-      image: avatar_14,
-    },
-    {
-      id: 3,
-      freelancer: (
-        <div>
-          <h5>
-            <Link to="/admin/profile">علی کلهر</Link>
-          </h5>
-          <p> kalhorali@yahoo.com</p>
-        </div>
-      ),
-      expertise: "وکیل دادگستری",
-      verified: (
-        <div className="verify-mail">
-          <FeatherIcon
-            icon="check-circle"
-            className="feather me-1 text-success"
-          />
-          Email{" "}
-        </div>
-      ),
-
-      joineddate: "۱ خرداد ۱۴۰۲",
-      lastlogin: "۲ مرداد ۱۴۰۲",
-      status: "فعال",
-      image: avatar_14,
-    },
-    {
-      id: 3,
-      freelancer: (
-        <div>
-          <h5>
-            <Link to="/admin/profile"> مژده زینال‌زادگان</Link>
-          </h5>
-          <p> mozhde_106@gmail.com</p>
-        </div>
-      ),
-      expertise: "مدیریت",
-      verified: (
-        <div className="verify-mail">
-          <FeatherIcon
-            icon="check-circle"
-            className="feather me-1 text-success"
-          />
-          Email{" "}
-        </div>
-      ),
-
-      joineddate: "۱ بهمن ۱۴۰۱",
-      lastlogin: "۲ شهریور ۱۴۰۲",
-      status: "غیر فعال",
-      image: avatar_14,
-    },
-  ];
+  const dispatch = useDispatch();
+  const employeeListAlll = useSelector((state) => state.employeeListAll);
+  const { employeeList, loading } = employeeListAlll;
+  const data = employeeList;
   const columns = [
     {
       title: "کارجو",
-      dataIndex: "freelancer",
+      dataIndex: "image",
       render: (text, record) => (
         <>
           <div className="table-avatar user-profile">
-            <Link to="/admin/profile">
+            <Link
+              to={{
+                pathname: "/developer-profile",
+                state: { idInfo: text.id },
+              }}
+            >
               <img
                 className="avatar-img rounded-circle"
                 alt="User Image"
-                src={record.image}
+                src={"http://127.0.0.1:8000" + text}
               />
             </Link>
-            {text}
+            {/* {text} */}
           </div>
         </>
       ),
       sorter: (a, b) => a.freelancer.length - b.freelancer.length,
     },
     {
+      title: "نام",
+      dataIndex: "user",
+      render: (text, record) => <>{text.first_name + text.last_name}</>,
+      sorter: (a, b) => a.expertise.length - b.expertise.length,
+    },
+    {
       title: "تخصص",
-      dataIndex: "expertise",
+      dataIndex: "perfession_title",
       render: (text, record) => <>{text}</>,
       sorter: (a, b) => a.expertise.length - b.expertise.length,
     },
 
     {
-      title: "تاریخ عضویت",
-      dataIndex: "joineddate",
+      title: "جنسیت",
+      dataIndex: "gender",
       render: (text, record) => <>{text}</>,
       sorter: (a, b) => a.joineddate.length - b.joineddate.length,
     },
 
     {
       title: "اخرین ورود",
-      dataIndex: "lastlogin",
-      render: (text, record) => <>{text}</>,
+      dataIndex: "user",
+      render: (text, record) => (
+        <>{new Date(text.last_login).toLocaleDateString()}</>
+      ),
       sorter: (a, b) => a.lastlogin.length - b.lastlogin.length,
     },
     {
-      title: "وضعیت",
-      dataIndex: "status",
-      render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.status.length - b.status.length,
+      title: "شهر",
+      dataIndex: "city",
+      render: (text, record) => <>{text.name}</>,
+      sorter: (a, b) => a.lastlogin.length - b.lastlogin.length,
     },
+
     {
       title: "",
       dataIndex: "",
@@ -195,24 +104,16 @@ const Users = () => {
             <div className="dropdown-menu user-menu-list">
               <Link
                 className="dropdown-item"
-                to="#"
+                to={{
+                  pathname: "/developer-profile",
+                  state: { idInfo: text.id },
+                }}
                 data-bs-toggle="modal"
                 data-bs-target="#transaction-category"
               >
                 <img className="ms-2 " src={icon_01} alt="" /> مشاهده جزییات
               </Link>
-              <Link className="dropdown-item" to="#">
-                <img className="ms-2 " src={icon_02} alt="" /> تراکنش ها
-              </Link>
-              <Link className="dropdown-item" to="#">
-                <img className="ms-2 " src={icon_03} alt="" /> بازیابی رمزعبور
-              </Link>
-              <Link className="dropdown-item" to="#">
-                <img className="ms-2 " src={icon_04} alt="" /> تعلیق کارجو
-              </Link>
-              <Link className="dropdown-item" to="#">
-                <FeatherIcon icon="edit" className="ms-2" /> ویرایش
-              </Link>
+
               <Link className="dropdown-item mb-0" to="#">
                 <FeatherIcon icon="trash-2" className="ms-2 text-danger" /> حذف
               </Link>
@@ -238,6 +139,10 @@ const Users = () => {
     }),
   };
 
+  useEffect(() => {
+    dispatch(employeeListAll());
+  }, [dispatch]);
+
   return (
     <>
       <div className="main-wrapper">
@@ -252,163 +157,50 @@ const Users = () => {
                   <div className="col">
                     <h3 className="page-title">کارجویان</h3>
                   </div>
-                  <div className="col-auto">
-                    <Link
-                      className="btn  add-user"
-                      to="#"
-                      data-bs-toggle="modal"
-                      data-bs-target="#add-category"
-                    >
-                      <i className="fas fa-plus " /> اضافه کردن کارجو
-                    </Link>
-                  </div>
+                  <div className="col-auto"></div>
                 </div>
               </div>
               {/* /Page Header */}
               <div className="row">
                 <div className="col-sm-12">
-                  <div className="subscribe-employe users-list">
-                    <ul>
-                      <li className="active">
-                        <Link to="/admin/users">همه </Link>
-                      </li>
-                      <li>
-                        <Link to="/admin/user-active">فعال</Link>
-                      </li>
-                      <li>
-                        <Link to="/admin/user-inactive">غیرفعال</Link>
-                      </li>
-                      <li>
-                        <Link to="/admin/user-suspended">حذف شده</Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/admin/user-administrator"
-                          style={{ visibility: "hidden" }}
-                        >
-                          ادمین ها
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
                   {/* Active User Header */}
                   <div className="page-header user-active">
                     <div className="row align-items-center">
-                      <div className="col">
-                        <p>
-                          در مجموع <span>57</span> کاربر کارجو یافت شد
-                        </p>
-                      </div>
+                      <div className="col"></div>
                       <div className="col-auto">
                         <Link to="#" className="btn export-btn ms-1">
                           <img src={export_icon} alt="" /> دانلود
-                        </Link>
-                        <Link
-                          className="btn filter-btn"
-                          to="#"
-                          id="filter_search"
-                        >
-                          <i
-                            className="fas fa-filter"
-                            onClick={() => togglefilter(!inputfilter)}
-                          />
                         </Link>
                       </div>
                     </div>
                   </div>
                   {/* /Active User Header */}
-                  {/* Search Filter */}
-                  <div
-                    className="card filter-card"
-                    id="filter_inputs"
-                    style={{ display: inputfilter ? "block" : "none" }}
-                  >
-                    <div className="card-body pb-0">
-                      <form action="#" method="post">
-                        <div className="row filter-row">
-                          <div className="col-sm-6 col-md-3">
-                            <div className="form-group">
-                              <label>نام</label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                          <div className="col-sm-6 col-md-3">
-                            <div className="form-group">
-                              <label>ایمیل</label>
-                              <input type="email" className="form-control" />
-                            </div>
-                          </div>
-                          <div className="col-sm-6 col-md-3">
-                            <div className="form-group">
-                              <label>تخصص</label>
-                              <input type="text" className="form-control" />
-                            </div>
-                          </div>
-                          <div className="col-sm-6 col-md-3">
-                            <div className="form-group">
-                              <button
-                                className="btn btn-primary btn-block"
-                                type="submit"
-                              >
-                                تایید
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                  {/* /Search Filter */}
+
                   <div className="card ">
-                    <div className="table-responsive">
-                      <Table
-                        rowSelection={rowSelection}
-                        pagination={{
-                          total: data.length,
-                          showTotal: (total, range) =>
-                            `نمایش ${range[0]} از ${range[1]} از ${total} کل نتایج`,
-                          showSizeChanger: true,
-                          onShowSizeChange: onShowSizeChange,
-                          itemRender: itemRender,
-                        }}
-                        className="table"
-                        style={{ overflowX: "auto" }}
-                        columns={columns}
-                        dataSource={data}
-                        rowKey={(record) => record.id}
-                      />
-                    </div>
+                    {loading ? (
+                      <Loader />
+                    ) : (
+                      <div className="table-responsive">
+                        <Table
+                          rowSelection={rowSelection}
+                          pagination={{
+                            total: data.length,
+                            showTotal: (total, range) =>
+                              `نمایش ${range[0]} از ${range[1]} از ${total} کل نتایج`,
+                            showSizeChanger: true,
+                            onShowSizeChange: onShowSizeChange,
+                            itemRender: itemRender,
+                          }}
+                          className="table"
+                          style={{ overflowX: "auto" }}
+                          columns={columns}
+                          dataSource={data}
+                          rowKey={(record) => record.id}
+                        />
+                      </div>
+                    )}
                   </div>
-                  <div className="row">
-                    <div className="col-md-12">
-                      <ul className="paginations list-pagination text-end mb-4">
-                        <li>
-                          <Link to="#">
-                            <i className="fas fa-angle-left" /> Previous
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#" className="active">
-                            1
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#">2</Link>
-                        </li>
-                        <li>
-                          <Link to="#">3</Link>
-                        </li>
-                        <li>
-                          <Link to="#">4</Link>
-                        </li>
-                        <li>
-                          <Link to="#">
-                            Next <i className="fas fa-angle-right" />
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                  <div className="row"></div>
                 </div>
               </div>
             </div>
