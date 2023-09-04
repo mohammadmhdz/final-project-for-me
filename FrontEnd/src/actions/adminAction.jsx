@@ -8,9 +8,9 @@ import {
   CATEGORY_POST_REQUEST,
   CATEGORY_POST_SUCCESS,
   CATEGORY_POST_FAIL,
-  PRODUCT_DELETE_REQUEST,
-  PRODUCT_DELETE_SUCCESS,
-  PRODUCT_DELETE_FAIL,
+  CATEGORY_DELETE_REQUEST,
+  CATEGORY_DELETE_SUCCESS,
+  CATEGORY_DELETE_FAIL,
 } from "../constant/adminConstant";
 import axios from "axios";
 
@@ -110,7 +110,7 @@ export const postCategory = (input) => async (dispatch) => {
 export const deletecategory = (id) => async (dispatch, getState) => {
   try {
     dispatch({
-      type: PRODUCT_DELETE_REQUEST,
+      type: CATEGORY_DELETE_REQUEST,
     });
 
     const config = {
@@ -125,11 +125,11 @@ export const deletecategory = (id) => async (dispatch, getState) => {
     );
 
     dispatch({
-      type: PRODUCT_DELETE_SUCCESS,
+      type: CATEGORY_DELETE_SUCCESS,
     });
   } catch (error) {
     dispatch({
-      type: PRODUCT_DELETE_FAIL,
+      type: CATEGORY_DELETE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

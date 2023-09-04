@@ -94,7 +94,6 @@ const Categories = (props) => {
               data-bs-target="#delete_category"
               onClick={() => {
                 setdeletedCategoryid(record.id);
-                console.log("id", deletedCategoryid);
               }}
             >
               <i className="far fa-trash-alt" />
