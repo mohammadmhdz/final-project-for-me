@@ -75,7 +75,7 @@ const Projects = () => {
     {
       title: "تاریخ انتقضا",
       dataIndex: "due_to",
-      render: (text, record) => <>{new Date(text).getDate() + 60}</>,
+      render: (text, record) => <>{new Date(text).toLocaleDateString()}</>,
       sorter: (a, b) => a.due_to.length - b.due_to.length,
     },
 
@@ -262,25 +262,29 @@ const Projects = () => {
                         id="tab-4"
                         className="tab-pane fade active show"
                       >
-                        <div className="table-responsive">
-                          <Table
-                            rowSelection={rowSelection}
-                            pagination={{
-                              total: data.length,
-                              showTotal: (total, range) =>
-                                `نمایش ${range[0]} از ${range[1]}از ${total} کل نتیجه`,
-                              showSizeChanger: true,
-                              onShowSizeChange: onShowSizeChange,
-                              itemRender: itemRender,
-                            }}
-                            className="table"
-                            scroll={{ x: true }}
-                            style={{ overflowX: "auto" }}
-                            columns={columns}
-                            dataSource={data}
-                            rowKey={(record) => record.id}
-                          />
-                        </div>
+                        {loading ? (
+                          <Loader />
+                        ) : (
+                          <div className="table-responsive">
+                            <Table
+                              rowSelection={rowSelection}
+                              pagination={{
+                                total: data.length,
+                                showTotal: (total, range) =>
+                                  `نمایش ${range[0]} از ${range[1]}از ${total} کل نتیجه`,
+                                showSizeChanger: true,
+                                onShowSizeChange: onShowSizeChange,
+                                itemRender: itemRender,
+                              }}
+                              className="table"
+                              scroll={{ x: true }}
+                              style={{ overflowX: "auto" }}
+                              columns={columns}
+                              dataSource={data}
+                              rowKey={(record) => record.id}
+                            />
+                          </div>
+                        )}
                       </div>
                       <div role="tabpanel" id="tab-5" className="tab-pane fade">
                         <div className="table-responsive">
@@ -373,29 +377,18 @@ const Projects = () => {
                           defaultValue="توسعه دهنده Front-end "
                         />
                       </div>
+
                       <div className="form-group">
-                        <label>حقوق</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="۱۷ میلیون"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>دسته بندی</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="ReactJs"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>شرکت</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="نوین فرادید"
-                        />
+                        <label>وضعیت</label>
+                        <select
+                          name="price"
+                          className="form-control select-level"
+                        >
+                          <option value="">فعال</option>
+                          <option value="">منقضی شده</option>
+                          <option value="">درانتظار تایید</option>
+                          <option value="">تکمیل شده</option>
+                        </select>
                       </div>
                       <div className="form-group">
                         <label>تاریخ انتشار</label>

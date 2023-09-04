@@ -12,10 +12,11 @@ class UserSerializer(serializers.ModelSerializer):
     _id = serializers.SerializerMethodField(read_only=True)
     isAdmin = serializers.SerializerMethodField(read_only=True)
     role = serializers.SerializerMethodField(read_only=True)
+    associated_id = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['id','_id', 'username', 'first_name', 'last_name', 'email', 'name', 'isAdmin', 'last_login', 'role']
+        fields = ['id','_id', 'username', 'first_name', 'last_name', 'email', 'name', 'isAdmin', 'last_login', 'role','associated_id']
 
     def get__id(self, obj):
         return obj.id
@@ -43,6 +44,21 @@ class UserSerializer(serializers.ModelSerializer):
             pass
 
         return None
+    
+    def get_associated_id(self, obj):
+        try:
+            employee = obj.employee
+            return employee.id
+        except Employee.DoesNotExist:
+            pass
+
+        try:
+            company = obj.company
+            return company.id
+        except Company.DoesNotExist:
+            pass
+
+        return None
 
 
 class UserSerializerWithToken(UserSerializer):
@@ -50,7 +66,7 @@ class UserSerializerWithToken(UserSerializer):
 
     class Meta:
         model = User
-        fields = ['id', '_id', 'username','first_name','last_name', 'email', 'name', 'isAdmin','last_login', 'token' , 'role']
+        fields = ['id', '_id', 'username','first_name','last_name', 'email', 'name', 'isAdmin','last_login', 'token' , 'role','associated_id']
 
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
@@ -205,6 +221,9 @@ class LanguageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class EmployeeSerializer(serializers.ModelSerializer):
+
+
+
     Education = serializers.SerializerMethodField(read_only=True)
     Language = serializers.SerializerMethodField(read_only=True)
     skills = serializers.SerializerMethodField(read_only=True)
