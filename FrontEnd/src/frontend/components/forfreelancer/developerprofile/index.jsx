@@ -34,6 +34,7 @@ import {
   employeeDetails,
   employeePortfolioDetails,
 } from "../../../../actions/employeeActions";
+import {companyToggleFavoriteList} from "../../../../actions/companyActions";
 
 const DeveloperProfile = (props) => {
 
@@ -52,6 +53,7 @@ const DeveloperProfile = (props) => {
   const { employeePortfolioArray } = Portfolio;
 
   const handleToggleFavorite = (e) => {
+    e.preventDefault()
     dispatch(companyToggleFavoriteList(localItem.associated_id,idInfo))
 
   }
@@ -67,6 +69,7 @@ const DeveloperProfile = (props) => {
   }, [dispatch]);
   // console.log(employee , "EMPLOYEE INFO")
   console.log(employeePortfolioArray, "EMPLOYEE PORTFOLIO INFO");
+  console.log(employee, "toggle favoirte");
 
   // console.log(location , "loc");
   return (
@@ -100,19 +103,20 @@ const DeveloperProfile = (props) => {
                         <p className="profile-position">
                           {employee.perfession_title}{" "}
                         </p>
-                        <div>
-
-                          <a href="#" className="btn full-btn ms-3">
+                      {localItem.role === "employer" ?
+                      (<div>
+                          <a href="" className="btn full-btn ms-3">
                             {employee.cooperation_type}
                           </a>
-                          <a href="#" className="btn full-btn ms-3">
+                          <a href={`http://127.0.0.1:8000/${employee.cv}`} className="btn full-btn ms-3">
                             دانلود رزومه
                           </a>
-                          <a href="#">
+                          <a href="" onClick={handleToggleFavorite}>
                             <i className="fa fa-heart heart fa-2x ms-2 red-text" />
 
                           </a>
-                        </div>
+                        </div>) : null
+                        }
                       </div>
                     </div>
                     <div className="pro-info-right profile-inf"></div>

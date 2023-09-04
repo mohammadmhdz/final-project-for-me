@@ -15,7 +15,7 @@ import { Sidebar } from "../sidebar";
 // redux
 // import {companyFavoriteEmployee}from "../../../../store"
 import { useDispatch, useSelector} from "react-redux";
-import {companyFavoriteEmployees } from "../../../../actions/companyActions"
+import {companyFavoriteEmployees , companyToggleFavoriteList} from "../../../../actions/companyActions"
 import { employeeFavoriteList } from "../../../../actions/employeeActions";
 
 const Favourites = (props) => {
@@ -26,6 +26,12 @@ const Favourites = (props) => {
 
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
   
+  const handleToggleFavorite = (e , idInfo) => {
+    e.preventDefault()
+    dispatch(companyToggleFavoriteList(localItem.associated_id,idInfo))
+
+  }
+
   useEffect(() => {
     dispatch(companyFavoriteEmployees(localItem.associated_id))
     document.body.className = "dashboard-page";
@@ -106,7 +112,7 @@ const Favourites = (props) => {
                                   <h2 className="table-avatar">{item.city?.name}</h2>
                                 </td>
                                 <td>
-                                  <a href="" className="fav">
+                                  <a onClick={(e) => handleToggleFavorite(e , item.id)} href="" className="fav">
                                     <i className="fa fa-heart filled" />
                                   </a>
                                 </td>
