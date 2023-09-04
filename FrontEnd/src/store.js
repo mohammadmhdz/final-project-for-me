@@ -30,6 +30,7 @@ import {
   //post
   companyVerifyReducer,
   postReviewReducer,
+  companyToggleFavoriteListReducer,
   //put
   companyUpdateDetailsReducer,
 } from "./reducers/companyReducer";
@@ -68,7 +69,9 @@ const reducer = combineReducers({
   companyFavoriteEmployee: companyFavoriteEmployeesReducer,
   companyVerify: companyVerifyReducer,
   companyReviewPost : postReviewReducer,
+  companyToggleFavorite : companyToggleFavoriteListReducer,
   companyUpdateDetail: companyUpdateDetailsReducer,
+
   //
   categoryListAll: categoryListReducer,
   categoryUpdateDetail: categoryUpdateDetailsReducer,

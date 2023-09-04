@@ -36,17 +36,25 @@ const DeveloperProfile = (props) => {
   const location = useLocation()
   const  idInfo  = location.state.idInfo
   
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+  
   // 
   const dispatch = useDispatch();
   const employeeDetailsList = useSelector((state) => state.employeeDetails);
   const Portfolio = useSelector((state) => state.employeePortfolio);
+  const toggleFavorite = useSelector((state) => state.companyToggleFavorite);
   const { employee } = employeeDetailsList;
   const { employeePortfolioArray } = Portfolio;
 
+  const handleToggleFavorite = (e) => {
+    dispatch(companyToggleFavoriteList(localItem.associated_id,idInfo))
+
+  }
   useEffect(() => {
   // we must take the id from where we reach here
     dispatch(employeeDetails(idInfo))
     dispatch(employeePortfolioDetails(idInfo))
+
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
@@ -79,7 +87,7 @@ const DeveloperProfile = (props) => {
                         <h2 className="profile-title">{employee.user?.first_name} {employee.user?.last_name}</h2>
                         <p className="profile-position">{employee.perfession_title} </p>
                         <div>
-                          <a href="#" className="btn full-btn">
+                          <a href="#" onClick={handleToggleFavorite} className="btn full-btn">
                           {employee.cooperation_type}
                           </a>
                         </div>

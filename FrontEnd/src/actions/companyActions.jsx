@@ -22,6 +22,10 @@ import {
   COMPANY_POST_REVIEW_REQUEST,
   COMPANY_POST_REVIEW_SUCCESS,
   COMPANY_POST_REVIEW_FAIL,
+  //
+  COMPANY_TOGGLE_FAVORITE_REQUEST,
+  COMPANY_TOGGLE_FAVORITE_SUCCESS,
+  COMPANY_TOGGLE_FAVORITE_FAIL,
   // PUT
   COMPANY_DETAILS_UPDATE_REQUEST,
   COMPANY_DETAILS_UPDATE_SUCCESS,
@@ -123,7 +127,42 @@ export const companyReviewGet = (keyword) => async (dispatch) => {
         }
       };
       
-      // POST DATA
+// POST DATA
+export const companyToggleFavoriteList = (inputData , employeeId) => async (dispatch) => {
+  // console.log(data)
+  try {
+    console.log(inputData);
+    dispatch({
+      type: COMPANY_TOGGLE_FAVORITE_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post(
+      `http://127.0.0.1:8000/api/companies/${inputData}/toggle_favorite_job/`,
+      {"employee_id": employeeId},
+      config
+    );
+
+    dispatch({
+      type: COMPANY_TOGGLE_FAVORITE_SUCCESS,
+      payload: data,
+    });
+
+  } catch (error) {
+    dispatch({
+      type: COMPANY_TOGGLE_FAVORITE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
       export const  companyVerification = (input) => async (dispatch) => {
         try {
           console.log(input?.company_verfication_id);
