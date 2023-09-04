@@ -219,6 +219,8 @@ const Projects = (props) => {
               <div className="row">
                 {/* Project Content */}
                 {jobs.map((item) => (
+                  item.status === "فعال" && (
+
 
               
                 <div className="col-md-6 col-lg-12 col-xl-4">
@@ -296,6 +298,7 @@ const Projects = (props) => {
                     </div>
                   </div>
                 </div>
+                  )
               )) }
               </div>
             </div>

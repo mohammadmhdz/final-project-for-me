@@ -21,7 +21,7 @@ const FreelancerPortfolio = (props) => {
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
   const { employeePortfolioArray } = portfolio;
   useEffect(() => {
-    dispatch(employeePortfolioDetails(localItem.id));
+    dispatch(employeePortfolioDetails(localItem.associated_id));
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";

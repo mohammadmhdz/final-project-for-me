@@ -37,12 +37,12 @@ const FreelancerFavourites = (props) => {
     // e.preventdefault();
     console.log(toggleFavoriteId)
     console.log(e)
-    dispatch(employeeToggleFavoriteList(localItem.id , toggleFavoriteId));
+    dispatch(employeeToggleFavoriteList(localItem.associated_id , toggleFavoriteId));
   };
   // const test = [];
   useEffect(() => {
     // bayad vorodi behesh bedahim(input = employee id)
-    dispatch(employeeFavoriteList(localItem.id));
+    dispatch(employeeFavoriteList(localItem.associated_id));
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";

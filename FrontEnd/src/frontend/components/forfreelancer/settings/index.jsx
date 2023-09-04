@@ -198,7 +198,7 @@ const handleSubmit = (e) => {
 
   useEffect(() => {
     // redux
-    dispatch(employeeDetails(localItem.id))
+    dispatch(employeeDetails(localItem.associated_id))
     dispatch(jobsPostRequirments());
 
     document.body.className = "dashboard-page";

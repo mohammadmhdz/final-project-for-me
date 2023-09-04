@@ -74,7 +74,7 @@ const Freelancer = (props) => {
   // const filterEmployee = freelancerRequestsAll.map((items) => {
   //   console.log(items.status);
   // });
-  const requestForEmployee = freelancerRequestsAll.filter ((item) => {return (item.employee === +localItem.id)} )
+  const requestForEmployee = freelancerRequestsAll.filter ((item) => {return (item.employee === +localItem.associated_id)} )
   console.log(requestForEmployee , "request form employee");
 
   return (
@@ -155,7 +155,7 @@ const Freelancer = (props) => {
                                     </div>
                                     <div className="proposer-detail">
                                     <Link to={{pathname : "/project-details" ,
-                                               state : {jobIdInput: items.job , employeeId : +localItem.id} 
+                                               state : {jobIdInput: items.job , employeeId : +localItem.associated_id} 
                                               }}>
                                       <h4 className="">{items.job_title}</h4>
                                     </Link>
@@ -202,7 +202,7 @@ const Freelancer = (props) => {
                                   </div>
                                   <div className="proposer-detail">
                                   <Link to={{pathname : "/project-details" ,
-                                               state : {jobIdInput: items.job , employeeId : +localItem.id}  
+                                               state : {jobIdInput: items.job , employeeId : +localItem.associated_id}  
                                               }}>
                                     <h4 className="">{items.job_title}</h4>
                                     </Link>
@@ -253,7 +253,7 @@ const Freelancer = (props) => {
                                  </div>
                                  <div className="proposer-detail">
                                  <Link to={{pathname : "/project-details" ,
-                                            state : {jobIdInput: items.job , employeeId : +localItem.id} 
+                                            state : {jobIdInput: items.job , employeeId : +localItem.associated_id} 
                                            }}>
                                   <h4 className="">{items.job_title}</h4>
                                  </Link>

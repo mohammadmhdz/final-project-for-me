@@ -30,7 +30,7 @@ const FreelancerDashboard = (props) => {
   useEffect(() => {
     // redux
     // employeeDetails ra taghir dadim
-    dispatch(employeeDetails(localItem.id));
+    dispatch(employeeDetails(localItem.associated_id));
     dispatch(freelancerRequest());
 
     let chartprofileoptionsColumn = document.getElementById("chartprofile");

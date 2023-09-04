@@ -8,8 +8,8 @@ import { useDispatch } from "react-redux";
 const Sidebar = (props) => {
   const dispatch = useDispatch();
 
-  const item = JSON.parse(localStorage.getItem("userInfo"));
-  // console.log(item, "item")
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+  // console.log(localItem, "localItem")
 
   const handleLogout = () => {
     dispatch(logout());
@@ -29,9 +29,9 @@ const Sidebar = (props) => {
           <div className="me-sm-3 me-md-0 me-lg-3 mt-2 mt-sm-0 mt-md-2 mt-lg-0 align-right">
             <p className="mb-2">خوش آمدید,</p>
             <h3 className="mb-0">
-              <Link to="/freelancer-profile">{item.username}</Link>
+              <Link to="/freelancer-profile">{localItem?.username}</Link>
             </h3>
-            <p className="mb-0">{item.email}</p>
+            <p className="mb-0">{localItem?.email}</p>
           </div>
         </div>
         <div className="settings-menu">

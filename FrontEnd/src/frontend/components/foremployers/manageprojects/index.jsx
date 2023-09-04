@@ -13,6 +13,9 @@ import { companyJobsListAction } from "../../../../actions/companyActions";
 import { useDispatch, useSelector } from "react-redux";
 
 const Manageprojects = (props) => {
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
+
   const [allRequest, setAllRequest] = useState(true);
   const [waiting, setWaiting] = useState(false);
   const [active, setActive] = useState(false);
@@ -67,7 +70,7 @@ const Manageprojects = (props) => {
   const { companyJobsListArray } = companyJobsAllList;
 
   useEffect(() => {
-    dispatch(companyJobsListAction(1));
+    dispatch(companyJobsListAction(localItem.associated_id));
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";

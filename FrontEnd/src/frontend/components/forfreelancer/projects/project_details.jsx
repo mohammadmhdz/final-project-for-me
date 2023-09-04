@@ -70,7 +70,7 @@ const ProjectDetails = (props) => {
   })
   
   const cvStatus = freelancerRequestsAll.map((item) => {
-        if(+item.employee === +localItem?.id){
+        if(+item.employee === +localItem?.associated_id){
           if(+jobIdInput === +item.job){
             return  true
           }
@@ -82,7 +82,7 @@ const ProjectDetails = (props) => {
     // e.preventdefault();
     console.log(toggleFavoriteId)
     console.log(e)
-    dispatch(employeeToggleFavoriteList(localItem.id , toggleFavoriteId));
+    dispatch(employeeToggleFavoriteList(localItem.associated_id , toggleFavoriteId));
   };
 
   const handleChange = (e) => {

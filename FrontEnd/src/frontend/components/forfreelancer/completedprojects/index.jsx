@@ -38,7 +38,7 @@ const FreelacerCompletedProjects = ({data}) => {
                           </div>
                           <div className="proposer-detail">
                            <Link to={{pathname : "/project-details" ,
-                                               state : {jobIdInput: items.job , employeeId : +localItem.id}  
+                                               state : {jobIdInput: items.job , employeeId : +localItem.associated_id}  
                                               }}>
                             <h4 className="">{items.job_title}</h4>
                            </Link>
