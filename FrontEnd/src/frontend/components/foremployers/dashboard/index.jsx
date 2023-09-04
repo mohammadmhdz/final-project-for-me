@@ -159,6 +159,9 @@ const Dashboard = (props) => {
       },
     ],
   };
+
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
   // redux
   const dispatch = useDispatch();
   const companyDetailsList = useSelector((state) => state.companyDetails);
@@ -173,9 +176,9 @@ const Dashboard = (props) => {
   }
 
   useEffect(() => {
-    dispatch(companyDetails(1));
+    dispatch(companyDetails(localItem.associated_id));
     //
-    dispatch(companyJobsListAction(1));
+    dispatch(companyJobsListAction(localItem.associated_id));
     let chartprofileoptionsColumn = document.getElementById("chartprofile");
     let chartprofileoptionsChart = new ApexCharts(
       chartprofileoptionsColumn,

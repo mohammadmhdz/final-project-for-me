@@ -14,8 +14,10 @@ const Review = (props) => {
    const companyReview = useSelector((state) => state.companyReview);
    const {companyReviewList} = companyReview 
 
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
   useEffect(() => {
-    dispatch(companyReviewGet())
+    dispatch(companyReviewGet(localItem.associated_id))
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";

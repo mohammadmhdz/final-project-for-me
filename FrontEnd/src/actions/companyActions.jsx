@@ -75,13 +75,13 @@ export const companyReviewGet = (keyword) => async (dispatch) => {
     }
   };
   
-  export const companyFavoriteEmployees = () => async (dispatch) => {
+  export const companyFavoriteEmployees = (keyword) => async (dispatch) => {
     try {
       dispatch({ type: COMPANY_FAVORITE_EMPLOYEE_REQUEST });
       
       // const { data } = await axios.get(`/api/products${keyword}`)
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/api/companies/1/retrieve_favorite_employee/`
+        `http://127.0.0.1:8000/api/companies/${keyword}/retrieve_favorite_employee/`
         );
         // console.log(data);
         dispatch({

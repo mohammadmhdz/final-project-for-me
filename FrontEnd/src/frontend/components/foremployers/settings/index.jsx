@@ -16,6 +16,9 @@ const Settings = (props) => {
   const companyDetailsUpdate = useSelector(
     (state) => state.companyUpdateDetail
   );
+
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
   const { companyDetail } = companyDetailsReducer;
   const [formData, updateFormData] = useState([]);
 
@@ -30,7 +33,7 @@ const Settings = (props) => {
     console.log(formData);
   };
   useEffect(() => {
-    dispatch(companyDetails(1));
+    dispatch(companyDetails(localItem.associated_id));
     // updateFormData(company_data)
 
     document.body.className = "dashboard-page";

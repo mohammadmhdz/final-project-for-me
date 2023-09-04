@@ -58,7 +58,7 @@ const ProjectDetails = (props) => {
     // bejaye 3 id job mored nazar ra ghara midahim
     dispatch(jobsDetail(jobIdInput));
     dispatch(freelancerRequest());
-    dispatch(employeeFavoriteList(localItem?.id));
+    dispatch(employeeFavoriteList(localItem?.associated_id));
 
   },[dispatch]);
 
@@ -163,10 +163,10 @@ const ProjectDetails = (props) => {
                       </ul>
                       <div className="d-flex align-items-center justify-content-md-end justify-content-center">
                         {favoriteStatus?.includes(true) ? 
-                        (<a onClick={(e) => handleFavorite(e , jobIdInput)}>
+                        (<a href="" onClick={(e) => handleFavorite(e , jobIdInput)}>
                           <i className="fa fa-heart heart fa-2x ms-2 red-text" />
                         </a>) : 
-                        <a onClick={(e) => handleFavorite(e , jobIdInput)}>
+                        <a href="" onClick={(e) => handleFavorite(e , jobIdInput)}>
                           <i className="far fa-heart heart fa-2x ms-2 red-text" />
                         </a>}
                         {cvStatus.includes(true) ? (

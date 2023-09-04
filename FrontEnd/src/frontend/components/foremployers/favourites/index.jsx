@@ -23,8 +23,11 @@ const Favourites = (props) => {
   const dispatch = useDispatch();
   const companyEmployeeFavorite = useSelector((state) => state.companyFavoriteEmployee);
   const {companyFavoriteEmployeesList} = companyEmployeeFavorite 
+
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+  
   useEffect(() => {
-    dispatch(companyFavoriteEmployees())
+    dispatch(companyFavoriteEmployees(localItem.associated_id))
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";

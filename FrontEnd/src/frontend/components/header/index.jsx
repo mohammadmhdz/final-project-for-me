@@ -146,12 +146,7 @@ const Header = (props) => {
                   </li> */}
                 </ul>
               </div>
-              {pathname === "user-account-details" ? (
-                <ul className="nav header-navbar-rht"></ul>
-              ) : pathname === "freelancer-invoices" ||
-                pathname === "project" ||
-                pathname === "view-invoice" ||
-                pathname.includes("freelancer-") ? (
+              {localItem ? (
                 <ul className="nav header-navbar-rht">
                   <li className="nav-item dropdown has-arrow account-item">
                     <Link
@@ -166,14 +161,13 @@ const Header = (props) => {
                     </Link>
 
                     <div className="dropdown-menu emp">
-                      <Link
-                        className="dropdown-item"
-                        to="/freelancer-dashboard"
-                      >
+                      
+                      <Link className="dropdown-item " to={localItem.role === "employer" ?  "/dashboard" :"/freelancer-dashboard" }>
+
                         <i className="material-icons  ms-1">verified_user</i>{" "}
                         پروفایل من
                       </Link>
-                      <Link className="dropdown-item " to="/freelancer-profile-settings">
+                      <Link className="dropdown-item " to={localItem.role === "employer" ?  "/profile-settings" :"/freelancer-profile-settings" }>
                         {" "}
                         <i className="material-icons  ms-1">settings</i>
                         تنظیمات
@@ -187,17 +181,18 @@ const Header = (props) => {
                     </div>
                   </li>
                   <li className={pathname === "post-project" ? "active" : ""}>
-                    {localItem ? 
-                    <Link to="/project" className="login-btn">
+                    {localItem.role === "employee"?
+                    (<Link to="/project" className="login-btn">
                       لیست کارها
-                    </Link>
+                    </Link>)
                      : 
                      (<Link to="/post-project" className="login-btn">
-                     Post a Project
+                     ایجاد کار
                    </Link>)}
                   </li>
                 </ul>
               ) : (
+                
                 <ul className="nav header-navbar-rht">
                   <li className={pathname === "register" ? "active" : ""}>
                     <Link to="/register" className="reg-btn align-right">
