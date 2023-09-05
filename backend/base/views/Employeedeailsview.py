@@ -15,6 +15,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
+from rest_framework.parsers import MultiPartParser
 
 
 class LanguageViewSet(viewsets.ViewSet):
@@ -150,6 +151,9 @@ class EducationViewSet(viewsets.ViewSet):
 
 
 class PortfolioViewSet(viewsets.ViewSet):
+    parser_classes = [MultiPartParser]
+
+    
 
 
     def list(self, request):

@@ -14,7 +14,7 @@ function Loader() {
         color: "#32795b",
       }}
     >
-      <span className="sr-only">درحال بارگذاری</span>
+      <span className="sr-only mt-5 mb-5">درحال بارگذاری</span>
     </Spinner>
   );
 }

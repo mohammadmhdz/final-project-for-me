@@ -173,7 +173,7 @@ class City(models.Model):
 class Company(models.Model):  
      user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
      Name = models.CharField(max_length=100)
-     image = models.ImageField(null=True, blank=True)
+     image = models.ImageField(null=True, blank=True,default='/img-3.png')
      about  = models.TextField(max_length=1000)
      founded_at =  models.DateField(auto_now_add=True)
      city = models.ForeignKey(City ,on_delete=models.SET_NULL,null=True)
@@ -310,7 +310,7 @@ class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     perfession_title = models.CharField(max_length=100, null=True)  
     cooperation_type=  models.CharField(max_length=15 , choices=JOB_TYPE ,  null=True)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True,default='/img-3.png')
     about=models.TextField(max_length=1000 ,  null=True)  
     gender=models.CharField(max_length=15 , choices=Gender , default='خانوم')
     city = models.ForeignKey(City ,on_delete=models.SET_NULL,null=True)

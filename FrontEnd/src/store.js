@@ -18,11 +18,14 @@ import {
   employeeToggleFavoriteListReducer,
   employeeUpdateDetailsReducer,
 } from "./reducers/employeeReducer";
-import { freelancerRequestReducer ,
-         postAplliesReducer ,
-         companyChangeStatusReducer } from "./reducers/requestsReducer";
+import {
+  freelancerRequestReducer,
+  postAplliesReducer,
+  companyChangeStatusReducer,
+} from "./reducers/requestsReducer";
 import { userLoginReducer } from "./reducers/userReducer";
 import {
+  companyListReducer,
   companyDetailsReducer,
   companyReviewReducer,
   companyJobsListReducer,
@@ -33,12 +36,19 @@ import {
   companyToggleFavoriteListReducer,
   //put
   companyUpdateDetailsReducer,
+  //del
+  companyDeleteReducer,
 } from "./reducers/companyReducer";
 import {
   categoryListReducer,
   categoryUpdateDetailsReducer,
   categoryPost,
   categoryDeleteReducer,
+  // skills
+  skillListReducer,
+  skillUpdateDetailsReducer,
+  skillPostReducer,
+  skillDeleteReducer,
 } from "./reducers/adminReducer";
 // use selector tu use one of the below reducer
 
@@ -55,14 +65,15 @@ const reducer = combineReducers({
   employeeFavoriteList: employeeFavoriteListReducer,
   employeeToggleFavorite: employeeToggleFavoriteListReducer,
   employeeListAll: employeeListAllReducer,
-  employeeUpdateDetails : employeeUpdateDetailsReducer,
+  employeeUpdateDetails: employeeUpdateDetailsReducer,
   //
   freelancerRequest: freelancerRequestReducer,
-  postApplyList : postAplliesReducer,
-  companyChangeStatus : companyChangeStatusReducer ,
+  postApplyList: postAplliesReducer,
+  companyChangeStatus: companyChangeStatusReducer,
   //
   userLogin: userLoginReducer,
   //
+  companyListAll: companyListReducer,
   companyDetails: companyDetailsReducer,
   companyJobsList: companyJobsListReducer,
   companyReview: companyReviewReducer,
@@ -71,12 +82,18 @@ const reducer = combineReducers({
   companyReviewPost : postReviewReducer,
   companyToggleFavorite : companyToggleFavoriteListReducer,
   companyUpdateDetail: companyUpdateDetailsReducer,
+  companydelete: companyDeleteReducer,
 
   //
   categoryListAll: categoryListReducer,
   categoryUpdateDetail: categoryUpdateDetailsReducer,
   categorypost: categoryPost,
   categorydelete: categoryDeleteReducer,
+  //
+  skillListAll: skillListReducer,
+  skillUpdateDetail: skillUpdateDetailsReducer,
+  skillpost: skillPostReducer,
+  skilldelete: skillDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

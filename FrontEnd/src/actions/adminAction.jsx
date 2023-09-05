@@ -11,6 +11,18 @@ import {
   CATEGORY_DELETE_REQUEST,
   CATEGORY_DELETE_SUCCESS,
   CATEGORY_DELETE_FAIL,
+  SKILL_LIST_REQUEST,
+  SKILL_LIST_SUCCESS,
+  SKILL_LIST_FAIL,
+  SKILL_DETAILS_UPDATE_REQUEST,
+  SKILL_DETAILS_UPDATE_SUCCESS,
+  SKILL_DETAILS_UPDATE_FAIL,
+  SKILL_POST_REQUEST,
+  SKILL_POST_SUCCESS,
+  SKILL_POST_FAIL,
+  SKILL_DELETE_REQUEST,
+  SKILL_DELETE_SUCCESS,
+  SKILL_DELETE_FAIL,
 } from "../constant/adminConstant";
 import axios from "axios";
 
@@ -130,6 +142,126 @@ export const deletecategory = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: CATEGORY_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const skillListAction = () => async (dispatch) => {
+  try {
+    dispatch({ type: SKILL_LIST_REQUEST });
+    const { data } = await axios.get(`http://127.0.0.1:8000/api/skills/`);
+    dispatch({
+      type: SKILL_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SKILL_LIST_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const updateSkillDetails = (input) => async (dispatch) => {
+  try {
+    dispatch({
+      type: SKILL_DETAILS_UPDATE_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.put(
+      `http://127.0.0.1:8000/api/skills/${input.id}/`,
+      {
+        title: input.title,
+      },
+      config
+    );
+
+    dispatch({
+      type: SKILL_DETAILS_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SKILL_DETAILS_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const createSkill = (input) => async (dispatch) => {
+  try {
+    dispatch({
+      type: SKILL_POST_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post(
+      "http://127.0.0.1:8000/api/skills/",
+      {
+        title: input.title,
+      },
+      config
+    );
+
+    dispatch({
+      type: SKILL_POST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SKILL_POST_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const deleteSkill = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: SKILL_DELETE_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.delete(
+      `http://127.0.0.1:8000/api/skills/${id}/`,
+      config
+    );
+
+    dispatch({
+      type: SKILL_DELETE_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: SKILL_DELETE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
