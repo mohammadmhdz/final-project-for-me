@@ -13,6 +13,7 @@ import {
   updateCompanyDetailss,
   deletecompany,
 } from "../../../../actions/companyActions";
+import { deleteuser } from "../../../../actions/adminAction";
 
 const Providers = () => {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const Providers = () => {
   };
 
   const handledeleteSubmit = (e) => {
-    dispatch(deletecompany(deletedCompanyid));
+    dispatch(deleteuser(deletedCompanyid));
     dispatch(companyListAction());
     const cancelLink = document.querySelector("#cancelLink");
     cancelLink.click();
@@ -137,7 +138,7 @@ const Providers = () => {
             data-bs-toggle="modal"
             data-bs-target="#delete_category"
             onClick={() => {
-              setDeletedCompanyid(record.id);
+              setDeletedCompanyid(record.company_data.userr.id);
             }}
           >
             <i className="far fa-trash-alt"></i>

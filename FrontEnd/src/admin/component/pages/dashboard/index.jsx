@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Header from "../../../commoncomponent/header";
 import Sidebar from "../../../commoncomponent/sidebar";
@@ -19,8 +20,13 @@ import {
 import { Table } from "antd";
 import { itemRender, onShowSizeChange } from "../../../paginationfunction";
 import "../../../antdstyle.css";
+import { listJobs } from "../../../../actions/jobActions";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  const jobListAll = useSelector((state) => state.jobList);
+  const { jobs, loading } = jobListAll;
+
   const [datas] = useState({
     chart: {
       height: 335,
@@ -173,6 +179,11 @@ const Dashboard = () => {
       className: "checkbox-red",
     }),
   };
+
+  useEffect(() => {
+    dispatch(listJobs());
+  }, [dispatch]);
+
   return (
     <>
       <>

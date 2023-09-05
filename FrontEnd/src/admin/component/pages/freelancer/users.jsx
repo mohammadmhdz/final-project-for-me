@@ -32,7 +32,6 @@ const Users = () => {
   const [deleteduserid, setdeleteduserid] = useState("");
 
   const handledeleteSubmit = (e) => {
-    console.log("bf", deleteduserid);
     dispatch(deleteuser(deleteduserid));
     dispatch(employeeListAll());
     // const cancelLink = document.querySelector("#cancelLink");
