@@ -88,7 +88,7 @@ const ProjectDetails = (props) => {
   const handleChange = (e) => {
     console.log(e.target.value)
     setRequestSendingDetail({ 
-      employee: +localItem?.id,
+      employee: +localItem?.associated_id,
       Company: +jobsDetailsList.company?.id, 
       job: +jobIdInput,
       status: "درانتظار بررسی" ,

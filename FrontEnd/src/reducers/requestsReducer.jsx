@@ -9,7 +9,11 @@ import {
   //PUT
   COMPANY_EDIT_APPLY_REQUEST ,
   COMPANY_EDIT_APPLY_SUCCESS ,
-  COMPANY_EDIT_APPLY_FAIL 
+  COMPANY_EDIT_APPLY_FAIL ,
+  //DELETE
+  COMPANY_DELETE_APPLY_REQUEST ,
+  COMPANY_DELETE_APPLY_SUCCESS ,
+  COMPANY_DELETE_APPLY_FAIL, 
 } from "../constant/requestsConstant";
 
 export const freelancerRequestReducer = (
@@ -54,6 +58,27 @@ export const postAplliesReducer = (
   }
 };
 
+// delete apply
+export const deleteApplyReducer  = (
+  state = { deleteApplyRequest: [] },
+  action
+) => {
+  switch (action.type) {
+    case  COMPANY_DELETE_APPLY_REQUEST:
+      return { loading: true, deleteApplyRequest: [] };
+
+    case COMPANY_DELETE_APPLY_SUCCESS:
+      return {
+        loading: false,
+        deleteApplyRequest: action.payload,
+      };
+    case COMPANY_DELETE_APPLY_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 // put change apply status
 export const companyChangeStatusReducer = (
   state = { changeStatusArray: [] },

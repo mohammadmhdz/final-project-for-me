@@ -12,7 +12,7 @@ import FreelacerCancelledProjects from "../cancelledprojects/index";
 import FreelacerCompletedProjects from "../completedprojects/index";
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { freelancerRequest } from "../../../../actions/requestsActions";
+import { freelancerRequest , deleteRequest} from "../../../../actions/requestsActions";
 
 const Freelancer = (props) => {
   const [allRequest, setAllRequest] = useState(true);
@@ -47,6 +47,7 @@ const Freelancer = (props) => {
   // redux
   const dispatch = useDispatch();
   const freelancerRequests = useSelector((state) => state.freelancerRequest);
+  const deleteApplyStatus = useSelector((state) => state.deleteApplyReducer);
   const { freelancerRequestsAll} = freelancerRequests;
   
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
@@ -55,8 +56,13 @@ const Freelancer = (props) => {
     const now = new Date().getDate()
     const date = new Date(input).getDate()
     return now - date
-
   }
+
+  const handleDeleteReq =(input) => {
+   console.log(input , "here")
+   dispatch(deleteRequest(input))
+  }
+
   useEffect(() => {
     // redux
     dispatch(freelancerRequest());
@@ -68,6 +74,7 @@ const Freelancer = (props) => {
   }, [dispatch]);
   // console.log(freelancerRequestsAll[0]?.company_name);
   console.log(freelancerRequestsAll);
+  console.log(deleteApplyStatus , "delete");
   // console.log();
 
   // filter request by the employee
@@ -174,7 +181,7 @@ const Freelancer = (props) => {
                                     </div>
                                   </div>
                                   <Link
-                                    to="/freelancer-view-project-detail"
+                                    onClick={() => handleDeleteReq(items.id)} 
                                     className="projects-btn project"
                                   >
                                     انصراف از درخواست{" "}

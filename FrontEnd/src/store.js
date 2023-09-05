@@ -22,6 +22,7 @@ import {
   freelancerRequestReducer,
   postAplliesReducer,
   companyChangeStatusReducer,
+  deleteApplyReducer
 } from "./reducers/requestsReducer";
 import { userLoginReducer } from "./reducers/userReducer";
 import {
@@ -70,6 +71,7 @@ const reducer = combineReducers({
   freelancerRequest: freelancerRequestReducer,
   postApplyList: postAplliesReducer,
   companyChangeStatus: companyChangeStatusReducer,
+  deleteApply : deleteApplyReducer,
   //
   userLogin: userLoginReducer,
   //

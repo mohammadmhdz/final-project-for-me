@@ -9,7 +9,11 @@ import {
   //PUT
   COMPANY_EDIT_APPLY_REQUEST ,
   COMPANY_EDIT_APPLY_SUCCESS ,
-  COMPANY_EDIT_APPLY_FAIL 
+  COMPANY_EDIT_APPLY_FAIL ,
+  //DELETE
+  COMPANY_DELETE_APPLY_REQUEST ,
+  COMPANY_DELETE_APPLY_SUCCESS ,
+  COMPANY_DELETE_APPLY_FAIL, 
 } from "../constant/requestsConstant";
 import axios from "axios";
 
@@ -108,6 +112,41 @@ export const companyChangeRequestStatus = (inputData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: COMPANY_EDIT_APPLY_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const deleteRequest = (keyword) => async (dispatch) => {
+  // console.log(data)
+  try {
+    console.log(keyword , "action data");
+    dispatch({
+      type: COMPANY_DELETE_APPLY_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.delete(
+      `http://127.0.0.1:8000/api/apply/${keyword}/`,
+      config
+    );
+
+    dispatch({
+      type: COMPANY_DELETE_APPLY_SUCCESS,
+      payload: data,
+    });
+
+  } catch (error) {
+    dispatch({
+      type: COMPANY_DELETE_APPLY_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
