@@ -23,6 +23,10 @@ import {
   EMPLOYEE_DETAILS_EDIT_REQUEST,
   EMPLOYEE_DETAILS_EDIT_SUCCESS,
   EMPLOYEE_DETAILS_EDIT_FAIL, 
+  //post 
+  EMPLOYEE_PORTFOLIO_POST_REQUEST ,
+  EMPLOYEE_PORTFOLIO_POST_SUCCESS ,
+  EMPLOYEE_PORTFOLIO_POST_FAIL, 
 } from "../constant/employeeConstant";
 import axios from "axios";
 
@@ -216,6 +220,43 @@ export const updateEmployeeDetails = (input) => async (dispatch) => {
               } catch (error) {
                 dispatch({
                   type: EMPLOYEE_DETAILS_EDIT_FAIL,
+                  payload:
+                    error.response && error.response.data.detail
+                      ? error.response.data.detail
+                      : error.message,
+                });
+              }
+              };
+
+
+export const addPortofolioEmployee = (input) => async (dispatch) => {
+  // console.log(input.Experiences , "input");
+  console.log(input);
+  try{
+  dispatch({
+        type: EMPLOYEE_PORTFOLIO_POST_REQUEST,
+                });
+  
+                const config = {
+                  headers: {
+                    "Content-type": "application/json",
+                  },
+                };
+  
+                const { data } = await axios.post(
+                  `http://localhost:8000/api/portfolio/`,
+                  input,
+                  config
+                );
+              
+                dispatch({
+                  type: EMPLOYEE_PORTFOLIO_POST_SUCCESS,
+                  payload: data,
+                });
+              
+              } catch (error) {
+                dispatch({
+                  type: EMPLOYEE_PORTFOLIO_POST_FAIL,
                   payload:
                     error.response && error.response.data.detail
                       ? error.response.data.detail

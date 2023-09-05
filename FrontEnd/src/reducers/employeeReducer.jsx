@@ -22,6 +22,10 @@ import {
   EMPLOYEE_DETAILS_EDIT_REQUEST,
   EMPLOYEE_DETAILS_EDIT_SUCCESS,
   EMPLOYEE_DETAILS_EDIT_FAIL, 
+  //post
+  EMPLOYEE_PORTFOLIO_POST_REQUEST ,
+  EMPLOYEE_PORTFOLIO_POST_SUCCESS ,
+  EMPLOYEE_PORTFOLIO_POST_FAIL, 
  
 } from "../constant/employeeConstant";
 
@@ -125,6 +129,23 @@ export const employeeUpdateDetailsReducer = (state = {}, action) => {
       return { loading: false, employeeUpdateSuccesfull: action.payload };
 
     case EMPLOYEE_DETAILS_EDIT_FAIL:
+      return { loading: false, error: action.payload };
+
+
+    default:
+      return state;
+  }
+};
+// post
+export const employeeAddPortfolioReducer = (state = {}, action) => {
+  switch (action.type) {
+    case EMPLOYEE_PORTFOLIO_POST_REQUEST:
+      return { loading: true };
+
+    case EMPLOYEE_PORTFOLIO_POST_SUCCESS:
+      return { loading: false, addPortfolioResult: action.payload };
+
+    case EMPLOYEE_PORTFOLIO_POST_FAIL:
       return { loading: false, error: action.payload };
 
 

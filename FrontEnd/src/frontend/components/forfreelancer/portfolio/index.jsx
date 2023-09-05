@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect , useState} from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { Sidebar } from "../sidebar";
@@ -12,14 +12,52 @@ import {
   Project_5,
   Project_6,
 } from "../../imagepath";
-import { employeePortfolioDetails } from "../../../../actions/employeeActions";
+import { employeePortfolioDetails , addPortofolioEmployee } from "../../../../actions/employeeActions";
 import { useDispatch, useSelector } from "react-redux";
 
 const FreelancerPortfolio = (props) => {
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
+
   const dispatch = useDispatch();
   const portfolio = useSelector((state) => state.employeePortfolio);
-  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+  const addPortfolio = useSelector((state) => state.addPortfolioReducer);
   const { employeePortfolioArray } = portfolio;
+
+  const [postImage, setPostImage] = useState({
+    description: "",
+  });
+
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertToBase64(file);
+    setPostImage({
+       title : "ارمان ارتباط ویرا",
+       description : base64,
+       employee : localItem.associated_id ,
+       image: null });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("here")
+    dispatch(addPortofolioEmployee(postImage))
+  }
+
+
   useEffect(() => {
     dispatch(employeePortfolioDetails(localItem.associated_id));
     document.body.className = "dashboard-page";
@@ -28,6 +66,7 @@ const FreelancerPortfolio = (props) => {
     };
   }, [dispatch]);
   console.log(employeePortfolioArray, "portfolio");
+  console.log(addPortfolio, "upload test");
 
   return (
     <>
@@ -150,7 +189,14 @@ const FreelancerPortfolio = (props) => {
                       </div>
 
                       <label className="br-0 file-upload image-upbtn">
-                        بارگذاری تصاویر <input type="file" />
+                        بارگذاری تصاویر         
+                        <input
+                          type="file"
+                          label="Image"
+                          name="myFile"
+                          accept=".jpeg, .png, .jpg"
+                          onChange={(e) => handleFileUpload(e)}
+                        />
                       </label>
                     </div>
                   </div>
@@ -162,7 +208,7 @@ const FreelancerPortfolio = (props) => {
                   >
                     لغو
                   </a>
-                  <button type="submit" className="btn btn-primary submit-btn">
+                  <button onClick={(e) => handleSubmit(e)} className="btn btn-primary submit-btn">
                     تایید
                   </button>
                 </div>
@@ -212,7 +258,7 @@ const FreelancerPortfolio = (props) => {
                   >
                     لغو
                   </a>
-                  <button type="submit" className="btn btn-primary submit-btn">
+                  <button onClick={handleSubmit} className="btn btn-primary submit-btn">
                     تایید
                   </button>
                 </div>

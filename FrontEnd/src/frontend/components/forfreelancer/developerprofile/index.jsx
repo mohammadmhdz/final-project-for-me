@@ -34,7 +34,7 @@ import {
   employeeDetails,
   employeePortfolioDetails,
 } from "../../../../actions/employeeActions";
-import {companyToggleFavoriteList} from "../../../../actions/companyActions";
+import {companyToggleFavoriteList , companyDetails} from "../../../../actions/companyActions";
 
 const DeveloperProfile = (props) => {
 
@@ -49,7 +49,9 @@ const DeveloperProfile = (props) => {
   const employeeDetailsList = useSelector((state) => state.employeeDetails);
   const Portfolio = useSelector((state) => state.employeePortfolio);
   const toggleFavorite = useSelector((state) => state.companyToggleFavorite);
+  const companyDetailsReducer = useSelector((state) => state.companyDetails);
   const { employee } = employeeDetailsList;
+  const { companyDetail } = companyDetailsReducer;
   const { employeePortfolioArray } = Portfolio;
 
   const handleToggleFavorite = (e) => {
@@ -61,6 +63,8 @@ const DeveloperProfile = (props) => {
   // we must take the id from where we reach here
     dispatch(employeeDetails(idInfo))
     dispatch(employeePortfolioDetails(idInfo))
+    dispatch(companyDetails(localItem?.associated_id))
+
 
     document.body.className = "dashboard-page";
     return () => {
@@ -70,6 +74,7 @@ const DeveloperProfile = (props) => {
   // console.log(employee , "EMPLOYEE INFO")
   console.log(employeePortfolioArray, "EMPLOYEE PORTFOLIO INFO");
   console.log(employee, "toggle favoirte");
+  console.log(companyDetail, "company detail");
 
   // console.log(location , "loc");
   return (
@@ -108,11 +113,13 @@ const DeveloperProfile = (props) => {
                           <a href="" className="btn full-btn ms-3">
                             {employee.cooperation_type}
                           </a>
-                          <a href={`http://127.0.0.1:8000/${employee.cv}`} className="btn full-btn ms-3">
+                          <a 
+                          href={employee?.cv ? `http://127.0.0.1:8000/${employee.cv}` : null} 
+                          className={employee.cv ? "btn full-btn ms-3" : "btn full-btn ms-3 disable-btn"}>
                             دانلود رزومه
                           </a>
                           <a href="" onClick={handleToggleFavorite}>
-                            <i className="fa fa-heart heart fa-2x ms-2 red-text" />
+                            <i className={companyDetail.company_data?.favorite_employee?.includes(idInfo) ? "fa fa-heart heart fa-2x ms-2 red-text"  : "far fa-heart heart fa-2x ms-2 red-text" } />
 
                           </a>
                         </div>) : null

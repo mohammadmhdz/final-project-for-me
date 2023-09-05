@@ -17,6 +17,7 @@ import {
   employeeFavoriteListReducer,
   employeeToggleFavoriteListReducer,
   employeeUpdateDetailsReducer,
+  employeeAddPortfolioReducer,
 } from "./reducers/employeeReducer";
 import {
   freelancerRequestReducer,
@@ -67,6 +68,7 @@ const reducer = combineReducers({
   employeeToggleFavorite: employeeToggleFavoriteListReducer,
   employeeListAll: employeeListAllReducer,
   employeeUpdateDetails: employeeUpdateDetailsReducer,
+  addPortfolioReducer:employeeAddPortfolioReducer , 
   //
   freelancerRequest: freelancerRequestReducer,
   postApplyList: postAplliesReducer,

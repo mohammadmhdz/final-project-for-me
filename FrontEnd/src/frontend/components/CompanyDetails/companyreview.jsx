@@ -20,7 +20,10 @@ import moment from "jalali-moment";
 // redux
 import { companyReviewGet , postReview} from "../../../actions/companyActions";
 import { useDispatch, useSelector } from "react-redux";
+
 export const CompanyReview = ({companyId}) => {
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
   const dispatch = useDispatch();
   const companyReviewReducer = useSelector((state) => state.companyReview);
   const companyPostReviewReducer = useSelector((state) => state.companyReviewPost);
@@ -30,7 +33,7 @@ export const CompanyReview = ({companyId}) => {
 
   const handleChange = (e) => {
     setReviewData({
-      ["employee"] : 1,
+      ["employee"] : +localItem.associated_id,
       ["Company"] : companyId ,
       ["date"] : null ,
       [e.target.id] : e.target.value ,
@@ -51,10 +54,12 @@ export const CompanyReview = ({companyId}) => {
 
   return (
     <>
-      {companyReviewList?.map((items, index) => {
-        return (
-          <div className="pro-post widget-box company-post align-right">
-            <h3 className="pro-title">نظرات</h3>
+        <div className="pro-post widget-box company-post align-right">
+          <h3 className="pro-title">نظرات</h3>
+
+          {companyReviewList?.map((items) => (
+            items.status === "فعال" ? (
+
             <div className="reviews company-review">
               <div className="review-content no-padding">
                 <div className="review-top tab-reviews d-flex align-items-center">
@@ -90,13 +95,16 @@ export const CompanyReview = ({companyId}) => {
                 </div>
               </div>
 
-              <div className="col-md-12 text-center"></div>
+                <div className="col-md-12 text-center"></div>
             </div>
-          </div>
-        );
-      })}
+            ):null    
+          ))}
+              
+     
+      </div>
 
       {/* Post a comment */}
+      {localItem.role === "employee" ? (
       <div className="pro-post widget-box company-post post-comment align-right">
         <h3 className="pro-title">نظر خود را ثبت کنید</h3>
         <form action="#">
@@ -129,9 +137,15 @@ export const CompanyReview = ({companyId}) => {
           </div>
         </form>
       </div>
+      )
+    :localItem.role === "employer" ? null :  
+    ( <Link className="font-semibold text-primary"
+    to="/login">
+    <span>برای نظر دادن لطفا وارد شوید</span>
+    </Link> )}
       {/* /Post a comment */}
     </>
   );
-};
+      }
 
-// export default CompanyReview;
+// export default CompanyReview

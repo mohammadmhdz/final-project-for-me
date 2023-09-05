@@ -44,8 +44,8 @@ const CompanyProject = ({companyId}) => {
     <>
           <div className="pro-post widget-box company-post align-right">
             <h3 className="pro-title">فرصت های شغلی</h3>
-      {companyJobsListArray.map((items, index) => {
-        return (
+      {companyJobsListArray?.map((items, index) => (
+        items.status === "فعال" ? (
           <div className="projects-card flex-fill project-company">
               <div className="card-body">
                 <div className="projects-details align-items-center">
@@ -123,8 +123,8 @@ const CompanyProject = ({companyId}) => {
                 </div>
               </div>
             </div>
-              );
-      })}
+        ) : null
+      ))}
           </div>
       
 
