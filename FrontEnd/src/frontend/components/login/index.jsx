@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Logo_01 } from "../imagepath";
 import { useState } from "react";
+
 // redux
 import { login } from "../../../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,17 +11,17 @@ import Password from "antd/lib/input/Password";
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const changeURL = (newURL) => {
     window.location.href = newURL;
-};
+  };
   // redux
   const dispatch = useDispatch();
   //  useEffect(() => {
   const submithandler = (e) => {
     // redux
     dispatch(login(email, password));
-    e.preventDefault()
+    e.preventDefault();
     // {localStorage.getItem("userInfo") ? pass : e.preventDefault()}
   };
 
@@ -51,9 +52,15 @@ const Login = (props) => {
                         دنیای حرفه ای مطلع شوید
                       </p>
                     </div>
-                    {userLogin.loading?<p1>لطفا صبر کنید...</p1> : 
-                    userLogin.error ? <p1>رمز شما نادرست میباشد</p1> : 
-                    userLogin.userInfo?.role === "employee"? changeURL("/template-reactjs/freelancer-dashboard") :userLogin.userInfo?.role === "employer"?  changeURL("/template-reactjs/dashboard") : null}
+                    {userLogin.loading ? (
+                      <p1>لطفا صبر کنید...</p1>
+                    ) : userLogin.error ? (
+                      <p1>رمز شما نادرست میباشد</p1>
+                    ) : userLogin.userInfo?.role === "employee" ? (
+                      changeURL("/template-reactjs/freelancer-dashboard")
+                    ) : userLogin.userInfo?.role === "employer" ? (
+                      changeURL("/template-reactjs/dashboard")
+                    ) : null}
                     {/* // {userLogin.error?<p1>your email or password is wrong</p1> : null} */}
                     {/* {userLogin.userInfo ?() => changeURL("/template-reactjs/dashboard"): null} */}
 
@@ -86,7 +93,7 @@ const Login = (props) => {
                           <span className="checkmark" />
                         </label>
                       </div>
-                        {/* <Link to="/template-reactjs/dashboard" onChange={userLogin.userInfo}>
+                      {/* <Link to="/template-reactjs/dashboard" onChange={userLogin.userInfo}>
                     </Link> */}
                       <button
                         className="btn btn-primary btn-block btn-lg login-btn"

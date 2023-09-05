@@ -86,7 +86,7 @@ const Header = (props) => {
         {/* Header Menu */}
         <ul className="nav user-menu">
           {/* Notifications */}
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <Link
               to="#"
               className="dropdown-toggle nav-link"
@@ -230,10 +230,10 @@ const Header = (props) => {
                 <Link to="#">مشاهده همه اعلانات</Link>
               </div>
             </div>
-          </li>
+          </li> */}
           {/* /Notifications */}
           {/* User Menu */}
-          <li className="nav-item dropdown has-arrow main-drop">
+          {/* <li className="nav-item dropdown has-arrow main-drop">
             <Link
               to="#"
               className="dropdown-toggle nav-link"
@@ -255,7 +255,7 @@ const Header = (props) => {
                 <FeatherIcon icon="log-out" className="me-1" /> Logout
               </Link>
             </div>
-          </li>
+          </li> */}
           {/* /User Menu */}
         </ul>
         {/* /Header Menu */}

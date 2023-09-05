@@ -138,6 +138,7 @@ class JobSerializer(serializers.ModelSerializer):
 class CompanySerializer(serializers.ModelSerializer):
     userr = serializers.SerializerMethodField(read_only=True)
     city = serializers.SerializerMethodField(read_only=True)
+    
 
     class Meta:
         model = Company
@@ -286,14 +287,20 @@ class VerificationSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     users_name = serializers.SerializerMethodField()
+    company_name = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Review
-        fields = ('id', 'employee', 'Company', 'content', 'date', 'status', 'users_name')
+        fields = ('id', 'employee', 'Company', 'content', 'date', 'status', 'users_name' , 'company_name')
         read_only_fields = ('id',)
 
     def get_users_name(self, obj):
         return obj.users_name
+    
+    def get_company_name(self, obj):
+        return obj.Company.Name
+
     
 
 

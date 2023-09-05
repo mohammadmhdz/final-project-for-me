@@ -12,7 +12,10 @@ import FreelacerCancelledProjects from "../cancelledprojects/index";
 import FreelacerCompletedProjects from "../completedprojects/index";
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { freelancerRequest , deleteRequest} from "../../../../actions/requestsActions";
+import {
+  freelancerRequest,
+  deleteRequest,
+} from "../../../../actions/requestsActions";
 
 const Freelancer = (props) => {
   const [allRequest, setAllRequest] = useState(true);
@@ -48,20 +51,20 @@ const Freelancer = (props) => {
   const dispatch = useDispatch();
   const freelancerRequests = useSelector((state) => state.freelancerRequest);
   const deleteApplyStatus = useSelector((state) => state.deleteApplyReducer);
-  const { freelancerRequestsAll} = freelancerRequests;
-  
-  const localItem = JSON.parse(localStorage.getItem("userInfo"));
-  
-  const daysBetween =(input) => {
-    const now = new Date().getDate()
-    const date = new Date(input).getDate()
-    return now - date
-  }
+  const { freelancerRequestsAll } = freelancerRequests;
 
-  const handleDeleteReq =(input) => {
-   console.log(input , "here")
-   dispatch(deleteRequest(input))
-  }
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
+  const daysBetween = (input) => {
+    const now = new Date().getDate();
+    const date = new Date(input).getDate();
+    return now - date;
+  };
+
+  const handleDeleteReq = (input) => {
+    console.log(input, "here");
+    dispatch(deleteRequest(input));
+  };
 
   useEffect(() => {
     // redux
@@ -74,15 +77,17 @@ const Freelancer = (props) => {
   }, [dispatch]);
   // console.log(freelancerRequestsAll[0]?.company_name);
   console.log(freelancerRequestsAll);
-  console.log(deleteApplyStatus , "delete");
+  console.log(deleteApplyStatus, "delete");
   // console.log();
 
   // filter request by the employee
   // const filterEmployee = freelancerRequestsAll.map((items) => {
   //   console.log(items.status);
   // });
-  const requestForEmployee = freelancerRequestsAll.filter ((item) => {return (item.employee === +localItem.associated_id)} )
-  console.log(requestForEmployee , "request form employee");
+  const requestForEmployee = freelancerRequestsAll.filter((item) => {
+    return item.employee === +localItem.associated_id;
+  });
+  console.log(requestForEmployee, "request form employee");
 
   return (
     <>
@@ -104,7 +109,7 @@ const Freelancer = (props) => {
                   <li className="nav-item">
                     <Link
                       onClick={handleAllRequest}
-                      className={allRequest? "nav-link active" : "nav-link"}
+                      className={allRequest ? "nav-link active" : "nav-link"}
                       // to="/freelancer-project-proposals"
                     >
                       همه درخواست های من
@@ -113,7 +118,7 @@ const Freelancer = (props) => {
                   <li className="nav-item">
                     <Link
                       onClick={handleWaiting}
-                      className={waiting? "nav-link active" : "nav-link"}
+                      className={waiting ? "nav-link active" : "nav-link"}
                       // to="/freelancer-ongoing-projects"
                       // state={{ items: dispatch?.freelancerRequestsAll }}
                     >
@@ -123,7 +128,7 @@ const Freelancer = (props) => {
                   <li className="nav-item">
                     <Link
                       onClick={handleRead}
-                      className={read? "nav-link active" : "nav-link"}
+                      className={read ? "nav-link active" : "nav-link"}
                       // to="/freelancer-completed-projects"
                     >
                       بررسی شده
@@ -132,7 +137,7 @@ const Freelancer = (props) => {
                   <li className="nav-item">
                     <Link
                       onClick={handleDenied}
-                      className={denied? "nav-link active" : "nav-link"}
+                      className={denied ? "nav-link active" : "nav-link"}
                       // to="/freelancer-cancelled-projects"
                     >
                       رد شده
@@ -161,27 +166,40 @@ const Freelancer = (props) => {
                                       />
                                     </div>
                                     <div className="proposer-detail">
-                                    <Link to={{pathname : "/project-details" ,
-                                               state : {jobIdInput: items.job , employeeId : +localItem.associated_id} 
-                                              }}>
-                                      <h4 className="">{items.job_title}</h4>
-                                    </Link>
+                                      <Link
+                                        to={{
+                                          pathname: "/project-details",
+                                          state: {
+                                            jobIdInput: items.id,
+                                            employeeId:
+                                              +localItem.associated_id,
+                                          },
+                                        }}
+                                      >
+                                        <h4 className="">{items.job_title}</h4>
+                                      </Link>
                                       <ul className="proposal-details">
                                         <li className="Bold">
-                                          
-                                         <Link to={{pathname : "/company-profile" ,
-                                               state : {companyIdInput: items.Company} 
-                                              }}>
-                                        <div>{items.company_name}</div>
-                                        </Link>
+                                          <Link
+                                            to={{
+                                              pathname: "/company-profile",
+                                              state: {
+                                                companyIdInput: items.id,
+                                              },
+                                            }}
+                                          >
+                                            <div>{items.company_name}</div>
+                                          </Link>
                                         </li>
-                                        <li>{daysBetween(items.send_at)} روز پیش</li>
+                                        <li>
+                                          {daysBetween(items.send_at)} روز پیش
+                                        </li>
                                         <li className=" red">{items.status}</li>
                                       </ul>
                                     </div>
                                   </div>
                                   <Link
-                                    onClick={() => handleDeleteReq(items.id)} 
+                                    onClick={() => handleDeleteReq(items.id)}
                                     className="projects-btn project"
                                   >
                                     انصراف از درخواست{" "}
@@ -208,31 +226,54 @@ const Freelancer = (props) => {
                                     />
                                   </div>
                                   <div className="proposer-detail">
-                                  <Link to={{pathname : "/project-details" ,
-                                               state : {jobIdInput: items.job , employeeId : +localItem.associated_id}  
-                                              }}>
-                                    <h4 className="">{items.job_title}</h4>
+                                    <Link
+                                      to={{
+                                        pathname: "/project-details",
+                                        state: {
+                                          jobIdInput: items.job,
+                                          employeeId: +localItem.associated_id,
+                                        },
+                                      }}
+                                    >
+                                      <h4 className="">{items.job_title}</h4>
                                     </Link>
                                     <ul className="proposal-details">
                                       <li className="Bold">
-                                        {" "}<Link to={{pathname : "/company-profile" ,
-                                               state : {companyIdInput: items.Company} 
-                                              }}>
-                                        <div>{items.company_name}</div>
-                                    </Link>
+                                        {" "}
+                                        <Link
+                                          to={{
+                                            pathname: "/company-profile",
+                                            state: {
+                                              companyIdInput: items.Company,
+                                            },
+                                          }}
+                                        >
+                                          <div>{items.company_name}</div>
+                                        </Link>
                                       </li>
-                                      <li>{daysBetween(items.send_at)} روز پیش</li>
+                                      <li>
+                                        {daysBetween(items.send_at)} روز پیش
+                                      </li>
                                       <li className="red">
                                         رد شده به علت :{" "}
                                         <span>{items.message}</span>
                                       </li>
                                       <li>
-                                      <span style={{color : "red"}}>رد شده </span>
+                                        <span style={{ color: "red" }}>
+                                          رد شده{" "}
+                                        </span>
                                       </li>
-                                      <li >
-                                        <span> تاریخ : {moment(items.status_change_date, "YYYY/MM/DD")
-                                                    .locale("fa")
-                                                    .format("YYYY/MM/DD")}</span>
+                                      <li>
+                                        <span>
+                                          {" "}
+                                          تاریخ :{" "}
+                                          {moment(
+                                            items.status_change_date,
+                                            "YYYY/MM/DD"
+                                          )
+                                            .locale("fa")
+                                            .format("YYYY/MM/DD")}
+                                        </span>
                                       </li>
                                     </ul>
                                   </div>
@@ -244,54 +285,75 @@ const Freelancer = (props) => {
                       </div>
                     )}
                     {items.status === "بررسی شده" && (
-                     <div className="my-projects-list">
-                     <div className="row">
-                       <div className="col-lg-12 flex-wrap">
-                         <div className="projects-card flex-fill">
-                           <div className="card-body">
-                             <div className="projects-details align-items-center justify-content-between">
-                               <div className="projects-details align-items-center">
-                                 <div className="proposer-img">
-                                   <img
-                                     src={Developer_01}
-                                     alt=""
-                                     className="img-fluid"
-                                   />
-                                 </div>
-                                 <div className="proposer-detail">
-                                 <Link to={{pathname : "/project-details" ,
-                                            state : {jobIdInput: items.job , employeeId : +localItem.associated_id} 
-                                           }}>
-                                  <h4 className="">{items.job_title}</h4>
-                                 </Link>
-                                   <ul className="proposal-details">
-                                     <li className="Bold">
-                                       
-                                      <Link to={{pathname : "/company-profile" ,
-                                            state : {companyIdInput: items.Company} 
-                                           }}>
-                                     <div>{items.company_name}</div>
-                                     </Link>
-                                     </li>
-                                     <li>{daysBetween(items.send_at)} روز پیش</li>
-                                      <li>
-                                      <span style={{color : "green"}}>بررسی شده </span>
-                                      </li>
-                                      <li >
-                                        <span> تاریخ : {moment(items.status_change_date, "YYYY/MM/DD")
-                                                    .locale("fa")
-                                                    .format("YYYY/MM/DD")}</span>
-                                      </li>
-                                   </ul>
-                                 </div>
-                               </div>
-                           
-                             </div>
-                           </div>
-                         </div>
-                       </div>
-                     </div>
-                   </div>
+                      <div className="my-projects-list">
+                        <div className="row">
+                          <div className="col-lg-12 flex-wrap">
+                            <div className="projects-card flex-fill">
+                              <div className="card-body">
+                                <div className="projects-details align-items-center justify-content-between">
+                                  <div className="projects-details align-items-center">
+                                    <div className="proposer-img">
+                                      <img
+                                        src={Developer_01}
+                                        alt=""
+                                        className="img-fluid"
+                                      />
+                                    </div>
+                                    <div className="proposer-detail">
+                                      <Link
+                                        to={{
+                                          pathname: "/project-details",
+                                          state: {
+                                            jobIdInput: items.job,
+                                            employeeId:
+                                              +localItem.associated_id,
+                                          },
+                                        }}
+                                      >
+                                        <h4 className="">{items.job_title}</h4>
+                                      </Link>
+                                      <ul className="proposal-details">
+                                        <li className="Bold">
+                                          <Link
+                                            to={{
+                                              pathname: "/company-profile",
+                                              state: {
+                                                companyIdInput: items.Company,
+                                              },
+                                            }}
+                                          >
+                                            <div>{items.company_name}</div>
+                                          </Link>
+                                        </li>
+                                        <li>
+                                          {daysBetween(items.send_at)} روز پیش
+                                        </li>
+                                        <li>
+                                          <span style={{ color: "green" }}>
+                                            بررسی شده{" "}
+                                          </span>
+                                        </li>
+                                        <li>
+                                          <span>
+                                            {" "}
+                                            تاریخ :{" "}
+                                            {moment(
+                                              items.status_change_date,
+                                              "YYYY/MM/DD"
+                                            )
+                                              .locale("fa")
+                                              .format("YYYY/MM/DD")}
+                                          </span>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     )}
                   </div>
                 ))

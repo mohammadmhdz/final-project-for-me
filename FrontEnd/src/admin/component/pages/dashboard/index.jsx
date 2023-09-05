@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Header from "../../../commoncomponent/header";
 import Sidebar from "../../../commoncomponent/sidebar";
 import Chart from "react-apexcharts";
+import Loader from "../../../../Loader";
 import {
   avatar_02,
   avatar_03,
@@ -21,11 +22,21 @@ import { Table } from "antd";
 import { itemRender, onShowSizeChange } from "../../../paginationfunction";
 import "../../../antdstyle.css";
 import { listJobs } from "../../../../actions/jobActions";
+import { employeeListAll } from "../../../../actions/employeeActions";
+import {
+  reviewListAction,
+  updatereviewDetails,
+} from "../../../../actions/adminAction";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const jobListAll = useSelector((state) => state.jobList);
   const { jobs, loading } = jobListAll;
+  const employeeListAlll = useSelector((state) => state.employeeListAll);
+  const { employeeList, loadingem } = employeeListAlll;
+  const reviewListAll = useSelector((state) => state.reviewListAll);
+  const reviewDetailsUpdate = useSelector((state) => state.reviewUpdateDetail);
+  const { reviews, loadingre } = reviewListAll;
 
   const [datas] = useState({
     chart: {
@@ -78,90 +89,73 @@ const Dashboard = () => {
     },
   ]);
 
-  const data = [
-    {
-      id: 1,
-      profile: "مژده زینال زادگان",
-      designation: "کارجو",
-      category: "Angular",
-      image: avatar_14,
-    },
-  ];
+  const data = reviews;
   const columns = [
     {
-      title: "کاربر",
-      dataIndex: "profile",
-      render: (text, record) => (
-        <>
-          <h2 className="table-avatar  user-profile">
-            <Link to="/admin/profile">
-              <img
-                className="avatar-img rounded-circle"
-                alt="User Image"
-                src={record.image}
-              />
-            </Link>
-            {text}
-          </h2>
-        </>
-      ),
+      title: "نام نام‌خانوداگی",
+      dataIndex: "users_name",
+      render: (text, record) => <>{text}</>,
       sorter: (a, b) => a.profile.length - b.profile.length,
     },
     {
-      title: "نقش",
-      dataIndex: "designation",
+      title: "برای شرکت",
+      dataIndex: "company_name",
       render: (text, record) => <>{text}</>,
       sorter: (a, b) => a.designation.length - b.designation.length,
     },
     {
-      title: "نظرات",
-      dataIndex: "comments",
-      render: (text, record) => (
-        <>
-          {text}
-          <div className="desc-info">
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-            استفاده از طراحان گرافیک است
-          </div>
-        </>
-      ),
+      title: "متن نظر",
+      dataIndex: "content",
+      render: (text, record) => <>{text}</>,
       sorter: (a, b) => a.comments.length - b.comments.length,
+    },
+    {
+      title: "تاریخ",
+      dataIndex: "date",
+      render: (text, record) => <>{new Date(text).toLocaleDateString()}</>,
+      sorter: (a, b) => a.designation.length - b.designation.length,
+    },
+    {
+      title: "وضعیت",
+      dataIndex: "status",
+      render: (text, record) => <>{text}</>,
+      sorter: (a, b) => a.designation.length - b.designation.length,
     },
 
     {
-      title: "امتیاز",
-      dataIndex: "stars",
-      render: (text, record) => (
-        <>
-          {text}
-          <i className="fas fa-star text-primary" />
-          <i className="fas fa-star text-primary" />
-          <i className="fas fa-star text-primary" />
-          <i className="fas fa-star text-primary" />
-          <i className="fas fa-star text-muted" />
-        </>
-      ),
-      sorter: (a, b) => a.stars.length - b.stars.length,
-    },
-    {
-      title: "دسته بندی",
-      dataIndex: "category",
-      render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.category.length - b.category.length,
-    },
-    {
       title: "عملیات",
       dataIndex: "action",
-      render: (text, record) => (
-        <>
-          <Link to="#" className=" btn btn-approve text-white ms-2">
-            تایید
-          </Link>
-          <Link to="#" className="btn btn-disable">
-            رد
-          </Link>
-        </>
-      ),
+      render: (text, record) => {
+        if (record.status === "درانتظار تایید") {
+          return (
+            <>
+              <Link
+                to="#"
+                className="btn btn-approve text-white ms-2"
+                onClick={() => {
+                  dispatch(
+                    updatereviewDetails({ id: record.id, status: "فعال" })
+                  );
+                }}
+              >
+                تایید
+              </Link>
+              <Link
+                to="#"
+                className="btn btn-disable"
+                onClick={() => {
+                  dispatch(
+                    updatereviewDetails({ id: record.id, status: "حذف شده" })
+                  );
+                }}
+              >
+                رد
+              </Link>
+            </>
+          );
+        }
+        return null; // or you can return an empty string if you want to show an empty cell
+      },
     },
   ];
 
@@ -182,6 +176,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(listJobs());
+    dispatch(employeeListAll());
+    dispatch(reviewListAction());
   }, [dispatch]);
 
   return (
@@ -216,7 +212,7 @@ const Dashboard = () => {
                       <div className="card wizard-card flex-fill">
                         <div className="card-body">
                           <p className="text-primary mt-0 mb-2">کارجویان</p>
-                          <h5>۱۲</h5>
+                          <h5>{employeeList.length}</h5>
                           <p>
                             <Link to="/admin/users">مشاهده جزییات</Link>
                           </p>
@@ -232,7 +228,7 @@ const Dashboard = () => {
                           <p className="text-primary mt-0 mb-2">
                             فرصت های شغلی
                           </p>
-                          <h5>۲۲</h5>
+                          <h5>{jobs.length}</h5>
                           <p>
                             <Link to="/admin/projects">مشاهده جزییات </Link>
                           </p>
@@ -248,7 +244,9 @@ const Dashboard = () => {
                           <p className="text-primary mt-0 mb-2">
                             فرصت های شغلی فعال
                           </p>
-                          <h5>۱۴</h5>
+                          <h5>
+                            {jobs.filter((job) => job.status === "فعال").length}
+                          </h5>
                           <p>
                             <Link to="/admin/projects">مشاهده جزییات </Link>
                           </p>
@@ -354,7 +352,7 @@ const Dashboard = () => {
                               data-bs-toggle="tab"
                               className="nav-link active"
                             >
-                              همه (272)
+                              همه
                             </Link>
                           </li>
                           <li className="nav-item">
@@ -363,7 +361,7 @@ const Dashboard = () => {
                               data-bs-toggle="tab"
                               className="nav-link"
                             >
-                              فعال (218)
+                              فعال
                             </Link>
                           </li>
                           <li className="nav-item">
@@ -373,7 +371,7 @@ const Dashboard = () => {
                               className="nav-link"
                             >
                               {" "}
-                              در انتظار تایید (3)
+                              در انتظار تایید
                             </Link>
                           </li>
                           <li className="nav-item">
@@ -382,7 +380,7 @@ const Dashboard = () => {
                               data-bs-toggle="tab"
                               className="nav-link"
                             >
-                              حذف شده (0)
+                              حذف شده
                             </Link>
                           </li>
                         </ul>
@@ -393,24 +391,28 @@ const Dashboard = () => {
                           id="tab-4"
                           className="tab-pane fade active show"
                         >
-                          <div className="table-responsive align-right">
-                            <Table
-                              rowSelection={rowSelection}
-                              pagination={{
-                                total: data.length,
-                                showTotal: (total, range) =>
-                                  `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه ها`,
-                                showSizeChanger: true,
-                                onShowSizeChange: onShowSizeChange,
-                                itemRender: itemRender,
-                              }}
-                              className="table"
-                              style={{ overflowX: "auto" }}
-                              columns={columns}
-                              dataSource={data}
-                              rowKey={(record) => record.id}
-                            />
-                          </div>
+                          {loadingre ? (
+                            <Loader />
+                          ) : (
+                            <div className="table-responsive align-right">
+                              <Table
+                                rowSelection={rowSelection}
+                                pagination={{
+                                  // total: data.length,
+                                  showTotal: (total, range) =>
+                                    `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه ها`,
+                                  showSizeChanger: true,
+                                  onShowSizeChange: onShowSizeChange,
+                                  itemRender: itemRender,
+                                }}
+                                className="table"
+                                style={{ overflowX: "auto" }}
+                                columns={columns}
+                                dataSource={data}
+                                rowKey={(record) => record.id}
+                              />
+                            </div>
+                          )}
                         </div>
                         <div
                           role="tabpanel"
@@ -431,7 +433,9 @@ const Dashboard = () => {
                               className="table"
                               style={{ overflowX: "auto" }}
                               columns={columns}
-                              dataSource={data}
+                              dataSource={reviews.filter(
+                                (job) => job.status === "فعال"
+                              )}
                               rowKey={(record) => record.id}
                             />
                           </div>
@@ -455,7 +459,9 @@ const Dashboard = () => {
                               className="table"
                               style={{ overflowX: "auto" }}
                               columns={columns}
-                              dataSource={data}
+                              dataSource={reviews.filter(
+                                (review) => review.status === "درانتظار تایید"
+                              )}
                               rowKey={(record) => record.id}
                             />
                           </div>
@@ -479,7 +485,9 @@ const Dashboard = () => {
                               className="table"
                               style={{ overflowX: "auto" }}
                               columns={columns}
-                              // dataSource={data}
+                              dataSource={reviews.filter(
+                                (job) => job.status === "حذف شده"
+                              )}
                               rowKey={(record) => record.id}
                             />
                           </div>

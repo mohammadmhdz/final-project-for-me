@@ -57,8 +57,6 @@ Requststatus = (
     ('رد شده','رد شده'),
     ('استخدام شده','استخدام شده'), 
 
-    
-
 )
 
 JobStatus = (
@@ -66,7 +64,6 @@ JobStatus = (
     ('درانتظار تایید','درانتظار تایید'),
     ('تکمیل شده','تکمیل شده'),
     ('منقضی شده','منقضی شده'),
- 
 )
 
 reviewStatus = (
@@ -239,6 +236,12 @@ class Review(models.Model):
     @property
     def users_name(self):
         return f'{self.employee.user.first_name}  {self.employee.user.last_name}' if self.employee else None
+    
+    @property
+    def company_name(self):
+        return {self.Company.Name} if self.Company else None
+    
+
 
 
 

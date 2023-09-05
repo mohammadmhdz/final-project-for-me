@@ -11,6 +11,7 @@ import {
   CATEGORY_DELETE_REQUEST,
   CATEGORY_DELETE_SUCCESS,
   CATEGORY_DELETE_FAIL,
+  //
   SKILL_LIST_REQUEST,
   SKILL_LIST_SUCCESS,
   SKILL_LIST_FAIL,
@@ -23,9 +24,17 @@ import {
   SKILL_DELETE_REQUEST,
   SKILL_DELETE_SUCCESS,
   SKILL_DELETE_FAIL,
+  //
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAILURE,
+  //
+  REVIEW_LIST_REQUEST,
+  REVIEW_LIST_SUCCESS,
+  REVIEW_LIST_FAIL,
+  REVIEW_DETAILS_UPDATE_REQUEST,
+  REVIEW_DETAILS_UPDATE_SUCCESS,
+  REVIEW_DETAILS_UPDATE_FAIL,
 } from "../constant/adminConstant";
 import axios from "axios";
 
@@ -49,8 +58,6 @@ export const categoryListAction = (keyword) => async (dispatch) => {
 };
 
 export const updateCategoryDetails = (input) => async (dispatch) => {
-  console.log(input, "input");
-  // console.log(input?.company_name);
   try {
     dispatch({
       type: CATEGORY_DETAILS_UPDATE_REQUEST,
@@ -86,9 +93,7 @@ export const updateCategoryDetails = (input) => async (dispatch) => {
 };
 
 export const postCategory = (input) => async (dispatch) => {
-  // console.log(input)
   try {
-    console.log(input, "input");
     dispatch({
       type: CATEGORY_POST_REQUEST,
     });
@@ -106,7 +111,7 @@ export const postCategory = (input) => async (dispatch) => {
       },
       config
     );
-    console.log(data);
+
     dispatch({
       type: CATEGORY_POST_SUCCESS,
       payload: data,
@@ -298,6 +303,60 @@ export const deleteuser = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_USER_FAILURE,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const reviewListAction = (keyword) => async (dispatch) => {
+  try {
+    dispatch({ type: REVIEW_LIST_REQUEST });
+    const { data } = await axios.get(`http://127.0.0.1:8000/api/reviews`);
+    dispatch({
+      type: REVIEW_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: REVIEW_LIST_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const updatereviewDetails = (input) => async (dispatch) => {
+  try {
+    dispatch({
+      type: REVIEW_DETAILS_UPDATE_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.put(
+      `http://127.0.0.1:8000/api/reviews/${input.id}/`,
+      {
+        status: input.status,
+      },
+      config
+    );
+
+    dispatch({
+      type: REVIEW_DETAILS_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: REVIEW_DETAILS_UPDATE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

@@ -23,7 +23,7 @@ import {
   freelancerRequestReducer,
   postAplliesReducer,
   companyChangeStatusReducer,
-  deleteApplyReducer
+  deleteApplyReducer,
 } from "./reducers/requestsReducer";
 import { userLoginReducer } from "./reducers/userReducer";
 import {
@@ -53,6 +53,9 @@ import {
   skillDeleteReducer,
   //
   userDeleteReducer,
+  //
+  reviewListReducer,
+  reviewUpdateDetailsReducer,
 } from "./reducers/adminReducer";
 // use selector tu use one of the below reducer
 
@@ -70,12 +73,12 @@ const reducer = combineReducers({
   employeeToggleFavorite: employeeToggleFavoriteListReducer,
   employeeListAll: employeeListAllReducer,
   employeeUpdateDetails: employeeUpdateDetailsReducer,
-  addPortfolioReducer:employeeAddPortfolioReducer , 
+  addPortfolioReducer: employeeAddPortfolioReducer,
   //
   freelancerRequest: freelancerRequestReducer,
   postApplyList: postAplliesReducer,
   companyChangeStatus: companyChangeStatusReducer,
-  deleteApply : deleteApplyReducer,
+  deleteApply: deleteApplyReducer,
   //
   userLogin: userLoginReducer,
   //
@@ -85,8 +88,8 @@ const reducer = combineReducers({
   companyReview: companyReviewReducer,
   companyFavoriteEmployee: companyFavoriteEmployeesReducer,
   companyVerify: companyVerifyReducer,
-  companyReviewPost : postReviewReducer,
-  companyToggleFavorite : companyToggleFavoriteListReducer,
+  companyReviewPost: postReviewReducer,
+  companyToggleFavorite: companyToggleFavoriteListReducer,
   companyUpdateDetail: companyUpdateDetailsReducer,
   companydelete: companyDeleteReducer,
 
@@ -101,6 +104,9 @@ const reducer = combineReducers({
   skillpost: skillPostReducer,
   skilldelete: skillDeleteReducer,
   userdelete: userDeleteReducer,
+  //
+  reviewListAll: reviewListReducer,
+  reviewUpdateDetail: reviewUpdateDetailsReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

@@ -313,8 +313,10 @@ class ReviewViewSet(viewsets.ViewSet):
         
         for item in data:
             instance = Review.objects.get(id=item['id'])
-            users_name = instance.users_name          
+            users_name = instance.users_name  
+            company_name = instance.company_name
             item['users_name'] = users_name
+            item['company_name'] = company_name
 
         return Response(data)       
     
@@ -323,9 +325,11 @@ class ReviewViewSet(viewsets.ViewSet):
         reviews = Review.objects.all()
         review = get_object_or_404(reviews, pk=pk)
         users_name =review.users_name
+        company_name = review.company_name
         serializer = ReviewSerializer(review)
         data = serializer.data
         data['users_name'] = users_name
+        data['company_name'] = company_name
         return Response(data)
     
     def create(self,request):
@@ -334,6 +338,15 @@ class ReviewViewSet(viewsets.ViewSet):
             serializer.save()
             return Response({'msg':'Data  created'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def update(self, request, pk=None):
+        review = get_object_or_404(Review.objects.all(), pk=pk)
+        serializer = ReviewSerializer(review, data=request.data, partial=True)  
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
  

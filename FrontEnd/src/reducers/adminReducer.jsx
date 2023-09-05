@@ -26,6 +26,12 @@ import {
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAILURE,
+  REVIEW_LIST_REQUEST,
+  REVIEW_LIST_SUCCESS,
+  REVIEW_LIST_FAIL,
+  REVIEW_DETAILS_UPDATE_REQUEST,
+  REVIEW_DETAILS_UPDATE_SUCCESS,
+  REVIEW_DETAILS_UPDATE_FAIL,
 } from "../constant/adminConstant";
 
 export const categoryListReducer = (state = { categories: [] }, action) => {
@@ -175,6 +181,40 @@ export const userDeleteReducer = (state = {}, action) => {
       return { loading: false, success: true };
 
     case DELETE_USER_FAILURE:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const reviewListReducer = (state = { reviews: [] }, action) => {
+  switch (action.type) {
+    case REVIEW_LIST_REQUEST:
+      return { loading: true, reviews: [] };
+
+    case REVIEW_LIST_SUCCESS:
+      return {
+        loading: false,
+        reviews: action.payload,
+      };
+    case REVIEW_LIST_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const reviewUpdateDetailsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case REVIEW_DETAILS_UPDATE_REQUEST:
+      return { loading: true };
+
+    case REVIEW_DETAILS_UPDATE_SUCCESS:
+      return { loading: false, reviewUpdateSuccesfull: action.payload };
+
+    case REVIEW_DETAILS_UPDATE_FAIL:
       return { loading: false, error: action.payload };
 
     default:
