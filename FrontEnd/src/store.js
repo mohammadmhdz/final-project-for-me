@@ -51,6 +51,8 @@ import {
   skillUpdateDetailsReducer,
   skillPostReducer,
   skillDeleteReducer,
+  //
+  userDeleteReducer,
 } from "./reducers/adminReducer";
 // use selector tu use one of the below reducer
 
@@ -98,6 +100,7 @@ const reducer = combineReducers({
   skillUpdateDetail: skillUpdateDetailsReducer,
   skillpost: skillPostReducer,
   skilldelete: skillDeleteReducer,
+  userdelete: userDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

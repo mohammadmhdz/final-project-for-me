@@ -11,6 +11,7 @@ import "../../../antdstyle.css";
 import AddFreelancer from "./addfreelancer";
 import ViewDetails from "../../../commoncomponent/viewdetails";
 import { employeeListAll } from "../../../../actions/employeeActions";
+import { deleteuser } from "../../../../actions/adminAction";
 import {
   icon_01,
   avatar_10,
@@ -27,6 +28,16 @@ const Users = () => {
   const dispatch = useDispatch();
   const employeeListAlll = useSelector((state) => state.employeeListAll);
   const { employeeList, loading } = employeeListAlll;
+
+  const [deleteduserid, setdeleteduserid] = useState("");
+
+  const handledeleteSubmit = (e) => {
+    dispatch(deleteuser(deleteduserid));
+    dispatch(employeeListAll());
+    // const cancelLink = document.querySelector("#cancelLink");
+    // cancelLink.click();
+  };
+
   const data = employeeList;
   const columns = [
     {
@@ -56,7 +67,7 @@ const Users = () => {
     {
       title: "نام",
       dataIndex: "user",
-      render: (text, record) => <>{text.first_name + text.last_name}</>,
+      render: (text, record) => <>{text.first_name + " " + text.last_name}</>,
       sorter: (a, b) => a.expertise.length - b.expertise.length,
     },
     {
@@ -98,6 +109,9 @@ const Users = () => {
               to="#"
               className="dropdown-toggle nav-link"
               data-bs-toggle="dropdown"
+              onClick={(event) => {
+                setdeleteduserid(text.user.id);
+              }}
             >
               <i className="fas fa-ellipsis-v" />
             </Link>
@@ -114,7 +128,14 @@ const Users = () => {
                 <img className="ms-2 " src={icon_01} alt="" /> مشاهده جزییات
               </Link>
 
-              <Link className="dropdown-item mb-0" to="#">
+              <Link
+                className="dropdown-item mb-0"
+                to="#"
+                onClick={(event) => {
+                  event.preventDefault();
+                  handledeleteSubmit();
+                }}
+              >
                 <FeatherIcon icon="trash-2" className="ms-2 text-danger" /> حذف
               </Link>
             </div>
