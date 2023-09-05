@@ -33,6 +33,7 @@ router.register('reviews' , views.ReviewViewSet , basename="reviews")
 router.register('portfolio' , Employeedeailsview.PortfolioViewSet , basename="portfolio")
 router.register('gallery' , Employeedeailsview.GalleryViewSet , basename="gallery")
 router.register('image' , Employeedeailsview.ImageViewSet , basename="image")
+router.register('users' , views.UserViewSet , basename="users")
 
 
 

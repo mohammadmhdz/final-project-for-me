@@ -90,6 +90,49 @@ def getEmployees(request):
 
 
 
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    @action(detail=False, methods=['delete'])
+    def delete_by_associated_id(self, request):
+        associated_id = request.query_params.get('associated_id')
+        if not associated_id:
+            return Response({'error': 'associated_id parameter is required.'}, status=400)
+
+        try:
+            user = User.objects.get(associated_id=associated_id)
+            user.delete()
+            return Response({'success': 'User deleted successfully.'}, status=200)
+        except User.DoesNotExist:
+            return Response({'error': f'User with associated_id {associated_id} does not exist.'}, status=404)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+    
+    def destroy(self, request,pk):
+        id=pk
+        user = User.objects.get(pk=id)
+        user.delete()
+        return Response({'msg':'Data Deleted'})  
+    
+
+
 @api_view(['GET'])
 def Dropdown(request):
     states = state.objects.all()

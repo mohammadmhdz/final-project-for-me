@@ -23,6 +23,9 @@ import {
   SKILL_DELETE_REQUEST,
   SKILL_DELETE_SUCCESS,
   SKILL_DELETE_FAIL,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAILURE,
 } from "../constant/adminConstant";
 import axios from "axios";
 
@@ -253,6 +256,7 @@ export const deleteSkill = (id) => async (dispatch) => {
 
     const { data } = await axios.delete(
       `http://127.0.0.1:8000/api/skills/${id}/`,
+
       config
     );
 
@@ -262,6 +266,38 @@ export const deleteSkill = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SKILL_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const deleteuser = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: DELETE_USER_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.delete(
+      `http://127.0.0.1:8000/api/users/${id}/`,
+
+      config
+    );
+
+    dispatch({
+      type: DELETE_USER_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_USER_FAILURE,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

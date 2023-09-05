@@ -23,6 +23,9 @@ import {
   SKILL_DELETE_REQUEST,
   SKILL_DELETE_SUCCESS,
   SKILL_DELETE_FAIL,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAILURE,
 } from "../constant/adminConstant";
 
 export const categoryListReducer = (state = { categories: [] }, action) => {
@@ -156,6 +159,22 @@ export const skillDeleteReducer = (state = {}, action) => {
       return { loading: false, success: true };
 
     case SKILL_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const userDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_USER_REQUEST:
+      return { loading: true };
+
+    case DELETE_USER_SUCCESS:
+      return { loading: false, success: true };
+
+    case DELETE_USER_FAILURE:
       return { loading: false, error: action.payload };
 
     default:
