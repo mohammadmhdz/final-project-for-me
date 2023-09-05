@@ -5,7 +5,8 @@ import { Developer_01, Developer_02, Developer_03 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 import { useLocation } from "react-router-dom";
 import { blueGrey } from "@material-ui/core/colors";
-
+import { deleteRequest } from "../../../../actions/requestsActions";
+import { useDispatch } from "react-redux";
 const FreelacerOngoingProjects = ({data}) => {
   // useEffect(() => {
   //   document.body.className = "dashboard-page";
@@ -14,12 +15,20 @@ const FreelacerOngoingProjects = ({data}) => {
   //   };
   // });
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
+  const dispatch = useDispatch();
   const daysBetween =(input) => {
     const now = new Date().getDate()
     const date = new Date(input).getDate()
     return now - date
 
   }
+  const handleDeleteReq =(input) => {
+    console.log(input , "here")
+    dispatch(deleteRequest(input))
+   }
+ 
+
   console.log(data , " ssss")
   return (
     <>
@@ -30,12 +39,13 @@ const FreelacerOngoingProjects = ({data}) => {
         // console.log(items.status === "بررسی شده")
         items.status === "در انتظار بررسی" && (
           <div style={{paddingBottom : 10}}>
-                <div className="col-lg-12 flex-wrap">
-                  <div className="projects-card flex-fill">
-                      <div className="card-body">
-                        <div className="projects-details align-items-center">
-                        <div className="proposer-img">
-                            <img src={Developer_01} alt="" className="img-fluid" />
+                          <div className="col-lg-12 flex-wrap">
+                            <div className="projects-card flex-fill">
+                              <div className="card-body">
+                                <div className="projects-details align-items-center justify-content-between ">
+                                  <div className="projects-details align-items-center ">
+                                    <div className="proposer-img">
+                            {/* <img src={Developer_01} alt="" className="img-fluid" /> */}
                           </div>
                           <div className="proposer-detail">
                           <Link to={{pathname : "/project-details" ,
@@ -59,6 +69,13 @@ const FreelacerOngoingProjects = ({data}) => {
                               </li>
                               </ul>
                           </div>
+                          </div>
+                          <Link
+                                    onClick={() => handleDeleteReq(items.id)} 
+                                    className="projects-btn project"
+                                  >
+                                    انصراف از درخواست{" "}
+                                  </Link>
                         </div>
                         </div>
                     </div>

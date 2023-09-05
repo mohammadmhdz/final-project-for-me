@@ -119,7 +119,7 @@ const Settings = (props) => {
                               onChange={handleChange}
                               id="Owner_name"
                               placeholder={
-                                companyDetail.company_data?.user.Owner_name
+                                companyDetail.company_data?.Owner_name
                               }
                               type="text"
                               className="form-control"
@@ -146,6 +146,7 @@ const Settings = (props) => {
                             />
                           </div>
                           <div className="form-group col-md-6">
+                          <label>جمعیت</label>
                             <select
                               id="population"
                               onChange={handleChange}
@@ -200,7 +201,7 @@ const Settings = (props) => {
                           <input
                             onChange={handleChange}
                             id="Adress"
-                            placeholder={companyDetail.company_data?.Adress}
+                            defaultValue={companyDetail.company_data?.Adress}
                             type="text"
                             className="form-control"
                           />
@@ -237,10 +238,10 @@ const Settings = (props) => {
                           <textarea
                             onChange={handleChange}
                             id="about"
-                            placeholder={companyDetail.company_data?.about}
+                            defaultValue={companyDetail.company_data?.about}
                             className="form-control"
                             rows={5}
-                            defaultValue={""}
+                            
                           />
                         </div>
                       </div>

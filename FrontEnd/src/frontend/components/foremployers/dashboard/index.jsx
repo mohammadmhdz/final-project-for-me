@@ -92,12 +92,13 @@ const Dashboard = (props) => {
   };
 
   var chartradialOptions = {
-    series: [
-      companyDetail?.completed_jobs_count,
-      companyDetail?.completed_jobs_count,
-      companyDetail?.completed_jobs_count,
-      companyDetail?.completed_jobs_count,
-    ],
+    // series: [
+    //   companyDetail?.completed_jobs_count,
+    //   companyDetail?.completed_jobs_count,
+    //   companyDetail?.completed_jobs_count,
+    //   companyDetail?.completed_jobs_count,
+    // ],
+    series: [10 , 5 , 25],
     chart: {
       toolbar: {
         show: false,
@@ -451,103 +452,11 @@ const Dashboard = (props) => {
                     </div>
                   </div>
                 </div>
-                {/* /Past Earnings */}
-                <div className="row">
-                  {/* Plan  Details*/}
-                  {/* <div className="col-xl-6 d-flex">
-                    <div className="card flex-fill">
-                      <div className="card-header">
-                        <div className="row justify-content-between align-items-center">
-                          <div className="col">
-                            <h5 className="card-title">
-                              Membership Plan Details
-                            </h5>
-                          </div>
-                          <div className="col-auto">
-                            <a
-                              href=""
-                              className="btn-right btn btn-sm fund-btn"
-                            >
-                              View
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="card-body">
-                        <div className="row">
-                          <div className="col-md-6 col-sm-6">
-                            <div className="plan-details">
-                              <h4>The Ultima</h4>
-                              <div className="yr-amt">Anually Price</div>
-                              <h4>$1200</h4>
-                              <div className="yr-duration">
-                                Duration: One Year
-                              </div>
-                              <div className="expiry">Expiry: 24 JAN 2022</div>
-                              <Link
-                                to="/membership-plans"
-                                className="btn btn-primary btn-plan"
-                              >
-                                Change Plan
-                              </Link>
-                            </div>
-                          </div>
-                          <div className="col-md-6 col-sm-6">
-                            <div className="plan-feature">
-                              <ul>
-                                <li>12 Project Credits</li>
-                                <li>10 Allowed Services</li>
-                                <li>20 Days visibility</li>
-                                <li>5 Featured Services</li>
-                                <li>20 Days visibility</li>
-                                <li>30 Days Package Expiry</li>
-                                <li>Profile Featured</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
-                  {/* /Plan  Details */}
-                  {/* Notifications */}
-                  <div className="col-xl-6 d-flex">
-                    <div className="card flex-fill">
-                      <div className="card-header">
-                        <div className="row justify-content-between align-items-center align-right">
-                          <div className="col">
-                            <h5 className="card-title">اعلانات</h5>
-                          </div>
-                          <div className="col-auto">
-                            <Link
-                              to="/freelancer-ongoing-projects"
-                              className="btn-right btn btn-sm fund-btn"
-                            >
-                              مشاهده همه
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="pro-body p-0">
-                        <div className="news-feature">
-                          <img
-                            className="avatar-sm rounded-circle"
-                            src={Img_02}
-                            alt="User Image"
-                          />
-                          <p>متن اعلان که این یک اعلان است</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* /Notifications */}
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      {/* /Page Content */}
     </>
   );
 };

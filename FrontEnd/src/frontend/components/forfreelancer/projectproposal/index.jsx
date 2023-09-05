@@ -151,14 +151,14 @@ const Freelancer = (props) => {
                           <div className="col-lg-12 flex-wrap">
                             <div className="projects-card flex-fill">
                               <div className="card-body">
-                                <div className="projects-details align-items-center justify-content-between">
-                                  <div className="projects-details align-items-center">
+                                <div className="projects-details align-items-center justify-content-between ">
+                                  <div className="projects-details align-items-center ">
                                     <div className="proposer-img">
-                                      <img
+                                      {/* <img
                                         src={Developer_01}
                                         alt=""
                                         className="img-fluid"
-                                      />
+                                      /> */}
                                     </div>
                                     <div className="proposer-detail">
                                     <Link to={{pathname : "/project-details" ,
@@ -201,11 +201,11 @@ const Freelancer = (props) => {
                               <div className="card-body">
                                 <div className="projects-details align-items-center">
                                   <div className="proposer-img">
-                                    <img
+                                    {/* <img
                                       src={Developer_01}
                                       alt=""
                                       className="img-fluid"
-                                    />
+                                    /> */}
                                   </div>
                                   <div className="proposer-detail">
                                   <Link to={{pathname : "/project-details" ,
@@ -252,11 +252,11 @@ const Freelancer = (props) => {
                              <div className="projects-details align-items-center justify-content-between">
                                <div className="projects-details align-items-center">
                                  <div className="proposer-img">
-                                   <img
+                                   {/* <img
                                      src={Developer_01}
                                      alt=""
                                      className="img-fluid"
-                                   />
+                                   /> */}
                                  </div>
                                  <div className="proposer-detail">
                                  <Link to={{pathname : "/project-details" ,
