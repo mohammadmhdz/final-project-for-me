@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import ApexCharts from "apexcharts";
@@ -39,31 +39,24 @@ const FreelancerDashboard = (props) => {
       chartprofileoptions
     );
     chartprofileoptionsChart.render();
-
     let invoiceColumn = document.getElementById("chartradial");
     let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
     invoiceChart.render();
+
+    
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
   }, [dispatch]);
+  const [x ,setX]  = useState([])
+  
+ 
 
-  var x = [
-    freelancerRequestsAll?.filter((items) => items.employee === employee.id)
-      .length,
-    freelancerRequestsAll?.filter(
-      (items) => items.status === "بررسی شده" && items.employee === employee.id
-    ).length,
-    freelancerRequestsAll?.filter(
-      (items) =>
-        items.status === "در انتظار بررسی" && items.employee === employee.id
-    ).length,
-    freelancerRequestsAll?.filter(
-      (items) => items.status === "رد شده" && items.employee === employee.id
-    ).length,
-  ];
+
+  
   console.log(freelancerRequestsAll, "sdsd");
+  console.log(x, "CHART");
   // console.log(chartradialOptions.series, "sdsd");
   // console.log(employee, "sdsd");
   // console.log(item, "item")
@@ -137,14 +130,15 @@ const FreelancerDashboard = (props) => {
     },
   };
 
-  var chartradialOptions = {
+  const chartradialOptions = {
     // series: [freelancerRequestsAll?.filter((items) =>items.employee === employee.id).length
     //         , freelancerRequestsAll?.filter((items) => items.status === "بررسی شده" && items.employee === employee.id).length
     //         , freelancerRequestsAll?.filter((items) => items.status === "در انتظار بررسی" && items.employee === employee.id).length
     //         , freelancerRequestsAll?.filter((items) => items.status === "رد شده" && items.employee === employee.id).length
     // ],
     // series: [x[0] * 10, x[1] * 10, x[2] * 10, x[3] * 10],
-    series: [100, 30, 30, 0],
+    series: [10 , 20 , 25 , 5],
+    
     chart: {
       toolbar: {
         show: false,
@@ -601,11 +595,11 @@ const FreelancerDashboard = (props) => {
                                   <div className="col-lg-5 col-md-6">
                                     <div className="earn-img">
                                       <span className=" d-flex  align-center">
-                                        <img
+                                        {/* <img
                                           src={Avatar_1}
                                           alt="logo"
                                           className="img-fluid avatar-xl rounded-circle"
-                                        />{" "}
+                                        />{" "} */}
                                         {/* فناوران جوان آینده | Fanavaran Javan Ayandeh */}
                                         <div className=" earn-info d-flex flex-column me-3">
                                           <div className="titlee">

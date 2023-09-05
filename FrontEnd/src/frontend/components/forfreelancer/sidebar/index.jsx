@@ -29,7 +29,7 @@ const Sidebar = (props) => {
           <div className="me-sm-3 me-md-0 me-lg-3 mt-2 mt-sm-0 mt-md-2 mt-lg-0 align-right">
             <p className="mb-2">خوش آمدید,</p>
             <h3 className="mb-0">
-              <Link to="/freelancer-profile">{localItem?.username}</Link>
+              <Link to="/freelancer-profile">{localItem?.name} {localItem?.last_name}</Link>
             </h3>
             <p className="mb-0">{localItem?.email}</p>
           </div>

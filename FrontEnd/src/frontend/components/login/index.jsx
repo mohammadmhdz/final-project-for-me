@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Logo_01 } from "../imagepath";
 import { useState } from "react";
-
 // redux
 import { login } from "../../../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,6 +55,8 @@ const Login = (props) => {
                       <p1>لطفا صبر کنید...</p1>
                     ) : userLogin.error ? (
                       <p1>رمز شما نادرست میباشد</p1>
+                    ) : userLogin.userInfo?.isAdmin ? (
+                      changeURL("/template-reactjs/admin/index")
                     ) : userLogin.userInfo?.role === "employee" ? (
                       changeURL("/template-reactjs/freelancer-dashboard")
                     ) : userLogin.userInfo?.role === "employer" ? (

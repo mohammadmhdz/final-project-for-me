@@ -34,7 +34,7 @@ const FreelacerCompletedProjects = ({data}) => {
                       <div className="card-body">
                         <div className="projects-details align-items-center">
                         <div className="proposer-img">
-                            <img src={Developer_01} alt="" className="img-fluid" />
+                            {/* <img src={Developer_01} alt="" className="img-fluid" /> */}
                           </div>
                           <div className="proposer-detail">
                            <Link to={{pathname : "/project-details" ,
