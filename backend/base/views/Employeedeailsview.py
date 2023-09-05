@@ -151,7 +151,7 @@ class EducationViewSet(viewsets.ViewSet):
 
 
 class PortfolioViewSet(viewsets.ViewSet):
-    parser_classes = [MultiPartParser]
+    # parser_classes = [MultiPartParser]
 
     
 
