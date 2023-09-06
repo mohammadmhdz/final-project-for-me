@@ -13,6 +13,7 @@ import {
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 import moment from "jalali-moment";
+import Loader from "../../../../Loader";
 // redux
 import { useDispatch, useSelector, useStore } from "react-redux";
 import {
@@ -28,7 +29,7 @@ const FreelancerFavourites = (props) => {
   const employeeFavoriteToggle = useSelector(
     (state) => state.employeeToggleFavorite
   );
-  const { employeeFavorites } = employeeFavorite;
+  const { employeeFavorites , loading } = employeeFavorite;
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
   
   const [testFavorite , setTestFavorite] = useState([])
@@ -96,14 +97,14 @@ const FreelancerFavourites = (props) => {
                 <Sidebar />
               </StickyBox>
             </div>
-            <div className="col-xl-9 col-md-8">
+            { loading ? <Loader/> : <div className="col-xl-9 col-md-8">
               <nav className="user-tabs mb-4"></nav>
               {/* project list */}
               <div className="my-projects-view">
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="pro-post mb-4">
-                      <div className="project-table align-right">
+                    <div className="project-table align-right">
                         <div className="table-responsive">
                           <h3> فرصت های شغلی های نشان شده</h3>
                           <table className="table table-hover table-center mb-0  mt-4 datatable">
@@ -197,7 +198,7 @@ const FreelancerFavourites = (props) => {
                 </div>
               </div>
               {/* project list */}
-            </div>
+            </div>}
           </div>
         </div>
       </div>

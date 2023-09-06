@@ -16,12 +16,13 @@ import moment from "moment";
 // redux
 import { freelancerRequest , companyChangeRequestStatus  } from "../../../../actions/requestsActions";
 import { useDispatch , useSelector } from "react-redux";
+import Loader from "../../../../Loader";
 
 const Projectproposal = (props) => {
   const dispatch = useDispatch();
   const allRequest = useSelector(state => state.freelancerRequest);
   const postStatusChange = useSelector(state => state.companyChangeStatus);
-  const {freelancerRequestsAll} = allRequest
+  const {freelancerRequestsAll , loading} = allRequest
   const location = useLocation();
   const {job} = location.state
   const [statusShow , setStatusShow] = useState("در انتظار بررسی")
@@ -207,7 +208,7 @@ const Projectproposal = (props) => {
                   </div>
                 </div>
                 
-                {freelancerRequestsAll.map((item) => (
+                {loading ? <Loader/> : freelancerRequestsAll.map((item) => (
                   (+item.job === +job.id) &&
                   (item.Company === job.Company) &&
                   (statusShow === item.status) && (

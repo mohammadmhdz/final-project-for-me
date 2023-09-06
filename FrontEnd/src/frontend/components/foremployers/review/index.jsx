@@ -7,12 +7,13 @@ import moment from "jalali-moment";
 // redux
 import {companyReviewGet } from "../../../../actions/companyActions"
 import { useDispatch, useSelector} from "react-redux";
+import Loader from "../../../../Loader";
 
 const Review = (props) => {
    // redux
    const dispatch = useDispatch();
    const companyReview = useSelector((state) => state.companyReview);
-   const {companyReviewList} = companyReview 
+   const {companyReviewList , loading} = companyReview 
 
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -40,6 +41,11 @@ console.log(companyReviewList)
                 <div className="card-header">
                   <h3 className="pro-title without-border">نظرات</h3>
                 </div>
+                {loading ? 
+                <div className="card-body">
+                <Loader/> 
+                </div>
+                :
                 <div className="card-body">
                   <div className="reviews">
                     {companyReviewList.map((item) => (
@@ -74,7 +80,7 @@ console.log(companyReviewList)
                       </p>
                     </div> */}
                   </div>
-                </div>
+                </div>}
               </div>
             </div>
           </div>

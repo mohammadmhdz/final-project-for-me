@@ -8,6 +8,7 @@ import Pendingprojects from "../pendingprojects/index";
 import CompletedProjects from "../completedprojects/index";
 import OngoingProjects from "../ongoingprojects/index";
 import CancelledProjects from "../cancelledprojects/index";
+import Loader from "../../../../Loader";
 // redux
 import { companyJobsListAction } from "../../../../actions/companyActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,33 +31,33 @@ const Manageprojects = (props) => {
     setExpired(false);
   };
   const handleWaiting = () => {
+    setWaiting(true);
     setAllRequest(false);
     setComplete(false);
-    setWaiting(true);
     setActive(false);
     setExpired(false);
   };
   const handleActive = () => {
+    setActive(true);
     setAllRequest(false);
     setComplete(false);
     setWaiting(false);
     setExpired(false);
-    setActive(true);
   };
   const handleComplete = () => {
+    setComplete(true);
     setAllRequest(false);
     setWaiting(false);
     setActive(false);
-    setComplete(true);
     setExpired(false);
   };
   const handleExpired = () => {
+    setExpired(true);
     setAllRequest(false);
     setWaiting(false);
     setActive(false);
     setComplete(false);
     setExpired(false);
-    setExpired(true);
   };
 
   const daysBetween = (input) => {
@@ -67,7 +68,7 @@ const Manageprojects = (props) => {
   // redux
   const dispatch = useDispatch();
   const companyJobsAllList = useSelector((state) => state.companyJobsList);
-  const { companyJobsListArray } = companyJobsAllList;
+  const { companyJobsListArray , loading } = companyJobsAllList;
 
   useEffect(() => {
     dispatch(companyJobsListAction(localItem.associated_id));
@@ -152,7 +153,11 @@ const Manageprojects = (props) => {
                 </ul>
               </nav>
               {/* project list */}
-              {allRequest ? (
+              {loading ? 
+              <div className="card-body">
+              <Loader/> 
+              </div>
+              : allRequest ? (
                 companyJobsListArray.map((item) => (
                   <div className="my-projects-list">
                     <div className="row">

@@ -20,6 +20,7 @@ import moment from "jalali-moment";
 // redux
 import { companyReviewGet , postReview} from "../../../actions/companyActions";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../../Loader";
 
 export const CompanyReview = ({companyId}) => {
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
@@ -27,7 +28,7 @@ export const CompanyReview = ({companyId}) => {
   const dispatch = useDispatch();
   const companyReviewReducer = useSelector((state) => state.companyReview);
   const companyPostReviewReducer = useSelector((state) => state.companyReviewPost);
-  const { companyReviewList } = companyReviewReducer;
+  const { companyReviewList , loading} = companyReviewReducer;
   const { postDataArray } = companyPostReviewReducer;
   const [reviewData , setReviewData ] = useState()
 
@@ -57,7 +58,7 @@ export const CompanyReview = ({companyId}) => {
         <div className="pro-post widget-box company-post align-right">
           <h3 className="pro-title">نظرات</h3>
 
-          {companyReviewList?.map((items) => (
+          {loading ? <Loader/> :  companyReviewList?.map((items) => (
             items.status === "فعال" ? (
 
             <div className="reviews company-review">
