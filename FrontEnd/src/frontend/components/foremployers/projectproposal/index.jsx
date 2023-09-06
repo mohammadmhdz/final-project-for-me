@@ -118,7 +118,7 @@ const Projectproposal = (props) => {
                           <div className="project-info">
                           <Link   className="text-success" 
                                          to={{pathname : "/company-profile" ,
-                                         state : {companyIdInput: +job.Company } 
+                                         state : {companyIdInput: +job.company?.id } 
                                     }}>
                                  {job.company.Name}
                                   </Link>
