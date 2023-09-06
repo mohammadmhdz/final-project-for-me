@@ -276,7 +276,8 @@ const handleSubmit = (e) => {
                             <input
                              onChange={handleChange}
                              id="formatData?.username"
-                             placeholder={formData?.user?.username}
+                             defaultValue={formData?.user?.username}
+                            //  placeholder={formData?.user?.username}
                              type="text" className="form-control"  />
                           </div>
                           <div className="form-group col-md-6">
@@ -284,7 +285,8 @@ const handleSubmit = (e) => {
                             <input
                              onChange={handleChange}
                              id="email"
-                             placeholder={formData?.user?.email}
+                            //  placeholder={formData?.user?.email}
+                             defaultValue={formData?.user?.email}
                              type="email" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
@@ -292,7 +294,8 @@ const handleSubmit = (e) => {
                             <input
                             onChange={handleChange}
                             id="first_name"
-                            placeholder={formData?.user?.first_name}
+                            // placeholder={formData?.user?.first_name}
+                            defaultValue={formData?.user?.first_name}
                             type="text" className="form-control" />
                           </div>
 
@@ -301,7 +304,8 @@ const handleSubmit = (e) => {
                             <input 
                             onChange={handleChange}
                             id="last_name"
-                            placeholder={formData?.user?.last_name}
+                            // placeholder={formData?.user?.last_name}
+                            defaultValue={formData?.user?.last_name}
                             type="email" className="form-control" />
                           </div>
                           <div className="form-group col-md-6">
@@ -309,7 +313,8 @@ const handleSubmit = (e) => {
                             <select
                               onChange={handleChange}
                               id="gender"
-                              placeholder={formData?.user?.gender}
+                              // placeholder={formData?.user?.gender}
+                              defaultValue={formData?.user?.gender}
                               name="price"
                               className="form-control select"
                             >
@@ -323,7 +328,8 @@ const handleSubmit = (e) => {
                             <select
                               onChange={handleChange}
                               id="cooperation_type"
-                              placeholder={formData?.user?.gender}
+                              // placeholder={formData?.user?.gender}
+                              defaultValue={formData?.user?.gender}
                               className="form-control select"
                             >
                             <option>انتخاب شما : {formData?.cooperation_type}</option>
@@ -340,7 +346,8 @@ const handleSubmit = (e) => {
                             <label> زبان </label>
                             <input
                             onChange={(e) =>handleLanguageArray(e)}
-                            placeholder={item.language}
+                            // placeholder={item.language}
+                            defaultValue={item.language}
                             id={index}
                             name="language"
                             type="text" className="form-control" />
@@ -351,6 +358,7 @@ const handleSubmit = (e) => {
                               onChange={handleLanguageArray}
                               id={index}
                               name="rate"
+                              defaultValue={item.rate}
                               className="form-control select"
                             >
                               <option >انتخاب شما : {item.rate}</option>
@@ -440,9 +448,9 @@ const handleSubmit = (e) => {
                               onChange={handleChange}
                               id="about"
                               placeholder={formData?.about}
+                              defaultValue={formData?.about}
                               className="form-control"
                               rows={5}
-                              defaultValue={""}
                             />
                           </div>
                         </div>

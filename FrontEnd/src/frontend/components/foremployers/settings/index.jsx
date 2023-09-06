@@ -98,7 +98,8 @@ const Settings = (props) => {
                             <input
                               onChange={handleChange}
                               id="Email"
-                              placeholder={companyDetail.company_data?.Email}
+                              // placeholder={companyDetail.company_data?.Email}
+                              defaultValue={companyDetail.company_data?.Email}
                               type="email"
                               className="form-control"
                             />
@@ -108,7 +109,8 @@ const Settings = (props) => {
                             <input
                               onChange={handleChange}
                               id="Website"
-                              placeholder={companyDetail.company_data?.Website}
+                              // placeholder={companyDetail.company_data?.Website}
+                              defaultValue={companyDetail.company_data?.Website}
                               type="email"
                               className="form-control"
                             />
@@ -118,7 +120,10 @@ const Settings = (props) => {
                             <input
                               onChange={handleChange}
                               id="Owner_name"
-                              placeholder={
+                              // placeholder={
+                              //   companyDetail.company_data?.Owner_name
+                              // }
+                              defaultValue={
                                 companyDetail.company_data?.Owner_name
                               }
                               type="text"
@@ -130,7 +135,8 @@ const Settings = (props) => {
                             <input
                               onChange={handleChange}
                               id="Name"
-                              placeholder={companyDetail.company_data?.Name}
+                              // placeholder={companyDetail.company_data?.Name}
+                              defaultValue={companyDetail.company_data?.Name}
                               type="email"
                               className="form-control"
                             />
@@ -140,7 +146,8 @@ const Settings = (props) => {
                             <input
                               onChange={handleChange}
                               id="Phone"
-                              placeholder={companyDetail.company_data?.Phone}
+                              // placeholder={companyDetail.company_data?.Phone}
+                              defaultValue={companyDetail.company_data?.Phone}
                               type="email"
                               className="form-control"
                             />
@@ -260,7 +267,8 @@ const Settings = (props) => {
                           <input
                             onChange={handleChange}
                             id="facebook"
-                            placeholder={companyDetail.company_data?.facebook}
+                            // placeholder={companyDetail.company_data?.facebook}
+                            defaultValue={companyDetail.company_data?.facebook}
                             type="text"
                             className="form-control"
                           />
@@ -270,7 +278,8 @@ const Settings = (props) => {
                           <input
                             onChange={handleChange}
                             id="linkdin"
-                            placeholder={companyDetail.company_data?.linkdin}
+                            // placeholder={companyDetail.company_data?.linkdin}
+                            defaultValue={companyDetail.company_data?.linkdin}
                             type="text"
                             className="form-control"
                           />
@@ -280,7 +289,8 @@ const Settings = (props) => {
                           <input
                             onChange={handleChange}
                             id="instagram"
-                            placeholder={companyDetail.company_data?.instagram}
+                            // placeholder={companyDetail.company_data?.instagram}
+                            defaultValue={companyDetail.company_data?.instagram}
                             type="text"
                             className="form-control"
                           />
