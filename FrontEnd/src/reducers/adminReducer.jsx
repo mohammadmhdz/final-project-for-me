@@ -68,10 +68,10 @@ export const categoryUpdateDetailsReducer = (state = {}, action) => {
   }
 };
 
-export const categoryPost = (state = { categoryPostList: [] }, action) => {
+export const categoryPost = (state = {}, action) => {
   switch (action.type) {
     case CATEGORY_POST_REQUEST:
-      return { loading: true, categoryPostList: [] };
+      return { loading: true };
 
     case CATEGORY_POST_SUCCESS:
       return {
@@ -93,7 +93,11 @@ export const categoryDeleteReducer = (state = {}, action) => {
       return { loading: true };
 
     case CATEGORY_DELETE_SUCCESS:
-      return { loading: false, success: true };
+      return {
+        loading: false,
+        success: true,
+        categoryupdateList: action.payload,
+      };
 
     case CATEGORY_DELETE_FAIL:
       return { loading: false, error: action.payload };

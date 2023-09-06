@@ -16,6 +16,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from rest_framework.views import APIView
+from django.core.files.base import ContentFile
+from PIL import Image
+import base64
 
 
 

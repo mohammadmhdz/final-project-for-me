@@ -52,7 +52,7 @@ const Freelancer = (props) => {
   const dispatch = useDispatch();
   const freelancerRequests = useSelector((state) => state.freelancerRequest);
   const deleteApplyStatus = useSelector((state) => state.deleteApplyReducer);
-  const { freelancerRequestsAll , loading } = freelancerRequests;
+  const { freelancerRequestsAll, loading } = freelancerRequests;
 
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -148,9 +148,9 @@ const Freelancer = (props) => {
               </nav>
               {/* Proposals list */}
               {/* Proposals */}
-              {loading? 
-              <Loader/>:
-              allRequest ? (
+              {loading ? (
+                <Loader />
+              ) : allRequest ? (
                 requestForEmployee.map((items) => (
                   <div className="proposals-section">
                     {items.status === "در انتظار بررسی" && (
@@ -163,7 +163,10 @@ const Freelancer = (props) => {
                                   <div className="projects-details align-items-center">
                                     <div className="proposer-img">
                                       <img
-                                        src={Developer_01}
+                                        src={
+                                          "http://127.0.0.1:8000" +
+                                          items.company?.image
+                                        }
                                         alt=""
                                         className="img-fluid"
                                       />
@@ -257,10 +260,7 @@ const Freelancer = (props) => {
                                       <li>
                                         {daysBetween(items.send_at)} روز پیش
                                       </li>
-                                      <li className="red">
-                                        رد شده به علت :{" "}
-                                        <span>{items.message}</span>
-                                      </li>
+
                                       <li>
                                         <span style={{ color: "red" }}>
                                           رد شده{" "}
@@ -367,17 +367,13 @@ const Freelancer = (props) => {
               ) : read ? (
                 <FreelacerCompletedProjects data={requestForEmployee} />
               ) : null}
-            
+            </div>
+          </div>
+        </div>
+      </div>
 
-                  </div>
-                  </div>
-                  </div>
-                  </div>
-              
-                  {/* /Page Content */}
-                  {/* The Modal */}
-                 
-          
+      {/* /Page Content */}
+      {/* The Modal */}
     </>
   );
 };

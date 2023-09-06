@@ -17,29 +17,44 @@ import {
 
 const Categories = (props) => {
   const dispatch = useDispatch();
-  const categoryListAll = useSelector((state) => state.categoryListAll);
-  const categoryDetailsUpdate = useSelector(
-    (state) => state.categoryUpdateDetail
-  );
-  const categorypost = useSelector((state) => state.categoryPost);
-  const categorydelete = useSelector((state) => state.categorydelete);
-  const { categories, loading } = categoryListAll;
+
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [editedCategoryName, setEditedCategoryName] = useState("");
   const [editedCategoryid, setEditedCategoryid] = useState("");
   const [addedCategoryName, setAddedCategoryName] = useState("");
   const [deletedCategoryid, setdeletedCategoryid] = useState("");
-
   const [delcategories, setdelcategories] = useState([]);
-  const [addcategories, setaddcategories] = useState([]);
+  const [mock, setmock] = useState([]);
+
+  const categoryListAll = useSelector((state) => state.categoryListAll);
+  const { categories, loading } = categoryListAll;
+
+  const categoryDetailsUpdate = useSelector(
+    (state) => state.categoryUpdateDetail
+  );
+  const {
+    loading: loadingupdate,
+    error: errorupdate,
+    success: successupdate,
+    categoryupdateList: updateCategory,
+  } = categoryDetailsUpdate;
+
+  const categorydelete = useSelector((state) => state.categorydelete);
+
+  const categorypost = useSelector((state) => state.categorypostlistt);
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    categoryPostList: createdCategory,
+  } = categorypost;
 
   useEffect(() => {
     dispatch(categoryListAction());
-  }, [dispatch]);
+  }, [dispatch, updateCategory, createdCategory, successCreate, successupdate]);
 
   const addhandleSubmit = (e) => {
     dispatch(postCategory({ title: addedCategoryName }));
-    dispatch(categoryListAction());
     const closeButton = document.querySelector("#add-category .close");
     closeButton.click();
     setAddedCategoryName("");
@@ -49,7 +64,6 @@ const Categories = (props) => {
     dispatch(
       updateCategoryDetails({ id: editedCategoryid, title: editedCategoryName })
     );
-    dispatch(categoryListAction());
     const closeButton = document.querySelector("#edit-category .close");
     closeButton.click();
   };

@@ -7,13 +7,13 @@ import {
   FREELANCER_APPLY_POST_SUCCESS,
   FREELANCER_APPLY_POST_FAIL,
   //PUT
-  COMPANY_EDIT_APPLY_REQUEST ,
-  COMPANY_EDIT_APPLY_SUCCESS ,
-  COMPANY_EDIT_APPLY_FAIL ,
+  COMPANY_EDIT_APPLY_REQUEST,
+  COMPANY_EDIT_APPLY_SUCCESS,
+  COMPANY_EDIT_APPLY_FAIL,
   //DELETE
-  COMPANY_DELETE_APPLY_REQUEST ,
-  COMPANY_DELETE_APPLY_SUCCESS ,
-  COMPANY_DELETE_APPLY_FAIL, 
+  COMPANY_DELETE_APPLY_REQUEST,
+  COMPANY_DELETE_APPLY_SUCCESS,
+  COMPANY_DELETE_APPLY_FAIL,
 } from "../constant/requestsConstant";
 
 export const freelancerRequestReducer = (
@@ -27,6 +27,7 @@ export const freelancerRequestReducer = (
     case FREELANCER_REQUESTS_SUCCESS:
       return {
         loading: false,
+        success: true,
         freelancerRequestsAll: action.payload,
       };
     case FREELANCER_REQUESTS_FAIL:
@@ -37,10 +38,7 @@ export const freelancerRequestReducer = (
   }
 };
 
-export const postAplliesReducer = (
-  state = { postApplyResult: [] },
-  action
-) => {
+export const postAplliesReducer = (state = { postApplyResult: [] }, action) => {
   switch (action.type) {
     case FREELANCER_APPLY_POST_REQUEST:
       return { loading: true, postApplyResult: [] };
@@ -59,12 +57,12 @@ export const postAplliesReducer = (
 };
 
 // delete apply
-export const deleteApplyReducer  = (
+export const deleteApplyReducer = (
   state = { deleteApplyRequest: [] },
   action
 ) => {
   switch (action.type) {
-    case  COMPANY_DELETE_APPLY_REQUEST:
+    case COMPANY_DELETE_APPLY_REQUEST:
       return { loading: true, deleteApplyRequest: [] };
 
     case COMPANY_DELETE_APPLY_SUCCESS:

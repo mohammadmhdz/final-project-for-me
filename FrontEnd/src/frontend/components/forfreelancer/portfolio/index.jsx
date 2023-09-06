@@ -1,4 +1,4 @@
-import React, { useEffect , useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { Sidebar } from "../sidebar";
@@ -14,17 +14,19 @@ import {
 } from "../../imagepath";
 import Loader from "../../../../Loader";
 
-import { employeePortfolioDetails , addPortofolioEmployee } from "../../../../actions/employeeActions";
+import {
+  employeePortfolioDetails,
+  addPortofolioEmployee,
+} from "../../../../actions/employeeActions";
 import { useDispatch, useSelector } from "react-redux";
 
 const FreelancerPortfolio = (props) => {
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
 
-
   const dispatch = useDispatch();
   const portfolio = useSelector((state) => state.employeePortfolio);
   const addPortfolio = useSelector((state) => state.addPortfolioReducer);
-  const { employeePortfolioArray , loading} = portfolio;
+  const { employeePortfolioArray, loading } = portfolio;
 
   const [postImage, setPostImage] = useState({
     description: "",
@@ -47,18 +49,18 @@ const FreelancerPortfolio = (props) => {
     const file = e.target.files[0];
     const base64 = await convertToBase64(file);
     setPostImage({
-       title : "ارمان ارتباط ویرا",
-       description : base64,
-       employee : localItem.associated_id ,
-       image: null });
+      title: "ارمان ارتباط ویرا",
+      description: base64,
+      employee: localItem.associated_id,
+      image: null,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("here")
-    dispatch(addPortofolioEmployee(postImage))
-  }
-
+    console.log("here");
+    dispatch(addPortofolioEmployee(postImage));
+  };
 
   useEffect(() => {
     dispatch(employeePortfolioDetails(localItem.associated_id));
@@ -81,55 +83,57 @@ const FreelancerPortfolio = (props) => {
                 <Sidebar />
               </StickyBox>
             </div>
-            {loading ? <Loader/> : 
-            <div className="col-xl-9 col-md-8">
-              <div className="portfolio-item">
-                <div className="pro-head p-0 pb-4">
-                  <h3 className="mb-0">پورتفولیو</h3>
-                  <a
-                    className="btn btn-primary back-btn br-0"
-                    data-bs-toggle="modal"
-                    href="#portfolio"
-                  >
-                    + اضافه کردن
-                  </a>
-                </div>
-                
-                <div className="pro-content pt-4 pb-4">
-                  <div className="row">
-                    {employeePortfolioArray.map((item) => (
-                      <div className="col-sm-6 col-lg-4">
-                        <div className="project-widget">
-                          <div className="portfolio-img">
-                            <Image
-                              className="img-fluid"
-                              alt="User Image"
-                              src={`http://127.0.0.1:8000/${item.image}`}
-                            />
-                            <div className="portfolio-live">
-                              <div className="portfolio-content">
-                                <a
-                                  data-bs-toggle="modal"
-                                  href="#portfolio-edit"
-                                  className="port-icon"
-                                >
-                                  <i className="fas fa-pen" />
-                                </a>
-                                <a href="#" className="port-icon me-2">
-                                  <i className="fas fa-trash-alt" />
-                                </a>
+            {loading ? (
+              <Loader />
+            ) : (
+              <div className="col-xl-9 col-md-8">
+                <div className="portfolio-item">
+                  <div className="pro-head p-0 pb-4">
+                    <h3 className="mb-0">پورتفولیو</h3>
+                    <a
+                      className="btn btn-primary back-btn br-0"
+                      data-bs-toggle="modal"
+                      href="#portfolio"
+                    >
+                      + اضافه کردن
+                    </a>
+                  </div>
+
+                  <div className="pro-content pt-4 pb-4">
+                    <div className="row">
+                      {employeePortfolioArray.map((item) => (
+                        <div className="col-sm-6 col-lg-4">
+                          <div className="project-widget">
+                            <div className="portfolio-img">
+                              <Image
+                                className="img-fluid"
+                                alt="User Image"
+                                src={`http://127.0.0.1:8000/${item.image}`}
+                              />
+                              <div className="portfolio-live">
+                                <div className="portfolio-content">
+                                  <a
+                                    data-bs-toggle="modal"
+                                    href="#portfolio-edit"
+                                    className="port-icon"
+                                  >
+                                    <i className="fas fa-pen" />
+                                  </a>
+                                  <a href="#" className="port-icon me-2">
+                                    <i className="fas fa-trash-alt" />
+                                  </a>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="portfolio-detail">
-                            <h3 className="pro-name">{item.title}</h3>
+                            <div className="portfolio-detail">
+                              <h3 className="pro-name">{item.title}</h3>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="col-md-12">
-                    <ul className="paginations">
+                      ))}
+                    </div>
+                    <div className="col-md-12">
+                      {/* <ul className="paginations">
                       <li>
                         <a href="#">
                           {" "}
@@ -155,11 +159,12 @@ const FreelancerPortfolio = (props) => {
                           بعدی <i className="fas fa-angle-left" />
                         </a>
                       </li>
-                    </ul>
+                    </ul> */}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>}
+            )}
           </div>
         </div>
       </div>
@@ -167,7 +172,7 @@ const FreelancerPortfolio = (props) => {
       {/* The Modal */}
       <div className="modal fade" id="portfolio">
         <div className="modal-dialog modal-dialog-centered modal-lg">
-          <div className="modal-content">
+          <div className="modal-content align-right">
             <div className="modal-header">
               <h4>اضافه کردن نمونه کار</h4>
               <span className="modal-close">
@@ -193,7 +198,7 @@ const FreelancerPortfolio = (props) => {
                       </div>
 
                       <label className="br-0 file-upload image-upbtn">
-                        بارگذاری تصاویر         
+                        بارگذاری تصاویر
                         <input
                           type="file"
                           label="Image"
@@ -212,7 +217,10 @@ const FreelancerPortfolio = (props) => {
                   >
                     لغو
                   </a>
-                  <button onClick={(e) => handleSubmit(e)} className="btn btn-primary submit-btn">
+                  <button
+                    onClick={(e) => handleSubmit(e)}
+                    className="btn btn-primary submit-btn me-3"
+                  >
                     تایید
                   </button>
                 </div>
@@ -224,7 +232,7 @@ const FreelancerPortfolio = (props) => {
       {/* The Modal */}
       <div className="modal fade" id="portfolio-edit">
         <div className="modal-dialog modal-dialog-centered modal-lg">
-          <div className="modal-content">
+          <div className="modal-content align-right">
             <div className="modal-header">
               <h4 className="modal-title">اضافه کردن نمونه کار</h4>
               <span className="modal-close">
@@ -262,7 +270,10 @@ const FreelancerPortfolio = (props) => {
                   >
                     لغو
                   </a>
-                  <button onClick={handleSubmit} className="btn btn-primary submit-btn">
+                  <button
+                    onClick={handleSubmit}
+                    className="btn btn-primary submit-btn me-3"
+                  >
                     تایید
                   </button>
                 </div>

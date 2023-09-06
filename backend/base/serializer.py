@@ -173,11 +173,22 @@ class RequestSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
 
+
+
 class PortfolioSerializer(serializers.ModelSerializer):
-    
+    image_data = serializers.CharField(write_only=True)  # New field for base64 image data
+
     class Meta:
         model = Portfolio
-        fields = '__all__'
+        fields = ('id', 'employee', 'title', 'image_data', 'description', 'image')  # Include 'image_data'
+
+    def create(self, validated_data):
+        image_data = validated_data.pop('image_data', None)
+        portfolio = Portfolio.objects.create(**validated_data)
+        if image_data:
+            portfolio.image_data = image_data
+            portfolio.save()
+        return portfolio
 
 
 

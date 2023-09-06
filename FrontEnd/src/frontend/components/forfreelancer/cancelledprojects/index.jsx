@@ -5,7 +5,7 @@ import { Developer_02, Developer_01, Developer_03 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 import moment from "jalali-moment";
 
-const FreelacerCancelledProjects = ({data}) => {
+const FreelacerCancelledProjects = ({ data }) => {
   // useEffect(() => {
   //   document.body.className = "dashboard-page";
   //   return () => {
@@ -13,76 +13,78 @@ const FreelacerCancelledProjects = ({data}) => {
   //   };
   // });
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
-  const daysBetween =(input) => {
-    const now = new Date().getDate()
-    const date = new Date(input).getDate()
-    return now - date
-
-  }
-  console.log(data , " ssss")
+  const daysBetween = (input) => {
+    const now = new Date().getDate();
+    const date = new Date(input).getDate();
+    return now - date;
+  };
+  console.log(data, " ssss");
   return (
     <>
       {/* Page Content */}
       {/* <div className="content"> */}
-      {data?.map((items) => (
-
-        // console.log(items.status === "بررسی شده")
-        items.status === "رد شده" && (
-          <div className="my-projects-list">
-                        <div className="row align-right">
-                          <div className="col-lg-12 flex-wrap">
-                            <div className="projects-cancelled-card flex-fill">
-                              <div className="card-body">
-                                <div className="projects-details align-items-center">
-                                  <div className="proposer-img">
-                                    {/* <img
+      {data?.map(
+        (items) =>
+          // console.log(items.status === "بررسی شده")
+          items.status === "رد شده" && (
+            <div className="my-projects-list">
+              <div className="row align-right">
+                <div className="col-lg-12 flex-wrap">
+                  <div className="projects-cancelled-card flex-fill">
+                    <div className="card-body">
+                      <div className="projects-details align-items-center">
+                        <div className="proposer-img">
+                          {/* <img
                                       src={Developer_01}
                                       alt=""
                                       className="img-fluid"
                                     /> */}
-                                  </div>
-                                  <div className="proposer-detail">
-                                  <Link to={{pathname : "/project-details" ,
-                                               state : {jobIdInput: items.job , employeeId : +associated_id}  
-                                              }}>
-                                    <h4 className="">{items.job_title}</h4>
-                                    </Link>
-                                    <ul className="proposal-details">
-                                      <li className="Bold">
-                                        {" "}<Link to={{pathname : "/company-profile" ,
-                                               state : {companyIdInput: items.Company} 
-                                              }}>
-                                        <div>{items.company_name}</div>
-                                    </Link>
-                                      </li>
-                                      <li>۲ روزپیش</li>
-                                      <li className=" red">
-                                        رد شده به علت :{" "}
-                                        <span>{items.message}</span>
-                                      </li>
-                                      <li className=" red">
-                                        رد شده درتاریخ :{" "}
-                                        <span>
-                                          {" "}
-                                          {moment(items.send_at, "YYYY/MM/DD")
-                                            .locale("fa")
-                                            .format("YYYY/MM/DD")}
-                                        </span>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                        </div>
+                        <div className="proposer-detail">
+                          <Link
+                            to={{
+                              pathname: "/project-details",
+                              state: {
+                                jobIdInput: items.job,
+                                employeeId: +associated_id,
+                              },
+                            }}
+                          >
+                            <h4 className="">{items.job_title}</h4>
+                          </Link>
+                          <ul className="proposal-details">
+                            <li className="Bold">
+                              {" "}
+                              <Link
+                                to={{
+                                  pathname: "/company-profile",
+                                  state: { companyIdInput: items.Company },
+                                }}
+                              >
+                                <div>{items.company_name}</div>
+                              </Link>
+                            </li>
+                            <li>۲ روزپیش</li>
+
+                            <li className=" red">
+                              رد شده درتاریخ :{" "}
+                              <span>
+                                {" "}
+                                {moment(items.send_at, "YYYY/MM/DD")
+                                  .locale("fa")
+                                  .format("YYYY/MM/DD")}
+                              </span>
+                            </li>
+                          </ul>
                         </div>
                       </div>
-            )
-          
-          
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           )
-          )
-      }
+      )}
       {/* </div> */}
 
       <div className="row">

@@ -1,4 +1,4 @@
-import React, { useEffect , useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import {
@@ -29,17 +29,19 @@ const FreelancerFavourites = (props) => {
   const employeeFavoriteToggle = useSelector(
     (state) => state.employeeToggleFavorite
   );
-  const { employeeFavorites , loading } = employeeFavorite;
+  const { employeeFavorites, loading } = employeeFavorite;
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
-  
-  const [testFavorite , setTestFavorite] = useState([])
 
-  const handlefavorite = (e , toggleFavoriteId) => {
+  const [testFavorite, setTestFavorite] = useState([]);
+
+  const handlefavorite = (e, toggleFavoriteId) => {
     // e.preventdefault();
-    setTestFavorite([...testFavorite ,toggleFavoriteId])
-    console.log(toggleFavoriteId)
-    console.log(e)
-    dispatch(employeeToggleFavoriteList(localItem.associated_id , toggleFavoriteId));
+    setTestFavorite([...testFavorite, toggleFavoriteId]);
+    console.log(toggleFavoriteId);
+    console.log(e);
+    dispatch(
+      employeeToggleFavoriteList(localItem.associated_id, toggleFavoriteId)
+    );
     // dispatch(employeeFavoriteList(localItem.associated_id));
   };
   // const test = [];
@@ -97,108 +99,134 @@ const FreelancerFavourites = (props) => {
                 <Sidebar />
               </StickyBox>
             </div>
-            { loading ? <Loader/> : <div className="col-xl-9 col-md-8">
-              <nav className="user-tabs mb-4"></nav>
-              {/* project list */}
-              <div className="my-projects-view">
-                <div className="row">
-                  <div className="col-lg-12">
-                    <div className="pro-post mb-4">
-                    <div className="project-table align-right">
-                        <div className="table-responsive">
-                          <h3> فرصت های شغلی های نشان شده</h3>
-                          <table className="table table-hover table-center mb-0  mt-4 datatable">
-                            <thead className="thead-pink">
-                              <tr>
-                                <th>عنوان شغلی</th>
-                                <th>شرکت</th>
-                                <th>شهر</th>
-                                <th>تاریخ انتشار</th>
-                                <th></th>
-                              </tr>
-                            </thead>
-                            {employeeFavorites.filter(obj => !testFavorite.includes(obj.id)).map((items, index) => {
-                              // console.log(testFavorite , "testFavorite")
-                              // console.log(testFavorite.includes(items.id) , "testFavorite")
-                              // !(testFavorite?.includes(items.id)) && 
-                              return (
-                                 <tbody>
-                                  <tr>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <Link
-                                          to="/project-details"
-                                          className="avatar avatar-md tab-imgcircle ms-2"
-                                        >
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src={company_img1}
-                                            alt="User Image"
-                                          />
-                                        </Link>
-                                        <Link
-                                            to ={{
-                                              pathname: "/project-details",
-                                              state: { jobIdInput: items.id}
-                                            }}
-                                            className="profile-name"
-                                            // tabIndex={-1}
-                                          >
-                                          <span >{items.title}</span>
-                                          </Link>
-                                        <Link to="/project-details">
-                                          {/* <span className="profile-name">
+            {loading ? (
+              <Loader />
+            ) : (
+              <div className="col-xl-9 col-md-8">
+                <nav className="user-tabs mb-4"></nav>
+                {/* project list */}
+                <div className="my-projects-view">
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <div className="pro-post mb-4">
+                        <div className="project-table align-right">
+                          <div className="table-responsive">
+                            <h3> فرصت های شغلی های نشان شده</h3>
+                            <table className="table table-hover table-center mb-0  mt-4 datatable">
+                              <thead className="thead-pink">
+                                <tr>
+                                  <th>عنوان شغلی</th>
+                                  <th>شرکت</th>
+                                  <th>شهر</th>
+                                  <th>نوع حقوق</th>
+                                  <th>نوع همکاری</th>
+                                  <th>تاریخ انتشار</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                              {employeeFavorites
+                                .filter((obj) => !testFavorite.includes(obj.id))
+                                .map((items, index) => {
+                                  // console.log(testFavorite , "testFavorite")
+                                  // console.log(testFavorite.includes(items.id) , "testFavorite")
+                                  // !(testFavorite?.includes(items.id)) &&
+                                  return (
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <h2 className="table-avatar">
+                                            <Link
+                                              to="/project-details"
+                                              className="avatar avatar-md tab-imgcircle ms-2"
+                                            >
+                                              <img
+                                                className="avatar-img rounded-circle"
+                                                src={
+                                                  "http://127.0.0.1:8000" +
+                                                  items.company?.image
+                                                }
+                                                alt="User Image"
+                                              />
+                                            </Link>
+                                            <Link
+                                              to={{
+                                                pathname: "/project-details",
+                                                state: { jobIdInput: items.id },
+                                              }}
+                                              className="profile-name"
+                                              // tabIndex={-1}
+                                            >
+                                              <span>{items.title}</span>
+                                            </Link>
+                                            <Link to="/project-details">
+                                              {/* <span className="profile-name">
                                             
                                           </span> */}
-                                          {/* <span className="rating mt-2">
+                                              {/* <span className="rating mt-2">
                                           <i className="fas fa-star filled" />
                                             <i className="fas fa-star filled" />
                                             <i className="fas fa-star filled" />
                                             <i className="fas fa-star filled" />
                                             <i className="fas fa-star" />
                                           </span> */}
-                                        </Link>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      <div style={{ display: "flex" }}>
-                                      {items.company?.Name}
-                                        {/* {items.job_skills?.map((item) => (
+                                            </Link>
+                                          </h2>
+                                        </td>
+                                        <td>
+                                          <div style={{ display: "flex" }}>
+                                            {items.company?.Name}
+                                            {/* {items.job_skills?.map((item) => (
                                           <div>{item.title}</div>
                                         ))} */}
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        {items.company?.city?.name}
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      {moment(items.published_at, "YYYY/MM/DD")
-                                        .locale("fa")
-                                        .format("YYYY/MM/DD")}
-                                    </td>
-                                    <td>
-                                      <a className="fav">
-                                        <i
-                                          className="fas fa-heart filled"
-                                          onClick={(e) => handlefavorite(e , items.id)}
-                                        />
-                                      </a>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              );
-                            })}
-                          </table>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <h2 className="table-avatar">
+                                            {items.company?.city?.name}
+                                          </h2>
+                                        </td>
+                                        <td>
+                                          <h2 className="table-avatar">
+                                            {items.salary_type}
+                                          </h2>
+                                        </td>
+                                        <td>
+                                          <h2 className="table-avatar">
+                                            {items.job_type}
+                                          </h2>
+                                        </td>
+                                        <td>
+                                          {moment(
+                                            items.published_at,
+                                            "YYYY/MM/DD"
+                                          )
+                                            .locale("fa")
+                                            .format("YYYY/MM/DD")}
+                                        </td>
+                                        <td>
+                                          <a className="fav">
+                                            <i
+                                              className="fas fa-heart filled"
+                                              onClick={(e) =>
+                                                handlefavorite(e, items.id)
+                                              }
+                                            />
+                                          </a>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  );
+                                })}
+                            </table>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                {/* project list */}
               </div>
-              {/* project list */}
-            </div>}
+            )}
           </div>
         </div>
       </div>

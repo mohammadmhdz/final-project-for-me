@@ -3,15 +3,18 @@ import { Link } from "react-router-dom";
 import { Logo, avatar_1 } from "../imagepath";
 // redux
 import { logout } from "../../../actions/userActions";
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { employeePortfolioDetails } from "../../../actions/employeeActions";
 
 const Header = (props) => {
   // add by mhdz
   const localItem = JSON.parse(localStorage?.getItem("userInfo"));
   const dispatch = useDispatch();
-  
-  console.log(localItem)
 
+  console.log(localItem);
+  const employeedetails = useSelector((state) => state.employeeDetails);
+  const { employee, loading } = employeedetails;
+  console.log(employee);
 
   const [isSideMenu, setSideMenu] = useState("");
   const [isSideMenu1, setSideMenu1] = useState("");
@@ -68,6 +71,7 @@ const Header = (props) => {
 
   useEffect(() => {
     showButton();
+    dispatch(employeePortfolioDetails(localItem?.associated_id));
   }, []);
   window.addEventListener("resize", showButton);
 
@@ -80,8 +84,8 @@ const Header = (props) => {
   };
 
   const handleLogout = (e) => {
-    dispatch(logout())
-  }
+    dispatch(logout());
+  };
   window.addEventListener("scroll", changeBackground);
   return (
     <>
@@ -155,24 +159,43 @@ const Header = (props) => {
                       data-bs-toggle="dropdown"
                     >
                       <span className="user-img  ms-2">
-                        <img src={avatar_1} alt="" />
+                        <img
+                          src={"http://127.0.0.1:8000" + employee.image}
+                          alt=""
+                        />
                       </span>
                       <span className=" ms-2">{localItem?.username}</span>
                     </Link>
 
                     <div className="dropdown-menu emp">
-                      
-                      <Link className="dropdown-item " to={localItem.role === "employer" ?  "/dashboard" :"/freelancer-dashboard" }>
-
+                      <Link
+                        className="dropdown-item "
+                        to={
+                          localItem.role === "employer"
+                            ? "/dashboard"
+                            : "/freelancer-dashboard"
+                        }
+                      >
                         <i className="material-icons  ms-1">verified_user</i>{" "}
                         پروفایل من
                       </Link>
-                      <Link className="dropdown-item " to={localItem.role === "employer" ?  "/profile-settings" :"/freelancer-profile-settings" }>
+                      <Link
+                        className="dropdown-item "
+                        to={
+                          localItem.role === "employer"
+                            ? "/profile-settings"
+                            : "/freelancer-profile-settings"
+                        }
+                      >
                         {" "}
                         <i className="material-icons  ms-1">settings</i>
                         تنظیمات
                       </Link>
-                      <Link onClick={handleLogout} className="dropdown-item" to="/">
+                      <Link
+                        onClick={handleLogout}
+                        className="dropdown-item"
+                        to="/"
+                      >
                         <i className="material-icons  ms-1">
                           power_settings_new
                         </i>{" "}
@@ -181,18 +204,18 @@ const Header = (props) => {
                     </div>
                   </li>
                   <li className={pathname === "post-project" ? "active" : ""}>
-                    {localItem.role === "employee"?
-                    (<Link to="/project" className="login-btn">
-                      لیست کارها
-                    </Link>)
-                     : 
-                     (<Link to="/post-project" className="login-btn">
-                     ایجاد کار
-                   </Link>)}
+                    {localItem.role === "employee" ? (
+                      <Link to="/project" className="login-btn">
+                        لیست کارها
+                      </Link>
+                    ) : (
+                      <Link to="/post-project" className="login-btn">
+                        ایجاد کار
+                      </Link>
+                    )}
                   </li>
                 </ul>
               ) : (
-                
                 <ul className="nav header-navbar-rht">
                   <li className={pathname === "register" ? "active" : ""}>
                     <Link to="/register" className="reg-btn align-right">

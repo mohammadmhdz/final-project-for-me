@@ -398,6 +398,7 @@ class Portfolio(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=100)
     image = models.ImageField(null=True, blank=True)
+    image_data = models.TextField(null=True, blank=True)
     description  = models.TextField(max_length=1000, null=True , blank=True)
 
 
@@ -419,6 +420,7 @@ class Request(models.Model):
     status = models.CharField(max_length=15 , choices=Requststatus , default='درانتظار بررسی')
     status_change_date = models.DateTimeField(auto_now=True)
 
+
     def save(self, *args, **kwargs):
         if self.pk:  # Check if the instance has already been saved (is being updated)
             original_request = Request.objects.get(pk=self.pk)
@@ -439,6 +441,8 @@ class Request(models.Model):
     @property
     def company_name(self):
         return self.job.Company.Name if self.job else None
+    
+    
 
     @property
     def job_title(self):

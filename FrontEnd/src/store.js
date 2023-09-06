@@ -64,7 +64,7 @@ const reducer = combineReducers({
   jobList: jobListReducer,
   jobsDetails: jobsDetailsReducer,
   jobsPost: jobsPostRedducer,
-  jobsEdit : jobEditDetailsReducer,
+  jobsEdit: jobEditDetailsReducer,
   jobsPostRequirments: jobsPostRequirmentsReducer,
   jobUpdateDetail: jobDeleteReducer,
   jobdelete: jobUpdateDetailsReducer,
@@ -98,7 +98,7 @@ const reducer = combineReducers({
   //
   categoryListAll: categoryListReducer,
   categoryUpdateDetail: categoryUpdateDetailsReducer,
-  categorypost: categoryPost,
+  categorypostlistt: categoryPost,
   categorydelete: categoryDeleteReducer,
   //
   skillListAll: skillListReducer,

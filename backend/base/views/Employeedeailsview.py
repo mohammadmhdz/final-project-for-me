@@ -16,6 +16,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser
+import base64
+from django.core.files.base import ContentFile
 
 
 class LanguageViewSet(viewsets.ViewSet):
@@ -167,7 +169,21 @@ class PortfolioViewSet(viewsets.ViewSet):
         serializer = PortfolioSerializer(portfolio)
         return Response(serializer.data)
 
+    # def create(self, request):
+    #     serializer = PortfolioSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response({'msg': 'Data created'}, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
     def create(self, request):
+        image_data = request.data.get('image_data', None)
+        if image_data:
+            image_data = base64.b64decode(image_data)
+            image_file = ContentFile(image_data, 'image.jpg')
+            request.data['image'] = image_file
+
         serializer = PortfolioSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

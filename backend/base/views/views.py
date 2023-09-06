@@ -176,9 +176,11 @@ class ApplyViewSet(viewsets.ViewSet):
             company_name = instance.company_name
             job_title = instance.job_title
             employee_user = instance.employee_user
+            company_image = instance.company_image
             item['company_name'] = company_name
             item['job_title'] = job_title
             item['employee_user']=employee_user
+            
 
         return Response(data)
     
@@ -189,11 +191,13 @@ class ApplyViewSet(viewsets.ViewSet):
         company_name = apply.company_name
         job_title = apply.job_title
         employee_user = apply.employee_user
+        company_image = apply.company_image
         serializer =RequestSerializer(apply)
         data = serializer.data
         data['company_name'] = company_name
         data['job_title']=job_title
         data['employee_user']=employee_user
+        
         return Response(data)
         
 

@@ -20,7 +20,7 @@ const FreelancerDashboard = (props) => {
   const dispatch = useDispatch();
   const employeeList = useSelector((state) => state.employeeDetails);
   const freelancerRequests = useSelector((state) => state.freelancerRequest);
-  const { freelancerRequestsAll } = freelancerRequests;
+  const { freelancerRequestsAll, loading, success } = freelancerRequests;
   const { employee } = employeeList;
 
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
@@ -28,35 +28,27 @@ const FreelancerDashboard = (props) => {
   // const { employee } = employeeList;
   // const emloyeeDetails = useSelector((state) => state.employeeListDetails);
   useEffect(() => {
-    // redux
-    // employeeDetails ra taghir dadim
     dispatch(employeeDetails(localItem.associated_id));
     dispatch(freelancerRequest());
-
-    let chartprofileoptionsColumn = document.getElementById("chartprofile");
-    let chartprofileoptionsChart = new ApexCharts(
-      chartprofileoptionsColumn,
-      chartprofileoptions
-    );
-    chartprofileoptionsChart.render();
-    let invoiceColumn = document.getElementById("chartradial");
-    let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
-    invoiceChart.render();
-
-    
-    document.body.className = "dashboard-page";
-    return () => {
-      document.body.className = "";
-    };
   }, [dispatch]);
-  const [x ,setX]  = useState([])
-  
- 
 
+  useEffect(() => {
+    if (success) {
+      let chartprofileoptionsColumn = document.getElementById("chartprofile");
+      let chartprofileoptionsChart = new ApexCharts(
+        chartprofileoptionsColumn,
+        chartprofileoptions
+      );
+      chartprofileoptionsChart.render();
 
-  
-  console.log(freelancerRequestsAll, "sdsd");
-  console.log(x, "CHART");
+      let invoiceColumn = document.getElementById("chartradial");
+      let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
+      invoiceChart.render();
+    }
+  }, [success]);
+  const [x, setX] = useState([]);
+
+  // console.log(x, "CHART");
   // console.log(chartradialOptions.series, "sdsd");
   // console.log(employee, "sdsd");
   // console.log(item, "item")
@@ -129,7 +121,18 @@ const FreelancerDashboard = (props) => {
       },
     },
   };
+  const declinedCount = freelancerRequestsAll.filter(
+    (item) => item.status === "رد شده"
+  ).length;
+  const checkCount = freelancerRequestsAll.filter(
+    (item) => item.status === "بررسی شده"
+  ).length;
+  const pendingCount = freelancerRequestsAll.filter(
+    (item) => item.status === "در انتظار بررسی"
+  ).length;
+  const totalCount = freelancerRequestsAll.length;
 
+  const dataaa = 50;
   const chartradialOptions = {
     // series: [freelancerRequestsAll?.filter((items) =>items.employee === employee.id).length
     //         , freelancerRequestsAll?.filter((items) => items.status === "بررسی شده" && items.employee === employee.id).length
@@ -137,8 +140,13 @@ const FreelancerDashboard = (props) => {
     //         , freelancerRequestsAll?.filter((items) => items.status === "رد شده" && items.employee === employee.id).length
     // ],
     // series: [x[0] * 10, x[1] * 10, x[2] * 10, x[3] * 10],
-    series: [10 , 20 , 25 , 5],
-    
+    series: [
+      100,
+      (checkCount / totalCount) * 100,
+      (pendingCount / totalCount) * 100,
+      (declinedCount / totalCount) * 100,
+    ],
+
     chart: {
       toolbar: {
         show: false,
