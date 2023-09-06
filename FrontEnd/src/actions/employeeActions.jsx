@@ -243,10 +243,11 @@ export const addPortofolioEmployee = (input) => async (dispatch) => {
   
                 const { data } = await axios.post(
                   `http://localhost:8000/api/portfolio/`,
-                  {title : input.title,
-                    description : input.description,
-                    employee : input.employee,
-                    image : input.image,
+                  {
+                    title : "input.title",
+                    description : "input.description"                    ,
+                    employee : 1,
+                    image_data : input?.image,
                   },
                   config
                 );
