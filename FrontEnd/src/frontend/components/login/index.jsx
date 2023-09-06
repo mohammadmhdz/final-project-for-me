@@ -35,7 +35,7 @@ const Login = (props) => {
       {/* Page Content */}
       <div className="content">
         <div className="container">
-          <div className="row justify-content-center mt-5">
+          <div className="row justify-content-center mt-5 align-right">
             <div className="col-md-6 ">
               {/* Login Content */}
               <div className="account-content">
@@ -54,7 +54,9 @@ const Login = (props) => {
                     {userLogin.loading ? (
                       <p1>لطفا صبر کنید...</p1>
                     ) : userLogin.error ? (
-                      <p1>رمز شما نادرست میباشد</p1>
+                      <p1 className="align-right">
+                        رمز یا نام کاربری شما نادرست میباشد
+                      </p1>
                     ) : userLogin.userInfo?.isAdmin ? (
                       changeURL("/template-reactjs/admin/index")
                     ) : userLogin.userInfo?.role === "employee" ? (
@@ -70,25 +72,25 @@ const Login = (props) => {
                       action="/template-reactjs/dashboard"
                     >
                       <div className="form-group form-focus">
+                        <label className=" mb-2 ">ایمیل</label>
                         <input
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           type="text"
                           className="form-control floating"
                         />
-                        <label className="focus-label">ایمیل</label>
                       </div>
                       <div className="form-group form-focus">
+                        <label className="mb-2 mt-4">رمزعبور</label>
                         <input
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           type="password"
-                          className="form-control floating"
+                          className="form-control floating mb-2"
                         />
-                        <label className="focus-label">رمزعبور</label>
                       </div>
                       <div className="form-group align-right">
-                        <label className="custom_check">
+                        <label className="custom_check mt-5">
                           <input type="checkbox" name="rem_password" />
                           به خاطر بسپار
                           <span className="checkmark" />

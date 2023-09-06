@@ -168,10 +168,10 @@ class City(models.Model):
 
 
 class Company(models.Model):  
-     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+     user = models.OneToOneField(User, on_delete=models.CASCADE)
      Name = models.CharField(max_length=100)
      image = models.ImageField(null=True, blank=True,default='/img-3.png')
-     about  = models.TextField(max_length=1000)
+     about  = models.TextField(max_length=1000,null=True)
      founded_at =  models.DateField(auto_now_add=True)
      city = models.ForeignKey(City ,on_delete=models.SET_NULL,null=True)
      population =models.CharField(max_length=15 , choices=Population)

@@ -1,14 +1,44 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Logo_01 } from "../imagepath";
+import Message from "../../../Message";
+import Loader from "../../../Loader";
+import { register } from "../../../actions/userActions";
 
 const Register = (props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const redirect = location.search ? location.search.split("=")[1] : "/";
+
+  const userRegister = useSelector((state) => state.userRegister);
+  const { error, loading, userInfo } = userRegister;
   useEffect(() => {
     document.body.className = "account-page";
     return () => {
       document.body.className = "";
     };
   });
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    if (password != confirmPassword) {
+      setMessage("رمزهای عبور یکسان نیست");
+    } else {
+      dispatch(register(email, password));
+    }
+  };
   return (
     <>
       {/* Page Content */}
@@ -61,18 +91,22 @@ const Register = (props) => {
                         id="developer"
                         className="tab-pane fade active show"
                       >
-                        <form action="/template-reactjs/onboardScreen">
+                        {message && (
+                          <Message variant="danger">{message}</Message>
+                        )}
+                        {/* {error && <Message variant="danger">{error}</Message>}
+                        {loading && <Loader />} */}
+                        <form
+                          onSubmit={submitHandler}
+                          //  action="/template-reactjs/onboardScreen"
+                        >
                           <div className="form-group form-focus">
                             <input
                               type="email"
                               className="form-control floating"
-                            />
-                            <label className="focus-label">نام کاربری</label>
-                          </div>
-                          <div className="form-group form-focus">
-                            <input
-                              type="email"
-                              className="form-control floating"
+                              style={{ textAlign: "Left" }}
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
                             />
                             <label className="focus-label">ایمیل </label>
                           </div>
@@ -80,6 +114,9 @@ const Register = (props) => {
                             <input
                               type="password"
                               className="form-control floating"
+                              style={{ textAlign: "Left" }}
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
                             />
                             <label className="focus-label">رمزعبور</label>
                           </div>
@@ -87,6 +124,11 @@ const Register = (props) => {
                             <input
                               type="password"
                               className="form-control floating"
+                              style={{ textAlign: "Left" }}
+                              value={confirmPassword}
+                              onChange={(e) =>
+                                setConfirmPassword(e.target.value)
+                              }
                             />
                             <label className="focus-label">
                               تایید رمز عبور
@@ -94,17 +136,21 @@ const Register = (props) => {
                           </div>
                           <div className="dont-have align-right">
                             <label className="custom_check ">
-                              <input type="checkbox" name="rem_password" />
+                              <input
+                                type="checkbox"
+                                name="rem_password"
+                                style={{ textAlign: "Left" }}
+                                onChange={handleCheckboxChange}
+                              />
                               با{" "}
-                              <Link to="/privacy-policy">
-                                قوانین و ضوابت
-                              </Link>{" "}
+                              <Link to="/privacy-policy">قوانین و ضوابت</Link>{" "}
                               کمک کار موافقم <span className="checkmark" />
                             </label>
                           </div>
                           <button
                             className="btn btn-primary btn-block btn-lg login-btn"
                             type="submit"
+                            disabled={!isChecked}
                           >
                             موافقت
                           </button>

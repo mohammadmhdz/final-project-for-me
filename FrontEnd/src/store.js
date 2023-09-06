@@ -25,7 +25,7 @@ import {
   companyChangeStatusReducer,
   deleteApplyReducer,
 } from "./reducers/requestsReducer";
-import { userLoginReducer } from "./reducers/userReducer";
+import { userLoginReducer, userRegisterReducer } from "./reducers/userReducer";
 import {
   companyListReducer,
   companyDetailsReducer,
@@ -81,6 +81,7 @@ const reducer = combineReducers({
   deleteApply: deleteApplyReducer,
   //
   userLogin: userLoginReducer,
+  userRegister: userRegisterReducer,
   //
   companyListAll: companyListReducer,
   companyDetails: companyDetailsReducer,

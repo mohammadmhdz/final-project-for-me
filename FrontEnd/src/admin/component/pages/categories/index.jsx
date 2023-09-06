@@ -30,11 +30,19 @@ const Categories = (props) => {
   const [addedCategoryName, setAddedCategoryName] = useState("");
   const [deletedCategoryid, setdeletedCategoryid] = useState("");
 
+  const [delcategories, setdelcategories] = useState([]);
+  const [addcategories, setaddcategories] = useState([]);
+
+  useEffect(() => {
+    dispatch(categoryListAction());
+  }, [dispatch]);
+
   const addhandleSubmit = (e) => {
     dispatch(postCategory({ title: addedCategoryName }));
     dispatch(categoryListAction());
     const closeButton = document.querySelector("#add-category .close");
     closeButton.click();
+    setAddedCategoryName("");
   };
 
   const handleSubmit = (e) => {
@@ -47,6 +55,7 @@ const Categories = (props) => {
   };
 
   const handledeleteSubmit = (e) => {
+    setdelcategories([...delcategories, deletedCategoryid]);
     dispatch(deletecategory(deletedCategoryid));
     dispatch(categoryListAction());
     const cancelLink = document.querySelector("#cancelLink");
@@ -104,10 +113,6 @@ const Categories = (props) => {
     },
   ];
 
-  useEffect(() => {
-    dispatch(categoryListAction());
-  }, [dispatch]);
-
   return (
     <>
       <>
@@ -147,6 +152,7 @@ const Categories = (props) => {
                       ) : (
                         <div className="table-responsive">
                           <Table
+                            id="#table"
                             pagination={{
                               total: data.length,
                               showTotal: (total, range) =>
@@ -158,7 +164,9 @@ const Categories = (props) => {
                             className="table role"
                             style={{ overflowX: "auto" }}
                             columns={columns}
-                            dataSource={data}
+                            dataSource={data.filter(
+                              (obj) => !delcategories.includes(obj.id)
+                            )}
                             rowKey={(record) => record.id}
                           />
                         </div>
@@ -188,12 +196,14 @@ const Categories = (props) => {
                   </div>
                   {/* Modal body */}
                   <div className="modal-body">
-                    <form>
+                    <formn>
                       <div className="form-group">
                         <label>نام دسته بندی</label>
                         <input
+                          id="inputtitle"
                           type="text"
                           className="form-control"
+                          value={addedCategoryName}
                           placeholder="نام دسته بندی را وارد کنید"
                           onChange={(e) => setAddedCategoryName(e.target.value)}
                         />
@@ -210,7 +220,7 @@ const Categories = (props) => {
                           تایید
                         </button>
                       </div>
-                    </form>
+                    </formn>
                   </div>
                 </div>
               </div>

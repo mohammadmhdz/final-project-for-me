@@ -46,7 +46,6 @@ def registerUser(request):
     data = request.data
     try:
         user = User.objects.create(
-            first_name=data['name'],
             username=data['email'],
             email=data['email'],
             password=make_password(data['password'])
@@ -87,6 +86,9 @@ def getEmployees(request):
     Employees = Employee.objects.all()
     serializer = EmployeeSerializer(Employees, many=True)
     return Response(serializer.data)
+
+
+
 
 
 
