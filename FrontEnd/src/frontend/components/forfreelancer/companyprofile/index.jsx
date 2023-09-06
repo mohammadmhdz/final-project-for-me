@@ -17,7 +17,8 @@ import CompanyProject from "../companyproject";
 import { CompanyReview } from "../../CompanyDetails/companyreview";
 // for redux using
 import { useDispatch, useSelector } from "react-redux";
-import { companyDetails } from "../../../../actions/companyActions";
+import { companyDetails , loading } from "../../../../actions/companyActions";
+import Loader from "../../../../Loader";
 
 const CompanyProfile = (props) => {
   const location = useLocation();
@@ -46,7 +47,7 @@ const CompanyProfile = (props) => {
   // for using redux in our project
   const dispatch = useDispatch();
   const companyDetailsDispatch = useSelector((state) => state.companyDetails);
-  const { companyDetail } = companyDetailsDispatch;
+  const { companyDetail ,loading } = companyDetailsDispatch;
   // console.log(error, loading, jobs);
 
   useEffect(() => {
@@ -121,7 +122,7 @@ const CompanyProfile = (props) => {
                       <Link
                         onClick={handleAbout}
                         className={activeAbout ? "nav-link active-about" : "nav-link" }
-                        to="/company-profile"
+                        // to="/company-profile"
                       >
                         <img src={Tab_icon_13} alt="User Image" />
                         <p className="bg-red">درباره ما</p>
@@ -160,15 +161,18 @@ const CompanyProfile = (props) => {
                 ) : activeAbout ? (
                   <div className="pro-post widget-box company-post abouts-detail align-right">
                     <h3 className="pro-title">درباره ما</h3>
+                  {loading ? <Loader/>:
                     <div className="pro-content">
                       <p>{companyDetail.company_data?.about}</p>
                     </div>
+                      }  
                   </div>
                 ) : null}
                 {/* /About Tab Content */}
               </div>
             </div>
             {/* profile Sidebar */}
+            {loading? <Loader/> :
             <div className="col-lg-4 col-md-12 sidebar-right theiaStickySidebar company-profile align-right">
               {/* About Widget */}
               <div className="pro-post widget-box about-widget profile-overview">
@@ -291,8 +295,9 @@ const CompanyProfile = (props) => {
               </div>
               {/* /Social Widget */}
             </div>
+          }
             {/* /Profile Sidebar */}
-          </div>
+            </div>
         </div>
       </div>
       {/* /Page Content */}

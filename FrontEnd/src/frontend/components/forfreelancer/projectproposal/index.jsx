@@ -6,6 +6,7 @@ import { Sidebar } from "../sidebar";
 import ReactSummernote from "react-summernote";
 import "react-summernote/dist/react-summernote.css"; // import styles
 import moment from "jalali-moment";
+import Loader from "../../../../Loader";
 
 import FreelacerOngoingProjects from "../ongoingprojects/index";
 import FreelacerCancelledProjects from "../cancelledprojects/index";
@@ -51,7 +52,7 @@ const Freelancer = (props) => {
   const dispatch = useDispatch();
   const freelancerRequests = useSelector((state) => state.freelancerRequest);
   const deleteApplyStatus = useSelector((state) => state.deleteApplyReducer);
-  const { freelancerRequestsAll } = freelancerRequests;
+  const { freelancerRequestsAll , loading } = freelancerRequests;
 
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -147,7 +148,9 @@ const Freelancer = (props) => {
               </nav>
               {/* Proposals list */}
               {/* Proposals */}
-              {allRequest ? (
+              {loading? 
+              <Loader/>:
+              allRequest ? (
                 requestForEmployee.map((items) => (
                   <div className="proposals-section">
                     {items.status === "در انتظار بررسی" && (
@@ -365,28 +368,12 @@ const Freelancer = (props) => {
                 <FreelacerCompletedProjects data={requestForEmployee} />
               ) : null}
             
-              <div className="row">
-                <div className="col-md-12">
-                  <ul className="paginations freelancer">
-                    <li>
-                      <a href="#">
-                        {" "}
-                        </a>
-
-                    </li>
-                    <li>
-                      <a href="#">
-                        بعدی <i className="fas fa-angle-left" />
-                      </a>
-                    </li>
-                  </ul>
 
                   </div>
                   </div>
                   </div>
                   </div>
-                  </div>
-                  </div>
+              
                   {/* /Page Content */}
                   {/* The Modal */}
                  

@@ -13,7 +13,7 @@ import {
   Tab_icon_13,
 } from "../../imagepath";
 import moment from "jalali-moment";
-
+import Loader from "../../../../Loader";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { companyJobsListAction } from "../../../../actions/companyActions";
@@ -22,7 +22,7 @@ const CompanyProject = ({companyId}) => {
   // for using redux in our project
   const dispatch = useDispatch();
   const companyJobs = useSelector((state) => state.companyJobsList);
-  const { companyJobsListArray } = companyJobs;
+  const { companyJobsListArray , loading} = companyJobs;
   console.log(companyJobsListArray);
   useEffect(() => {
     dispatch(companyJobsListAction(companyId));
@@ -44,7 +44,7 @@ const CompanyProject = ({companyId}) => {
     <>
           <div className="pro-post widget-box company-post align-right">
             <h3 className="pro-title">فرصت های شغلی</h3>
-      {companyJobsListArray?.map((items, index) => (
+      {loading ? <Loader/> : companyJobsListArray?.map((items, index) => (
         items.status === "فعال" ? (
           <div className="projects-card flex-fill project-company">
               <div className="card-body">

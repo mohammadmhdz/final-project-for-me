@@ -12,6 +12,8 @@ import {
   Project_5,
   Project_6,
 } from "../../imagepath";
+import Loader from "../../../../Loader";
+
 import { employeePortfolioDetails , addPortofolioEmployee } from "../../../../actions/employeeActions";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -22,7 +24,7 @@ const FreelancerPortfolio = (props) => {
   const dispatch = useDispatch();
   const portfolio = useSelector((state) => state.employeePortfolio);
   const addPortfolio = useSelector((state) => state.addPortfolioReducer);
-  const { employeePortfolioArray } = portfolio;
+  const { employeePortfolioArray , loading} = portfolio;
 
   const [postImage, setPostImage] = useState({
     description: "",
@@ -79,6 +81,7 @@ const FreelancerPortfolio = (props) => {
                 <Sidebar />
               </StickyBox>
             </div>
+            {loading ? <Loader/> : 
             <div className="col-xl-9 col-md-8">
               <div className="portfolio-item">
                 <div className="pro-head p-0 pb-4">
@@ -91,6 +94,7 @@ const FreelancerPortfolio = (props) => {
                     + اضافه کردن
                   </a>
                 </div>
+                
                 <div className="pro-content pt-4 pb-4">
                   <div className="row">
                     {employeePortfolioArray.map((item) => (
@@ -155,7 +159,7 @@ const FreelancerPortfolio = (props) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div>}
           </div>
         </div>
       </div>
