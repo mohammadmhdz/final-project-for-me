@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { TopDevelopers } from "./slider/topdevelopers";
 import { Reviews } from "./review";
 import { useHistory } from "react-router-dom";
-import _ from "lodash";
+
 // Import Images
 import {
   Banner_img,
@@ -59,20 +59,20 @@ const Home = () => {
   // ];
 
   const handleSearch = () => {
-    const filtered = jobs.filter(
-      (job) =>
-        _.includes(job.title.toLowerCase(), searchPhrase.toLowerCase()) ||
-        _.includes(job.Company.Name.toLowerCase(), searchPhrase.toLowerCase())
-    );
-    setFilteredJobs(filtered);
-    console.log("fff", filteredJobs);
+    // console.log("ssss", searchPhrase);
+    // const filtered = jobs.filter(
+    //   (job) =>
+    //     _.includes(job.title.toLowerCase(), searchPhrase.toLowerCase()) ||
+    //     _.includes(job.company.Name.toLowerCase(), searchPhrase.toLowerCase())
+    // );
+    // setFilteredJobs(filtered);
 
-    // history.push({
-    //   pathname: "/project",
-    //   state: {
-    //     jobs: filteredJobs,
-    //   },
-    // });
+    history.push({
+      pathname: "/project",
+      state: {
+        searchPhrase: searchPhrase,
+      },
+    });
   };
   //Aos
   useEffect(() => {
@@ -81,13 +81,14 @@ const Home = () => {
       duration: 1200,
       once: true,
     });
-  }, [dispatch]);
+    console.log("FilteredJobs:", filteredJobs);
+  }, [dispatch, filteredJobs]);
 
   const options = [
     { id: 1, text: "کارجویان" },
     { id: 2, text: "فرصت های شغلی" },
   ];
-  // console.log(jobs);
+
   return (
     <>
       {/* Home Banner */}
@@ -111,10 +112,11 @@ const Home = () => {
                 <form className="form" action={`${config.publicPath}project`}>
                   <div className="form-inner">
                     <div className="input-group">
-                      <span className="drop-detail"></span>
+                      {/* <span className="drop-detail"></span> */}
                       <input
                         // type="email"
                         className="form-control"
+                        style={{ borderRadius: "130px" }}
                         onChange={(e) => setSearchPhrase(e.target.value)}
                       />
                       <button

@@ -82,6 +82,7 @@ class JobSerializer(serializers.ModelSerializer):
     num_requests = serializers.SerializerMethodField()
     completed_request_user = serializers.SerializerMethodField()
     due_to = serializers.SerializerMethodField()
+    # image =serializers.SerializerMethodField(read_only=True)
  
     class Meta:
         model = Job
@@ -134,6 +135,9 @@ class JobSerializer(serializers.ModelSerializer):
         job_skills = obj.skills
         serializer = SkillSerializer(job_skills, many=True)
         return serializer.data 
+    
+    # def get_image(self, obj):
+    #     return obj.Company.image
 
 class CompanySerializer(serializers.ModelSerializer):
     userr = serializers.SerializerMethodField(read_only=True)

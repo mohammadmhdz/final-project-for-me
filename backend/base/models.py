@@ -299,7 +299,9 @@ class Job(models.Model):
         return self.published_at + timedelta(days=60)
 
     
-
+    @property
+    def image(self):
+        return self.Company.image
 
 
      

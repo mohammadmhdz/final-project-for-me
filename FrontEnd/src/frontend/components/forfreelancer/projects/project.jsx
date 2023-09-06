@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
+import _ from "lodash";
 
 // Import Images
 import {
@@ -18,14 +19,18 @@ import {
 } from "../../imagepath";
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { listJobs } from "../../../../actions/jobActions";
+import { listJobs, jobsPostRequirments } from "../../../../actions/jobActions";
 
 const Projects = (props) => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const listAllJobs = useSelector((state) => state.jobList);
-  // const {jobs} = listAllJobs;
+  const { jobs } = listAllJobs;
   const [users, setUsers] = useState([]);
-  const { jobs } = location.state;
+  const { searchPhrase } = location.state;
+  const Requirments = useSelector((state) => state.jobsPostRequirments);
+  const { postJobDetailsRequirments } = Requirments;
+  const { categories, cities, skills, states } = postJobDetailsRequirments;
 
   const daysBetween = (input) => {
     const now = new Date().getDate();
@@ -35,8 +40,11 @@ const Projects = (props) => {
 
   useEffect(() => {
     dispatch(listJobs());
+    dispatch(jobsPostRequirments());
   }, [dispatch]);
+
   console.log(jobs, "Xdssd");
+
   return (
     <>
       {/* Breadcrumb */}
@@ -63,23 +71,23 @@ const Projects = (props) => {
                   <div className="card-body">
                     <div className="filter-widget">
                       <h4>دسته بندی</h4>
+                      <option>انتخاب کنید</option>
                       <div className="form-group">
                         <select className="form-control select">
-                          <option>انتخاب کنید</option>
-                          <option>Developer</option>
-                          <option>UI Developer</option>
-                          <option>React Developer</option>
-                          <option>.Net Developer</option>
+                          {postJobDetailsRequirments.categories?.map((item) => (
+                            <option value={item.id}>{item.title}</option>
+                          ))}
                         </select>
                       </div>
                     </div>
                     <div className="filter-widget">
-                      <h4>شهر</h4>
+                      <h4>استان</h4>
                       <div className="form-group">
                         <select className="form-control select">
                           <option>انتخاب کنید</option>
-                          <option>تهران</option>
-                          <option>زنجان</option>
+                          {postJobDetailsRequirments.states?.map((item) => (
+                            <option value={item.id}>{item.name}</option>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -92,39 +100,25 @@ const Projects = (props) => {
                         </select>
                       </div>
                     </div>
-                    <div className="filter-widget">
+                    {/* <div className="filter-widget">
                       <h4>مهارت اضافه کنید</h4>
                       <div className="form-group">
+                        <select className="form-control select mb-2">
+                          <option>انتخاب کنید</option>
+                          {postJobDetailsRequirments.skills?.map((item) => (
+                            <option value={item.id}>{item.title}</option>
+                          ))}
+                        </select>
                         <span className="badge badge-pill badge-skill">
                           + Web Design
                         </span>
-                        <span className="badge badge-pill badge-skill">
-                          + UI Design
-                        </span>
-                        <span className="badge badge-pill badge-skill">
-                          + Node Js
-                        </span>
-                        <span className="badge badge-pill badge-skill">
-                          + Angular
-                        </span>
-                        <span className="badge badge-pill badge-skill">
-                          + Wordpress
-                        </span>
+
                         <input type="text" className="form-control" />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="filter-widget">
                       <h4>نوع همکاری</h4>
-                      <div>
-                        <label className="custom_check">
-                          <input
-                            type="checkbox"
-                            name="select_time"
-                            defaultChecked
-                          />
-                          <span className="checkmark" /> ساعتی
-                        </label>
-                      </div>
+                      <div></div>
                       <div>
                         <label className="custom_check">
                           <input type="checkbox" name="select_time" />
@@ -148,11 +142,7 @@ const Projects = (props) => {
                       </div>
                       <div>
                         <label className="custom_check">
-                          <input
-                            type="checkbox"
-                            name="select_exp"
-                            defaultChecked
-                          />
+                          <input type="checkbox" name="select_exp" />
                           <span className="checkmark" /> کمتر از ۲ سال
                         </label>
                       </div>
@@ -169,10 +159,10 @@ const Projects = (props) => {
                         </label>
                       </div>
                     </div>
-                    UI/UX Developer
+
                     <div className="btn-search">
                       <button type="button" className="btn btn-block">
-                        Search
+                        اعمال
                       </button>
                     </div>
                   </div>
@@ -205,12 +195,6 @@ const Projects = (props) => {
               </div>
               <div className="bootstrap-tags text-start pl-0">
                 <span className="badge badge-pill badge-skills">
-                  طراح UI/UX{" "}
-                  <span className="tag-close" data-role="remove">
-                    <i className="fa fa-times" />
-                  </span>
-                </span>
-                <span className="badge badge-pill badge-skills">
                   تهران{" "}
                   <span className="tag-close" data-role="remove">
                     <i className="fa fa-times" />
@@ -219,99 +203,114 @@ const Projects = (props) => {
               </div>
               <div className="row">
                 {/* Project Content */}
-                {jobs.map(
-                  (item) =>
-                    item.status === "فعال" && (
-                      <div className="col-md-6 col-lg-12 col-xl-4">
-                        <div className="freelance-widget widget-author">
-                          <div className="freelance-content">
-                            <a
-                              data-bs-toggle="modal"
-                              href="#rating"
-                              className="favourite"
-                            >
-                              <i className="fa fa-star" />
-                            </a>
-                            <div className="author-heading">
-                              <div className="profile-img">
-                                <a href="#">
-                                  <img
-                                    src={
-                                      item.image
-                                        ? `http://127.0.0.1:8000/${item?.image}`
-                                        : company_img1
-                                    }
-                                    alt="author"
-                                  />
-                                </a>
-                              </div>
-                              <div className="profile-name">
-                                <div className="author-location">
-                                  {item.company?.Name}
-                                  <i className="fa fa-check-circle text-success verified" />
-                                </div>
-                              </div>
-                              <div className="freelance-info">
-                                <h3>
-                                  <a href="#">{item.title}</a>
-                                </h3>
-                                <div className="freelance-location mb-1">
-                                  <i className="fa fa-clock" />{" "}
-                                  {daysBetween(item?.published_at)} روز
-                                </div>
-                                <div className="freelance-location">
-                                  <i className="fa fa-map-marker-alt ms-1" />
-                                  {item.company.city?.name}
-                                </div>
-                              </div>
-                              <div className="freelance-tags">
-                                {item.job_skills?.map((item) => (
-                                  <a href="">
-                                    <span className="badge badge-pill badge-design">
-                                      {item.title}
-                                    </span>
+                {jobs
+                  .filter(
+                    (job) =>
+                      _.includes(
+                        job.title?.toLowerCase(),
+                        searchPhrase?.toLowerCase()
+                      ) ||
+                      _.includes(
+                        job.company.Name?.toLowerCase(),
+                        searchPhrase?.toLowerCase()
+                      )
+                  )
+                  .map(
+                    (item) =>
+                      item.status === "فعال" && (
+                        <div className="col-md-6 col-lg-12 col-xl-4">
+                          <div className="freelance-widget widget-author">
+                            <div className="freelance-content">
+                              <a
+                                data-bs-toggle="modal"
+                                href="#rating"
+                                className="favourite"
+                              >
+                                <i className="fa fa-star" />
+                              </a>
+                              <div className="">
+                                <div className="mb-3">
+                                  <a href="#">
+                                    <img
+                                      style={{
+                                        borderRadius: "100px",
+                                        width: "42%",
+                                      }}
+                                      alt=""
+                                      src={
+                                        "http://127.0.0.1:8000" +
+                                        item.company?.image
+                                      }
+                                    />
                                   </a>
-                                ))}
+                                </div>
+                                <div className="profile-name">
+                                  <div className="author-location">
+                                    {item.company?.Name}
+                                    <i className="fa fa-check-circle text-success verified" />
+                                  </div>
+                                </div>
+                                <div className="freelance-info">
+                                  <h3>
+                                    <a href="#">{item.title}</a>
+                                  </h3>
+                                  <div className="freelance-location mb-1">
+                                    <i className="fa fa-clock" />{" "}
+                                    {daysBetween(item?.published_at)} روز
+                                  </div>
+                                  <div className="freelance-location">
+                                    <i className="fa fa-map-marker-alt ms-1" />
+                                    {item.company.city?.name}
+                                  </div>
+                                </div>
+                                <div className="freelance-tags">
+                                  {item.job_skills?.map((item) => (
+                                    <a href="">
+                                      <span className="badge badge-pill badge-design">
+                                        {item.title}
+                                      </span>
+                                    </a>
+                                  ))}
+                                </div>
+                                {/* <div className="freelancers-price">حقوق</div> */}
+                                {/* <div className="freelancers-price">$40-$500</div> */}
                               </div>
-                              {/* <div className="freelancers-price">حقوق</div> */}
-                              {/* <div className="freelancers-price">$40-$500</div> */}
-                            </div>
-                            <div className="counter-stats ">
-                              <ul>
-                                <li>
-                                  <h5> حقوق</h5>
-                                  <h3 className="counter-value">
-                                    {item.salary_amount === null
-                                      ? item.salary_type
-                                      : `${item.salary_amount}میلیون تومان`}
-                                  </h3>
-                                </li>
+                              <div className="counter-stats ">
+                                <ul>
+                                  <li>
+                                    <h5> حقوق</h5>
+                                    <h3 className="counter-value">
+                                      {item.salary_amount === null
+                                        ? item.salary_type
+                                        : `${item.salary_amount}میلیون تومان`}
+                                    </h3>
+                                  </li>
 
-                                <li>
-                                  <h3 className="counter-value">
-                                    <h5>نوع همکاری</h5>
-                                    <span className="jobtype">
-                                      {item.job_type}
-                                    </span>
-                                  </h3>
-                                </li>
-                              </ul>
+                                  <li>
+                                    <h3 className="counter-value">
+                                      <h5>نوع همکاری</h5>
+                                      <span className="jobtype">
+                                        {item.job_type}
+                                      </span>
+                                    </h3>
+                                  </li>
+                                </ul>
+                              </div>
                             </div>
-                          </div>
-                          <div className="cart-hover">
-                            <Link
-                              to={{
-                                pathname: "/project-details",
-                                state: { jobIdInput: item.id },
-                              }}
-                            >
-                              <h4 className="btn-cart">مشاهده بیشتر</h4>
-                            </Link>
+                            <div className="cart-hover">
+                              <Link
+                                to={{
+                                  pathname: "/project-details",
+                                  state: { jobIdInput: item.id },
+                                }}
+                              >
+                                <h4 className="btn-cart">مشاهده بیشتر</h4>
+                              </Link>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )
-                )}
+                      )
+                  )}
               </div>
             </div>
           </div>
