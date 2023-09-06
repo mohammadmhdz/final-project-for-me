@@ -50,9 +50,9 @@ const FreelancerPortfolio = (props) => {
     const base64 = await convertToBase64(file);
     setPostImage({
       title: "ارمان ارتباط ویرا",
-      description: base64,
+      description: "برنامه نویسی سایت کاریابی",
       employee: localItem.associated_id,
-      image: null,
+      image: base64,
     });
   };
 

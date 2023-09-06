@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { TopDevelopers } from "./slider/topdevelopers";
 import { Reviews } from "./review";
 import { useHistory } from "react-router-dom";
+import Slider from "react-slick";
+
 
 // Import Images
 import {
@@ -36,7 +38,14 @@ const Home = () => {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
   const { jobs } = listAllJobs;
-  console.log("zzz", jobs);
+  // console.log("zzz", jobs);
+  const settingSlider = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1
+  };
   // const jobs = [
   //   {
   //     title: "مشاغل A",
@@ -236,9 +245,9 @@ const Home = () => {
               </div>
             </div>
           </div>
+          <div className="row">
+            <Slider >
           {jobs?.map((item) => (
-            <div className="row">
-              {/*- Project Item  */}
               <div className="col-md-6 col-lg-12 col-xl-4">
                 <div className="freelance-widget widget-author">
                   <div className="freelance-content">
@@ -320,9 +329,9 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-              {/*- /Project Item  */}
+              ))}
+              </Slider>
             </div>
-          ))}
           <div className="row">
             <div className="col-md-12 text-center">
               <div className="see-all aos" data-aos="fade-up">

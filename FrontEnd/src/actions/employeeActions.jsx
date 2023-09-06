@@ -229,7 +229,7 @@ export const updateEmployeeDetails = (input) => async (dispatch) => {
 
 export const addPortofolioEmployee = (input) => async (dispatch) => {
   // console.log(input.Experiences , "input");
-  console.log(input);
+  console.log(input , "portfolio");
   try{
   dispatch({
         type: EMPLOYEE_PORTFOLIO_POST_REQUEST,
@@ -246,7 +246,7 @@ export const addPortofolioEmployee = (input) => async (dispatch) => {
                   {title : input.title,
                     description : input.description,
                     employee : input.employee,
-                    image : null,
+                    image : input.image,
                   },
                   config
                 );
