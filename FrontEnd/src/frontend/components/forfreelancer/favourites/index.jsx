@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect , useState} from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import {
@@ -21,7 +21,6 @@ import {
   employeeToggleFavoriteList,
 } from "../../../../actions/employeeActions";
 import { jobsDetail, listJobs } from "../../../../actions/jobActions";
-import { useState } from "react";
 const FreelancerFavourites = (props) => {
   // redux
   const dispatch = useDispatch();
@@ -31,13 +30,16 @@ const FreelancerFavourites = (props) => {
   );
   const { employeeFavorites } = employeeFavorite;
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
-
+  
+  const [testFavorite , setTestFavorite] = useState([])
 
   const handlefavorite = (e , toggleFavoriteId) => {
     // e.preventdefault();
+    setTestFavorite([...testFavorite ,toggleFavoriteId])
     console.log(toggleFavoriteId)
     console.log(e)
     dispatch(employeeToggleFavoriteList(localItem.associated_id , toggleFavoriteId));
+    // dispatch(employeeFavoriteList(localItem.associated_id));
   };
   // const test = [];
   useEffect(() => {
@@ -114,9 +116,12 @@ const FreelancerFavourites = (props) => {
                                 <th></th>
                               </tr>
                             </thead>
-                            {employeeFavorites.map((items, index) => {
+                            {employeeFavorites.filter(obj => !testFavorite.includes(obj.id)).map((items, index) => {
+                              // console.log(testFavorite , "testFavorite")
+                              // console.log(testFavorite.includes(items.id) , "testFavorite")
+                              // !(testFavorite?.includes(items.id)) && 
                               return (
-                                <tbody>
+                                 <tbody>
                                   <tr>
                                     <td>
                                       <h2 className="table-avatar">
