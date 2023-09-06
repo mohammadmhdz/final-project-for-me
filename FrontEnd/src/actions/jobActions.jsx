@@ -14,6 +14,10 @@ import {
   JOBS_POST_REQUEST,
   JOBS_POST_SUCCESS,
   JOBS_POST_FAIL,
+
+  JOBS_EDIT_DETAILS_REQUEST,
+  JOBS_EDIT_DETAILS_SUCCESS,
+  JOBS_EDIT_DETAILS_FAIL,
   // update
   JOB_DETAILS_UPDATE_REQUEST,
   JOB_DETAILS_UPDATE_SUCCESS,
@@ -143,7 +147,58 @@ export const postJob = (input) => async (dispatch) => {
     });
   }
 };
+// put
+export const editJob = (input , keyword) => async (dispatch) => {
+  // console.log(input)
+  try {
+    console.log(input, "input");
+    dispatch({
+      type: JOBS_EDIT_DETAILS_REQUEST,
+    });
 
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.put(
+      `http://127.0.0.1:8000/api/jobs/${keyword}/`,
+      {
+        Company: input?.Company,
+        title: input?.title,
+        published_at: input?.published_at,
+        job_type: input?.job_type,
+        isremote: input?.isremote,
+        city: +input?.city, // change it to int using +
+        experience: input?.experience,
+        level: input?.level,
+        salary_type: input?.salary_type,
+        salary_amount: input?.salary_amount,
+        description: input?.description,
+        skills: [...input?.skills],
+        category: +input?.category, // change it to int using +
+        status: input?.status,
+      },
+      config
+    );
+    // console.log(data);
+    dispatch({
+      type: JOBS_EDIT_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: JOBS_EDIT_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+// FOR CHANGING JOB STATUS
 export const updateJobDetails = (input) => async (dispatch) => {
   console.log(input, "input");
   // console.log(input?.company_name);

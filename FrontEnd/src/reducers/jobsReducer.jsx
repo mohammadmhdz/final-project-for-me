@@ -14,6 +14,10 @@ import {
   JOBS_POST_REQUEST,
   JOBS_POST_SUCCESS,
   JOBS_POST_FAIL,
+  // mhdz
+  JOBS_EDIT_DETAILS_REQUEST,
+  JOBS_EDIT_DETAILS_SUCCESS,
+  JOBS_EDIT_DETAILS_FAIL,
   // update
   JOB_DETAILS_UPDATE_REQUEST,
   JOB_DETAILS_UPDATE_SUCCESS,
@@ -108,6 +112,22 @@ export const jobDeleteReducer = (state = {}, action) => {
       return { loading: false, success: true };
 
     case JOB_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const jobEditDetailsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case JOBS_EDIT_DETAILS_REQUEST:
+      return { loading: true };
+
+    case JOBS_EDIT_DETAILS_SUCCESS:
+      return { loading: false, editJobDetailsResult: action.payload };
+
+    case JOBS_EDIT_DETAILS_FAIL:
       return { loading: false, error: action.payload };
 
     default:

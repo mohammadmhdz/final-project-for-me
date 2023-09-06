@@ -6,6 +6,7 @@ import {
   jobListReducer,
   jobsDetailsReducer,
   jobsPostRedducer,
+  jobEditDetailsReducer,
   jobsPostRequirmentsReducer,
   jobDeleteReducer,
   jobUpdateDetailsReducer,
@@ -63,6 +64,7 @@ const reducer = combineReducers({
   jobList: jobListReducer,
   jobsDetails: jobsDetailsReducer,
   jobsPost: jobsPostRedducer,
+  jobsEdit : jobEditDetailsReducer,
   jobsPostRequirments: jobsPostRequirmentsReducer,
   jobUpdateDetail: jobDeleteReducer,
   jobdelete: jobUpdateDetailsReducer,
@@ -92,7 +94,6 @@ const reducer = combineReducers({
   companyToggleFavorite: companyToggleFavoriteListReducer,
   companyUpdateDetail: companyUpdateDetailsReducer,
   companydelete: companyDeleteReducer,
-
   //
   categoryListAll: categoryListReducer,
   categoryUpdateDetail: categoryUpdateDetailsReducer,

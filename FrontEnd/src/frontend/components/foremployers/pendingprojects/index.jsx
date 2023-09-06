@@ -85,9 +85,12 @@ const Pendingprojects = ({data}) => {
                                 >
                                 مشاهده درخواست ها{" "}
                               </Link> */}
-                              <Link to="/edit-project" className="projects-btn">
-                                ویرایش
-                              </Link>
+                               <Link  className="projects-btn" 
+                                         to={{pathname : "/edit-project" ,
+                                         state : {job: item} 
+                                      }}>
+                                  ویرایش
+                                  </Link>
                             </div>
                           </div>
                         </div>

@@ -12,8 +12,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { string } from "prop-types";
 
 const PostProject = (props) => {
+
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
   const dispatch = useDispatch();
-  const postinJob = useSelector((state) => state.jobsPost);
+   const postinJob = useSelector((state) => state.jobsPost);
   const Requirments = useSelector((state) => state.jobsPostRequirments);
   const { postJobDetailsRequirments } = Requirments;
   const companyDetailsReducer = useSelector((state) => state.companyDetails);
@@ -23,7 +26,7 @@ const PostProject = (props) => {
 
   useEffect(() => {
     dispatch(jobsPostRequirments());
-    dispatch(companyDetails(1));
+    dispatch(companyDetails(localItem.associated_id));
   }, [dispatch]);
   console.log(postJobDetailsRequirments);
 
@@ -293,10 +296,10 @@ const PostProject = (props) => {
                                     </select>
 
                                   <div className=" d-flex tags mt-3">
-                                    <div>
-                                      {skillsArray?.map((item, index) => (
-                                        <span className=" align-items-center badge badge-pill badge-design">
-                                          {item.title}
+                                  <div>
+                                      {skillsArray?.map((item) => (
+                                        <span onClick={() => skillsArray.splice(skillsArray.indexOf(item), 1)} className=" align-items-center badge badge-pill badge-design">
+                                          {postJobDetailsRequirments.skills[item-1].title}
                                         </span>
                                       ))}
                                     </div>

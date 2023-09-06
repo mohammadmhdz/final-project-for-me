@@ -27,8 +27,7 @@ const Projects = (props) => {
   const listAllJobs = useSelector((state) => state.jobList);
   const { jobs } = listAllJobs;
   const [users, setUsers] = useState([]);
-  const  searchPhrase  = location.state ? location.state.searchPhrase : false;
-  // const  searchPhrase  = location.state ? location.state.searchPhrase : "";
+  const searchPhrase  = location.state?.searchPhrase ? location.state?.searchPhrase : "";
   const Requirments = useSelector((state) => state.jobsPostRequirments);
   const { postJobDetailsRequirments } = Requirments;
   const { categories, cities, skills, states } = postJobDetailsRequirments;
@@ -44,9 +43,7 @@ const Projects = (props) => {
     dispatch(jobsPostRequirments());
   }, [dispatch]);
 
-  console.log(jobs, "jobs list");
-  console.log(location.state, "jobs list");
-
+  console.log(jobs, "Xdssd");
 
   return (
     <>
@@ -206,7 +203,7 @@ const Projects = (props) => {
               </div>
               <div className="row">
                 {/* Project Content */}
-                {searchPhrase ? jobs
+                {jobs
                   .filter(
                     (job) =>
                       _.includes(
@@ -217,7 +214,7 @@ const Projects = (props) => {
                         job.company.Name?.toLowerCase(),
                         searchPhrase?.toLowerCase()
                       )
-                  ) : (jobs)
+                  )
                   .map(
                     (item) =>
                       item.status === "فعال" && (
