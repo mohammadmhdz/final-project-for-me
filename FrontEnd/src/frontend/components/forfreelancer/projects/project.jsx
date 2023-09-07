@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
-import _ from "lodash";
-
+import _, { includes } from "lodash";
 // Import Images
 import {
   company_img1,
@@ -34,20 +33,47 @@ const Projects = (props) => {
   const Requirments = useSelector((state) => state.jobsPostRequirments);
   const { postJobDetailsRequirments } = Requirments;
   const { categories, cities, skills, states } = postJobDetailsRequirments;
+  const [searchFilter, setSearchFilter] = useState([]);
 
   const daysBetween = (input) => {
     const now = new Date().getDate();
     const date = new Date(input).getDate();
     return now - date;
   };
+const afterFilter = jobs?.filter((job) =>{
+   
+      const category = searchFilter?.job_category === undefined ? true : job.job_category.title  === searchFilter?.job_category 
+      const job_type = searchFilter?.job_type === undefined ? true : job.job_type === searchFilter?.job_type 
+      const salary_type = searchFilter?.salary_type === undefined ? true : job.salary_type === searchFilter?.salary_type
+      const experience = searchFilter?.experience === undefined ? true : job.experience   === searchFilter?.experience
+      const filter = category && job_type && salary_type && experience ? true : false
+       return(filter)
+
+   } ) 
+
+
+
+  const handleChange = (e) => {
+ 
+    const id = e.target.id
+    const value = e.target.value;
+    setSearchFilter((searchFilter) =>({
+     ...searchFilter, 
+     [id] : value,
+    }));
+   
+
+ }
 
   useEffect(() => {
     dispatch(listJobs());
     dispatch(jobsPostRequirments());
   }, [dispatch]);
 
+  // console.log(searchFilter, "searxc");
   console.log(jobs, "jobs");
-  console.log(postJobDetailsRequirments, "requierments");
+  console.log(afterFilter, "afterFilter");
+  // console.log(postJobDetailsRequirments, "requierments");
 
   return (
     <>
@@ -70,16 +96,19 @@ const Projects = (props) => {
                 <div className="card search-filter">
                   <div className="card-header d-flex justify-content-between">
                     <h4 className="card-title mb-0">فیلتر</h4>
-                    <a href="">پاک کردن همه</a>
+                    <a  onClick={() => setSearchFilter([])} >پاک کردن همه</a>
                   </div>
                   <div className="card-body">
                     <div className="filter-widget">
                       <h4>دسته بندی</h4>
                       <option>انتخاب کنید</option>
                       <div className="form-group">
-                        <select className="form-control select">
+                        <select 
+                         onChange={handleChange}
+                         id="job_category"
+                        className="form-control select">
                           {postJobDetailsRequirments.categories?.map((item) => (
-                            <option value={item.id}>{item.title}</option>
+                            <option value={item.title}>{item.title}</option>
                           ))}
                         </select>
                       </div>
@@ -98,9 +127,12 @@ const Projects = (props) => {
                     <div className="filter-widget">
                       <h4>حقوق</h4>
                       <div className="form-group">
-                        <select className="form-control select">
-                          <option> مشخص شده</option>
-                          <option>توافقی</option>
+                        <select 
+                           onChange={handleChange}
+                           id="salary_type"
+                           className="form-control select">
+                          <option value="مشخص"> مشخص شده</option>
+                          <option value="توافقی">توافقی</option>
                         </select>
                       </div>
                     </div>
@@ -122,45 +154,28 @@ const Projects = (props) => {
                     </div> */}
                     <div className="filter-widget">
                       <h4>نوع همکاری</h4>
-                      <div></div>
-                      <div>
-                        <label className="custom_check">
-                          <input type="checkbox" name="select_time" />
-                          <span className="checkmark" /> پاره وقت
-                        </label>
-                      </div>
-                      <div>
-                        <label className="custom_check">
-                          <input type="checkbox" name="select_time" />
-                          <span className="checkmark" /> تمام وقت
-                        </label>
+                      <div className="form-group">
+                        <select 
+                           onChange={handleChange}
+                           id="job_type"
+                           className="form-control select">
+                          <option value="پاره وقت">پاره وقت</option>
+                          <option value="تمام وقت">تمام وقت</option>
+                        </select>
                       </div>
                     </div>
                     <div className="filter-widget">
                       <h4>سابقه کار</h4>
-                      <div>
-                        <label className="custom_check">
-                          <input type="checkbox" name="select_specialist" />
-                          <span className="checkmark" /> بدون محدودیت
-                        </label>
-                      </div>
-                      <div>
-                        <label className="custom_check">
-                          <input type="checkbox" name="select_exp" />
-                          <span className="checkmark" /> کمتر از ۲ سال
-                        </label>
-                      </div>
-                      <div>
-                        <label className="custom_check">
-                          <input type="checkbox" name="select_exp" />
-                          <span className="checkmark" /> ۲ تا ۵ سال
-                        </label>
-                      </div>
-                      <div>
-                        <label className="custom_check">
-                          <input type="checkbox" name="select_exp" />
-                          <span className="checkmark" /> ۵ سال به بالا
-                        </label>
+                      <div className="form-group">
+                        <select 
+                           onChange={handleChange}
+                           id="experience"
+                           className="form-control select">
+                          <option value="بدون محدودیت">بدون محدودیت</option>
+                          <option value="کمتر از ۲ سال">کمتر از 2 سال</option>
+                          <option value="۲ تا ۵ سال">2 تا 5 سال</option>
+                          <option value="بیشتر از ۵ سال">بیشتر از ۵ سال</option>
+                        </select>
                       </div>
                     </div>
 
@@ -198,19 +213,22 @@ const Projects = (props) => {
                 </div>
               </div>
               <div className="bootstrap-tags text-start pl-0">
+                {Object.keys(searchFilter)?.map((item) => {
+                  return(
                 <span className="badge badge-pill badge-skills">
-                  تهران{" "}
-                  <span className="tag-close" data-role="remove">
+                  {searchFilter[item]}
+                  <span onClick={() => {(delete searchFilter[item])}} className="tag-close" data-role="remove">
                     <i className="fa fa-times" />
                   </span>
                 </span>
+                )})}
               </div>
               <div className="row">
                 {/* Project Content */}
                 {loading ? (
                   <Loader />
                 ) : (
-                  jobs
+                  afterFilter
                     .filter(
                       (job) =>
                         _.includes(
@@ -220,7 +238,7 @@ const Projects = (props) => {
                         _.includes(
                           job.company.Name?.toLowerCase(),
                           searchPhrase?.toLowerCase()
-                        )
+                        )   
                     )
                     .map(
                       (item) =>
