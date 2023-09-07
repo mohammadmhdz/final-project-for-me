@@ -229,7 +229,7 @@ export const updateEmployeeDetails = (input) => async (dispatch) => {
 
 export const addPortofolioEmployee = (input) => async (dispatch) => {
   // console.log(input.Experiences , "input");
-  console.log(input);
+  console.log(input , "portfolio");
   try{
   dispatch({
         type: EMPLOYEE_PORTFOLIO_POST_REQUEST,
@@ -243,10 +243,11 @@ export const addPortofolioEmployee = (input) => async (dispatch) => {
   
                 const { data } = await axios.post(
                   `http://localhost:8000/api/portfolio/`,
-                  {title : input.title,
-                    description : input.description,
-                    employee : input.employee,
-                    image : null,
+                  {
+                    title : "input.title",
+                    description : "input.description"                    ,
+                    employee : 1,
+                    image_data : input?.image,
                   },
                   config
                 );

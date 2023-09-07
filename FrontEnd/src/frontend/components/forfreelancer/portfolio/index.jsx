@@ -28,31 +28,46 @@ const FreelancerPortfolio = (props) => {
   const addPortfolio = useSelector((state) => state.addPortfolioReducer);
   const { employeePortfolioArray, loading } = portfolio;
 
-  const [postImage, setPostImage] = useState({
-    description: "",
-  });
+  const [postImage, setPostImage] = useState();
+  const [selectedFile, setSelectedFile] = useState('')
+  const [base, setBase] = useState()
+  const selectFile = (event) => {
+    
+  }
+  const convertToBase64 = () => {
+    const reader = new FileReader()
 
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
+    reader.readAsDataURL(selectedFile)
+
+    reader.onload = () => {
+      console.log('called: ', reader)
+      setBase(reader.result)
+    }
+  }
+
+  // const convertToBase64 = (file) => {
+  //   return new Promise((resolve, reject) => {
+  //     const fileReader = new FileReader();
+  //     fileReader.readAsDataURL(file);
+  //     fileReader.onload = () => {
+  //       resolve(fileReader.result);
+  //     };
+  //     fileReader.onerror = (error) => {
+  //       reject(error);
+  //     };
+  //   });
+  // };
 
   const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertToBase64(file);
+    setSelectedFile(e.target.files[0])
+    convertToBase64();
+    // const file = e.target.files[0];
+    // const base64 = await convertToBase64(file);
     setPostImage({
       title: "ارمان ارتباط ویرا",
-      description: base64,
+      description: "برنامه نویسی سایت کاریابی",
       employee: localItem.associated_id,
-      image: null,
+      image: base,
     });
   };
 

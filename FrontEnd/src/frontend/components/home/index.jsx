@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { TopDevelopers } from "./slider/topdevelopers";
 import { Reviews } from "./review";
 import { useHistory } from "react-router-dom";
+import Slider from "react-slick";
 
 // Import Images
 import {
@@ -36,6 +37,34 @@ const Home = () => {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
   const { jobs } = listAllJobs;
+  // console.log("zzz", jobs);
+  const settingSlider = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+  };
+  // const jobs = [
+  //   {
+  //     title: "مشاغل A",
+  //     Company: {
+  //       Name: "شرکت X",
+  //     },
+  //   },
+  //   {
+  //     title: "مشاغل B",
+  //     Company: {
+  //       Name: "شرکت Y",
+  //     },
+  //   },
+  //   {
+  //     title: "مشاغل  برنامهC",
+  //     Company: {
+  //       Name: "شرکت Z",
+  //     },
+  //   },
+  // ];
 
   const handleSearch = () => {
     history.push({
@@ -207,93 +236,93 @@ const Home = () => {
               </div>
             </div>
           </div>
-          {jobs?.map((item) => (
-            <div className="row">
-              {/*- Project Item  */}
-              <div className="col-md-6 col-lg-12 col-xl-4">
-                <div className="freelance-widget widget-author">
-                  <div className="freelance-content">
-                    <a
-                      data-bs-toggle="modal"
-                      href="#rating"
-                      className="favourite"
-                    >
-                      <i className="fa fa-star" />
-                    </a>
-                    <div className="author-heading">
-                      <div className="profile-img">
-                        <a href="#">
-                          <img src={company_img1} alt="author" />
-                        </a>
-                      </div>
-                      <div className="profile-name">
-                        <div className="author-location">
-                          فناوری سروین | Sarveen Technologies{" "}
-                          <i className="fa fa-check-circle text-success verified" />
+          <div className="row">
+            <Slider>
+              {jobs?.map((item) => (
+                <div className="col-md-6 col-lg-12 col-xl-4">
+                  <div className="freelance-widget widget-author">
+                    <div className="freelance-content">
+                      <a
+                        data-bs-toggle="modal"
+                        href="#rating"
+                        className="favourite"
+                      >
+                        <i className="fa fa-star" />
+                      </a>
+                      <div className="author-heading">
+                        <div className="profile-img">
+                          <a href="#">
+                            <img src={company_img1} alt="author" />
+                          </a>
                         </div>
-                      </div>
-                      <div className="freelance-info">
-                        <h3>
-                          <a href="#">طراح UI/UX</a>
-                        </h3>
-                        <div className="freelance-location mb-1">
-                          <i className="fa fa-clock" /> ۲ روز پیش
+                        <div className="profile-name">
+                          <div className="author-location">
+                            فناوری سروین | Sarveen Technologies{" "}
+                            <i className="fa fa-check-circle text-success verified" />
+                          </div>
                         </div>
-                        <div className="freelance-location">
-                          <i className="fa fa-map-marker-alt ms-1" />
-                          تهران
-                        </div>
-                      </div>
-                      <div className="freelance-tags">
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            After Effects
-                          </span>
-                        </a>
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            Illustrator
-                          </span>
-                        </a>
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            HTML
-                          </span>
-                        </a>
-                      </div>
-                      {/* <div className="freelancers-price">حقوق</div> */}
-                      {/* <div className="freelancers-price">$40-$500</div> */}
-                    </div>
-                    <div className="counter-stats ">
-                      <ul>
-                        <li>
-                          <h5> حقوق</h5>
-                          <h3 className="counter-value">۱۵ میلیون</h3>
-                        </li>
-
-                        <li>
-                          <h3 className="counter-value">
-                            <h5>نوع همکاری</h5>
-                            <span className="jobtype">تمام وقت</span>
+                        <div className="freelance-info">
+                          <h3>
+                            <a href="#">طراح UI/UX</a>
                           </h3>
-                        </li>
-                      </ul>
+                          <div className="freelance-location mb-1">
+                            <i className="fa fa-clock" /> ۲ روز پیش
+                          </div>
+                          <div className="freelance-location">
+                            <i className="fa fa-map-marker-alt ms-1" />
+                            تهران
+                          </div>
+                        </div>
+                        <div className="freelance-tags">
+                          <a href="">
+                            <span className="badge badge-pill badge-design">
+                              After Effects
+                            </span>
+                          </a>
+                          <a href="">
+                            <span className="badge badge-pill badge-design">
+                              Illustrator
+                            </span>
+                          </a>
+                          <a href="">
+                            <span className="badge badge-pill badge-design">
+                              HTML
+                            </span>
+                          </a>
+                        </div>
+                        {/* <div className="freelancers-price">حقوق</div> */}
+                        {/* <div className="freelancers-price">$40-$500</div> */}
+                      </div>
+                      <div className="counter-stats ">
+                        <ul>
+                          <li>
+                            <h5> حقوق</h5>
+                            <h3 className="counter-value">۱۵ میلیون</h3>
+                          </li>
+
+                          <li>
+                            <h3 className="counter-value">
+                              <h5>نوع همکاری</h5>
+                              <span className="jobtype">تمام وقت</span>
+                            </h3>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                  <div className="cart-hover">
-                    <Link
-                      to="/project-details"
-                      className="btn-cart"
-                      tabIndex={-1}
-                    >
-                      مشاهده بیشتر
-                    </Link>
+                    <div className="cart-hover">
+                      <Link
+                        to="/project-details"
+                        className="btn-cart"
+                        tabIndex={-1}
+                      >
+                        مشاهده بیشتر
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/*- /Project Item  */}
-            </div>
-          ))}
+              ))}
+            </Slider>
+          </div>
           <div className="row">
             <div className="col-md-12 text-center">
               <div className="see-all aos" data-aos="fade-up">

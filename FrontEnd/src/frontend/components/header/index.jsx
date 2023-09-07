@@ -128,17 +128,17 @@ const Header = (props) => {
                 </div>
                 <ul className="main-nav">
                   <li>
-                    <Link to="/" target="_blank">
+                    <Link to="/" >
                       خانه
                     </Link>
                   </li>
                   <li>
-                    <Link to="/project" target="_blank">
+                    <Link to="/project">
                       فرصت های شغلی
                     </Link>
                   </li>
                   <li>
-                    <Link to="/privacy-policy" target="_blank">
+                    <Link to="/privacy-policy">
                       قوانین و مقررات
                     </Link>
                   </li>
@@ -160,7 +160,7 @@ const Header = (props) => {
                     >
                       <span className="user-img  ms-2">
                         <img
-                          src={"http://127.0.0.1:8000" + employee.image}
+                          src={`http://127.0.0.1:8000${employee.image}` }
                           alt=""
                         />
                       </span>

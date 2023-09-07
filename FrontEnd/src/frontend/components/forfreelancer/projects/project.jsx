@@ -17,6 +17,7 @@ import {
   company_img10,
   home_icon,
 } from "../../imagepath";
+import Loader from "../../../../Loader";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { listJobs, jobsPostRequirments } from "../../../../actions/jobActions";
@@ -25,7 +26,7 @@ const Projects = (props) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const listAllJobs = useSelector((state) => state.jobList);
-  const { jobs } = listAllJobs;
+  const { jobs , loading} = listAllJobs;
   const [users, setUsers] = useState([]);
   const searchPhrase  = location.state?.searchPhrase ? location.state?.searchPhrase : "";
   const Requirments = useSelector((state) => state.jobsPostRequirments);
@@ -43,7 +44,8 @@ const Projects = (props) => {
     dispatch(jobsPostRequirments());
   }, [dispatch]);
 
-  console.log(jobs, "Xdssd");
+  console.log(jobs, "jobs");
+  console.log(postJobDetailsRequirments, "requierments");
 
   return (
     <>
@@ -203,7 +205,7 @@ const Projects = (props) => {
               </div>
               <div className="row">
                 {/* Project Content */}
-                {jobs
+                {loading ? <Loader/> : jobs
                   .filter(
                     (job) =>
                       _.includes(
@@ -264,7 +266,7 @@ const Projects = (props) => {
                                   </div>
                                 </div>
                                 <div className="freelance-tags">
-                                  {item.job_skills?.map((item) => (
+                                  {item.job_skills?.slice(0 , 3).map((item) => (
                                     <a href="">
                                       <span className="badge badge-pill badge-design">
                                         {item.title}

@@ -46,7 +46,7 @@ const FreelacerCancelledProjects = ({ data }) => {
                               pathname: "/project-details",
                               state: {
                                 jobIdInput: items.job,
-                                employeeId: +localItem.associated_id,
+                                employeeId: +localItem?.associated_id,
                               },
                             }}
                           >
