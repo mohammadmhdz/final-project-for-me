@@ -12340,7 +12340,7 @@ label.award-upload input[type="file"] {
   font-size: 20px;
 }
 .project-info {
-  width: 80%;
+  width: 100%;
   display: block;
   padding-right: 20px;
 }
@@ -12481,9 +12481,15 @@ label.award-upload input[type="file"] {
   font-weight: 500;
   font-size: 14px;
 }
-.project-hire-info {
+.project-hire-infoo {
   display: flex;
-  width: 50%;
+  width: 100%;
+  align-items: center;
+  justify-content: end;
+}
+.project-hire-info {
+  
+  width: 20%;
   align-items: center;
   justify-content: end;
 }
@@ -13587,6 +13593,12 @@ h2.footer-title:after {
   bottom: 100%;
   right: -5px;
   margin-bottom: 11px;
+}
+.p-limited-lines {
+  display: -webkit-box; /* Set display as a flexible box */
+  -webkit-box-orient: vertical; /* Set box orientation as vertical */
+  -webkit-line-clamp: 3; /* Limit the paragraph to 3 lines */
+  overflow: hidden; /* Hide the overflowing text */
 }
 .developers-slider.owl-carousel .owl-nav button.owl-next,
 .developers-slider.owl-carousel .owl-nav button.owl-prev,

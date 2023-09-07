@@ -11,60 +11,45 @@ import {
   Icon_01,
   Icon_02,
   Icon_03,
-  Project_01,
-  Project_02,
-  Project_03,
-  Project_04,
   Img_02,
-  Img_03,
-  Img_04,
   Subscribe,
   Blog_01,
   Blog_02,
-  Blog_03,
   company_img1,
+  Blog_03,
 } from "../imagepath";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import config from "config";
+import Loader from "../../../Loader";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { listJobs } from "../../../actions/jobActions";
+import { employeeListAll } from "../../../actions/employeeActions";
+
 const Home = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const listAllJobs = useSelector((state) => state.jobList);
   const [searchPhrase, setSearchPhrase] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
-  const { jobs } = listAllJobs;
+  const { jobs, loading } = listAllJobs;
+  const employeeAllList = useSelector((state) => state.employeeListAll);
+  const { employeeList, loading: loadem } = employeeAllList;
+
+  const daysBetween = (input) => {
+    const now = new Date().getDate();
+    const date = new Date(input).getDate();
+    return now - date;
+  };
   // console.log("zzz", jobs);
   const settingSlider = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: 3,
     slidesToScroll: 1,
   };
-  // const jobs = [
-  //   {
-  //     title: "مشاغل A",
-  //     Company: {
-  //       Name: "شرکت X",
-  //     },
-  //   },
-  //   {
-  //     title: "مشاغل B",
-  //     Company: {
-  //       Name: "شرکت Y",
-  //     },
-  //   },
-  //   {
-  //     title: "مشاغل  برنامهC",
-  //     Company: {
-  //       Name: "شرکت Z",
-  //     },
-  //   },
-  // ];
 
   const handleSearch = () => {
     history.push({
@@ -77,6 +62,7 @@ const Home = () => {
   //Aos
   useEffect(() => {
     dispatch(listJobs());
+    dispatch(employeeListAll());
     AOS.init({
       duration: 1200,
       once: true,
@@ -146,50 +132,61 @@ const Home = () => {
       {/* Our Feature */}
       <section className="section feature">
         <div className="container">
-          <div className="row">
-            {/* Feature Item */}
-            <div className="col-md-4">
-              <div
-                className="feature-item freelance-count aos"
-                data-aos="fade-up"
-              >
-                <div className="feature-icon">
-                  <img src={Icon_01} className="img-fluid" alt="" />
-                </div>
-                <div className="feature-content">
-                  <h3>۲۷,۳۰۵</h3>
-                  <p>آگهی فعال</p>
-                </div>
-              </div>
-            </div>
-            {/* /Feature Item */}
-            {/* Feature Item */}
-            <div className="col-md-4">
-              <div className="feature-item aos" data-aos="fade-up">
-                <div className="feature-icon">
-                  <img src={Icon_02} className="img-fluid" alt="" />
-                </div>
-                <div className="feature-content">
-                  <h3>۱۰,۶۶۱</h3>
-                  <p>کارجو</p>
+          {loadem ? (
+            <Loader />
+          ) : (
+            <div className="row">
+              {/* Feature Item */}
+              <div className="col-md-4">
+                <div
+                  className="feature-item freelance-count aos"
+                  data-aos="fade-up"
+                >
+                  <div className="feature-icon">
+                    <img src={Icon_01} className="img-fluid" alt="" />
+                  </div>
+                  <div className="feature-content">
+                    <h3>
+                      {jobs.filter((job) => job.status === "فعال").length}
+                    </h3>
+                    <p>آگهی فعال</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            {/* /Feature Item */}
-            {/* Feature Item */}
-            <div className="col-md-4">
-              <div className="feature-item comp-project aos" data-aos="fade-up">
-                <div className="feature-icon">
-                  <img src={Icon_03} className="img-fluid" alt="" />
-                </div>
-                <div className="feature-content">
-                  <h3>۳,۶۶۱</h3>
-                  <p>استخدام</p>
+              {/* /Feature Item */}
+              {/* Feature Item */}
+              <div className="col-md-4">
+                <div className="feature-item aos" data-aos="fade-up">
+                  <div className="feature-icon">
+                    <img src={Icon_02} className="img-fluid" alt="" />
+                  </div>
+                  <div className="feature-content">
+                    <h3>{employeeList.length}</h3>
+                    <p>کارجو</p>
+                  </div>
                 </div>
               </div>
+              {/* /Feature Item */}
+              {/* Feature Item */}
+              <div className="col-md-4">
+                <div
+                  className="feature-item comp-project aos"
+                  data-aos="fade-up"
+                >
+                  <div className="feature-icon">
+                    <img src={Icon_03} className="img-fluid" alt="" />
+                  </div>
+                  <div className="feature-content">
+                    <h3>
+                      {jobs.filter((job) => job.status === "تکمیل شده").length}
+                    </h3>
+                    <p>استخدام</p>
+                  </div>
+                </div>
+              </div>
+              {/* /Feature Item */}
             </div>
-            {/* /Feature Item */}
-          </div>
+          )}
         </div>
       </section>
       {/* /Our Feature */}
@@ -237,90 +234,124 @@ const Home = () => {
             </div>
           </div>
           <div className="row">
-            <Slider>
-              {jobs?.map((item) => (
-                <div className="col-md-6 col-lg-12 col-xl-4">
-                  <div className="freelance-widget widget-author">
-                    <div className="freelance-content">
-                      <a
-                        data-bs-toggle="modal"
-                        href="#rating"
-                        className="favourite"
-                      >
-                        <i className="fa fa-star" />
-                      </a>
-                      <div className="author-heading">
-                        <div className="profile-img">
-                          <a href="#">
-                            <img src={company_img1} alt="author" />
-                          </a>
-                        </div>
-                        <div className="profile-name">
-                          <div className="author-location">
-                            فناوری سروین | Sarveen Technologies{" "}
-                            <i className="fa fa-check-circle text-success verified" />
-                          </div>
-                        </div>
-                        <div className="freelance-info">
-                          <h3>
-                            <a href="#">طراح UI/UX</a>
-                          </h3>
-                          <div className="freelance-location mb-1">
-                            <i className="fa fa-clock" /> ۲ روز پیش
-                          </div>
-                          <div className="freelance-location">
-                            <i className="fa fa-map-marker-alt ms-1" />
-                            تهران
-                          </div>
-                        </div>
-                        <div className="freelance-tags">
-                          <a href="">
-                            <span className="badge badge-pill badge-design">
-                              After Effects
-                            </span>
-                          </a>
-                          <a href="">
-                            <span className="badge badge-pill badge-design">
-                              Illustrator
-                            </span>
-                          </a>
-                          <a href="">
-                            <span className="badge badge-pill badge-design">
-                              HTML
-                            </span>
-                          </a>
-                        </div>
-                        {/* <div className="freelancers-price">حقوق</div> */}
-                        {/* <div className="freelancers-price">$40-$500</div> */}
-                      </div>
-                      <div className="counter-stats ">
-                        <ul>
-                          <li>
-                            <h5> حقوق</h5>
-                            <h3 className="counter-value">۱۵ میلیون</h3>
-                          </li>
+            <Slider
+            // {...settingSlider}
+            // className="owl-carousel owl-theme review-slider owl-loaded owl-drag aos"
+            // data-aos="fade-up"
+            >
+              {loading ? (
+                <Loader />
+              ) : (
+                jobs
+                  // .filter(
+                  //   (job) =>
+                  //     _.includes(
+                  //       job.title?.toLowerCase(),
+                  //       searchPhrase?.toLowerCase()
+                  //     ) ||
+                  //     _.includes(
+                  //       job.company.Name?.toLowerCase(),
+                  //       searchPhrase?.toLowerCase()
+                  //     )
+                  // )
+                  .map(
+                    (item) =>
+                      item.status === "فعال" && (
+                        <div className="col-md-6 col-lg-12 col-xl-4">
+                          <div className="freelance-widget widget-author">
+                            <div className="freelance-content">
+                              <a
+                                data-bs-toggle="modal"
+                                href="#rating"
+                                className="favourite"
+                              >
+                                <i className="fa fa-star" />
+                              </a>
+                              <div className="">
+                                <div className="mb-3">
+                                  <a href="#">
+                                    <img
+                                      style={{
+                                        borderRadius: "100px",
+                                        width: "30%",
+                                        margin: "0 auto",
+                                      }}
+                                      alt=""
+                                      src={
+                                        "http://127.0.0.1:8000" +
+                                        item.company?.image
+                                      }
+                                    />
+                                  </a>
+                                </div>
+                                <div className="profile-name">
+                                  <div className="author-location">
+                                    {item.company?.Name}
+                                    <i className="fa fa-check-circle text-success verified ms-1" />
+                                  </div>
+                                </div>
+                                <div className="freelance-info">
+                                  <h3>
+                                    <a href="#">{item.title}</a>
+                                  </h3>
+                                  <div className="freelance-location mb-1">
+                                    <i className="fa fa-clock" />{" "}
+                                    {daysBetween(item?.published_at)} روز
+                                  </div>
+                                  <div className="freelance-location">
+                                    <i className="fa fa-map-marker-alt ms-1" />
+                                    {item.company.city?.name}
+                                  </div>
+                                </div>
+                                <div className="freelance-tags">
+                                  {item.job_skills?.slice(0, 3).map((item) => (
+                                    <a href="">
+                                      <span className="badge badge-pill badge-design">
+                                        {item.title}
+                                      </span>
+                                    </a>
+                                  ))}
+                                </div>
+                                {/* <div className="freelancers-price">حقوق</div> */}
+                                {/* <div className="freelancers-price">$40-$500</div> */}
+                              </div>
+                              <div className="counter-stats ">
+                                <ul>
+                                  <li>
+                                    <h5> حقوق</h5>
+                                    <h3 className="counter-value">
+                                      {item.salary_amount === null
+                                        ? item.salary_type
+                                        : `${item.salary_amount}میلیون تومان`}
+                                    </h3>
+                                  </li>
 
-                          <li>
-                            <h3 className="counter-value">
-                              <h5>نوع همکاری</h5>
-                              <span className="jobtype">تمام وقت</span>
-                            </h3>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="cart-hover">
-                      <Link
-                        to="/project-details"
-                        className="btn-cart"
-                        tabIndex={-1}
-                      >
-                        مشاهده بیشتر
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                                  <li>
+                                    <h3 className="counter-value">
+                                      <h5>نوع همکاری</h5>
+                                      <span className="jobtype">
+                                        {item.job_type}
+                                      </span>
+                                    </h3>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div className="cart-hover">
+                              <Link
+                                to={{
+                                  pathname: "/project-details",
+                                  state: { jobIdInput: item.id },
+                                }}
+                              >
+                                <h4 className="btn-cart">مشاهده بیشتر</h4>
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                  )
+              )}
             </Slider>
           </div>
           <div className="row">
@@ -405,23 +436,19 @@ const Home = () => {
                   <div className="blog-content">
                     <ul className="entry-meta meta-item">
                       <li>
-                        <div className="post-author">
-                          <Link to="/developer-details">
-                            <img src={Img_02} alt="Post Author" />{" "}
-                            <span> بانک ملی</span>
-                          </Link>
-                        </div>
+                        <div className="post-author"></div>
                       </li>
                       <li>
                         <i className="far fa-clock" /> ۲ تیر ۱۴۰۲
                       </li>
                     </ul>
                     <h3 className="blog-title">
-                      <Link to="/blog-details">آغاز استتخدام بانک ملی</Link>
+                      <Link to="/blog-details">استخدام نیروی انتظامی </Link>
                     </h3>
                     <p className="blog-detail mb-0">
-                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
-                      و با استفاده از طراحان گرافیک است
+                      ضمن آرزوی موفقیت تیم «ای استخدام» برای کاربران شرکت کننده
+                      در آزمون دانشگاه های افسری ارتش به اطلاع میرسانیم،
+                      نتایج...
                     </p>
                   </div>
                 </div>
@@ -434,7 +461,7 @@ const Home = () => {
                     <Link to="/blog-details">
                       <img
                         className="img-fluid"
-                        src={Blog_01}
+                        src={Blog_02}
                         alt="Post Image"
                       />
                     </Link>
@@ -442,23 +469,18 @@ const Home = () => {
                   <div className="blog-content">
                     <ul className="entry-meta meta-item">
                       <li>
-                        <div className="post-author">
-                          <Link to="/developer-details">
-                            <img src={Img_02} alt="Post Author" />{" "}
-                            <span> بانک ملی</span>
-                          </Link>
-                        </div>
+                        <div className="post-author"></div>
                       </li>
                       <li>
                         <i className="far fa-clock" /> ۲ تیر ۱۴۰۲
                       </li>
                     </ul>
                     <h3 className="blog-title">
-                      <Link to="/blog-details">آغاز استتخدام بانک ملی</Link>
+                      <Link to="/blog-details">آغاز استتخدام بانک سینا</Link>
                     </h3>
                     <p className=" blog-detail mb-0">
-                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
-                      و با استفاده از طراحان گرافیک است
+                      بانک سینا به منظور ارائه خدمات بهینه مالی و بانکی به
+                      مشتریان و تکمیل نیروی انسانی خود مطابق با ضوابط و آیین...
                     </p>
                   </div>
                 </div>
@@ -471,7 +493,7 @@ const Home = () => {
                     <Link to="/blog-details">
                       <img
                         className="img-fluid"
-                        src={Blog_01}
+                        src={Blog_03}
                         alt="Post Image"
                       />
                     </Link>
@@ -479,23 +501,18 @@ const Home = () => {
                   <div className="blog-content">
                     <ul className="entry-meta meta-item">
                       <li>
-                        <div className="post-author">
-                          <Link to="/developer-details">
-                            <img src={Img_02} alt="Post Author" />{" "}
-                            <span> بانک ملی</span>
-                          </Link>
-                        </div>
+                        <div className="post-author"></div>
                       </li>
                       <li>
                         <i className="far fa-clock" /> ۲ تیر ۱۴۰۲
                       </li>
                     </ul>
                     <h3 className="blog-title">
-                      <Link to="/blog-details">آغاز استتخدام بانک ملی</Link>
+                      <Link to="/blog-details">آغاز استتخدام بانک دی</Link>
                     </h3>
                     <p className="blog-detail mb-0 ">
-                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
-                      و با استفاده از طراحان گرافیک است
+                      ...به گزارش روابط‌عمومی بانک دی؛ با توجه به نیاز این بانک
+                      به نیروی متخصص در زمینه تولید، توسعه ، پشتیبانی و نگهداری
                     </p>
                   </div>
                 </div>

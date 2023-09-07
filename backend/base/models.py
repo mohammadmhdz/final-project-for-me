@@ -322,6 +322,8 @@ class Employee(models.Model):
     skills = models.ManyToManyField(Skills)
     cv = models.FileField( null=True, blank=True, validators=[FileExtensionValidator(allowed_extensions=["pdf"])])
     favorite_jobs = models.ManyToManyField(Job,null=True,blank=True)
+    linkdin = models.URLField(max_length = 200 , null=True , blank= True)
+    manual_link = models.URLField(max_length = 200 , null=True , blank= True)
     
 
     def __str__(self):

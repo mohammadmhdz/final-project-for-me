@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 const Manageprojects = (props) => {
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
 
-
   const [allRequest, setAllRequest] = useState(true);
   const [waiting, setWaiting] = useState(false);
   const [active, setActive] = useState(false);
@@ -68,7 +67,7 @@ const Manageprojects = (props) => {
   // redux
   const dispatch = useDispatch();
   const companyJobsAllList = useSelector((state) => state.companyJobsList);
-  const { companyJobsListArray , loading } = companyJobsAllList;
+  const { companyJobsListArray, loading } = companyJobsAllList;
 
   useEffect(() => {
     dispatch(companyJobsListAction(localItem.associated_id));
@@ -77,7 +76,7 @@ const Manageprojects = (props) => {
       document.body.className = "";
     };
   }, [dispatch]);
-   console.log(companyJobsListArray);
+  console.log(companyJobsListArray);
   return (
     <>
       {/* Page Content */}
@@ -153,11 +152,11 @@ const Manageprojects = (props) => {
                 </ul>
               </nav>
               {/* project list */}
-              {loading ? 
-              <div className="card-body">
-              <Loader/> 
-              </div>
-              : allRequest ? (
+              {loading ? (
+                <div className="card-body">
+                  <Loader />
+                </div>
+              ) : allRequest ? (
                 companyJobsListArray.map((item) => (
                   <div className="my-projects-list">
                     <div className="row">
@@ -196,7 +195,7 @@ const Manageprojects = (props) => {
                                   </ul>
                                 </div>
                               </div>
-                              <div className="project-hire-info">
+                              <div className="project-hire-infoo">
                                 <div className="content-divider" />
                                 <div className="projects-amount">
                                   <h4>
@@ -208,14 +207,16 @@ const Manageprojects = (props) => {
                                 </div>
                                 <div className="content-divider" />
                                 <div className="projects-action text-center">
-                                
-                                  <Link  className="projects-btn" 
-                                         to={{pathname : "/project-proposals" ,
-                                         state : {job: item} 
-                                      }}>
-                                  مشاهده بیشتر
+                                  <Link
+                                    className="projects-btn"
+                                    to={{
+                                      pathname: "/project-proposals",
+                                      state: { job: item },
+                                    }}
+                                  >
+                                    مشاهده بیشتر
                                   </Link>
-                                  
+
                                   {/* <a href="#" className="hired-detail">
                                   استخدام شده در تاریخ ۱۲ بهمن ۱۴۰۱
                                 </a> */}
@@ -231,11 +232,11 @@ const Manageprojects = (props) => {
                             <div className="card-body p-2">
                               <div className="prj-proposal-count text-center hired">
                                 <h3>استخدام شده</h3>
-                                <img
+                                {/* <img
                                   src={Developer_01}
                                   alt=""
                                   className="img-fluid"
-                                />
+                                /> */}
                                 <p className="mb-0">
                                   {item.completed_request_user.first_name}{" "}
                                   {item.completed_request_user.last_name}
@@ -269,36 +270,6 @@ const Manageprojects = (props) => {
                 <CancelledProjects data={companyJobsListArray} />
               ) : null}
 
-              <div className="row">
-                <div className="col-md-12">
-                  <ul className="paginations list-pagination">
-                    <li>
-                      <a href="#">
-                        <i className="fa fa-angle-right" /> قبلی
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">1</a>
-                    </li>
-                    <li>
-                      <a href="#" className="active">
-                        2
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">3</a>
-                    </li>
-                    <li>
-                      <a href="#">4</a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        بعدی <i className="fa fa-angle-left" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
               {/* /pagination */}
             </div>
           </div>

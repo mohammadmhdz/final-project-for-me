@@ -16,7 +16,6 @@ import {
 import SimpleReactLightbox from "simple-react-lightbox";
 import { SRLWrapper } from "simple-react-lightbox";
 
-import GalleryComponent from "../../CompanyDetails/galleryComponents";
 import moment from "jalali-moment";
 import CompanyProject from "../companyproject";
 import { CompanyReview } from "../../CompanyDetails/companyreview";
@@ -192,67 +191,67 @@ const CompanyProfile = (props) => {
                         <p>{companyDetail.company_data?.about}</p>
                       </div>
                     )}
-                  </div>
-                ) : null}
-                {/* /About Tab Content */}
-                <div className="content">
-                  <div className="container">
-                    <div className="row align-right">
-                      <div className="col-lg-12 col-md-12">
-                        <div className="pro-view">
-                          {/* About Tab Content */}
-                          <div className="pro-post widget-box company-post">
-                            <h3 className="pro-title">تصاویر شرکت</h3>
-                            <div className="pro-content company-gallery">
-                              <SimpleReactLightbox>
-                                {/* {!loadinggal && (
+                    <div className="content">
+                      <div className="container">
+                        <div className="row align-right">
+                          <div className="col-lg-12 col-md-12">
+                            <div className="pro-view">
+                              {/* About Tab Content */}
+                              <div className="pro-post widget-box company-post">
+                                <h3 className="pro-title">تصاویر شرکت</h3>
+                                <div className="pro-content company-gallery">
+                                  <SimpleReactLightbox>
+                                    {/* {!loadinggal && (
                                   <GalleryComponent
                                     companygal={companygalleryListArray}
                                   />
                                 )} */}
-                                <div>
-                                  <SRLWrapper>
-                                    <div className="row">
-                                      {companygalleryListArray[0]?.images?.map(
-                                        (item) => (
-                                          <div
-                                            className="col-sm-6 col-md-6 col-lg-4 col-xl-4"
-                                            key={item.id}
-                                          >
-                                            <div className="project-widget">
-                                              <div className="pro-image">
-                                                <button
-                                                  data-fancybox="gallery2"
-                                                  style={{ border: "none" }}
-                                                >
-                                                  <img
-                                                    className="img-fluid gallery-image"
-                                                    src={`http://127.0.0.1:8000${item.image}`}
-                                                  />
-                                                  <div className="view-gallery">
-                                                    <i className="far fa-eye" />
+                                    <div>
+                                      <SRLWrapper>
+                                        <div className="row">
+                                          {companygalleryListArray[0]?.images?.map(
+                                            (item) => (
+                                              <div
+                                                className="col-sm-6 col-md-6 col-lg-4 col-xl-4"
+                                                key={item.id}
+                                              >
+                                                <div className="project-widget">
+                                                  <div className="pro-image">
+                                                    <button
+                                                      data-fancybox="gallery2"
+                                                      style={{ border: "none" }}
+                                                    >
+                                                      <img
+                                                        className="img-fluid gallery-image"
+                                                        src={`http://127.0.0.1:8000${item.image}`}
+                                                      />
+                                                      <div className="view-gallery">
+                                                        <i className="far fa-eye" />
+                                                      </div>
+                                                    </button>
                                                   </div>
-                                                </button>
+                                                </div>
                                               </div>
-                                            </div>
-                                          </div>
-                                        )
-                                      )}
+                                            )
+                                          )}
+                                        </div>
+                                      </SRLWrapper>
                                     </div>
-                                  </SRLWrapper>
+                                  </SimpleReactLightbox>
                                 </div>
-                              </SimpleReactLightbox>
+                              </div>
+                              {/* /About Tab Content */}
                             </div>
                           </div>
-                          {/* /About Tab Content */}
+                          {/* profile Sidebar */}
+
+                          {/* /Profile Sidebar */}
                         </div>
                       </div>
-                      {/* profile Sidebar */}
-
-                      {/* /Profile Sidebar */}
                     </div>
                   </div>
-                </div>
+                ) : null}
+                {/* /About Tab Content */}
               </div>
             </div>
             {/* profile Sidebar */}
@@ -272,7 +271,7 @@ const CompanyProfile = (props) => {
                     </li>
                     <li>
                       <p>سال تاسیس</p>
-                      <h6>{companyDetail?.company_data?.founded_at}</h6>
+
                       {/* <h6>{moment(companyDetail?.company_data?.founded_at, "YYYY/MM/DD")
                                             .locale("fa")
                                             .format("YYYY/MM/DD")}</h6> */}
@@ -357,11 +356,7 @@ const CompanyProfile = (props) => {
                         <i className="fab fa-facebook" />
                       </a>
                     </li>
-                    <li>
-                      <a href={companyDetail.company_data?.instagram}>
-                        <i className="fab fa-twitter" />
-                      </a>
-                    </li>
+
                     <li>
                       <a href={companyDetail.company_data?.instagram}>
                         <i className="fab fa-instagram" />
@@ -371,11 +366,6 @@ const CompanyProfile = (props) => {
                       <a href={companyDetail.company_data?.linkdin}>
                         <i className="fab fa-linkedin" />
                       </a>
-                    </li>
-                    <li>
-                      <Link to="#">
-                        <i className="fab fa-telegram" />
-                      </Link>
                     </li>
                   </ul>
                 </div>

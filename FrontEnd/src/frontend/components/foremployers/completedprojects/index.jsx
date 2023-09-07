@@ -4,96 +4,109 @@ import StickyBox from "react-sticky-box";
 import { Flags_en, Developer_01 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
 
-const CompletedProjects = ({data}) => {
-  const daysBetween =(input) => {
-    const now = new Date().getDate()
-    const date = new Date(input).getDate()
-    return now - date
-  }
+const CompletedProjects = ({ data }) => {
+  const daysBetween = (input) => {
+    const now = new Date().getDate();
+    const date = new Date(input).getDate();
+    return now - date;
+  };
   useEffect(() => {
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
   });
-  console.log(data , "completed-projects")
+  console.log(data, "completed-projects");
 
   return (
     <>
-      {data.map((item) => (
-        item.status === "تکمیل شده" && (
-
-              <div className="my-projects-list">
-                <div className="row align-right">
-                  <div className="col-lg-10 flex-wrap">
-                    <div className="projects-card flex-fill">
-                      <div className="card-body">
-                        <div className="projects-details align-items-center">
-                          <div className="project-info">
-                            <span>{item.Company?.Name}</span>
-                            <h2>{item.title}</h2>
-                            <div className="customer-info">
-                              <ul className="list-details">
-                                <li>
-                                  <div className="slot">
-                                    <p>امکان دورکاری</p>
-                                    <h5>{item.isremote ? "دارد" : "ندارد"}</h5>
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="slot">
-                                    <p>شهر</p>
-                                    <h5>{item.city?.name}</h5>
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="slot">
-                                    <p>انقضای آگهی</p>
-                                    <h5>{daysBetween(item.published_at)} روز دبگر </h5>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div className="project-hire-info">
-                            <div className="content-divider" />
-                            <div className="projects-amount">
-                            <h4>{item.salary_amount ? `${item.salary_amount} میلیون` : "حقوق توافقی"} </h4>
-                              {/* <h5>in 12 Days</h5> */}
-                            </div>
-                            <div className="content-divider" />
-                            <div className="projects-action text-center">
-                            <Link  className="projects-btn" 
-                                         to={{pathname : "/project-proposals" ,
-                                         state : {job: item} 
-                                      }}>
-                                  مشاهده بیشتر
-                                  </Link>
-                              {/* <a href="#" className="hired-detail">
-                                استخدام شده در تاریخ ۱۲ بهمن ۱۴۰۱
-                              </a> */}
-                            </div>
+      {data.map(
+        (item) =>
+          item.status === "تکمیل شده" && (
+            <div className="my-projects-list">
+              <div className="row align-right">
+                <div className="col-lg-10 flex-wrap">
+                  <div className="projects-card flex-fill">
+                    <div className="card-body">
+                      <div className="projects-details align-items-center">
+                        <div className="project-info">
+                          <span>{item.Company?.Name}</span>
+                          <h2>{item.title}</h2>
+                          <div className="customer-info">
+                            <ul className="list-details">
+                              <li>
+                                <div className="slot">
+                                  <p>امکان دورکاری</p>
+                                  <h5>{item.isremote ? "دارد" : "ندارد"}</h5>
+                                </div>
+                              </li>
+                              <li>
+                                <div className="slot">
+                                  <p>شهر</p>
+                                  <h5>{item.city?.name}</h5>
+                                </div>
+                              </li>
+                              <li>
+                                <div className="slot">
+                                  <p>انقضای آگهی</p>
+                                  <h5>
+                                    {daysBetween(item.published_at)} روز دبگر{" "}
+                                  </h5>
+                                </div>
+                              </li>
+                            </ul>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-2 d-flex flex-wrap">
-                    <div className="projects-card flex-fill">
-                      <div className="card-body p-2">
-                        <div className="prj-proposal-count text-center hired">
-                          <h3>استخدام شده</h3>
-                          
-                          <p className="mb-0">{item.completed_request_user?.first_name} {item.completed_request_user?.last_name}</p>
+                        <div className="project-hire-infoo">
+                          <div className="content-divider" />
+                          <div className="projects-amount">
+                            <h4>
+                              {item.salary_amount
+                                ? `${item.salary_amount} میلیون`
+                                : "حقوق توافقی"}{" "}
+                            </h4>
+                            {/* <h5>in 12 Days</h5> */}
+                          </div>
+                          <div className="content-divider" />
+                          <div className="projects-action text-center">
+                            <Link
+                              className="projects-btn"
+                              to={{
+                                pathname: "/project-proposals",
+                                state: { job: item },
+                              }}
+                            >
+                              مشاهده بیشتر
+                            </Link>
+                            {/* <a href="#" className="hired-detail">
+                                استخدام شده در تاریخ ۱۲ بهمن ۱۴۰۱
+                              </a> */}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              )))}
+                <div className="col-lg-2 d-flex flex-wrap">
+                  <div className="projects-card flex-fill">
+                    <div className="card-body p-2">
+                      <div className="prj-proposal-count text-center hired">
+                        <h3>استخدام شده</h3>
 
-              {/* <div className="row">
+                        <p className="mb-0">
+                          {item.completed_request_user?.first_name}{" "}
+                          {item.completed_request_user?.last_name}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+      )}
+
+      {/* <div className="row">
                 <div className="col-md-12">
                   <ul className="paginations list-pagination">
                     <li>
@@ -123,8 +136,8 @@ const CompletedProjects = ({data}) => {
                   </ul>
                 </div>
               </div> */}
-              {/* /pagination */}
-   
+      {/* /pagination */}
+
       {/* /Page Content */}
       {/* The Modal */}
       <div className="modal fade" id="file">

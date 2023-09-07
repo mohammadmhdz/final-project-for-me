@@ -74,6 +74,7 @@ export const companyDetailsReducer = (
     case COMPANY_DETAILS_SUCCESS:
       return {
         loading: false,
+        success: true,
         companyDetail: action.payload,
       };
     case COMPANY_DETAILS_FAIL:

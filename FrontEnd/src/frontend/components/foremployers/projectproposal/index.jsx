@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link  ,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import {
   Avatar_1,
@@ -12,24 +12,26 @@ import { Sidebar } from "../sidebar";
 // import { alias as moment } from "jalali-moment";
 import moment from "moment";
 
-
 // redux
-import { freelancerRequest , companyChangeRequestStatus  } from "../../../../actions/requestsActions";
-import { useDispatch , useSelector } from "react-redux";
+import {
+  freelancerRequest,
+  companyChangeRequestStatus,
+} from "../../../../actions/requestsActions";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
 
 const Projectproposal = (props) => {
   const dispatch = useDispatch();
-  const allRequest = useSelector(state => state.freelancerRequest);
-  const postStatusChange = useSelector(state => state.companyChangeStatus);
-  const {freelancerRequestsAll , loading} = allRequest
+  const allRequest = useSelector((state) => state.freelancerRequest);
+  const postStatusChange = useSelector((state) => state.companyChangeStatus);
+  const { freelancerRequestsAll, loading } = allRequest;
   const location = useLocation();
-  const {job} = location.state
-  const [statusShow , setStatusShow] = useState("در انتظار بررسی")
-  const [statusChange , setStatusChange] = useState()
-  console.log(job , "project-proposal-job")
-  console.log(statusShow , "status")
-  console.log(postStatusChange , "post change status")
+  const { job } = location.state;
+  const [statusShow, setStatusShow] = useState("در انتظار بررسی");
+  const [statusChange, setStatusChange] = useState();
+  console.log(job, "project-proposal-job");
+  console.log(statusShow, "status");
+  console.log(postStatusChange, "post change status");
 
   const daysBetween = (input) => {
     const now = new Date().getDate();
@@ -37,27 +39,25 @@ const Projectproposal = (props) => {
     return now - date;
   };
 
+  useEffect(() => {
+    dispatch(freelancerRequest());
+  }, [dispatch]);
 
   useEffect(() => {
-    dispatch(freelancerRequest())
-  }, [dispatch]);
- 
-  useEffect(() => {
-     dispatch(companyChangeRequestStatus(statusChange))
+    dispatch(companyChangeRequestStatus(statusChange));
   }, [statusChange]);
 
   const handleChangeStatus = (e) => {
     console.log(e.target.value);
-    setStatusChange(({
-      ["id"] : e.target.id , 
+    setStatusChange({
+      ["id"]: e.target.id,
       ["status"]: e.target.value,
       ["status_change_date"]: moment(new Date().toISOString()).utc().format(),
-    })
-    )
-  }
+    });
+  };
 
-  console.log(statusChange , "status change")
-  console.log(freelancerRequestsAll)
+  console.log(statusChange, "status change");
+  console.log(freelancerRequestsAll);
 
   const hired = true;
   const hired2 = false;
@@ -67,7 +67,7 @@ const Projectproposal = (props) => {
     <>
       {/* Page Content */}
       <div className="content">
-      <div className="container">
+        <div className="container">
           <div className="row mt-5 align-right">
             {/* sidebar */}
             <div className="col-xl-3 col-md-4 theiaStickySidebar">
@@ -117,12 +117,15 @@ const Projectproposal = (props) => {
                       <div className="card-body">
                         <div className="projects-details align-items-center">
                           <div className="project-info">
-                          <Link   className="text-success" 
-                                         to={{pathname : "/company-profile" ,
-                                         state : {companyIdInput: +job.company?.id } 
-                                    }}>
-                                 {job.company.Name}
-                                  </Link>
+                            <Link
+                              className="text-success"
+                              to={{
+                                pathname: "/company-profile",
+                                state: { companyIdInput: +job.company?.id },
+                              }}
+                            >
+                              {job.company.Name}
+                            </Link>
                             <h2>{job.title}</h2>
                             <div className="customer-info">
                               <ul className="list-details">
@@ -141,7 +144,9 @@ const Projectproposal = (props) => {
                                 <li>
                                   <div className="slot">
                                     <p>انقضای اگهی</p>
-                                    <h5>{60 - daysBetween(job.published_at)}</h5>
+                                    <h5>
+                                      {60 - daysBetween(job.published_at)}
+                                    </h5>
                                   </div>
                                 </li>
                               </ul>
@@ -149,7 +154,11 @@ const Projectproposal = (props) => {
                           </div>
                           <div className="project-hire-info">
                             <div className="projects-amount proposals">
-                              <h3>{job.salary_amount ? `${job.salary_amount} میلیون تومان` : "توافقی"}</h3>
+                              <h3>
+                                {job.salary_amount
+                                  ? `${job.salary_amount} میلیون تومان`
+                                  : "توافقی"}
+                              </h3>
                             </div>
                           </div>
                         </div>
@@ -159,35 +168,41 @@ const Projectproposal = (props) => {
                   <div className="col-lg-2 d-flex flex-wrap">
                     {job.completed_request_user === null ? (
                       <div className="projects-card flex-fill">
-                      <div className="card-body p-2">
-                        <div className="prj-proposal-count text-center">
-                          <span>{job.num_requests}</span>
-                          <h3>درخواست</h3>
+                        <div className="card-body p-2">
+                          <div className="prj-proposal-count text-center">
+                            <span>{job.num_requests}</span>
+                            <h3>درخواست</h3>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                      ) : (
-                    <div className="projects-card flex-fill">
-                      <div className="card-body p-2">
-                      <div className="prj-proposal-count text-center">
-                      <h3 style={{color : "orange"}}>استخدام شده</h3> 
-                      <Link className="font-semibold text-primary"
-                                to={{
-                                  pathname : "/developer-profile" ,
-                                  state : {idInfo: +job.completed_request_user?.id} 
-                                  }}>
-                          <p className="mb-0">{job.completed_request_user?.first_name} {job.completed_request_user?.last_name}</p>
-                        </Link>
+                    ) : (
+                      <div className="projects-card flex-fill">
+                        <div className="card-body p-2">
+                          <div className="prj-proposal-count text-center">
+                            <h3 style={{ color: "orange" }}>استخدام شده</h3>
+                            <Link
+                              className="font-semibold text-primary"
+                              to={{
+                                pathname: "/developer-profile",
+                                state: {
+                                  idInfo: +job.completed_request_user?.id,
+                                },
+                              }}
+                            >
+                              <p className="mb-0">
+                                {job.completed_request_user?.first_name}{" "}
+                                {job.completed_request_user?.last_name}
+                              </p>
+                            </Link>
+                          </div>
                         </div>
-                        </div>
-                    </div>)
-                    }
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
               {/* /project list */}
               {/* Proposals list */}
-              
 
               <div className="proposals-section mb-4">
                 <div className="d-flex justify-content-between align-items-center mb-2">
@@ -195,7 +210,7 @@ const Projectproposal = (props) => {
                   <div className="col-md-3 col-lg-3">
                     <div className="form-group">
                       <select
-                      onChange={(e) => setStatusShow(e.target.value)}
+                        onChange={(e) => setStatusShow(e.target.value)}
                         name="price"
                         className="form-control select-level"
                       >
@@ -207,141 +222,125 @@ const Projectproposal = (props) => {
                     </div>
                   </div>
                 </div>
-                
-                {loading ? <Loader/> : freelancerRequestsAll.map((item) => (
-                  (+item.job === +job.id) &&
-                  (item.Company === job.Company) &&
-                  (statusShow === item.status) && (
 
-                  <div className="proposal-card">
-                  {/* Proposals */}
-                  <div className="project-proposals align-items-center">
-                    <div className="proposals-info">
-                      <div className="proposer-info">
-                        <div className="proposer-img">
-                          <img src={Avatar_1} alt="" className="img-fluid" />
-                        </div>
-                        <div className="proposer-detail">
-                          <h4>{item.employee_user}</h4>
-                          <ul className="proposal-details">
-                            <li>تاریخ : {moment(item.send_at, "YYYY/MM/DD")
-                                            .locale("fa")
-                                            .format("YYYY/MM/DD")}</li>
+                {loading ? (
+                  <Loader />
+                ) : (
+                  freelancerRequestsAll.map(
+                    (item) =>
+                      +item.job === +job.id &&
+                      item.Company === job.Company &&
+                      statusShow === item.status && (
+                        <div className="proposal-card">
+                          {/* Proposals */}
+                          <div className="project-proposals align-items-center">
+                            <div className="proposals-info">
+                              <div className="proposer-info">
+                                <div className="proposer-img">
+                                  <img
+                                    src={Avatar_1}
+                                    alt=""
+                                    className="img-fluid"
+                                  />
+                                </div>
+                                <div className="proposer-detail">
+                                  <h4>{item.employee_user}</h4>
+                                  <ul className="proposal-details">
+                                    <li>
+                                      تاریخ :{" "}
+                                      {moment(item.send_at, "YYYY/MM/DD")
+                                        .locale("fa")
+                                        .format("YYYY/MM/DD")}
+                                    </li>
 
-                            <li>
-                              {" "}
-                              <Link className="font-semibold text-primary"
-                                    to={{
-                                      pathname : "/developer-profile" ,
-                                      state : {idInfo: +item.employee} 
-                                      }}>
-                             مشاهده پروفایل
-                            </Link>
-                            </li>
-                            <li>وضعیت درخواست :{item.status}</li>
-                          </ul>
+                                    <li>
+                                      {" "}
+                                      <Link
+                                        className="font-semibold text-primary"
+                                        to={{
+                                          pathname: "/developer-profile",
+                                          state: { idInfo: +item.employee },
+                                        }}
+                                      >
+                                        مشاهده پروفایل
+                                      </Link>
+                                    </li>
+                                    <li>وضعیت درخواست :{item.status}</li>
+                                  </ul>
+                                </div>
+                              </div>
+                              {item.status === "استخدام شده" ? (
+                                <button
+                                  style={
+                                    hired3 ? { pointerEvents: "none" } : {}
+                                  }
+                                  className={"disable-btn projects-btn  ms-1"}
+                                >
+                                  استخدام شده
+                                </button>
+                              ) : (
+                                <div className="proposer-bid-info">
+                                  <div className="proposer-bid"></div>
+                                  <div className="proposer-confirm">
+                                    <button
+                                      onClick={(e) => handleChangeStatus(e)}
+                                      id={item.id}
+                                      //  onClick={(e) =>handleSubmitChangeStatus(e)}
+                                      value="استخدام شده"
+                                      //  style={hired ? { pointerEvents: "none" } : {}}
+                                      //  disabled={hired ? true : false}
+                                      className={"projects-btn ms-1"}
+                                    >
+                                      تغییر به استخدام شده
+                                    </button>
+                                    <button
+                                      onClick={(e) => handleChangeStatus(e)}
+                                      id={item.id}
+                                      value="بررسی شده"
+                                      style={
+                                        hired2 ? { pointerEvents: "none" } : {}
+                                      }
+                                      disabled={hired2 ? true : false}
+                                      className={
+                                        hired2
+                                          ? "disable-btn projects-btn  ms-1"
+                                          : "projects-btn ms-1"
+                                      }
+                                    >
+                                      تغییر به بررسی شده
+                                    </button>
+                                    <button
+                                      onClick={(e) => handleChangeStatus(e)}
+                                      id={item.id}
+                                      value="رد شده"
+                                      style={
+                                        hired3 ? { pointerEvents: "none" } : {}
+                                      }
+                                      disabled={hired3 ? true : false}
+                                      className={
+                                        hired3
+                                          ? "disable-btn projects-btn  ms-1"
+                                          : "projects-btn ms-1"
+                                      }
+                                    >
+                                      تغییر به رد شده
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                            <div className="description-proposal">
+                              <h5 className="desc-title">متن پیام</h5>
+                              <p>{item.message}</p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      {item.status === "استخدام شده" ?
-                      (<button
-                        style={hired3 ? { pointerEvents: "none" } : {}}
-                        className={"disable-btn projects-btn  ms-1" }
-                      >
-                        استخدام شده
-                      </button>)
-                      
-                     : (<div className="proposer-bid-info">
-                     <div className="proposer-bid"></div>
-                     <div className="proposer-confirm">
-                       <button
-                         onClick={(e) => handleChangeStatus(e)}
-                         id={item.id}
-                        //  onClick={(e) =>handleSubmitChangeStatus(e)}
-                         value="استخدام شده"
-                        //  style={hired ? { pointerEvents: "none" } : {}}
-                        //  disabled={hired ? true : false}
-                         className={"projects-btn ms-1"}
-                       >
-                         تغییر به استخدام شده
-                       </button>
-                       <button
-                         onClick={(e) => handleChangeStatus(e)}
-                         id={item.id}
-                         value="بررسی شده"
-                         style={hired2 ? { pointerEvents: "none" } : {}}
-                         disabled={hired2 ? true : false}
-                         className={
-                           hired2
-                             ? "disable-btn projects-btn  ms-1"
-                             : "projects-btn ms-1"
-                         }
-                       >
-                         تغییر به بررسی شده
-                       </button>
-                       <button
-                         onClick={(e) => handleChangeStatus(e)}
-                         id={item.id}
-                         value="رد شده"
-                         style={hired3 ? { pointerEvents: "none" } : {}}
-                         disabled={hired3 ? true : false}
-                         className={
-                           hired3
-                             ? "disable-btn projects-btn  ms-1"
-                             : "projects-btn ms-1"
-                         }
-                       >
-                         تغییر به رد شده
-                       </button>
-                     </div>
-                   </div>)}
-                    </div>
-                    <div className="description-proposal">
-                      <h5 className="desc-title">متن پیام</h5>
-                      <p>
-                        {item.message}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                      )
                   )
-                  ))}
+                )}
               </div>
-                
 
               {/* /Proposals list */}
-              {/* pagination */}
-              <div className="row">
-                <div className="col-md-12">
-                  <ul className="paginations">
-                    <li>
-                      <a href="#">
-                        {" "}
-                        <i className="fas fa-angle-right" /> قبلی
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">1</a>
-                    </li>
-                    <li>
-                      <a href="#" className="active">
-                        2
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">3</a>
-                    </li>
-                    <li>
-                      <a href="#">4</a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        بعذی <i className="fas fa-angle-left" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              {/* /pagination */}
             </div>
           </div>
         </div>

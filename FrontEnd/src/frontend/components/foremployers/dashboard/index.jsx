@@ -11,7 +11,8 @@ import {
   Img_05,
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
-import  moment from "jalali-moment";
+import moment from "jalali-moment";
+import Loader from "../../../../Loader";
 
 // redux
 import {
@@ -91,6 +92,21 @@ const Dashboard = (props) => {
     },
   };
 
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
+  // redux
+  const dispatch = useDispatch();
+  const companyDetailsList = useSelector((state) => state.companyDetails);
+  const companyJobsAllList = useSelector((state) => state.companyJobsList);
+  const { companyJobsListArray, loading } = companyJobsAllList;
+  const { companyDetail, success } = companyDetailsList;
+
+  const daysBetween = (input) => {
+    const now = new Date().getDate();
+    const date = new Date(input).getDate();
+    return now - date;
+  };
+
   var chartradialOptions = {
     // series: [
     //   companyDetail?.completed_jobs_count,
@@ -98,7 +114,12 @@ const Dashboard = (props) => {
     //   companyDetail?.completed_jobs_count,
     //   companyDetail?.completed_jobs_count,
     // ],
-    series: [10 , 5 , 25],
+    series: [
+      100,
+      (100 / companyDetail?.all_jobs_count) * companyDetail?.active_jobs_count,
+      (100 / companyDetail?.all_jobs_count) *
+        companyDetail?.completed_jobs_count,
+    ],
     chart: {
       toolbar: {
         show: false,
@@ -160,41 +181,30 @@ const Dashboard = (props) => {
       },
     ],
   };
-
-  const localItem = JSON.parse(localStorage.getItem("userInfo"));
-
-  // redux
-  const dispatch = useDispatch();
-  const companyDetailsList = useSelector((state) => state.companyDetails);
-  const companyJobsAllList = useSelector((state) => state.companyJobsList);
-  const { companyJobsListArray } = companyJobsAllList;
-  const { companyDetail } = companyDetailsList;
-
-  const daysBetween =(input) => {
-    const now = new Date().getDate()
-    const date = new Date(input).getDate()
-    return now - date
-  }
-
   useEffect(() => {
     dispatch(companyDetails(localItem.associated_id));
-    //
     dispatch(companyJobsListAction(localItem.associated_id));
-    let chartprofileoptionsColumn = document.getElementById("chartprofile");
-    let chartprofileoptionsChart = new ApexCharts(
-      chartprofileoptionsColumn,
-      chartprofileoptions
-    );
-    chartprofileoptionsChart.render();
-
-    let invoiceColumn = document.getElementById("chartradial");
-    let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
-    invoiceChart.render();
-    document.body.className = "dashboard-page";
-    return () => {
-      document.body.className = "";
-    };
   }, [dispatch]);
+
+  useEffect(() => {
+    //
+    if (success) {
+      let chartprofileoptionsColumn = document.getElementById("chartprofile");
+      let chartprofileoptionsChart = new ApexCharts(
+        chartprofileoptionsColumn,
+        chartprofileoptions
+      );
+      chartprofileoptionsChart.render();
+
+      let invoiceColumn = document.getElementById("chartradial");
+      let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
+      invoiceChart.render();
+      document.body.className = "dashboard-page";
+      return () => {
+        document.body.className = "";
+      };
+    }
+  }, [success]);
   console.log(companyDetail, "companyDetail");
   console.log(companyJobsListArray, "companyJobsListArray");
 
@@ -350,24 +360,30 @@ const Dashboard = (props) => {
                           </li> */}
                           <li>
                             <span>
-                              <i className="fa fa-circle text-blue me-1" /> 
+                              <i className="fa fa-circle text-blue me-1" />
                               فرصت های شغلی منتشر شده
                             </span>{" "}
-                            <span className="sta-count">{companyDetail.all_jobs_count}</span>
+                            <span className="sta-count">
+                              {companyDetail.all_jobs_count}
+                            </span>
                           </li>
                           <li>
                             <span>
                               <i className="fa fa-circle text-pink me-1" /> فرصت
                               های شغلی فعال
                             </span>{" "}
-                            <span className="sta-count">{companyDetail.active_jobs_count}</span>
+                            <span className="sta-count">
+                              {companyDetail.active_jobs_count}
+                            </span>
                           </li>
                           <li>
                             <span>
                               <i className="fa fa-circle text-yellow me-1" />{" "}
                               استخدام
                             </span>{" "}
-                            <span className="sta-count">{companyDetail.completed_jobs_count}</span>
+                            <span className="sta-count">
+                              {companyDetail.completed_jobs_count}
+                            </span>
                           </li>
                         </ul>
                       </div>
@@ -383,7 +399,7 @@ const Dashboard = (props) => {
                         <div className="row">
                           <div className="col">
                             <h4 className="card-title">
-                              فرصت های شغلی اخبرا اضافه شده
+                              فرصت های شغلی اخیرا اضافه شده
                             </h4>
                           </div>
                           <div className="col-auto">
@@ -396,67 +412,76 @@ const Dashboard = (props) => {
                           </div>
                         </div>
                       </div>
-                      <div className="card-body">
-                        <div className="table-responsive table-job">
-                          <table className="table table-hover table-center mb-0">
-                            <thead className="thead-pink">
-                              <tr>
-                                <th>جزییات</th>
-                                <th>نوع همکاری</th>
-                                <th>حقوق</th>
-                                <th>ایجاد شده در</th>
-                                <th>تعداد درخواست ها</th>
-                                <th className="text-end"></th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {companyJobsListArray.map((item) => (
+                      {loading ? (
+                        <Loader />
+                      ) : (
+                        <div className="card-body">
+                          <div className="table-responsive table-job">
+                            <table className="table table-hover table-center mb-0">
+                              <thead className="thead-pink">
+                                <tr>
+                                  <th>جزییات</th>
+                                  <th>نوع همکاری</th>
+                                  <th>حقوق</th>
+                                  <th>ایجاد شده در</th>
+                                  <th>تعداد درخواست ها</th>
+                                  <th className="text-end"></th>
+                                </tr>
+                              </thead>
 
-
-                              <tr>
-                                <td>
-                                  <span className="detail-text">
-                                    {item.title}
-                                  </span>
-                                  <span className="d-block text-expiry">
-                                   تاریخ انقضا : {daysBetween(item.published_at)}
-                                  </span>
-                                </td>
-                                <td>{item.job_type}</td>
-                                <td>
-                                  <span className="table-budget">حقوق</span>{" "}
-                                  <span className="d-block text-danger">
-                                    {item.salary_type === "توافقی" ? item.salary_type : `${item.salary_amount} میلیون `}
-                                  </span>
-                                </td>
-                                <td>{moment(item.published_at, "YYYY/MM/DD")
-                                            .locale("fa")
-                                            .format("YYYY/MM/DD")}</td>
-                              <td>{item.num_requests}</td>
-                                <td className="text-end">
-                                <Link   className="text-success" 
-                                         to={{pathname : "/project-proposals" ,
-                                         state : {job: item} 
-                                      }}>
-                                  مشاهده
-                                  </Link>
-                                </td>
-                              </tr> 
-                              ))  
-                            }
-
-                            </tbody>
-                          </table>
+                              <tbody>
+                                {companyJobsListArray.map((item) => (
+                                  <tr>
+                                    <td>
+                                      <span className="detail-text">
+                                        {item.title}
+                                      </span>
+                                      <span className="d-block text-expiry">
+                                        تاریخ انقضا :{" "}
+                                        {daysBetween(item.published_at)}
+                                      </span>
+                                    </td>
+                                    <td>{item.job_type}</td>
+                                    <td>
+                                      <span className="table-budget">حقوق</span>{" "}
+                                      <span className="d-block text-danger">
+                                        {item.salary_type === "توافقی"
+                                          ? item.salary_type
+                                          : `${item.salary_amount} میلیون `}
+                                      </span>
+                                    </td>
+                                    <td>
+                                      {moment(item.published_at, "YYYY/MM/DD")
+                                        .locale("fa")
+                                        .format("YYYY/MM/DD")}
+                                    </td>
+                                    <td>{item.num_requests}</td>
+                                    <td className="text-end">
+                                      <Link
+                                        className="text-success"
+                                        to={{
+                                          pathname: "/project-proposals",
+                                          state: { job: item },
+                                        }}
+                                      >
+                                        مشاهده
+                                      </Link>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
-                </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
     </>
   );
 };

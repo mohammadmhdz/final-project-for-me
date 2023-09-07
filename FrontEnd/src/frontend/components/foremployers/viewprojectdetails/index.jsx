@@ -62,7 +62,7 @@ const ViewProjectdetails = (props) => {
                                 </ul>
                               </div>
                             </div>
-                            <div className="project-hire-info">
+                            <div className="project-hire-infoo">
                               <div className="content-divider" />
                               <div className="projects-amount">
                                 <h3>۱۳ میلیون</h3>

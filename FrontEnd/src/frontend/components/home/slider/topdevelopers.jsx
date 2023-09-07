@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 // Import Slick Slider
 import Slider from "react-slick";
@@ -7,8 +7,18 @@ import { Img_03, Avatar_1, Avatar_2, Avatar_3 } from "../../imagepath";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import $ from "jquery";
-
+import { useDispatch, useSelector } from "react-redux";
+// import { listJobs } from "../../../../actions/jobActions";
+import { employeeListAll } from "../../../../actions/employeeActions";
 const TopDevelopers = (props) => {
+  const dispatch = useDispatch();
+  const employeeAllList = useSelector((state) => state.employeeListAll);
+  const { employeeList } = employeeAllList;
+
+  useEffect(() => {
+    // we must take the id from where we reach here
+    dispatch(employeeListAll());
+  }, [dispatch]);
   //Aos
   useEffect(() => {
     AOS.init({
@@ -49,6 +59,7 @@ const TopDevelopers = (props) => {
     $(".slick-prev").html('<i class="fa fa-chevron-left"></i>');
     $(".slick-next").html('<i class="fa fa-chevron-right"></i>');
   });
+
   return (
     <>
       {/* Top Instructor */}
@@ -76,222 +87,63 @@ const TopDevelopers = (props) => {
                 className="developer-slider aos"
                 data-aos="fade-up"
               >
-                <div className="freelance-widget">
-                  <div className="freelance-content">
-                    <a data-toggle="modal" href="#rating" className="favourite">
-                      <i className="fas fa-star" />
-                    </a>
-                    <div className="freelance-img">
-                      <a href="#">
-                        <img src={Avatar_1} alt="User Image" />
-                        <span className="verified">
-                          <i className="fas fa-check-circle" />
-                        </span>
+                {employeeList.map((emp) => (
+                  <div className="freelance-widget" key={emp.id}>
+                    <div className="freelance-content">
+                      <a
+                        data-toggle="modal"
+                        href="#rating"
+                        className="favourite"
+                      >
+                        <i className="fas fa-star" />
                       </a>
-                    </div>
-                    <div className="freelance-info">
-                      <h3>
-                        <a href="#">محمد مهدی زاده</a>
-                      </h3>
-                      <div className="freelance-specific">
-                        برنامه نویس Front-end
+                      <div className="freelance-img">
+                        <a href="#">
+                          <img src={`http://127.0.0.1:8000${emp.image}`} />
+                          <span className="verified">
+                            <i className="fas fa-check-circle" />
+                          </span>
+                        </a>
                       </div>
-                      <div className="freelance-location">
-                        <i className="fas fa-map-marker-alt ms-1" />
-                        بیجاد
-                      </div>
+                      <div className="freelance-info">
+                        <h3>
+                          <a href="#">
+                            {emp.user.first_name} {emp.user.last_name}
+                          </a>
+                        </h3>
+                        <div className="freelance-specific">
+                          {emp.perfession_title}
+                        </div>
+                        <div className="freelance-location">
+                          <i className="fas fa-map-marker-alt ms-1" />
+                          {emp.city.name}
+                        </div>
 
-                      <div className="freelance-tags">
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            ReactJs
-                          </span>
-                        </a>
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            ReactNative
-                          </span>
-                        </a>
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            Python
-                          </span>
-                        </a>
+                        <div className="freelance-tags">
+                          {emp.skills.map((skill) => (
+                            <a href="#" key={skill.id}>
+                              <span className="badge badge-pill badge-design">
+                                {skill.title}
+                              </span>
+                            </a>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="cart-hover">
-                    <Link
-                      to="/developer-details"
-                      className="btn-cart"
-                      tabIndex={-1}
-                    >
-                      مشاهده پروفایل
-                    </Link>
-                  </div>
-                </div>
-                <div className="freelance-widget">
-                  <div className="freelance-content">
-                    <a data-toggle="modal" href="#rating" className="favourite">
-                      <i className="fas fa-star" />
-                    </a>
-                    <div className="freelance-img">
-                      <a href="#">
-                        <img src={Avatar_1} alt="User Image" />
-                        <span className="verified">
-                          <i className="fas fa-check-circle" />
-                        </span>
-                      </a>
-                    </div>
-                    <div className="freelance-info">
-                      <h3>
-                        <a href="#">محمد مهدی زاده</a>
-                      </h3>
-                      <div className="freelance-specific">
-                        برنامه نویس Front-end
-                      </div>
-                      <div className="freelance-location">
-                        <i className="fas fa-map-marker-alt ms-1" />
-                        قزوین
-                      </div>
-
-                      <div className="freelance-tags">
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            ReactJs
-                          </span>
-                        </a>
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            ReactNative
-                          </span>
-                        </a>
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            Python
-                          </span>
-                        </a>
-                      </div>
+                    <div className="cart-hover">
+                      <Link
+                        to={{
+                          pathname: "/developer-profile",
+                          state: { idInfo: emp.id },
+                        }}
+                        className="btn-cart"
+                        tabIndex={-1}
+                      >
+                        مشاهده پروفایل
+                      </Link>
                     </div>
                   </div>
-                  <div className="cart-hover">
-                    <Link
-                      to="/developer-details"
-                      className="btn-cart"
-                      tabIndex={-1}
-                    >
-                      مشاهده پروفایل
-                    </Link>
-                  </div>
-                </div>
-                <div className="freelance-widget">
-                  <div className="freelance-content">
-                    <a data-toggle="modal" href="#rating" className="favourite">
-                      <i className="fas fa-star" />
-                    </a>
-                    <div className="freelance-img">
-                      <a href="#">
-                        <img src={Avatar_1} alt="User Image" />
-                        <span className="verified">
-                          <i className="fas fa-check-circle" />
-                        </span>
-                      </a>
-                    </div>
-                    <div className="freelance-info">
-                      <h3>
-                        <a href="#">محمد مهدی زاده</a>
-                      </h3>
-                      <div className="freelance-specific">
-                        برنامه نویس Front-end
-                      </div>
-                      <div className="freelance-location">
-                        <i className="fas fa-map-marker-alt ms-1" />
-                        قزوین
-                      </div>
-
-                      <div className="freelance-tags">
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            ReactJs
-                          </span>
-                        </a>
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            ReactNative
-                          </span>
-                        </a>
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            Python
-                          </span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="cart-hover">
-                    <Link
-                      to="/developer-details"
-                      className="btn-cart"
-                      tabIndex={-1}
-                    >
-                      مشاهده پروفایل
-                    </Link>
-                  </div>
-                </div>
-                <div className="freelance-widget">
-                  <div className="freelance-content">
-                    <a data-toggle="modal" href="#rating" className="favourite">
-                      <i className="fas fa-star" />
-                    </a>
-                    <div className="freelance-img">
-                      <a href="#">
-                        <img src={Avatar_1} alt="User Image" />
-                        <span className="verified">
-                          <i className="fas fa-check-circle" />
-                        </span>
-                      </a>
-                    </div>
-                    <div className="freelance-info">
-                      <h3>
-                        <a href="#">محمد مهدی زاده</a>
-                      </h3>
-                      <div className="freelance-specific">
-                        برنامه نویس Front-end
-                      </div>
-                      <div className="freelance-location">
-                        <i className="fas fa-map-marker-alt ms-1" />
-                        قزوین
-                      </div>
-
-                      <div className="freelance-tags">
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            ReactJs
-                          </span>
-                        </a>
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            ReactNative
-                          </span>
-                        </a>
-                        <a href="">
-                          <span className="badge badge-pill badge-design">
-                            Python
-                          </span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="cart-hover">
-                    <Link
-                      to="/developer-details"
-                      className="btn-cart"
-                      tabIndex={-1}
-                    >
-                      مشاهده پروفایل
-                    </Link>
-                  </div>
-                </div>
+                ))}
               </Slider>
             </div>
           </div>
