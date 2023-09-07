@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
-import _ from "lodash";
+import _, { includes } from "lodash";
 
 // Import Images
 import {
@@ -34,20 +34,45 @@ const Projects = (props) => {
   const Requirments = useSelector((state) => state.jobsPostRequirments);
   const { postJobDetailsRequirments } = Requirments;
   const { categories, cities, skills, states } = postJobDetailsRequirments;
+  const [searchFilter, setSearchFilter] = useState([]);
 
   const daysBetween = (input) => {
     const now = new Date().getDate();
     const date = new Date(input).getDate();
     return now - date;
   };
+const afterFilter = jobs?.filter((job) =>{
+      Object.keys(job)
+      console.log(searchFilter.value ,"item") 
+      console.log(searchFilter.key ,"key") 
+      
+    }) 
+
+  // (job) => (job.salary_type === searchFilter?.salary_type  &&
+  //           job.job_category.title === searchFilter?.job_category)
+
+  const handleChange = (e) => {
+    // console.log(e.target.value) 
+    // console.log(e.target.id) 
+    const id = e.target.id
+    const value = e.target.value;
+    setSearchFilter((searchFilter) =>({
+     ...searchFilter, 
+     [id] : value,
+    }));
+    // setSearchFilter(...searchFilter)
+
+ }
 
   useEffect(() => {
     dispatch(listJobs());
     dispatch(jobsPostRequirments());
   }, [dispatch]);
 
+  console.log(searchFilter, "searxc");
   console.log(jobs, "jobs");
-  console.log(postJobDetailsRequirments, "requierments");
+  console.log(afterFilter, "afterFilter");
+  // console.log(postJobDetailsRequirments, "requierments");
 
   return (
     <>
@@ -77,9 +102,12 @@ const Projects = (props) => {
                       <h4>دسته بندی</h4>
                       <option>انتخاب کنید</option>
                       <div className="form-group">
-                        <select className="form-control select">
+                        <select 
+                         onChange={handleChange}
+                         id="job_category"
+                        className="form-control select">
                           {postJobDetailsRequirments.categories?.map((item) => (
-                            <option value={item.id}>{item.title}</option>
+                            <option value={item.title}>{item.title}</option>
                           ))}
                         </select>
                       </div>
@@ -98,9 +126,12 @@ const Projects = (props) => {
                     <div className="filter-widget">
                       <h4>حقوق</h4>
                       <div className="form-group">
-                        <select className="form-control select">
-                          <option> مشخص شده</option>
-                          <option>توافقی</option>
+                        <select 
+                           onChange={handleChange}
+                           id="salary_type"
+                           className="form-control select">
+                          <option value="مشخص"> مشخص شده</option>
+                          <option value="توافقی">توافقی</option>
                         </select>
                       </div>
                     </div>
@@ -198,12 +229,15 @@ const Projects = (props) => {
                 </div>
               </div>
               <div className="bootstrap-tags text-start pl-0">
+                {/* {searchFilter?.map((item) => {
+                  return(
                 <span className="badge badge-pill badge-skills">
-                  تهران{" "}
+                  {item.job_category}
                   <span className="tag-close" data-role="remove">
                     <i className="fa fa-times" />
                   </span>
                 </span>
+                )})} */}
               </div>
               <div className="row">
                 {/* Project Content */}
@@ -220,7 +254,7 @@ const Projects = (props) => {
                         _.includes(
                           job.company.Name?.toLowerCase(),
                           searchPhrase?.toLowerCase()
-                        )
+                        )   
                     )
                     .map(
                       (item) =>
