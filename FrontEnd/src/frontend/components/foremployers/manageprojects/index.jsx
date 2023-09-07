@@ -96,7 +96,7 @@ const Manageprojects = (props) => {
                   <div className="col-md-6">
                     <h3>همه کار های منتشر شده شما</h3>
                   </div>
-                  <div className="col-md-6 text-end">
+                  <div className="col-md-6 text-start">
                     <Link
                       to="/post-project"
                       className="btn btn-primary back-btn mb-4"
@@ -161,7 +161,21 @@ const Manageprojects = (props) => {
                   <div className="my-projects-list">
                     <div className="row">
                       <div className="col-lg-10 flex-wrap">
-                        <div className="projects-card flex-fill">
+                        <div
+                          className="projects-card flex-fill"
+                          style={{
+                            backgroundColor:
+                              item.status === "درانتظار تایید"
+                                ? "#fff8f2"
+                                : item.status === "فعال"
+                                ? "#your-color-value-for-active"
+                                : item.status === "تکمیل شده"
+                                ? "#eafcee"
+                                : item.status === "منقضی شده"
+                                ? "#ff00001a"
+                                : "#default-color-value",
+                          }}
+                        >
                           <div className="card-body">
                             <div className="projects-details align-items-center">
                               <div className="project-info">
