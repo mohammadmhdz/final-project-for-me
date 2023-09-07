@@ -98,7 +98,7 @@ const TopDevelopers = (props) => {
                       </div>
                       <div className="freelance-location">
                         <i className="fas fa-map-marker-alt ms-1" />
-                        قزوین
+                        بیجاد
                       </div>
 
                       <div className="freelance-tags">

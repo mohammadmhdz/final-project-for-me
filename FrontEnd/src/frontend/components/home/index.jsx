@@ -36,37 +36,8 @@ const Home = () => {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
   const { jobs } = listAllJobs;
-  console.log("zzz", jobs);
-  // const jobs = [
-  //   {
-  //     title: "مشاغل A",
-  //     Company: {
-  //       Name: "شرکت X",
-  //     },
-  //   },
-  //   {
-  //     title: "مشاغل B",
-  //     Company: {
-  //       Name: "شرکت Y",
-  //     },
-  //   },
-  //   {
-  //     title: "مشاغل  برنامهC",
-  //     Company: {
-  //       Name: "شرکت Z",
-  //     },
-  //   },
-  // ];
 
   const handleSearch = () => {
-    // console.log("ssss", searchPhrase);
-    // const filtered = jobs.filter(
-    //   (job) =>
-    //     _.includes(job.title.toLowerCase(), searchPhrase.toLowerCase()) ||
-    //     _.includes(job.company.Name.toLowerCase(), searchPhrase.toLowerCase())
-    // );
-    // setFilteredJobs(filtered);
-
     history.push({
       pathname: "/project",
       state: {

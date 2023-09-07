@@ -253,6 +253,8 @@ const AppContainer = function (props) {
               <Route exact path="/searchp" component={SearchProject} />
               {/* <Route exact path="/search" component={Search} /> */}
               <Route exact path="/company-profile" component={CompanyProfile} />
+              <Route exact path="/company-gallery" component={CompanyGallery} />
+
               <Route exact path="/post-project" component={PostProject} />
               <Route exact path="/company-project" component={CompanyProject} />
               {/* For Employer */}

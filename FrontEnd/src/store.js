@@ -33,6 +33,7 @@ import {
   companyReviewReducer,
   companyJobsListReducer,
   companyFavoriteEmployeesReducer,
+  companygalleryListReducer,
   //post
   companyVerifyReducer,
   postReviewReducer,
@@ -95,6 +96,7 @@ const reducer = combineReducers({
   companyToggleFavorite: companyToggleFavoriteListReducer,
   companyUpdateDetail: companyUpdateDetailsReducer,
   companydelete: companyDeleteReducer,
+  companygellery: companygalleryListReducer,
   //
   categoryListAll: categoryListReducer,
   categoryUpdateDetail: categoryUpdateDetailsReducer,

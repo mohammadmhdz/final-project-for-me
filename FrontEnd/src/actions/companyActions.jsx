@@ -38,6 +38,10 @@ import {
   COMPANY_DELETE_REQUEST,
   COMPANY_DELETE_SUCCESS,
   COMPANY_DELETE_FAIL,
+  //
+  COMPANY_GALLERY_LIST_REQUEST,
+  COMPANY_GALLERY_LIST_SUCCESS,
+  COMPANY_GALLERY_LIST_FAIL,
 } from "../constant/companyConstant";
 import axios from "axios";
 
@@ -105,64 +109,26 @@ export const companyReviewGet = (keyword) => async (dispatch) => {
         error.response && error.response.data.detail
           ? error.response.data.detail
           : error.message,
-
-        });
-      }
-};
-    
-export const companyJobsListAction = (keyword) => async (dispatch) => {
-      try {
-        dispatch({ type: COMPANY_JOBS_LIST_REQUEST });
-        
-        // const { data } = await axios.get(`/api/products${keyword}`)
-        const { data } = await axios.get(
-          `http://127.0.0.1:8000/api/companies/${keyword}/get_jobs/`
-          );
-          // console.log(data);
-          dispatch({
-            type: COMPANY_JOBS_LIST_SUCCESS,
-            payload: data,
-          });
-        } catch (error) {
-          dispatch({
-            type: COMPANY_JOBS_LIST_FAIL,
-            payload:
-            error.response && error.response.data.detail
-            ? error.response.data.detail
-            : error.message,
-          });
-        }
-      };
-      
-// POST DATA
-export const companyToggleFavoriteList = (inputData , employeeId) => async (dispatch) => {
-  // console.log(data)
-  try {
-    console.log(inputData);
-    dispatch({
-      type: COMPANY_TOGGLE_FAVORITE_REQUEST,
     });
+  }
+};
 
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
+export const companyJobsListAction = (keyword) => async (dispatch) => {
+  try {
+    dispatch({ type: COMPANY_JOBS_LIST_REQUEST });
 
-    const { data } = await axios.post(
-      `http://127.0.0.1:8000/api/companies/${inputData}/toggle_favorite_employee/`,
-      {"employee_id": employeeId},
-      config
+    // const { data } = await axios.get(`/api/products${keyword}`)
+    const { data } = await axios.get(
+      `http://127.0.0.1:8000/api/companies/${keyword}/get_jobs/`
     );
-
+    // console.log(data);
     dispatch({
-      type: COMPANY_TOGGLE_FAVORITE_SUCCESS,
+      type: COMPANY_JOBS_LIST_SUCCESS,
       payload: data,
     });
-
   } catch (error) {
     dispatch({
-      type: COMPANY_TOGGLE_FAVORITE_FAIL,
+      type: COMPANY_JOBS_LIST_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
@@ -170,44 +136,106 @@ export const companyToggleFavoriteList = (inputData , employeeId) => async (disp
     });
   }
 };
-export const  companyVerification = (input) => async (dispatch) => {
-        try {
-          console.log(input?.company_verfication_id);
-          console.log(input?.company_name);
-          dispatch({
-            type: COMPANY_VERIFICATION_REQUEST,
-          });
-          
-          const config = {
-            headers: {
-              "Content-type": "multipart/form-data",
-            },
-          };
-          
-          const { data } = await axios.post(
-            "http://127.0.0.1:8000/api/verification/",
-            { Company : input?.company_name ,
-              registrationـnumber: input?.company_verfication_id ,
-              registration_file : input?.company_file ,
-              status: true},
-              config
-              );
-              
-              dispatch({
-                type: COMPANY_VERIFICATION_SUCCESS,
-                payload: data,
-              });
-              
-            } catch (error) {
-              dispatch({
-                type: COMPANY_VERIFICATION_FAIL,
-                payload:
-                error.response && error.response.data.detail
-                ? error.response.data.detail
-                : error.message,
-              });
-            }}
 
+export const companygallerytAction = (keyword) => async (dispatch) => {
+  try {
+    dispatch({ type: COMPANY_GALLERY_LIST_REQUEST });
+
+    // const { data } = await axios.get(`/api/products${keyword}`)
+    const { data } = await axios.get(
+      `http://127.0.0.1:8000/api/companies/${keyword}/get_galleries/`
+    );
+
+    dispatch({
+      type: COMPANY_GALLERY_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: COMPANY_GALLERY_LIST_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+// POST DATA
+export const companyToggleFavoriteList =
+  (inputData, employeeId) => async (dispatch) => {
+    // console.log(data)
+    try {
+      console.log(inputData);
+      dispatch({
+        type: COMPANY_TOGGLE_FAVORITE_REQUEST,
+      });
+
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        `http://127.0.0.1:8000/api/companies/${inputData}/toggle_favorite_employee/`,
+        { employee_id: employeeId },
+        config
+      );
+
+      dispatch({
+        type: COMPANY_TOGGLE_FAVORITE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: COMPANY_TOGGLE_FAVORITE_FAIL,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+    }
+  };
+export const companyVerification = (input) => async (dispatch) => {
+  try {
+    console.log(input?.company_verfication_id);
+    console.log(input?.company_name);
+    dispatch({
+      type: COMPANY_VERIFICATION_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await axios.post(
+      "http://127.0.0.1:8000/api/verification/",
+      {
+        Company: input?.company_name,
+        registrationـnumber: input?.company_verfication_id,
+        registration_file: input?.company_file,
+        status: true,
+      },
+      config
+    );
+
+    dispatch({
+      type: COMPANY_VERIFICATION_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: COMPANY_VERIFICATION_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
 
 export const companyFavoriteEmployees = (keyword) => async (dispatch) => {
   try {

@@ -38,6 +38,10 @@ import {
   COMPANY_DELETE_REQUEST,
   COMPANY_DELETE_SUCCESS,
   COMPANY_DELETE_FAIL,
+  //
+  COMPANY_GALLERY_LIST_REQUEST,
+  COMPANY_GALLERY_LIST_SUCCESS,
+  COMPANY_GALLERY_LIST_FAIL,
 } from "../constant/companyConstant";
 
 export const companyListReducer = (state = { compnanies: [] }, action) => {
@@ -143,6 +147,27 @@ export const companyJobsListReducer = (
   }
 };
 
+export const companygalleryListReducer = (
+  state = { companygalleryListArray: [] },
+  action
+) => {
+  switch (action.type) {
+    case COMPANY_GALLERY_LIST_REQUEST:
+      return { loading: true, companygalleryListArray: [] };
+
+    case COMPANY_GALLERY_LIST_SUCCESS:
+      return {
+        loading: false,
+        companygalleryListArray: action.payload,
+      };
+    case COMPANY_GALLERY_LIST_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
 //POST
 export const companyVerifyReducer = (state = {}, action) => {
   switch (action.type) {
@@ -182,7 +207,7 @@ export const companyToggleFavoriteListReducer = (state = {}, action) => {
       return { loading: true };
 
     case COMPANY_TOGGLE_FAVORITE_SUCCESS:
-      return { loading: false,  toggleFavoriteResult: action.payload };
+      return { loading: false, toggleFavoriteResult: action.payload };
 
     case COMPANY_TOGGLE_FAVORITE_FAIL:
       return { loading: false, error: action.payload };

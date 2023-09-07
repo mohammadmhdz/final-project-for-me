@@ -15,7 +15,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
-from rest_framework.parsers import MultiPartParser
+# from rest_framework.parsers import MultiPartParser
 import base64
 from django.core.files.base import ContentFile
 
@@ -102,6 +102,7 @@ class WorkExperienceViewSet(viewsets.ViewSet):
 
 
 class EducationViewSet(viewsets.ViewSet):
+    
 
 
 
