@@ -142,8 +142,7 @@ const FreelancerFavourites = (props) => {
                                               <img
                                                 className="avatar-img rounded-circle"
                                                 src={
-                                                  "http://127.0.0.1:8000" +
-                                                  items.company?.image
+                                                  `http://127.0.0.1:8000/${items.company?.image}`
                                                 }
                                                 alt="User Image"
                                               />

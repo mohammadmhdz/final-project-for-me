@@ -36,14 +36,17 @@ const Sidebar = (props) => {
           >
             <img
               alt="profile image"
-              src={"http://127.0.0.1:8000" + localItem?.image}
+              src={"http://127.0.0.1:8000/" + localItem?.image}
               className="avatar-lg rounded-circle"
             />
           </Link>
           <div className="me-sm-3 me-md-0 me-lg-3 mt-2 mt-sm-0 mt-md-2 mt-lg-0 align-right">
             <p className="mb-2">خوش آمدید,</p>
             <h3 className="mb-0">
-              <Link to="/freelancer-profile">
+              <Link 
+              // to="/freelancer-profile"
+              to="#"
+              >
                 {localItem?.name} {localItem?.last_name}
               </Link>
             </h3>

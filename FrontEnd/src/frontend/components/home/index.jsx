@@ -43,6 +43,7 @@ const Home = () => {
     const date = new Date(input).getDate();
     return now - date;
   };
+  console.log(jobs)
   // console.log("zzz", jobs);
   // const settingSlider = {
   //   dots: true,
@@ -312,8 +313,7 @@ const Home = () => {
                                     }}
                                     alt=""
                                     src={
-                                      "http://127.0.0.1:8000" +
-                                      item.company?.image
+                                      `http://127.0.0.1:8000/${item.company?.image}`
                                     }
                                   />
                                 </a>
@@ -478,7 +478,7 @@ const Home = () => {
                       </li>
                     </ul>
                     <h3 className="blog-title">
-                      <Link to="/blog-details">استخدام نیروی انتظامی </Link>
+                      <Link to="#">استخدام نیروی انتظامی </Link>
                     </h3>
                     <p className="blog-detail mb-0">
                       ضمن آرزوی موفقیت تیم «ای استخدام» برای کاربران شرکت کننده
@@ -511,7 +511,7 @@ const Home = () => {
                       </li>
                     </ul>
                     <h3 className="blog-title">
-                      <Link to="/blog-details">آغاز استتخدام بانک سینا</Link>
+                      <Link to="#">آغاز استتخدام بانک سینا</Link>
                     </h3>
                     <p className=" blog-detail mb-0">
                       بانک سینا به منظور ارائه خدمات بهینه مالی و بانکی به
@@ -525,7 +525,7 @@ const Home = () => {
                 {/* Blog Post */}
                 <div className="blog grid-blog aos" data-aos="fade-up">
                   <div className="blog-image">
-                    <Link to="/blog-details">
+                    <Link to="#">
                       <img
                         className="img-fluid"
                         src={Blog_03}

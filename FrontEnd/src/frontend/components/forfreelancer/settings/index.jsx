@@ -246,7 +246,7 @@ const handleSubmit = (e) => {
                     <li className="nav-item">
                       <Link
                         className="nav-link"
-                        to="/freelancer-change-password"
+                        // to="/freelancer-change-password"
                       >
                         تغییر رمز عبور
                       </Link>
