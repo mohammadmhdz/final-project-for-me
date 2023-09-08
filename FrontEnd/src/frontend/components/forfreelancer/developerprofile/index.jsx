@@ -95,7 +95,7 @@ const DeveloperProfile = (props) => {
                         <img
                           src={
                             employee.image !== null
-                              ? `http://127.0.0.1:8000/${employee.image}`
+                              ? `http://127.0.0.1:8000${employee.image}`
                               : Img_01
                           }
                           alt="User"
