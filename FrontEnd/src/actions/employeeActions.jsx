@@ -153,7 +153,7 @@ export const employeeToggleFavoriteList =
 //put
 //edit freelancerSetting
 export const updateEmployeeDetails = (input) => async (dispatch) => {
-  console.log(input.Experiences, "input");
+  console.log(input, "input");
   // console.log(input?.company_name);
   try {
     dispatch({
@@ -166,8 +166,8 @@ export const updateEmployeeDetails = (input) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.put(
-      `http://127.0.0.1:8000/api/employees/3/`,
+    const { data } = await axios.patch(
+      `http://127.0.0.1:8000/api/employees/${input.id}/update/`,
       // `http://127.0.0.1:8000/api/employees/${+input.id}/`,
 
       // user: input.user,
@@ -192,14 +192,14 @@ export const updateEmployeeDetails = (input) => async (dispatch) => {
       // active_plan: input.active_plan,
       // available_Job_count: +input.available_Job_count,
       {
-        user: "6",
+        id: input.id,
         perfession_title: input.perfession_title,
         cooperation_type: input.cooperation_type,
-        image: null,
+        // image: null,
         about: input.about,
         gender: input.gender,
-        city: typeof input.city === "object" ? input.city.id : input.city,
-        skills: [1, 2, 3],
+        city: typeof input.city === "object" ? input.city.id : +input.city,
+        skills: [...input.skills],
         cv: input.cv,
         favorite_jobs: input.favorite_jobs,
         work_experience: [...input.Experiences],

@@ -192,7 +192,7 @@ const FreelancerSettings = (props) => {
 const handleSubmit = (e) => {
   e.preventDefault()
   dispatch(updateEmployeeDetails(formData))
-  console.log(formData);
+  // console.log(formData);
 }
 
 
@@ -218,7 +218,7 @@ const handleSubmit = (e) => {
   // console.log(employee)
   console.log(formData ,'formData')
   // console.log(postJobDetailsRequirments ,'formData')
-  console.log(ExperienceDate ,'setdata')
+  // console.log(ExperienceDate ,'setdata')
   console.log(employeeUpdateResult  ,'put result')
   return (
     <>
