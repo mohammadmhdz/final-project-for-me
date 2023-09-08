@@ -18,10 +18,13 @@ import { deleteuser } from "../../../../actions/adminAction";
 const Providers = () => {
   const dispatch = useDispatch();
   const companyListAll = useSelector((state) => state.companyListAll);
+
   const companyDetailsUpdate = useSelector(
     (state) => state.companyUpdateDetail
   );
+  const { success: successup } = companyDetailsUpdate;
   const companydelete = useSelector((state) => state.companydelete);
+  const { success: successdel } = companydelete;
   const { compnanies, loading } = companyListAll;
 
   const [selectedCompany, setSelectedCompany] = useState(null);
@@ -165,7 +168,7 @@ const Providers = () => {
 
   useEffect(() => {
     dispatch(companyListAction());
-  }, [dispatch]);
+  }, [dispatch, successup, successdel]);
 
   return (
     <>

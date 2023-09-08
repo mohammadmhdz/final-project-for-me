@@ -36,9 +36,9 @@ const Header = (props) => {
   }
 
   const exclusionArray = [
-    "/template-reactjs/admin/login",
-    "/template-reactjs/admin/forgot-password",
-    "/template-reactjs/admin/register",
+    "/admin/login",
+    "/admin/forgot-password",
+    "/admin/register",
   ];
   if (exclusionArray.indexOf(window.location.pathname) >= 0) {
     return "";

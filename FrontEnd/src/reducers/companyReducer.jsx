@@ -208,7 +208,11 @@ export const companyToggleFavoriteListReducer = (state = {}, action) => {
       return { loading: true };
 
     case COMPANY_TOGGLE_FAVORITE_SUCCESS:
-      return { loading: false, toggleFavoriteResult: action.payload };
+      return {
+        loading: false,
+        success: true,
+        toggleFavoriteResult: action.payload,
+      };
 
     case COMPANY_TOGGLE_FAVORITE_FAIL:
       return { loading: false, error: action.payload };

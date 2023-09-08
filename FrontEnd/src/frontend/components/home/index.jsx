@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { TopDevelopers } from "./slider/topdevelopers";
+
 import { Reviews } from "./review";
 import { useHistory } from "react-router-dom";
 import Slider from "react-slick";
@@ -43,13 +44,13 @@ const Home = () => {
     return now - date;
   };
   // console.log("zzz", jobs);
-  const settingSlider = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-  };
+  // const settingSlider = {
+  //   dots: true,
+  //   infinite: true,
+  //   speed: 500,
+  //   slidesToShow: 3,
+  //   slidesToScroll: 1,
+  // };
 
   const handleSearch = () => {
     history.push({
@@ -74,6 +75,38 @@ const Home = () => {
     { id: 1, text: "کارجویان" },
     { id: 2, text: "فرصت های شغلی" },
   ];
+  var settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    centerMode: false,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 500,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+  useEffect(() => {
+    $(".slick-prev").html('<i class="fa fa-chevron-left"></i>');
+    $(".slick-next").html('<i class="fa fa-chevron-right"></i>');
+  });
 
   return (
     <>
@@ -234,125 +267,126 @@ const Home = () => {
             </div>
           </div>
           <div className="row">
-            <Slider
-            // {...settingSlider}
-            // className="owl-carousel owl-theme review-slider owl-loaded owl-drag aos"
-            // data-aos="fade-up"
-            >
-              {loading ? (
-                <Loader />
-              ) : (
-                jobs
-                  // .filter(
-                  //   (job) =>
-                  //     _.includes(
-                  //       job.title?.toLowerCase(),
-                  //       searchPhrase?.toLowerCase()
-                  //     ) ||
-                  //     _.includes(
-                  //       job.company.Name?.toLowerCase(),
-                  //       searchPhrase?.toLowerCase()
-                  //     )
-                  // )
-                  .map(
-                    (item) =>
-                      item.status === "فعال" && (
-                        <div className="col-md-6 col-lg-12 col-xl-4">
-                          <div className="freelance-widget widget-author">
-                            <div className="freelance-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#rating"
-                                className="favourite"
-                              >
-                                <i className="fa fa-star" />
-                              </a>
-                              <div className="">
-                                <div className="mb-3">
-                                  <a href="#">
-                                    <img
-                                      style={{
-                                        borderRadius: "100px",
-                                        width: "30%",
-                                        margin: "0 auto",
-                                      }}
-                                      alt=""
-                                      src={
-                                        "http://127.0.0.1:8000" +
-                                        item.company?.image
-                                      }
-                                    />
+            {/* <Slider
+              // {...settings}
+              // className="owl-carousel owl-theme review-slider owl-loaded owl-drag aos"
+              // data-aos="fade-up"
+            > */}
+            {loading ? (
+              <Loader />
+            ) : (
+              jobs
+                .slice(0, 7)
+                // .filter(
+                //   (job) =>
+                //     _.includes(
+                //       job.title?.toLowerCase(),
+                //       searchPhrase?.toLowerCase()
+                //     ) ||
+                //     _.includes(
+                //       job.company.Name?.toLowerCase(),
+                //       searchPhrase?.toLowerCase()
+                //     )
+                // )
+                .map(
+                  (item) =>
+                    item.status === "فعال" && (
+                      <div className="col-md-6 col-lg-12 col-xl-4">
+                        <div className="freelance-widget widget-author">
+                          <div className="freelance-content">
+                            <a
+                              data-bs-toggle="modal"
+                              href="#rating"
+                              className="favourite"
+                            >
+                              <i className="fa fa-star" />
+                            </a>
+                            <div className="">
+                              <div className="mb-3">
+                                <a href="#">
+                                  <img
+                                    style={{
+                                      borderRadius: "100px",
+                                      width: "30%",
+                                      margin: "0 auto",
+                                    }}
+                                    alt=""
+                                    src={
+                                      "http://127.0.0.1:8000" +
+                                      item.company?.image
+                                    }
+                                  />
+                                </a>
+                              </div>
+                              <div className="profile-name">
+                                <div className="author-location">
+                                  {item.company?.Name}
+                                  <i className="fa fa-check-circle text-success verified ms-1" />
+                                </div>
+                              </div>
+                              <div className="freelance-info">
+                                <h3>
+                                  <a href="#">{item.title}</a>
+                                </h3>
+                                <div className="freelance-location mb-1">
+                                  <i className="fa fa-clock" />{" "}
+                                  {daysBetween(item?.published_at)} روز
+                                </div>
+                                <div className="freelance-location">
+                                  <i className="fa fa-map-marker-alt ms-1" />
+                                  {item.company.city?.name}
+                                </div>
+                              </div>
+                              <div className="freelance-tags">
+                                {item.job_skills?.slice(0, 3).map((item) => (
+                                  <a href="">
+                                    <span className="badge badge-pill badge-design">
+                                      {item.title}
+                                    </span>
                                   </a>
-                                </div>
-                                <div className="profile-name">
-                                  <div className="author-location">
-                                    {item.company?.Name}
-                                    <i className="fa fa-check-circle text-success verified ms-1" />
-                                  </div>
-                                </div>
-                                <div className="freelance-info">
-                                  <h3>
-                                    <a href="#">{item.title}</a>
-                                  </h3>
-                                  <div className="freelance-location mb-1">
-                                    <i className="fa fa-clock" />{" "}
-                                    {daysBetween(item?.published_at)} روز
-                                  </div>
-                                  <div className="freelance-location">
-                                    <i className="fa fa-map-marker-alt ms-1" />
-                                    {item.company.city?.name}
-                                  </div>
-                                </div>
-                                <div className="freelance-tags">
-                                  {item.job_skills?.slice(0, 3).map((item) => (
-                                    <a href="">
-                                      <span className="badge badge-pill badge-design">
-                                        {item.title}
-                                      </span>
-                                    </a>
-                                  ))}
-                                </div>
-                                {/* <div className="freelancers-price">حقوق</div> */}
-                                {/* <div className="freelancers-price">$40-$500</div> */}
+                                ))}
                               </div>
-                              <div className="counter-stats ">
-                                <ul>
-                                  <li>
-                                    <h5> حقوق</h5>
-                                    <h3 className="counter-value">
-                                      {item.salary_amount === null
-                                        ? item.salary_type
-                                        : `${item.salary_amount}میلیون تومان`}
-                                    </h3>
-                                  </li>
-
-                                  <li>
-                                    <h3 className="counter-value">
-                                      <h5>نوع همکاری</h5>
-                                      <span className="jobtype">
-                                        {item.job_type}
-                                      </span>
-                                    </h3>
-                                  </li>
-                                </ul>
-                              </div>
+                              {/* <div className="freelancers-price">حقوق</div> */}
+                              {/* <div className="freelancers-price">$40-$500</div> */}
                             </div>
-                            <div className="cart-hover">
-                              <Link
-                                to={{
-                                  pathname: "/project-details",
-                                  state: { jobIdInput: item.id },
-                                }}
-                              >
-                                <h4 className="btn-cart">مشاهده بیشتر</h4>
-                              </Link>
+                            <div className="counter-stats ">
+                              <ul>
+                                <li>
+                                  <h5> حقوق</h5>
+                                  <h3 className="counter-value">
+                                    {item.salary_amount === null
+                                      ? item.salary_type
+                                      : `${item.salary_amount}میلیون تومان`}
+                                  </h3>
+                                </li>
+
+                                <li>
+                                  <h3 className="counter-value">
+                                    <h5>نوع همکاری</h5>
+                                    <span className="jobtype">
+                                      {item.job_type}
+                                    </span>
+                                  </h3>
+                                </li>
+                              </ul>
                             </div>
                           </div>
+                          <div className="cart-hover">
+                            <Link
+                              to={{
+                                pathname: "/project-details",
+                                state: { jobIdInput: item.id },
+                              }}
+                            >
+                              <h4 className="btn-cart">مشاهده بیشتر</h4>
+                            </Link>
+                          </div>
                         </div>
-                      )
-                  )
-              )}
-            </Slider>
+                      </div>
+                    )
+                )
+            )}
+            {/* </Slider> */}
           </div>
           <div className="row">
             <div className="col-md-12 text-center">
@@ -402,6 +436,7 @@ const Home = () => {
       {/* End Subscribe */}
       {/* Top Instructor */}
       <TopDevelopers />
+
       {/* End Developer */}
       <Reviews />
       {/* News */}

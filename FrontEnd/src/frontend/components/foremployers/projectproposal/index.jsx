@@ -22,16 +22,17 @@ import Loader from "../../../../Loader";
 
 const Projectproposal = (props) => {
   const dispatch = useDispatch();
-  const allRequest = useSelector((state) => state.freelancerRequest);
-  const postStatusChange = useSelector((state) => state.companyChangeStatus);
-  const { freelancerRequestsAll, loading } = allRequest;
+
   const location = useLocation();
+  const allRequest = useSelector((state) => state.freelancerRequest);
+  const { freelancerRequestsAll, loading } = allRequest;
+  const postStatusChange = useSelector((state) => state.companyChangeStatus);
+  const { success } = postStatusChange;
+
   const { job } = location.state;
+
   const [statusShow, setStatusShow] = useState("در انتظار بررسی");
   const [statusChange, setStatusChange] = useState();
-  console.log(job, "project-proposal-job");
-  console.log(statusShow, "status");
-  console.log(postStatusChange, "post change status");
 
   const daysBetween = (input) => {
     const now = new Date().getDate();
@@ -41,28 +42,31 @@ const Projectproposal = (props) => {
 
   useEffect(() => {
     dispatch(freelancerRequest());
-  }, [dispatch]);
+  }, [dispatch, success]);
 
-  useEffect(() => {
-    dispatch(companyChangeRequestStatus(statusChange));
-  }, [statusChange]);
+  // useEffect(() => {
+  //   dispatch(companyChangeRequestStatus(statusChange));
+  // }, [statusChange]);
 
   const handleChangeStatus = (e) => {
     console.log(e.target.value);
-    setStatusChange({
-      ["id"]: e.target.id,
-      ["status"]: e.target.value,
-      ["status_change_date"]: moment(new Date().toISOString()).utc().format(),
+    companyChangeRequestStatus({
+      id: e.target.value,
+      status: e.target.value,
+      status_change_date: moment(new Date().toISOString()).utc().format(),
     });
+    // setStatusChange({
+    //   ["id"]: e.target.id,
+    //   ["status"]: e.target.value,
+    //   ["status_change_date"]: moment(new Date().toISOString()).utc().format(),
+    // });
   };
-
-  console.log(statusChange, "status change");
-  console.log(freelancerRequestsAll);
 
   const hired = true;
   const hired2 = false;
   const hired3 = false;
 
+  console.log("ssss", statusShow);
   return (
     <>
       {/* Page Content */}
@@ -80,36 +84,6 @@ const Projectproposal = (props) => {
               <div className="page-title">
                 <h3>درخواست ها</h3>
               </div>
-              {/* <nav className="user-tabs mb-4">
-                <ul className="nav nav-tabs nav-tabs-bottom nav-justified">
-                  <li className="nav-item">
-                    <Link className="nav-link active" to="/manage-projects">
-                      همه
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/pending-projects">
-                      در انتظار
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/ongoing-projects">
-                      فعال
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/completed-projects">
-                      تکمیل شده
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/cancelled-projects">
-                      منقضی شده
-                    </Link>
-                  </li>
-                </ul>
-              </nav> */}
-              {/* project list */}
               <div className="my-projects-list">
                 <div className="row">
                   <div className="col-lg-10 flex-wrap">
@@ -124,7 +98,7 @@ const Projectproposal = (props) => {
                                 state: { companyIdInput: +job.company?.id },
                               }}
                             >
-                              {job.company.Name}
+                              {job.company?.Name}
                             </Link>
                             <h2>{job.title}</h2>
                             <div className="customer-info">
@@ -206,7 +180,7 @@ const Projectproposal = (props) => {
 
               <div className="proposals-section mb-4">
                 <div className="d-flex justify-content-between align-items-center mb-2">
-                  <h3 className="page-subtitle">درخواست های ارسال شده</h3>
+                  <h3 className="page-subtitle">درخواست های دریافت شده</h3>
                   <div className="col-md-3 col-lg-3">
                     <div className="form-group">
                       <select
@@ -217,7 +191,7 @@ const Projectproposal = (props) => {
                         <option value="در انتظار بررسی">در انتظار بررسی</option>
                         <option value="بررسی شده">بررسی شده</option>
                         <option value="رد شده">رد شده</option>
-                        <option value="استخدام شده">استخدام شده</option>
+                        {/* <option value="استخدام شده">استخدام شده</option> */}
                       </select>
                     </div>
                   </div>
@@ -269,27 +243,25 @@ const Projectproposal = (props) => {
                                   </ul>
                                 </div>
                               </div>
-                              {item.status === "استخدام شده" ? (
-                                <button
+                              {item.status === "رد شده" ? (
+                                <div
                                   style={
                                     hired3 ? { pointerEvents: "none" } : {}
                                   }
-                                  className={"disable-btn projects-btn  ms-1"}
+                                  className="disable-btn ms-1"
                                 >
-                                  استخدام شده
-                                </button>
-                              ) : (
+                                  رد شده
+                                </div>
+                              ) : item.status === "در انتظار بررسی" ||
+                                item.status === "بررسی شده" ? (
                                 <div className="proposer-bid-info">
                                   <div className="proposer-bid"></div>
                                   <div className="proposer-confirm">
                                     <button
                                       onClick={(e) => handleChangeStatus(e)}
                                       id={item.id}
-                                      //  onClick={(e) =>handleSubmitChangeStatus(e)}
                                       value="استخدام شده"
-                                      //  style={hired ? { pointerEvents: "none" } : {}}
-                                      //  disabled={hired ? true : false}
-                                      className={"projects-btn ms-1"}
+                                      className="projects-btn ms-1"
                                     >
                                       تغییر به استخدام شده
                                     </button>
@@ -302,9 +274,9 @@ const Projectproposal = (props) => {
                                       }
                                       disabled={hired2 ? true : false}
                                       className={
-                                        hired2
-                                          ? "disable-btn projects-btn  ms-1"
-                                          : "projects-btn ms-1"
+                                        item.status === "در انتظار بررسی"
+                                          ? "projects-btn ms-1"
+                                          : "disable-btn projects-btn ms-1"
                                       }
                                     >
                                       تغییر به بررسی شده
@@ -319,7 +291,7 @@ const Projectproposal = (props) => {
                                       disabled={hired3 ? true : false}
                                       className={
                                         hired3
-                                          ? "disable-btn projects-btn  ms-1"
+                                          ? "disable-btn projects-btn ms-1"
                                           : "projects-btn ms-1"
                                       }
                                     >
@@ -327,7 +299,7 @@ const Projectproposal = (props) => {
                                     </button>
                                   </div>
                                 </div>
-                              )}
+                              ) : null}
                             </div>
                             <div className="description-proposal">
                               <h5 className="desc-title">متن پیام</h5>

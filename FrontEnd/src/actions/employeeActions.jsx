@@ -22,11 +22,11 @@ import {
   //PUT
   EMPLOYEE_DETAILS_EDIT_REQUEST,
   EMPLOYEE_DETAILS_EDIT_SUCCESS,
-  EMPLOYEE_DETAILS_EDIT_FAIL, 
-  //post 
-  EMPLOYEE_PORTFOLIO_POST_REQUEST ,
-  EMPLOYEE_PORTFOLIO_POST_SUCCESS ,
-  EMPLOYEE_PORTFOLIO_POST_FAIL, 
+  EMPLOYEE_DETAILS_EDIT_FAIL,
+  //post
+  EMPLOYEE_PORTFOLIO_POST_REQUEST,
+  EMPLOYEE_PORTFOLIO_POST_SUCCESS,
+  EMPLOYEE_PORTFOLIO_POST_FAIL,
 } from "../constant/employeeConstant";
 import axios from "axios";
 
@@ -224,47 +224,44 @@ export const updateEmployeeDetails = (input) => async (dispatch) => {
   }
 };
 
-
-
-
 export const addPortofolioEmployee = (input) => async (dispatch) => {
-  // console.log(input.Experiences , "input");
-  console.log(input , "portfolio");
-  try{
-  dispatch({
-        type: EMPLOYEE_PORTFOLIO_POST_REQUEST,
-                });
-  
-                const config = {
-                  headers: {
-                    "Content-type": "application/json",
-                  },
-                };
-  
-                const { data } = await axios.post(
-                  `http://localhost:8000/api/portfolio/`,
-                  {
-                    title : "input.title",
-                    description : "input.description"                    ,
-                    employee : 1,
-                    image_data : input?.image,
-                  },
-                  config
-                );
-              
-                dispatch({
-                  type: EMPLOYEE_PORTFOLIO_POST_SUCCESS,
-                  payload: data,
-                });
-              
-              } catch (error) {
-                dispatch({
-                  type: EMPLOYEE_PORTFOLIO_POST_FAIL,
-                  payload:
-                    error.response && error.response.data.detail
-                      ? error.response.data.detail
-                      : error.message,
-                });
-              }
-     };
-  
+  console.log(input, "input");
+  // console.log(input, "portfolio");
+  try {
+    dispatch({
+      type: EMPLOYEE_PORTFOLIO_POST_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await axios.post(
+      `http://localhost:8000/api/portfolio/`,
+      input,
+      // {
+      //   title: input.title,
+      //   description: "input.description",
+      //   employee: 1,
+      //   image_data: input.image,
+      // },
+
+      config
+    );
+
+    dispatch({
+      type: EMPLOYEE_PORTFOLIO_POST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: EMPLOYEE_PORTFOLIO_POST_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};

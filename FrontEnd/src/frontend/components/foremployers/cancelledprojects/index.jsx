@@ -48,7 +48,17 @@ const CancelledProjects = ({ data }) => {
                             <div className="slot">
                               <p>انقضای آگهی</p>
                               <h5>
-                                {daysBetween(item.published_at)} روز دبگر{" "}
+                                {60 - daysBetween(item.published_at)} روز دبگر{" "}
+                              </h5>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="slot">
+                              <p>انقضای آگهی</p>
+                              <h5>
+                                {item.salary_amount
+                                  ? `${item.salary_amount} میلیون`
+                                  : "حقوق توافقی"}{" "}
                               </h5>
                             </div>
                           </li>
@@ -56,16 +66,8 @@ const CancelledProjects = ({ data }) => {
                       </div>
                     </div>
                     <div className="project-hire-infoo">
-                      <div className="content-divider" />
-                      <div className="projects-amount">
-                        <h4>
-                          {item.salary_amount
-                            ? `${item.salary_amount} میلیون`
-                            : "حقوق توافقی"}{" "}
-                        </h4>
-                        {/* <h5>in 12 Days</h5> */}
-                      </div>
-                      <div className="content-divider" />
+                      <div className="projects-amount"></div>
+
                       <div className="projects-action text-center">
                         <a href="#" className="projects-btn">
                           انتشار دوباره{" "}

@@ -8,14 +8,14 @@ from django.shortcuts import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from ..models import Job , Company , Employee , WorkExperience , Education , Language  , Verification , Skills , Category , Review , Request ,Portfolio , Gallery , Image , state ,City
+from ..models import Job , Company , Employee , WorkExperience , Education , Language  , Verification , Skills , Category , Review , Request ,Portfolio , Gallery , Image , State ,City
 from django.contrib.auth.models import User
 from ..serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer ,RequestSerializer , VerificationSerializer , SkillSerializer , CategorySerializer , ReviewSerializer ,PortfolioSerializer , GallerySerializer , ImageSerializer ,StateSerializer ,SkillSerializer ,CitySerializer , EmployeepostSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
-# from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import MultiPartParser
 import base64
 from django.core.files.base import ContentFile
 
@@ -154,7 +154,7 @@ class EducationViewSet(viewsets.ViewSet):
 
 
 class PortfolioViewSet(viewsets.ViewSet):
-    # parser_classes = [MultiPartParser]
+    parser_classes = [MultiPartParser]
 
     
 
@@ -170,26 +170,26 @@ class PortfolioViewSet(viewsets.ViewSet):
         serializer = PortfolioSerializer(portfolio)
         return Response(serializer.data)
 
-    # def create(self, request):
-    #     serializer = PortfolioSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response({'msg': 'Data created'}, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
     def create(self, request):
-        image_data = request.data.get('image_data', None)
-        if image_data:
-            image_data = base64.b64decode(image_data)
-            image_file = ContentFile(image_data, 'image.jpg')
-            request.data['image'] = image_file
-
         serializer = PortfolioSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'msg': 'Data created'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    # def create(self, request):
+    #     image_data = request.data.get('image_data', None)
+    #     if image_data:
+    #         image_data = base64.b64decode(image_data)
+    #         image_file = ContentFile(image_data, 'image.jpg')
+    #         request.data['image'] = image_file
+
+    #     serializer = PortfolioSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response({'msg': 'Data created'}, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         portfolio = get_object_or_404(Portfolio.objects.all(), pk=pk)

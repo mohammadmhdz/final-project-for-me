@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from ..models import Job , Company , Employee , WorkExperience , Education , Language  , Verification , Skills , Category , Review , Request ,Portfolio , Gallery , Image , state ,City
+from ..models import Job , Company , Employee , WorkExperience , Education , Language  , Verification , Skills , Category , Review , Request ,Portfolio , Gallery , Image , State ,City
 from django.contrib.auth.models import User
 from ..serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer ,RequestSerializer , VerificationSerializer , SkillSerializer , CategorySerializer , ReviewSerializer ,PortfolioSerializer , GallerySerializer , ImageSerializer ,StateSerializer ,SkillSerializer ,CitySerializer , EmployeepostSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -16,6 +16,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from rest_framework.views import APIView
+# from views.Employeedeailsview import WorkExperienceViewSet , LanguageViewSet , EducationViewSet
+from ..views.Employeedeailsview  import WorkExperienceViewSet , LanguageViewSet , EducationViewSet
+
 
 
 
@@ -155,6 +158,106 @@ class EmployeeViewSet(viewsets.ViewSet):
 
 
 
+# class EmployeeUpdateView(APIView):
+#     def patch(self, request, *args, **kwargs):
+#         employee_data = request.data
+
+#         # Get the employee instance
+#         employee_id = employee_data.get('id')
+#         try:
+#             employee = Employee.objects.get(id=employee_id)
+#         except Employee.DoesNotExist:
+#             return Response(f"Employee with ID {employee_id} does not exist.", status=status.HTTP_404_NOT_FOUND)
+
+#         # Update the employee fields
+#         employee_serializer = EmployeeSerializer(employee, data=employee_data, partial=True)
+#         if employee_serializer.is_valid():
+#             employee_serializer.save()
+#         else:
+#             return Response(employee_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#         # Update work experiences
+#         work_experiences_data = employee_data.get('work_experience')
+#         if work_experiences_data is not None:
+#             for work_exp_data in work_experiences_data:
+#                 work_exp_data['employee'] = employee.id
+#                 work_exp_id = work_exp_data.get('id')
+#                 if work_exp_id:
+#                     try:
+#                         work_exp = WorkExperience.objects.get(id=work_exp_id, employee=employee)
+#                         work_exp_serializer = ExperienceSerializer(work_exp, data=work_exp_data, partial=True)
+#                     except WorkExperience.DoesNotExist:
+#                         # Create work experience record using WorkExperienceViewSet create method
+#                         work_experience_viewset = WorkExperienceViewSet()
+#                         request._request.data = work_exp_data  # Set request data for the create method
+#                         response = work_experience_viewset.create(request._request)
+#                         if response.status_code != status.HTTP_201_CREATED:
+#                             return response
+#                         continue  # Skip further processing for this iteration
+#                 else:
+#                     work_exp_serializer = ExperienceSerializer(data=work_exp_data)
+
+#                 if work_exp_serializer.is_valid():
+#                     work_exp_serializer.save()
+#                 else:
+#                     return Response(work_exp_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#         # Update education records
+#         educations_data = employee_data.get('Education')
+#         if educations_data is not None:
+#             for education_data in educations_data:
+#                 education_data['employee'] = employee.id
+#                 education_id = education_data.get('id')
+#                 if education_id:
+#                     try:
+#                         education = Education.objects.get(id=education_id, employee=employee)
+#                         education_serializer = EducationSerializer(education, data=education_data, partial=True)
+#                     except Education.DoesNotExist:
+#                         # Create education record using EducationViewSet create method
+#                         education_viewset = EducationViewSet()
+#                         request._request.data = education_data  # Set request data for the create method
+#                         response = education_viewset.create(request._request)
+#                         if response.status_code != status.HTTP_201_CREATED:
+#                             return response
+#                         continue  # Skip further processing for this iteration
+#                 else:
+#                     education_serializer = EducationSerializer(data=education_data)
+
+#                 if education_serializer.is_valid():
+#                     education_serializer.save()
+#                 else:
+#                     return Response(education_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#         # Update language skills
+#         languages_data = employee_data.get('languages')
+#         if languages_data is not None:
+#             for language_data in languages_data:
+#                 language_data['employee'] = employee.id
+#                 language_id = language_data.get('id')
+#                 if language_id:
+#                     try:
+#                         language = Language.objects.get(id=language_id, employee=employee)
+#                         language_serializer = LanguageSerializer(language, data=language_data, partial=True)
+#                     except Language.DoesNotExist:
+#                         # Create language record using LanguageViewSet create method
+#                         language_viewset = LanguageViewSet()
+#                         request._request.data = language_data  # Set request data for the create method
+#                         response = language_viewset.create(request._request)
+#                         if response.status_code != status.HTTP_201_CREATED:
+#                             return response
+#                         continue  # Skip further processing for this iteration
+#                 else:
+#                     language_serializer = LanguageSerializer(data=language_data)
+
+#                 if language_serializer.is_valid():
+#                     language_serializer.save()
+#                 else:
+#                     return Response(language_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#         return Response("Employee data updated successfully.", status=status.HTTP_200_OK)
+    
+
+
 class EmployeeUpdateView(APIView):
     def patch(self, request, *args, **kwargs):
         employee_data = request.data
@@ -224,6 +327,10 @@ class EmployeeUpdateView(APIView):
                     education_serializer.save()
                 else:
                     return Response(education_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                
+
+
+
 
         # Update language skills
         languages_data = employee_data.get('languages')
@@ -252,14 +359,47 @@ class EmployeeUpdateView(APIView):
                     return Response(language_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return Response("Employee data updated successfully.", status=status.HTTP_200_OK)
-    
-
 
 
 
 
     
+class EemployeeUpdateView(APIView):
+    def patch(self, request, *args, **kwargs):
+        employee_data = request.data
 
+        # Get the employee instance
+        employee_id = employee_data.get('id')
+        try:
+            employee = Employee.objects.get(id=employee_id)
+        except Employee.DoesNotExist:
+            return Response(f"Employee with ID {employee_id} does not exist.", status=status.HTTP_404_NOT_FOUND)
+
+        # Update user information
+        user_data = employee_data.get('user')
+        if user_data:
+            user_id = employee.user.id
+            user_serializer = UserSerializer(employee.user, data=user_data)
+            if user_serializer.is_valid():
+                user_serializer.save()
+            else:
+                return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Update skills
+        skills_data = employee_data.get('skills')
+        if skills_data is not None:
+            employee.skills.clear()  # Remove existing skills
+            for skill_data in skills_data:
+                skill_id = skill_data.get('id')
+                try:
+                    skill = Skills.objects.get(id=skill_id)
+                    employee.skills.add(skill)
+                except Skills.DoesNotExist:
+                    return Response(f"Skill with ID {skill_id} does not exist.", status=status.HTTP_404_NOT_FOUND)
+
+        # Rest of the code for updating other fields (cooperation_type, image, about, gender, city, cv, favorite_jobs)
+
+        return Response("Employee data updated successfully.", status=status.HTTP_200_OK)
 
 
 

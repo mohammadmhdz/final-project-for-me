@@ -26,24 +26,46 @@ const FreelancerPortfolio = (props) => {
   const dispatch = useDispatch();
   const portfolio = useSelector((state) => state.employeePortfolio);
   const addPortfolio = useSelector((state) => state.addPortfolioReducer);
+  const { success: addsuccess } = addPortfolio;
   const { employeePortfolioArray, loading } = portfolio;
 
-  const [postImage, setPostImage] = useState();
-  const [selectedFile, setSelectedFile] = useState('')
-  const [base, setBase] = useState()
-  const selectFile = (event) => {
-    
-  }
-  const convertToBase64 = () => {
-    const reader = new FileReader()
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState(null);
 
-    reader.readAsDataURL(selectedFile)
+  const [postImage, setPostImage] = useState();
+  const [selectedFile, setSelectedFile] = useState("");
+  const [base, setBase] = useState();
+  const selectFile = (event) => {};
+  const convertToBase64 = () => {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(selectedFile);
 
     reader.onload = () => {
-      console.log('called: ', reader)
-      setBase(reader.result)
+      console.log("called: ", reader);
+      setBase(reader.result);
+    };
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("title", title);
+    if (image) {
+      formData.append("image", image);
     }
-  }
+    formData.append("employee", localItem.associated_id);
+
+    dispatch(addPortofolioEmployee(formData));
+    // dispatch(
+    //   addPortofolioEmployee({
+    //     title: title,
+    //     image: image,
+    //     employee: localItem.associated_id,
+    //     description: "",
+    //   })
+    // );
+  };
 
   // const convertToBase64 = (file) => {
   //   return new Promise((resolve, reject) => {
@@ -59,7 +81,7 @@ const FreelancerPortfolio = (props) => {
   // };
 
   const handleFileUpload = async (e) => {
-    setSelectedFile(e.target.files[0])
+    setSelectedFile(e.target.files[0]);
     convertToBase64();
     // const file = e.target.files[0];
     // const base64 = await convertToBase64(file);
@@ -71,10 +93,15 @@ const FreelancerPortfolio = (props) => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("here");
-    dispatch(addPortofolioEmployee(postImage));
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("here");
+  //   dispatch(addPortofolioEmployee(postImage));
+  // };
+
+  const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    setImage(selectedImage);
   };
 
   useEffect(() => {
@@ -83,7 +110,7 @@ const FreelancerPortfolio = (props) => {
     return () => {
       document.body.className = "";
     };
-  }, [dispatch]);
+  }, [dispatch, addsuccess]);
   console.log(employeePortfolioArray, "portfolio");
   console.log(addPortfolio, "upload test");
 
@@ -123,7 +150,12 @@ const FreelancerPortfolio = (props) => {
                               <Image
                                 className="img-fluid"
                                 alt="User Image"
-                                src={`http://127.0.0.1:8000/${item.image}`}
+                                src={`http://127.0.0.1:8000${item.image}`}
+                                style={{
+                                  height: "250px",
+                                  width: "400px",
+                                  objectFit: "cover",
+                                }}
                               />
                               <div className="portfolio-live">
                                 <div className="portfolio-content">
@@ -203,13 +235,18 @@ const FreelancerPortfolio = (props) => {
                   داشته باشید
                 </h3>
               </div>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="modal-info">
                   <div className="row align-right">
                     <div className="col-md-12">
                       <div className="form-group">
                         <label>توضیحات</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                        />
                       </div>
 
                       <label className="br-0 file-upload image-upbtn">
@@ -219,7 +256,8 @@ const FreelancerPortfolio = (props) => {
                           label="Image"
                           name="myFile"
                           accept=".jpeg, .png, .jpg"
-                          onChange={(e) => handleFileUpload(e)}
+                          onChange={handleImageChange}
+                          // onChange={(e) => handleFileUpload(e)}
                         />
                       </label>
                     </div>
@@ -249,7 +287,7 @@ const FreelancerPortfolio = (props) => {
         <div className="modal-dialog modal-dialog-centered modal-lg">
           <div className="modal-content align-right">
             <div className="modal-header">
-              <h4 className="modal-title">اضافه کردن نمونه کار</h4>
+              <h4 className="modal-title">ویرایش نمونه کار</h4>
               <span className="modal-close">
                 <a href="#" data-bs-dismiss="modal" aria-label="Close">
                   <i className="far fa-times-circle orange-text" />
@@ -263,17 +301,30 @@ const FreelancerPortfolio = (props) => {
                   داشته باشید
                 </h3>
               </div>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="modal-info">
                   <div className="row align-right">
                     <div className="col-md-12">
                       <div className="form-group">
                         <label>توضیحات</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                        />
                       </div>
 
                       <label className="br-0 file-upload image-upbtn">
-                        بارگذاری تصاویر <input type="file" />
+                        بارگذاری تصاویر
+                        <input
+                          type="file"
+                          label="Image"
+                          name="myFile"
+                          accept=".jpeg, .png, .jpg"
+                          onChange={handleImageChange}
+                          // onChange={(e) => handleFileUpload(e)}
+                        />
                       </label>
                     </div>
                   </div>
@@ -281,12 +332,12 @@ const FreelancerPortfolio = (props) => {
                 <div className="submit-section text-right">
                   <a
                     data-bs-dismiss="modal"
-                    className="btn btn-primary black-btn submit-btn ms-2"
+                    className="btn btn-primary black-btn submit-btn"
                   >
                     لغو
                   </a>
                   <button
-                    onClick={handleSubmit}
+                    onClick={(e) => handleSubmit(e)}
                     className="btn btn-primary submit-btn me-3"
                   >
                     تایید

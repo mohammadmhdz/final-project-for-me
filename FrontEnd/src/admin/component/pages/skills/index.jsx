@@ -18,11 +18,12 @@ import {
 const Skills = () => {
   const dispatch = useDispatch();
   const skillListAll = useSelector((state) => state.skillListAll);
-  const skillDetailsUpdate = useSelector(
-    (state) => state.skillUpdateDetailsReducer
-  );
-  const skillPost = useSelector((state) => state.skillPost);
-  const skillDelete = useSelector((state) => state.skillDelete);
+  const skillDetailsUpdate = useSelector((state) => state.skillUpdateDetail);
+  const { skillUpdateSuccessful, success } = skillDetailsUpdate;
+  const skillpost = useSelector((state) => state.skillpostlist);
+  const { success: successadd } = skillpost;
+  const skilldelete = useSelector((state) => state.skilldeletelist);
+  const { success: successdel } = skilldelete;
   const { skills, loading } = skillListAll;
   const [selectedSkill, setSelectedSkill] = useState(null);
   const [editedSkillName, setEditedSkillName] = useState("");
@@ -42,6 +43,7 @@ const Skills = () => {
     dispatch(skillListAction());
     const closeButton = document.querySelector("#edit-category .close");
     closeButton.click();
+    setAddedSkillName("");
   };
 
   const handleDeleteSubmit = (e) => {
@@ -49,6 +51,7 @@ const Skills = () => {
     dispatch(skillListAction());
     const cancelLink = document.querySelector("#cancelLink");
     cancelLink.click();
+    setEditedSkillName("");
   };
 
   const data = skills;
@@ -104,7 +107,7 @@ const Skills = () => {
 
   useEffect(() => {
     dispatch(skillListAction());
-  }, [dispatch]);
+  }, [dispatch, success, successadd, successdel]);
 
   return (
     <>
@@ -240,6 +243,7 @@ const Skills = () => {
                           type="text"
                           className="form-control"
                           defaultValue={editedSkillName}
+                          value={editedSkillName}
                           onChange={(e) => setEditedSkillName(e.target.value)}
                         />
                       </div>

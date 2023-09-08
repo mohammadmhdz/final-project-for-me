@@ -28,14 +28,14 @@ const Users = () => {
   const dispatch = useDispatch();
   const employeeListAlll = useSelector((state) => state.employeeListAll);
   const { employeeList, loading } = employeeListAlll;
+  const userdelete = useSelector((state) => state.userdelete);
+  const { success: successdel } = userdelete;
 
   const [deleteduserid, setdeleteduserid] = useState("");
 
   const handledeleteSubmit = (e) => {
     dispatch(deleteuser(deleteduserid));
-    dispatch(employeeListAll());
-    // const cancelLink = document.querySelector("#cancelLink");
-    // cancelLink.click();
+    // dispatch(employeeListAll());
   };
 
   const data = employeeList;
@@ -162,7 +162,7 @@ const Users = () => {
 
   useEffect(() => {
     dispatch(employeeListAll());
-  }, [dispatch]);
+  }, [dispatch, successdel]);
 
   return (
     <>

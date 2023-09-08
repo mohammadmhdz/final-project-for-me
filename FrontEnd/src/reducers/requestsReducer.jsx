@@ -46,6 +46,7 @@ export const postAplliesReducer = (state = { postApplyResult: [] }, action) => {
     case FREELANCER_APPLY_POST_SUCCESS:
       return {
         loading: false,
+        success: true,
         postApplyResult: action.payload,
       };
     case FREELANCER_APPLY_POST_FAIL:
@@ -68,6 +69,7 @@ export const deleteApplyReducer = (
     case COMPANY_DELETE_APPLY_SUCCESS:
       return {
         loading: false,
+        success: true,
         deleteApplyRequest: action.payload,
       };
     case COMPANY_DELETE_APPLY_FAIL:
@@ -89,6 +91,7 @@ export const companyChangeStatusReducer = (
     case COMPANY_EDIT_APPLY_SUCCESS:
       return {
         loading: false,
+        success: true,
         changeStatusArray: action.payload,
       };
     case COMPANY_EDIT_APPLY_FAIL:

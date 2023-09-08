@@ -65,8 +65,6 @@ const CompanyProfile = (props) => {
   const { companygalleryListArray, loading: loadinggal } =
     companygalleryDispatch;
 
-  console.log("gaaaa", companygalleryListArray);
-
   useEffect(() => {
     // for using redux in our project
     dispatch(companyDetails(companyIdInput));
@@ -97,11 +95,7 @@ const CompanyProfile = (props) => {
             <div className="col-auto">
               <div className="profile-img">
                 <img
-                  src={
-                    companyDetail.company_data?.image
-                      ? `http://127.0.0.1:8000${companyDetail.company_data?.image}`
-                      : profile_details
-                  }
+                  src={`http://127.0.0.1:8000${companyDetail.company_data?.image}`}
                   alt=""
                 />
               </div>
@@ -290,13 +284,18 @@ const CompanyProfile = (props) => {
                     </li>
                     <li>
                       <p>وبسایت</p>
-                      <h6>{companyDetail.company_data?.Website}</h6>
+                      <a
+                        href={companyDetail.company_data?.Website}
+                        target="_blank"
+                      >
+                        {companyDetail.company_data?.Website}
+                      </a>
                     </li>
                   </ul>
                   <div className="contact-btn">
-                    <Link to="#" className="btn btn-primary">
-                      <i className="fas fa-phone-alt" /> تماس
-                    </Link>
+                    {/* <Link to="#" className="btn btn-primary"> */}
+                    {/* <i className="fas fa-phone-alt" /> تماس */}
+                    {/* </Link> */}
                   </div>
                 </div>
                 {/* /About Widget */}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link , useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 // Import Images
 import {
@@ -23,89 +23,114 @@ import {
   Icon_work,
 } from "../../imagepath";
 import moment from "jalali-moment";
+import Loader from "../../../../Loader";
 
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { jobsDetail } from "../../../../actions/jobActions";
-import { freelancerRequest ,postApply } from "../../../../actions/requestsActions";
-import { employeeFavoriteList ,  employeeToggleFavoriteList } from "../../../../actions/employeeActions";
+import {
+  freelancerRequest,
+  postApply,
+} from "../../../../actions/requestsActions";
+import {
+  employeeFavoriteList,
+  employeeToggleFavoriteList,
+} from "../../../../actions/employeeActions";
+import { companyDetails } from "../../../../actions/companyActions";
 
 const ProjectDetails = (props) => {
   const localItem = JSON.parse(localStorage?.getItem("userInfo"));
 
   const location = useLocation();
-  const {jobIdInput} = location.state
+  const { jobIdInput } = location.state;
   // redux
   const dispatch = useDispatch();
-  const  jobs  = useSelector((state) => state.jobsDetails);
+  const jobs = useSelector((state) => state.jobsDetails);
+
   const freelancerRequests = useSelector((state) => state.freelancerRequest);
-  const  toggleFavorite  = useSelector((state) => state.employeeToggleFavorite);
+  const toggleFavorite = useSelector((state) => state.employeeToggleFavorite);
+  const { success: togglesuccess } = toggleFavorite;
   const employeeFavorite = useSelector((state) => state.employeeFavoriteList);
   const postApplyResult = useSelector((state) => state.postApplyList);
+  const { success: resuccess } = postApplyResult;
 
   const { employeeFavorites } = employeeFavorite;
   const { freelancerRequestsAll } = freelancerRequests;
-  const {jobsDetailsList} = jobs
-  const [requestSendingDetail ,setRequestSendingDetail] = useState()
+  const { jobsDetailsList, success: succsessjob } = jobs;
+  const [requestSendingDetail, setRequestSendingDetail] = useState();
 
-  const daysBetween =(input) => {
-    const now = new Date().getDate()
-    const date = new Date(input).getDate()
-    return now - date
-  }
+  const companyDetailsDispatch = useSelector((state) => state.companyDetails);
+  const { companyDetail, loading: loadingcompany } = companyDetailsDispatch;
+
+  const daysBetween = (input) => {
+    const now = new Date().getDate();
+    const date = new Date(input).getDate();
+    return now - date;
+  };
   useEffect(() => {
     //redux
     // bejaye 3 id job mored nazar ra ghara midahim
     dispatch(jobsDetail(jobIdInput));
     dispatch(freelancerRequest());
     dispatch(employeeFavoriteList(localItem?.associated_id));
+  }, [dispatch, resuccess]);
 
-  },[dispatch]);
+  useEffect(() => {
+    dispatch(employeeFavoriteList(localItem?.associated_id));
+  }, [dispatch, togglesuccess]);
+
+  useEffect(() => {
+    //redux
+    // bejaye 3 id job mored nazar ra ghara midahim
+    dispatch(companyDetails(jobsDetailsList?.company?.id));
+  }, [succsessjob]);
 
   const favoriteStatus = employeeFavorites?.map((item) => {
-     if(item.id === jobIdInput){
-       return true 
-    }
-    else return false  
-  })
-  
-  const cvStatus = freelancerRequestsAll.map((item) => {
-        if(+item.employee === +localItem?.associated_id){
-          if(+jobIdInput === +item.job){
-            return  true
-          }
-        }
-        else  return false
-      })
+    if (item.id === jobIdInput) {
+      return true;
+    } else return false;
+  });
 
-  const handleFavorite = (e , toggleFavoriteId) => {
+  const cvStatus = freelancerRequestsAll.map((item) => {
+    if (+item.employee === +localItem?.associated_id) {
+      if (+jobIdInput === +item.job) {
+        return true;
+      }
+    } else return false;
+  });
+
+  const handleFavorite = (e, toggleFavoriteId) => {
     // e.preventdefault();
-    console.log(toggleFavoriteId)
-    console.log(e)
-    dispatch(employeeToggleFavoriteList(localItem.associated_id , toggleFavoriteId));
+    console.log(toggleFavoriteId);
+    console.log(e);
+    dispatch(
+      employeeToggleFavoriteList(localItem.associated_id, toggleFavoriteId)
+    );
   };
 
   const handleChange = (e) => {
-    console.log(e.target.value)
-    setRequestSendingDetail({ 
+    console.log(e.target.value);
+    setRequestSendingDetail({
       employee: +localItem?.associated_id,
-      Company: +jobsDetailsList.company?.id, 
+      Company: +jobsDetailsList.company?.id,
       job: +jobIdInput,
-      status: "درانتظار بررسی" ,
-     [e.target.id] : e.target.value
-   });
- }
+      status: "درانتظار بررسی",
+      [e.target.id]: e.target.value,
+    });
+  };
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(requestSendingDetail)
-    dispatch(postApply(requestSendingDetail))
-  }
+    e.preventDefault();
+    console.log(requestSendingDetail);
+    dispatch(postApply(requestSendingDetail));
+    const cancelLink = document.querySelector("#cancelLink");
+    cancelLink.click();
+  };
 
   // console.log(jobsDetailsList , "jobDetail")
-  console.log(freelancerRequestsAll , "allreques")
+  console.log(freelancerRequestsAll, "allreques");
   // console.log(localItem?.id, "input")
   // console.log(favoriteStatus, "favorites")
-  console.log(cvStatus, "cvStatus")
+  console.log(cvStatus, "cvStatus");
   // console.log(postApplyResult, "post result")
 
   return (
@@ -127,7 +152,12 @@ const ProjectDetails = (props) => {
                           {jobsDetailsList.title}
                         </h2>
                         <Link
-                          to="/company-details"
+                          to={{
+                            pathname: "/company-profile",
+                            state: {
+                              companyIdInput: jobsDetailsList.company?.id,
+                            },
+                          }}
                           className="profile-position"
                         >
                           {" "}
@@ -135,15 +165,12 @@ const ProjectDetails = (props) => {
                         </Link>
                         <div />
                         <ul className="profile-preword align-items-center">
-                          
-                            <li>
-                            <i className="fa fa-clock" /> 
-                             {" "}
+                          <li>
+                            <i className="fa fa-clock" />{" "}
                             <span>
-                              {daysBetween(jobsDetailsList?.published_at)} روز
+                              {60 - daysBetween(jobsDetailsList?.published_at)}{" "}
+                              روز
                             </span>
-                            
-                              
                           </li>
                           <li>
                             <a href="#" className="btn full-btn">
@@ -162,35 +189,46 @@ const ProjectDetails = (props) => {
                         </li>
                       </ul>
                       <div className="d-flex align-items-center justify-content-md-end justify-content-center">
-                        {favoriteStatus?.includes(true) ? 
-                        (<a href="" onClick={(e) => handleFavorite(e , jobIdInput)}>
-                          <i className="fa fa-heart heart fa-2x ms-2 red-text" />
-                        </a>) : 
-                        <a href="" onClick={(e) => handleFavorite(e , jobIdInput)}>
-                          <i className="far fa-heart heart fa-2x ms-2 red-text" />
-                        </a>}
-                        {cvStatus.includes(true) ? (
+                        {favoriteStatus?.includes(true) ? (
                           <a
-                          className="btn bid-btn"
-                          data-bs-toggle="modal"
-                          
+                            href=""
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleFavorite(e, jobIdInput)();
+                            }}
                           >
-                          در حال بررسی{" "}
-                          <i className="fa fa-long-arrow-alt-left me-1" />
-                        </a>
+                            <i className="fa fa-heart heart fa-2x ms-2 red-text" />
+                          </a>
+                        ) : (
+                          <a
+                            href=""
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleFavorite(e, jobIdInput)();
+                            }}
+                          >
+                            <i className="far fa-heart heart fa-2x ms-2 red-text" />
+                          </a>
+                        )}
+                        {cvStatus.includes(true) ? (
+                          <a className="btn bid-btn" data-bs-toggle="modal">
+                            در حال بررسی{" "}
+                            <i className="fa fa-long-arrow-alt-left me-1" />
+                          </a>
                         ) : localItem ? (
                           <a
-                          className="btn bid-btn"
-                          data-bs-toggle="modal"
-                          href="#file"
- 
+                            className="btn bid-btn"
+                            data-bs-toggle="modal"
+                            href="#file"
                           >
-                          ارسال رزومه{" "}
-                          <i className="fa fa-long-arrow-alt-left me-1" />
-                        </a>
-
-                        ) : <Link to="/login" className="btn bid-btn" >لطفا وارد شوید</Link>
-                        }
+                            ارسال رزومه{" "}
+                            <i className="fa fa-long-arrow-alt-left me-1" />
+                          </a>
+                        ) : (
+                          <Link to="/login" className="btn bid-btn">
+                            لطفا وارد شوید
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -209,7 +247,10 @@ const ProjectDetails = (props) => {
                         <div className="d-flex align-items-center justify-content-lg-between pro-post job-type">
                           <div>
                             <p>مهلت ارسال رزومه </p>
-                            <h6>{60 - daysBetween(jobsDetailsList?.published_at)} روز</h6>
+                            <h6>
+                              {60 - daysBetween(jobsDetailsList?.published_at)}{" "}
+                              روز
+                            </h6>
                           </div>
                           <img
                             className="img-fluid"
@@ -251,7 +292,9 @@ const ProjectDetails = (props) => {
                         <div className="d-flex align-items-center justify-content-lg-between pro-post job-type">
                           <div>
                             <p>حقوق</p>
-                            <h6>{jobsDetailsList.salary_amount}میلیون تومان  </h6>
+                            <h6>
+                              {jobsDetailsList.salary_amount}میلیون تومان{" "}
+                            </h6>
                           </div>
                           <img
                             className="img-fluid"
@@ -270,9 +313,7 @@ const ProjectDetails = (props) => {
                 <div className="pro-post widget-box align-right">
                   <h3 className="pro-title">توضیحات</h3>
                   <div className="pro-content">
-                    <p>
-                   {jobsDetailsList.company?.about}
-                    </p>
+                    <p>{jobsDetailsList.company?.about}</p>
                   </div>
                 </div>
                 {/* /Senior Animator  */}
@@ -285,7 +326,7 @@ const ProjectDetails = (props) => {
                         <li>
                           عنوان:{" "}
                           <span>
-                          {jobsDetailsList.description}
+                            {jobsDetailsList.description}
                             <i
                               className="fa fa-question-circle"
                               data-bs-toggle="tooltip"
@@ -304,14 +345,12 @@ const ProjectDetails = (props) => {
                   <div className="pro-content">
                     <div className="tags">
                       {jobsDetailsList.job_skills?.map((items) => (
-                          <a href="">
+                        <a href="">
                           <span className="badge badge-pill badge-design">
-                          {items.title}
+                            {items.title}
                           </span>
                         </a>
-                           )
-                      )
-                      }
+                      ))}
                       {/*<a href="">
                         <span className="badge badge-pill badge-design">
                           Illustrator
@@ -357,13 +396,28 @@ const ProjectDetails = (props) => {
                     </a>
                     <div className="author-heading">
                       <div className="profile-img">
-                        <a href="#">
-                          <img src={`http://127.0.0.1:8000/${jobsDetailsList.company?.image}`} alt="author" />
-                        </a>
+                        <Link
+                          to={{
+                            pathname: "/company-profile",
+                            state: {
+                              companyIdInput: jobsDetailsList.Company?.id,
+                            },
+                          }}
+                        >
+                          <img
+                            src={`http://127.0.0.1:8000${jobsDetailsList.company?.image}`}
+                            alt="author"
+                          />
+                        </Link>
                       </div>
                       <div className="profile-name">
                         <Link
-                          to="./company-details"
+                          to={{
+                            pathname: "/company-profile",
+                            state: {
+                              companyIdInput: jobsDetailsList.company?.id,
+                            },
+                          }}
                           className="author-location"
                         >
                           {jobsDetailsList.company?.Name}
@@ -375,7 +429,6 @@ const ProjectDetails = (props) => {
                           <i className="fa fa-map-marker ms-1" />
                           {jobsDetailsList.job_city?.name}
                         </div>
-                   
                       </div>
                       {/* <button
                       type="button"
@@ -410,7 +463,8 @@ const ProjectDetails = (props) => {
                             <h6 className="text-sm text-end mb-0">عضویت از:</h6>
                           </div>
                           <div className="col-auto">
-                            {daysBetween(jobsDetailsList.company?.founded_at)} روز پیش
+                            {daysBetween(jobsDetailsList.company?.founded_at)}{" "}
+                            روز پیش
                           </div>
                         </div>
                         <hr className="my-3" />
@@ -433,7 +487,9 @@ const ProjectDetails = (props) => {
                             </h6>
                           </div>
                           <div className="col-auto">
-                            <span className="text-sm">{jobsDetailsList.company?.Website}</span>
+                            <span className="text-sm">
+                              {jobsDetailsList.company?.Website}
+                            </span>
                           </div>
                         </div>
                         <hr className="my-3" />
@@ -445,7 +501,9 @@ const ProjectDetails = (props) => {
                             </h6>
                           </div>
                           <div className="col-auto">
-                            <span className="text-sm">{jobsDetailsList.company?.linkdin}</span>
+                            <span className="text-sm">
+                              {jobsDetailsList.company?.linkdin}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -481,33 +539,50 @@ const ProjectDetails = (props) => {
                 <div className="pro-post widget-box post-widget pb-0 align-right">
                   <h3 className="pro-title">اطلاعات استخدام شرکت</h3>
                   <div className="pro-content">
-                    <div className="row">
-                      <div className="col-6">
-                        <div className="pro-post client-list">
-                          <p>کل آگهی ها</p>
-                          <h6 className="bg-red">48</h6>
+                    {loadingcompany ? (
+                      <Loader />
+                    ) : (
+                      <div className="row">
+                        <div className="col-6">
+                          <div className="pro-post client-list">
+                            <p>کل آگهی ها</p>
+                            <h6 className="bg-red">
+                              {companyDetail?.all_jobs_count}
+                            </h6>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-6">
-                        <div className="pro-post client-list">
-                          <p>نرخ استخدام</p>
-                          <h6 className="bg-blue">22</h6>
-                        </div>
-                      </div>
-                      <div className="col-6">
-                        <div className="pro-post client-list">
-                          <p>فرصت های شغلی فعال</p>
-                          <h6 className="bg-green">48</h6>
-                        </div>
-                      </div>
 
-                      <div className="col-6">
-                        <div className="pro-post client-list">
-                          <p>استخدام شده</p>
-                          <h6 className="bg-pink">48</h6>
+                        <div className="col-6">
+                          <div className="pro-post client-list">
+                            <p>نرخ استخدام</p>
+                            <h6 className="bg-blue">
+                              {(
+                                (companyDetail?.completed_jobs_count /
+                                  companyDetail?.all_jobs_count) *
+                                100
+                              ).toFixed(2)}
+                            </h6>
+                          </div>
+                        </div>
+                        <div className="col-6">
+                          <div className="pro-post client-list">
+                            <p>فرصت های شغلی فعال</p>
+                            <h6 className="bg-green">
+                              {companyDetail?.active_jobs_count}
+                            </h6>
+                          </div>
+                        </div>
+
+                        <div className="col-6">
+                          <div className="pro-post client-list">
+                            <p>استخدام شده</p>
+                            <h6 className="bg-pink">
+                              {companyDetail?.completed_jobs_count}
+                            </h6>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
                 {/* /Attachments Widget */}
@@ -529,7 +604,12 @@ const ProjectDetails = (props) => {
               <div className="modal-header">
                 <h4 className="modal-title">ارسال درخواست</h4>
                 <span className="modal-close">
-                  <a href="#" data-bs-dismiss="modal" aria-label="Close">
+                  <a
+                    id="cancelLink"
+                    href="#"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  >
                     <i className="fa fa-times-circle red-text" />
                   </a>
                 </span>

@@ -35,35 +35,47 @@ const Projects = (props) => {
   const { categories, cities, skills, states } = postJobDetailsRequirments;
   const [searchFilter, setSearchFilter] = useState([]);
 
+  const handleTagClose = (item) => {
+    delete searchFilter[item];
+  };
+
   const daysBetween = (input) => {
     const now = new Date().getDate();
     const date = new Date(input).getDate();
     return now - date;
   };
-const afterFilter = jobs?.filter((job) =>{
-   
-      const category = searchFilter?.job_category === undefined ? true : job.job_category.title  === searchFilter?.job_category 
-      const job_type = searchFilter?.job_type === undefined ? true : job.job_type === searchFilter?.job_type 
-      const salary_type = searchFilter?.salary_type === undefined ? true : job.salary_type === searchFilter?.salary_type
-      const experience = searchFilter?.experience === undefined ? true : job.experience   === searchFilter?.experience
-      const filter = category && job_type && salary_type && experience ? true : false
-       return(filter)
-
-   } ) 
-
-
+  const afterFilter = jobs
+    ?.filter((job) => job.status === "فعال")
+    .filter((job) => {
+      const category =
+        searchFilter?.job_category === undefined
+          ? true
+          : job.job_category.title === searchFilter?.job_category;
+      const job_type =
+        searchFilter?.job_type === undefined
+          ? true
+          : job.job_type === searchFilter?.job_type;
+      const salary_type =
+        searchFilter?.salary_type === undefined
+          ? true
+          : job.salary_type === searchFilter?.salary_type;
+      const experience =
+        searchFilter?.experience === undefined
+          ? true
+          : job.experience === searchFilter?.experience;
+      const filter =
+        category && job_type && salary_type && experience ? true : false;
+      return filter;
+    });
 
   const handleChange = (e) => {
- 
-    const id = e.target.id
+    const id = e.target.id;
     const value = e.target.value;
-    setSearchFilter((searchFilter) =>({
-     ...searchFilter, 
-     [id] : value,
+    setSearchFilter((searchFilter) => ({
+      ...searchFilter,
+      [id]: value,
     }));
-   
-
- }
+  };
 
   useEffect(() => {
     dispatch(listJobs());
@@ -96,17 +108,18 @@ const afterFilter = jobs?.filter((job) =>{
                 <div className="card search-filter">
                   <div className="card-header d-flex justify-content-between">
                     <h4 className="card-title mb-0">فیلتر</h4>
-                    <a  onClick={() => setSearchFilter([])} >پاک کردن همه</a>
+                    <a onClick={() => setSearchFilter([])}>پاک کردن همه</a>
                   </div>
                   <div className="card-body">
                     <div className="filter-widget">
                       <h4>دسته بندی</h4>
                       <option>انتخاب کنید</option>
                       <div className="form-group">
-                        <select 
-                         onChange={handleChange}
-                         id="job_category"
-                        className="form-control select">
+                        <select
+                          onChange={handleChange}
+                          id="job_category"
+                          className="form-control select"
+                        >
                           {postJobDetailsRequirments.categories?.map((item) => (
                             <option value={item.title}>{item.title}</option>
                           ))}
@@ -127,10 +140,11 @@ const afterFilter = jobs?.filter((job) =>{
                     <div className="filter-widget">
                       <h4>حقوق</h4>
                       <div className="form-group">
-                        <select 
-                           onChange={handleChange}
-                           id="salary_type"
-                           className="form-control select">
+                        <select
+                          onChange={handleChange}
+                          id="salary_type"
+                          className="form-control select"
+                        >
                           <option value="مشخص"> مشخص شده</option>
                           <option value="توافقی">توافقی</option>
                         </select>
@@ -155,10 +169,11 @@ const afterFilter = jobs?.filter((job) =>{
                     <div className="filter-widget">
                       <h4>نوع همکاری</h4>
                       <div className="form-group">
-                        <select 
-                           onChange={handleChange}
-                           id="job_type"
-                           className="form-control select">
+                        <select
+                          onChange={handleChange}
+                          id="job_type"
+                          className="form-control select"
+                        >
                           <option value="پاره وقت">پاره وقت</option>
                           <option value="تمام وقت">تمام وقت</option>
                         </select>
@@ -167,10 +182,11 @@ const afterFilter = jobs?.filter((job) =>{
                     <div className="filter-widget">
                       <h4>سابقه کار</h4>
                       <div className="form-group">
-                        <select 
-                           onChange={handleChange}
-                           id="experience"
-                           className="form-control select">
+                        <select
+                          onChange={handleChange}
+                          id="experience"
+                          className="form-control select"
+                        >
                           <option value="بدون محدودیت">بدون محدودیت</option>
                           <option value="کمتر از ۲ سال">کمتر از 2 سال</option>
                           <option value="۲ تا ۵ سال">2 تا 5 سال</option>
@@ -194,9 +210,7 @@ const afterFilter = jobs?.filter((job) =>{
                 <div className="row align-items-center">
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <div className="d-flex align-items-center">
-                      <div className="freelance-view">
-                        <h4>نمایش نتایج ۱-۱۲ از ۴۵۵</h4>
-                      </div>
+                      <div className="freelance-view"></div>
                     </div>
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
@@ -214,14 +228,19 @@ const afterFilter = jobs?.filter((job) =>{
               </div>
               <div className="bootstrap-tags text-start pl-0">
                 {Object.keys(searchFilter)?.map((item) => {
-                  return(
-                <span className="badge badge-pill badge-skills">
-                  {searchFilter[item]}
-                  <span onClick={() => {(delete searchFilter[item])}} className="tag-close" data-role="remove">
-                    <i className="fa fa-times" />
-                  </span>
-                </span>
-                )})}
+                  return (
+                    <span className="badge badge-pill badge-skills">
+                      {searchFilter[item]}
+                      <span
+                        onClick={() => handleTagClose(item)}
+                        className="tag-close"
+                        data-role="remove"
+                      >
+                        <i className="fa fa-times" />
+                      </span>
+                    </span>
+                  );
+                })}
               </div>
               <div className="row">
                 {/* Project Content */}
@@ -238,7 +257,7 @@ const afterFilter = jobs?.filter((job) =>{
                         _.includes(
                           job.company.Name?.toLowerCase(),
                           searchPhrase?.toLowerCase()
-                        )   
+                        )
                     )
                     .map(
                       (item) =>
@@ -281,7 +300,7 @@ const afterFilter = jobs?.filter((job) =>{
                                     </h3>
                                     <div className="freelance-location mb-1">
                                       <i className="fa fa-clock" />{" "}
-                                      {daysBetween(item?.published_at)} روز
+                                      {60 - daysBetween(item?.published_at)} روز
                                     </div>
                                     <div className="freelance-location">
                                       <i className="fa fa-map-marker-alt ms-1" />

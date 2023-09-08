@@ -26,7 +26,10 @@ const CompletedProjects = ({ data }) => {
             <div className="my-projects-list">
               <div className="row align-right">
                 <div className="col-lg-10 flex-wrap">
-                  <div className="projects-card flex-fill">
+                  <div
+                    className="projects-card flex-fill"
+                    style={{ backgroundcolor: "##deeae1" }}
+                  >
                     <div className="card-body">
                       <div className="projects-details align-items-center">
                         <div className="project-info">
@@ -50,33 +53,38 @@ const CompletedProjects = ({ data }) => {
                                 <div className="slot">
                                   <p>انقضای آگهی</p>
                                   <h5>
-                                    {daysBetween(item.published_at)} روز دبگر{" "}
+                                    {60 - daysBetween(item.published_at)} روز
+                                    دبگر{" "}
                                   </h5>
                                 </div>
+                              </li>
+                              <li>
+                                <h5>
+                                  <div className="slot">
+                                    <p>حقوق </p>
+                                    {item.salary_amount
+                                      ? `${item.salary_amount} میلیون`
+                                      : "حقوق توافقی"}{" "}
+                                  </div>
+                                </h5>
                               </li>
                             </ul>
                           </div>
                         </div>
                         <div className="project-hire-infoo">
-                          <div className="content-divider" />
-                          <div className="projects-amount">
-                            <h4>
-                              {item.salary_amount
-                                ? `${item.salary_amount} میلیون`
-                                : "حقوق توافقی"}{" "}
-                            </h4>
-                            {/* <h5>in 12 Days</h5> */}
-                          </div>
-                          <div className="content-divider" />
+                          <div className="projects-amount"></div>
+
                           <div className="projects-action text-center">
                             <Link
                               className="projects-btn"
                               to={{
-                                pathname: "/project-proposals",
-                                state: { job: item },
+                                pathname: "/developer-profile",
+                                state: {
+                                  idInfo: item.completed_request_user?.id,
+                                },
                               }}
                             >
-                              مشاهده بیشتر
+                              اطلاعات کارجو استخدام شده
                             </Link>
                             {/* <a href="#" className="hired-detail">
                                 استخدام شده در تاریخ ۱۲ بهمن ۱۴۰۱
@@ -88,7 +96,10 @@ const CompletedProjects = ({ data }) => {
                   </div>
                 </div>
                 <div className="col-lg-2 d-flex flex-wrap">
-                  <div className="projects-card flex-fill">
+                  <div
+                    className="projects-card flex-fill"
+                    style={{ backgroundcolor: "##deeae1" }}
+                  >
                     <div className="card-body p-2">
                       <div className="prj-proposal-count text-center hired">
                         <h3>استخدام شده</h3>
