@@ -20,7 +20,9 @@ const Projects = () => {
   const { jobs, loading } = jobListAll;
 
   const jobDetailsUpdate = useSelector((state) => state.jobUpdateDetail);
+  const { success } = jobDetailsUpdate;
   const jobdelete = useSelector((state) => state.jobdelete);
+  const { success: successdel } = jobdelete;
 
   const [selectedJob, setSelectedJob] = useState(null);
   const [deletedJobid, setdeletedJobid] = useState("");
@@ -38,14 +40,14 @@ const Projects = () => {
         status: editedJobStatus,
       })
     );
-    dispatch(listJobs());
+    // dispatch(listJobs());
     const closeButton = document.querySelector("#add-category .close");
     closeButton.click();
   };
 
   const handledeleteSubmit = (e) => {
     dispatch(deletejob(deletedJobid));
-    dispatch(listJobs());
+    // dispatch(listJobs());
     const cancelLink = document.querySelector("#cancelLink");
     cancelLink.click();
   };
@@ -64,7 +66,7 @@ const Projects = () => {
           <Link
             to={{
               pathname: "/company-profile",
-              state: { companyIdInput: text.id },
+              state: { companyIdInput: record.id },
             }}
             className="avatar"
           >
@@ -183,7 +185,7 @@ const Projects = () => {
 
   useEffect(() => {
     dispatch(listJobs());
-  }, [dispatch]);
+  }, [dispatch, success, successdel]);
 
   return (
     <>

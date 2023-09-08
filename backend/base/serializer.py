@@ -1,10 +1,49 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Job , Company ,Employee , Education , WorkExperience , Skills ,Category, City  , Language ,Verification , Review , Request ,Portfolio , Gallery , Image ,state
+from .models import Job , Company ,Employee , Education , WorkExperience , Skills ,Category, City  , Language ,Verification , Review , Request ,Portfolio , Gallery , Image ,State
 from datetime import timedelta
 
 
+
+
+# class UserSerializer(serializers.ModelSerializer):
+#     name = serializers.SerializerMethodField(read_only=True)
+#     _id = serializers.SerializerMethodField(read_only=True)
+#     isAdmin = serializers.SerializerMethodField(read_only=True)
+#     role = serializers.SerializerMethodField(read_only=True)
+#     associated_id = serializers.SerializerMethodField(read_only=True)
+
+#     class Meta:
+#         model = User
+#         fields = ['id','_id', 'username', 'first_name', 'last_name', 'email', 'name', 'isAdmin', 'last_login', 'role','associated_id']
+
+#     def get__id(self, obj):
+#         return obj.id
+
+#     def get_isAdmin(self, obj):
+#         return obj.is_staff
+
+#     def get_name(self, obj):
+#         name = obj.first_name
+#         if name == '':
+#             name = obj.email
+#         return name
+
+#     def get_role(self, obj):
+#         try:
+#             _ = obj.employee  # Check if the user is an employee
+#             return 'employee'
+#         except Employee.DoesNotExist:
+#             pass
+
+#         try:
+#             _ = obj.company  # Check if the user is associated with a company
+#             return 'employer'
+#         except Company.DoesNotExist:
+#             pass
+
+#         return None
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,10 +52,11 @@ class UserSerializer(serializers.ModelSerializer):
     isAdmin = serializers.SerializerMethodField(read_only=True)
     role = serializers.SerializerMethodField(read_only=True)
     associated_id = serializers.SerializerMethodField(read_only=True)
+    image = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['id','_id', 'username', 'first_name', 'last_name', 'email', 'name', 'isAdmin', 'last_login', 'role','associated_id']
+        fields = ['id', '_id', 'username', 'first_name', 'last_name', 'email', 'name', 'isAdmin', 'last_login', 'role', 'associated_id', 'image']
 
     def get__id(self, obj):
         return obj.id
@@ -44,6 +84,23 @@ class UserSerializer(serializers.ModelSerializer):
             pass
 
         return None
+
+    def get_image(self, obj):
+        try:
+            employee = obj.employee
+            if employee.image:
+                return employee.image.url
+        except Employee.DoesNotExist:
+            pass
+
+        try:
+            company = obj.company
+            if company.image:
+                return company.image.url
+        except Company.DoesNotExist:
+            pass
+
+        return None
     
     def get_associated_id(self, obj):
         try:
@@ -66,7 +123,7 @@ class UserSerializerWithToken(UserSerializer):
 
     class Meta:
         model = User
-        fields = ['id', '_id', 'username','first_name','last_name', 'email', 'name', 'isAdmin','last_login', 'token' , 'role','associated_id']
+        fields = ['id', '_id', 'username','first_name','last_name', 'email', 'name', 'isAdmin','last_login', 'token' , 'role','associated_id' ,'image']
 
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
@@ -176,19 +233,20 @@ class RequestSerializer(serializers.ModelSerializer):
 
 
 class PortfolioSerializer(serializers.ModelSerializer):
-    image_data = serializers.CharField(write_only=True)  # New field for base64 image data
+
 
     class Meta:
         model = Portfolio
-        fields = ('id', 'employee', 'title', 'image_data', 'description', 'image')  # Include 'image_data'
+        fields = '__all__'
+        # fields = ('id', 'employee', 'title', 'image_data', 'description', 'image')  # Include 'image_data'
 
-    def create(self, validated_data):
-        image_data = validated_data.pop('image_data', None)
-        portfolio = Portfolio.objects.create(**validated_data)
-        if image_data:
-            portfolio.image_data = image_data
-            portfolio.save()
-        return portfolio
+    # def create(self, validated_data):
+    #     image_data = validated_data.pop('image_data', None)
+    #     portfolio = Portfolio.objects.create(**validated_data)
+    #     if image_data:
+    #         portfolio.image_data = image_data
+    #         portfolio.save()
+    #     return portfolio
 
 
 
@@ -214,7 +272,7 @@ class CitySerializer(serializers.ModelSerializer):
 
 class StateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = state
+        model = State
         fields = '__all__'
 
 

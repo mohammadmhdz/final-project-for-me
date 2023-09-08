@@ -15,6 +15,7 @@ import { Sidebar } from "../sidebar";
 // redux
 // import {companyFavoriteEmployee}from "../../../../store"
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../../../Loader";
 import {
   companyFavoriteEmployees,
   companyToggleFavoriteList,
@@ -27,7 +28,12 @@ const Favourites = (props) => {
   const companyEmployeeFavorite = useSelector(
     (state) => state.companyFavoriteEmployee
   );
-  const { companyFavoriteEmployeesList } = companyEmployeeFavorite;
+  const toggleFavoriteResultt = useSelector(
+    (state) => state.companyToggleFavorite
+  );
+
+  const { success, toggleFavoriteResult } = toggleFavoriteResultt;
+  const { companyFavoriteEmployeesList, loading } = companyEmployeeFavorite;
 
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -42,7 +48,7 @@ const Favourites = (props) => {
     return () => {
       document.body.className = "";
     };
-  }, [dispatch]);
+  }, [dispatch, success]);
   console.log(companyFavoriteEmployeesList);
   return (
     <>
@@ -79,82 +85,86 @@ const Favourites = (props) => {
                                 <th />
                               </tr>
                             </thead>
-                            {companyFavoriteEmployeesList?.map((item) => (
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <h2 className="table-avatar">
-                                      <Link
-                                        to="/freelancer-profile"
-                                        className="avatar avatar-md tab-imgcircle ms-2"
-                                      >
-                                        <img
-                                          className="avatar-img rounded-circle"
-                                          src={`http://127.0.0.1:8000/${item?.image}`}
-                                          alt="User Image"
-                                        />
-                                      </Link>
-                                      <Link to="/developer-profile">
-                                        <span className="profile-name">
-                                          {item.user?.first_name}{" "}
-                                          {item.user?.last_name}
-                                        </span>
-                                        <span>{item.perfession_title}</span>
-                                        {/* <span className="rating mt-2">
+                            {loading ? (
+                              <Loader />
+                            ) : (
+                              companyFavoriteEmployeesList?.map((item) => (
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <h2 className="table-avatar">
+                                        <Link
+                                          to="/freelancer-profile"
+                                          className="avatar avatar-md tab-imgcircle ms-2"
+                                        >
+                                          <img
+                                            className="avatar-img rounded-circle"
+                                            src={`http://127.0.0.1:8000${item?.image}`}
+                                            alt="User Image"
+                                          />
+                                        </Link>
+                                        <Link to="/developer-profile">
+                                          <span className="profile-name">
+                                            {item.user?.first_name}{" "}
+                                            {item.user?.last_name}
+                                          </span>
+                                          <span>{item.perfession_title}</span>
+                                          {/* <span className="rating mt-2">
                                       <i className="fa fa-star filled" />
                                       <i className="fa fa-star filled" />
                                       <i className="fa fa-star filled" />
                                       <i className="fa fa-star filled" />
                                       <i className="fa fa-star" />
                                     </span> */}
-                                      </Link>
-                                    </h2>
-                                  </td>
-                                  <td> {item.cooperation_type}</td>
-                                  <td> {item.user?.email}</td>
-                                  <td>
-                                    <h2 className="table-avatar">
-                                      {item.city?.name}
-                                    </h2>
-                                  </td>
-                                  <td>
-                                    <a
-                                      onClick={(e) =>
-                                        handleToggleFavorite(e, item.id)
-                                      }
-                                      href=""
-                                      className="fav"
-                                    >
-                                      <i className="fa fa-heart filled" />
-                                    </a>
-                                  </td>
-                                  <td className="text-end">
-                                    <div className="table-action">
-                                      <Link
-                                        className="btn btn-primary btn-invite"
-                                        to={{
-                                          pathname: "/developer-profile",
-                                          state: { idInfo: item.id },
-                                        }}
+                                        </Link>
+                                      </h2>
+                                    </td>
+                                    <td> {item.cooperation_type}</td>
+                                    <td> {item.user?.email}</td>
+                                    <td>
+                                      <h2 className="table-avatar">
+                                        {item.city?.name}
+                                      </h2>
+                                    </td>
+                                    <td>
+                                      <a
+                                        onClick={(e) =>
+                                          handleToggleFavorite(e, item.id)
+                                        }
+                                        href=""
+                                        className="fav"
                                       >
-                                        <span className="profile-name">
-                                          مشاهده بیشتر
-                                        </span>
-                                      </Link>
+                                        <i className="fa fa-heart filled" />
+                                      </a>
+                                    </td>
+                                    <td className="text-end">
+                                      <div className="table-action">
+                                        <Link
+                                          className="btn btn-primary btn-invite"
+                                          to={{
+                                            pathname: "/developer-profile",
+                                            state: { idInfo: item.id },
+                                          }}
+                                        >
+                                          <span className="profile-name">
+                                            مشاهده بیشتر
+                                          </span>
+                                        </Link>
 
-                                      {/* <a
+                                        {/* <a
                                       data-bs-toggle="modal"
                                       href="#bookmark"
                                       className="btn btn-primary btn-invite"
                                       >
                                       مشاهده پروفایل
                                     </a> */}
-                                      <Link></Link>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            ))}
+                                        <Link></Link>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              ))
+                            )}
                           </table>
                         </div>
                       </div>

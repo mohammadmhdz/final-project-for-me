@@ -120,13 +120,20 @@ const TopDevelopers = (props) => {
                         </div>
 
                         <div className="freelance-tags">
-                          {emp.skills.map((skill) => (
+                          {emp.skills.slice(0, 3).map((skill) => (
                             <a href="#" key={skill.id}>
                               <span className="badge badge-pill badge-design">
                                 {skill.title}
                               </span>
                             </a>
                           ))}
+                          {/* {emp.skills.slice(0, 3).map((item) => (
+                            <a href="">
+                              <span className="badge badge-pill badge-design">
+                                {item.title}
+                              </span>
+                            </a>
+                          ))} */}
                         </div>
                       </div>
                     </div>

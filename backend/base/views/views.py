@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from ..models import Job , Company , Employee , WorkExperience , Education , Language  , Verification , Skills , Category , Review , Request ,Portfolio , Gallery , Image , state ,City
+from ..models import Job , Company , Employee , WorkExperience , Education , Language  , Verification , Skills , Category , Review , Request ,Portfolio , Gallery , Image , State ,City
 from django.contrib.auth.models import User
 from ..serializer import JobSerializer , CompanySerializer , UserSerializer, UserSerializerWithToken ,EmployeeSerializer , EducationSerializer , ExperienceSerializer ,LanguageSerializer ,RequestSerializer , VerificationSerializer , SkillSerializer , CategorySerializer , ReviewSerializer ,PortfolioSerializer , GallerySerializer , ImageSerializer ,StateSerializer ,SkillSerializer ,CitySerializer , EmployeepostSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -137,7 +137,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 @api_view(['GET'])
 def Dropdown(request):
-    states = state.objects.all()
+    states = State.objects.all()
     cities = City.objects.all()
     categories = Category.objects.all()
     skills = Skills.objects.all()
@@ -360,5 +360,72 @@ class ReviewViewSet(viewsets.ViewSet):
 
 
 
+
+
+
+class CityViewSet(viewsets.ViewSet):
+    def list(self, request):
+        cities = City.objects.all()
+        serializer = CitySerializer(cities, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        cities = City.objects.all()
+        city = get_object_or_404(cities, pk=pk)
+        serializer = CitySerializer(city)
+        return Response(serializer.data)
+
+    def create(self, request):
+        serializer = CitySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Data created'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk=None):
+        city = get_object_or_404(City.objects.all(), pk=pk)
+        serializer = CitySerializer(city, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+        city = City.objects.get(pk=pk)
+        city.delete()
+        return Response({'msg': 'Data Deleted'})
+
+
+class StateViewSet(viewsets.ViewSet):
+    def list(self, request):
+        states = State.objects.all()
+        serializer = StateSerializer(states, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        states = State.objects.all()
+        state = get_object_or_404(states, pk=pk)
+        serializer = StateSerializer(state)
+        return Response(serializer.data)
+
+    def create(self, request):
+        serializer = StateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Data created'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk=None):
+        state = get_object_or_404(State.objects.all(), pk=pk)
+        serializer = StateSerializer(state, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+        state = State.objects.get(pk=pk)
+        state.delete()
+        return Response({'msg': 'Data Deleted'})
 
 

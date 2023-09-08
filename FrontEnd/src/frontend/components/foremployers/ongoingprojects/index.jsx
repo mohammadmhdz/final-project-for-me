@@ -51,7 +51,18 @@ const OngoingProjects = ({ data }) => {
                                 <div className="slot">
                                   <p>انقضای آگهی</p>
                                   <h5>
-                                    {daysBetween(item.published_at)} روز دبگر{" "}
+                                    {60 - daysBetween(item.published_at)} روز
+                                    دبگر{" "}
+                                  </h5>
+                                </div>
+                              </li>
+                              <li>
+                                <div className="slot">
+                                  <p> حقوق</p>
+                                  <h5>
+                                    {item.salary_amount
+                                      ? `${item.salary_amount} میلیون`
+                                      : "حقوق توافقی"}{" "}
                                   </h5>
                                 </div>
                               </li>
@@ -59,26 +70,20 @@ const OngoingProjects = ({ data }) => {
                           </div>
                         </div>
                         <div className="project-hire-infoo">
-                          <div className="content-divider" />
-                          <div className="projects-amount">
-                            <h4>
-                              {item.salary_amount
-                                ? `${item.salary_amount} میلیون`
-                                : "حقوق توافقی"}{" "}
-                            </h4>
-                            {/* <h5>in 12 Days</h5> */}
-                          </div>
-                          <div className="content-divider" />
+                          <div className="projects-amount"></div>
+
                           <div className="projects-action text-center">
-                            <Link
-                              className="projects-btn"
-                              to={{
-                                pathname: "/project-proposals",
-                                state: { job: item },
-                              }}
-                            >
-                              مشاهده بیشتر
-                            </Link>
+                            {item.num_requests !== 0 ? (
+                              <Link
+                                className="projects-btn"
+                                to={{
+                                  pathname: "/project-proposals",
+                                  state: { job: item },
+                                }}
+                              >
+                                مشاهده درخواست ها
+                              </Link>
+                            ) : null}
                           </div>
                         </div>
                       </div>

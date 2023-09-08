@@ -51,7 +51,8 @@ const Freelancer = (props) => {
   // redux
   const dispatch = useDispatch();
   const freelancerRequests = useSelector((state) => state.freelancerRequest);
-  const deleteApplyStatus = useSelector((state) => state.deleteApplyReducer);
+  const deleteApplyStatus = useSelector((state) => state.deleteApply);
+  const { success: delete_success } = deleteApplyStatus;
   const { freelancerRequestsAll, loading } = freelancerRequests;
 
   const localItem = JSON.parse(localStorage.getItem("userInfo"));
@@ -75,7 +76,7 @@ const Freelancer = (props) => {
     return () => {
       document.body.className = "";
     };
-  }, [dispatch]);
+  }, [dispatch, delete_success]);
   // console.log(freelancerRequestsAll[0]?.company_name);
   console.log(freelancerRequestsAll);
   console.log(deleteApplyStatus, "delete");

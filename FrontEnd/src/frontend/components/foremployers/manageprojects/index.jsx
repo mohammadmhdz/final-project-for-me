@@ -94,9 +94,9 @@ const Manageprojects = (props) => {
               <div className="page-title">
                 <div className="row">
                   <div className="col-md-6">
-                    <h3>همه کار های منتشر شده شما</h3>
+                    <h3> کار های منتشر شده شما</h3>
                   </div>
-                  <div className="col-md-6 text-end">
+                  <div className="col-md-6 text-start">
                     <Link
                       to="/post-project"
                       className="btn btn-primary back-btn mb-4"
@@ -161,7 +161,21 @@ const Manageprojects = (props) => {
                   <div className="my-projects-list">
                     <div className="row">
                       <div className="col-lg-10 flex-wrap">
-                        <div className="projects-card flex-fill">
+                        <div
+                          className="projects-card flex-fill"
+                          style={{
+                            backgroundColor:
+                              item.status === "درانتظار تایید"
+                                ? "#fff8f2"
+                                : item.status === "فعال"
+                                ? "#your-color-value-for-active"
+                                : item.status === "تکمیل شده"
+                                ? "#eafcee"
+                                : item.status === "منقضی شده"
+                                ? "#ff00001a"
+                                : "#default-color-value",
+                          }}
+                        >
                           <div className="card-body">
                             <div className="projects-details align-items-center">
                               <div className="project-info">
@@ -187,8 +201,19 @@ const Manageprojects = (props) => {
                                       <div className="slot">
                                         <p>انقضای آگهی</p>
                                         <h5>
-                                          {daysBetween(item.published_at)} روز
-                                          دبگر{" "}
+                                          {60 - daysBetween(item.published_at)}{" "}
+                                          روز دبگر{" "}
+                                        </h5>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      {" "}
+                                      <div className="slot">
+                                        <p> حقوق</p>
+                                        <h5>
+                                          {item.salary_amount
+                                            ? `${item.salary_amount} میلیون`
+                                            : "حقوق توافقی"}{" "}
                                         </h5>
                                       </div>
                                     </li>
@@ -196,30 +221,23 @@ const Manageprojects = (props) => {
                                 </div>
                               </div>
                               <div className="project-hire-infoo">
-                                <div className="content-divider" />
                                 <div className="projects-amount">
-                                  <h4>
-                                    {item.salary_amount
-                                      ? `${item.salary_amount} میلیون`
-                                      : "حقوق توافقی"}{" "}
-                                  </h4>
                                   {/* <h5>in 12 Days</h5> */}
                                 </div>
-                                <div className="content-divider" />
-                                <div className="projects-action text-center">
-                                  <Link
-                                    className="projects-btn"
-                                    to={{
-                                      pathname: "/project-proposals",
-                                      state: { job: item },
-                                    }}
-                                  >
-                                    مشاهده بیشتر
-                                  </Link>
 
-                                  {/* <a href="#" className="hired-detail">
-                                  استخدام شده در تاریخ ۱۲ بهمن ۱۴۰۱
-                                </a> */}
+                                <div className="projects-action text-center">
+                                  {item.num_requests !== 0 &&
+                                  item.status === "فعال" ? (
+                                    <Link
+                                      className="projects-btn"
+                                      to={{
+                                        pathname: "/project-proposals",
+                                        state: { job: item },
+                                      }}
+                                    >
+                                      مشاهده درخواست ها
+                                    </Link>
+                                  ) : null}
                                 </div>
                               </div>
                             </div>
@@ -268,7 +286,9 @@ const Manageprojects = (props) => {
                 <OngoingProjects data={companyJobsListArray} />
               ) : expired ? (
                 <CancelledProjects data={companyJobsListArray} />
-              ) : null}
+              ) : (
+                <CancelledProjects data={companyJobsListArray} />
+              )}
 
               {/* /pagination */}
             </div>

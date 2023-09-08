@@ -31,12 +31,12 @@ const Sidebar = (props) => {
           <Link
             to={{
               pathname: "/developer-profile",
-              state: { idInfo: employee.id },
+              state: { idInfo: localItem?.associated_id },
             }}
           >
             <img
               alt="profile image"
-              src={"http://127.0.0.1:8000" + employee.image}
+              src={"http://127.0.0.1:8000" + localItem?.image}
               className="avatar-lg rounded-circle"
             />
           </Link>

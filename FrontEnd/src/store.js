@@ -105,8 +105,8 @@ const reducer = combineReducers({
   //
   skillListAll: skillListReducer,
   skillUpdateDetail: skillUpdateDetailsReducer,
-  skillpost: skillPostReducer,
-  skilldelete: skillDeleteReducer,
+  skillpostlist: skillPostReducer,
+  skilldeletelist: skillDeleteReducer,
   userdelete: userDeleteReducer,
   //
   reviewListAll: reviewListReducer,

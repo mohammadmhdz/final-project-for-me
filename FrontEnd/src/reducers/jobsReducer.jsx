@@ -54,6 +54,7 @@ export const jobsDetailsReducer = (state = { jobsDetailsList: [] }, action) => {
     case JOBS_DETAIL_SUCCESS:
       return {
         loading: false,
+        success: true,
         jobsDetailsList: action.payload,
       };
     case JOBS_DETAIL_FAIL:
@@ -125,7 +126,11 @@ export const jobEditDetailsReducer = (state = {}, action) => {
       return { loading: true };
 
     case JOBS_EDIT_DETAILS_SUCCESS:
-      return { loading: false, editJobDetailsResult: action.payload };
+      return {
+        loading: false,
+        success: true,
+        editJobDetailsResult: action.payload,
+      };
 
     case JOBS_EDIT_DETAILS_FAIL:
       return { loading: false, error: action.payload };
@@ -141,7 +146,11 @@ export const jobUpdateDetailsReducer = (state = {}, action) => {
       return { loading: true };
 
     case JOB_DETAILS_UPDATE_SUCCESS:
-      return { loading: false, categoryUpdateSuccesfull: action.payload };
+      return {
+        loading: false,
+        success: true,
+        categoryUpdateSuccesfull: action.payload,
+      };
 
     case JOB_DETAILS_UPDATE_FAIL:
       return { loading: false, error: action.payload };

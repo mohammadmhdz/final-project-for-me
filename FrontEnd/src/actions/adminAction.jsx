@@ -93,6 +93,7 @@ export const updateCategoryDetails = (input) => async (dispatch) => {
 };
 
 export const postCategory = (input) => async (dispatch) => {
+  console.log("onjaa", input);
   try {
     dispatch({
       type: CATEGORY_POST_REQUEST,

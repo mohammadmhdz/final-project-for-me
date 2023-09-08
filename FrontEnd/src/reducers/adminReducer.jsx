@@ -55,13 +55,17 @@ export const categoryListReducer = (state = { categories: [] }, action) => {
 export const categoryUpdateDetailsReducer = (state = {}, action) => {
   switch (action.type) {
     case CATEGORY_DETAILS_UPDATE_REQUEST:
-      return { loading: true };
+      return { loading: true, susuccess: false };
 
     case CATEGORY_DETAILS_UPDATE_SUCCESS:
-      return { loading: false, categoryUpdateSuccesfull: action.payload };
+      return {
+        loading: false,
+        success: true,
+        categoryUpdateSuccesfull: action.payload,
+      };
 
     case CATEGORY_DETAILS_UPDATE_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, success: false, error: action.payload };
 
     default:
       return state;
@@ -71,7 +75,7 @@ export const categoryUpdateDetailsReducer = (state = {}, action) => {
 export const categoryPost = (state = {}, action) => {
   switch (action.type) {
     case CATEGORY_POST_REQUEST:
-      return { loading: true };
+      return { loading: true, success: false };
 
     case CATEGORY_POST_SUCCESS:
       return {
@@ -80,7 +84,7 @@ export const categoryPost = (state = {}, action) => {
         categoryPostList: action.payload,
       };
     case CATEGORY_POST_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, success: false, error: action.payload };
 
     default:
       return state;
@@ -115,6 +119,7 @@ export const skillListReducer = (state = { skills: [] }, action) => {
     case SKILL_LIST_SUCCESS:
       return {
         loading: false,
+        success: true,
         skills: action.payload,
       };
     case SKILL_LIST_FAIL:
@@ -131,7 +136,11 @@ export const skillUpdateDetailsReducer = (state = {}, action) => {
       return { loading: true };
 
     case SKILL_DETAILS_UPDATE_SUCCESS:
-      return { loading: false, skillUpdateSuccessful: action.payload };
+      return {
+        loading: false,
+        success: true,
+        skillUpdateSuccessful: action.payload,
+      };
 
     case SKILL_DETAILS_UPDATE_FAIL:
       return { loading: false, error: action.payload };
@@ -200,6 +209,7 @@ export const reviewListReducer = (state = { reviews: [] }, action) => {
     case REVIEW_LIST_SUCCESS:
       return {
         loading: false,
+        success: true,
         reviews: action.payload,
       };
     case REVIEW_LIST_FAIL:
@@ -216,7 +226,11 @@ export const reviewUpdateDetailsReducer = (state = {}, action) => {
       return { loading: true };
 
     case REVIEW_DETAILS_UPDATE_SUCCESS:
-      return { loading: false, reviewUpdateSuccesfull: action.payload };
+      return {
+        loading: false,
+        success: true,
+        reviewUpdateSuccesfull: action.payload,
+      };
 
     case REVIEW_DETAILS_UPDATE_FAIL:
       return { loading: false, error: action.payload };

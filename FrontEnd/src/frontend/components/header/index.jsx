@@ -4,7 +4,7 @@ import { Logo, avatar_1 } from "../imagepath";
 // redux
 import { logout } from "../../../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
-import { employeePortfolioDetails } from "../../../actions/employeeActions";
+import { employeeDetails } from "../../../actions/employeeActions";
 
 const Header = (props) => {
   // add by mhdz
@@ -71,7 +71,7 @@ const Header = (props) => {
 
   useEffect(() => {
     showButton();
-    dispatch(employeePortfolioDetails(localItem?.associated_id));
+    dispatch(employeeDetails(localItem?.associated_id));
   }, []);
   window.addEventListener("resize", showButton);
 
@@ -128,19 +128,13 @@ const Header = (props) => {
                 </div>
                 <ul className="main-nav">
                   <li>
-                    <Link to="/" >
-                      خانه
-                    </Link>
+                    <Link to="/">خانه</Link>
                   </li>
                   <li>
-                    <Link to="/project">
-                      فرصت های شغلی
-                    </Link>
+                    <Link to="/project">فرصت های شغلی</Link>
                   </li>
                   <li>
-                    <Link to="/privacy-policy">
-                      قوانین و مقررات
-                    </Link>
+                    <Link to="/privacy-policy">قوانین و مقررات</Link>
                   </li>
 
                   {/* <li>
@@ -160,7 +154,7 @@ const Header = (props) => {
                     >
                       <span className="user-img  ms-2">
                         <img
-                          src={`http://127.0.0.1:8000${employee.image}` }
+                          src={`http://127.0.0.1:8000${localItem?.image}`}
                           alt=""
                         />
                       </span>

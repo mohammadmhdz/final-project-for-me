@@ -35,8 +35,12 @@ const Dashboard = () => {
   const employeeListAlll = useSelector((state) => state.employeeListAll);
   const { employeeList, loadingem } = employeeListAlll;
   const reviewListAll = useSelector((state) => state.reviewListAll);
+
   const reviewDetailsUpdate = useSelector((state) => state.reviewUpdateDetail);
-  const { reviews, loadingre } = reviewListAll;
+  const { success } = reviewDetailsUpdate;
+  const { reviews, loading: loadingre } = reviewListAll;
+
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
 
   const [datas] = useState({
     chart: {
@@ -178,227 +182,254 @@ const Dashboard = () => {
     dispatch(listJobs());
     dispatch(employeeListAll());
     dispatch(reviewListAction());
-  }, [dispatch]);
-
+  }, [dispatch, success]);
   return (
     <>
       <>
         <div className="main-wrapper ">
           {/* Page Wrapper */}
           <Header />
-
-          <div className="page-wrapper align-right">
-            <div className="content container-fluid">
-              {/* Page Header */}
-              <div className="page-header">
-                <div className="row align-items-center">
-                  <div className="col">
-                    <h3 className="page-title">داشبورد</h3>
-                    {/*  <ul className="breadcrumb" style={{ visibility: "hidden" }}>
+          {localItem?.isAdmin ? (
+            <div className="page-wrapper align-right">
+              <div className="content container-fluid">
+                {/* Page Header */}
+                <div className="page-header">
+                  <div className="row align-items-center">
+                    <div className="col">
+                      <h3 className="page-title">داشبورد</h3>
+                      {/*  <ul className="breadcrumb" style={{ visibility: "hidden" }}>
                       <li className="breadcrumb-item">
                         <Link to="/index/admin">خانه</Link>
                       </li>
                       <li className="breadcrumb-item active">داشبورد</li>
                     </ul> */}
-                  </div>
-                </div>
-              </div>
-              {/* /Page Header */}
-              <div className="row">
-                <div className="col-md-8">
-                  {/*/Wizard*/}
-                  <div className="row">
-                    <div className="col-md-4 d-flex">
-                      <div className="card wizard-card flex-fill">
-                        <div className="card-body">
-                          <p className="text-primary mt-0 mb-2">کارجویان</p>
-                          <h5>{employeeList.length}</h5>
-                          <p>
-                            <Link to="/admin/users">مشاهده جزییات</Link>
-                          </p>
-                          <span className="dash-widget-icon bg-1">
-                            <i className="fas fa-users" />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-4 d-flex">
-                      <div className="card wizard-card flex-fill">
-                        <div className="card-body">
-                          <p className="text-primary mt-0 mb-2">
-                            فرصت های شغلی
-                          </p>
-                          <h5>{jobs.length}</h5>
-                          <p>
-                            <Link to="/admin/projects">مشاهده جزییات </Link>
-                          </p>
-                          <span className="dash-widget-icon bg-1">
-                            <i className="fas fa-th-large" />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-4 d-flex">
-                      <div className="card wizard-card flex-fill">
-                        <div className="card-body">
-                          <p className="text-primary mt-0 mb-2">
-                            فرصت های شغلی فعال
-                          </p>
-                          <h5>
-                            {jobs.filter((job) => job.status === "فعال").length}
-                          </h5>
-                          <p>
-                            <Link to="/admin/projects">مشاهده جزییات </Link>
-                          </p>
-                          <span className="dash-widget-icon bg-1">
-                            <i className="fas fa-bezier-curve" />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/*/Wizard*/}
-                  <div className="row">
-                    <div className="col-lg-12 d-flex">
-                      <div className="card w-100">
-                        <div className="card-body pt-0 pb-2">
-                          <div className="card-header">
-                            <h5 className="card-title">بررسی</h5>
-                          </div>
-                          <div id="chart" className="mt-4">
-                            <Chart
-                              options={datas}
-                              series={series}
-                              type="area"
-                              height={310}
-                            />
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-md-4 d-flex">
-                  <div className="card w-100">
-                    <div className="card-body pt-0">
-                      <div className="card-header">
-                        <div className="row">
-                          <div className="col-7">
-                            <p>خوش آمدید,</p>
-                            <h6 className="text-primary">ادمین</h6>
-                          </div>
-                          <div className="col-5 text-end">
-                            <span className="welcome-dash-icon bg-1">
-                              <i className="fas fa-user" />
+                {/* /Page Header */}
+                <div className="row">
+                  <div className="col-md-8">
+                    {/*/Wizard*/}
+                    <div className="row">
+                      <div className="col-md-4 d-flex">
+                        <div className="card wizard-card flex-fill">
+                          <div className="card-body">
+                            <p className="text-primary mt-0 mb-2">کارجویان</p>
+                            <h5>{employeeList.length}</h5>
+                            <p>
+                              <Link to="/admin/users">مشاهده جزییات</Link>
+                            </p>
+                            <span className="dash-widget-icon bg-1">
+                              <i className="fas fa-users" />
                             </span>
                           </div>
                         </div>
                       </div>
+                      <div className="col-md-4 d-flex">
+                        <div className="card wizard-card flex-fill">
+                          <div className="card-body">
+                            <p className="text-primary mt-0 mb-2">
+                              فرصت های شغلی
+                            </p>
+                            <h5>{jobs.length}</h5>
+                            <p>
+                              <Link to="/admin/projects">مشاهده جزییات </Link>
+                            </p>
+                            <span className="dash-widget-icon bg-1">
+                              <i className="fas fa-th-large" />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4 d-flex">
+                        <div className="card wizard-card flex-fill">
+                          <div className="card-body">
+                            <p className="text-primary mt-0 mb-2">
+                              فرصت های شغلی فعال
+                            </p>
+                            <h5>
+                              {
+                                jobs.filter((job) => job.status === "فعال")
+                                  .length
+                              }
+                            </h5>
+                            <p>
+                              <Link to="/admin/projects">مشاهده جزییات </Link>
+                            </p>
+                            <span className="dash-widget-icon bg-1">
+                              <i className="fas fa-bezier-curve" />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/*/Wizard*/}
+                    <div className="row">
+                      <div className="col-lg-12 d-flex">
+                        <div className="card w-100">
+                          <div className="card-body pt-0 pb-2">
+                            <div className="card-header">
+                              <h5 className="card-title">بررسی</h5>
+                            </div>
+                            <div id="chart" className="mt-4">
+                              <Chart
+                                options={datas}
+                                series={series}
+                                type="area"
+                                height={310}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-4 d-flex">
+                    <div className="card w-100">
+                      <div className="card-body pt-0">
+                        <div className="card-header">
+                          <div className="row">
+                            <div className="col-7">
+                              <p>خوش آمدید,</p>
+                              <h6 className="text-primary">ادمین</h6>
+                            </div>
+                            <div className="col-5 text-end">
+                              <span className="welcome-dash-icon bg-1">
+                                <i className="fas fa-user" />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
 
-                      <div className="mt-3">
-                        <h6 className="text-primary">پرداخت ها</h6>
-                        <div className="table-responsive">
-                          <table className="table table-center table-hover mb-0">
-                            <thead>
-                              <tr>
-                                <th className="text-nowrap">کاربر</th>
-                                <th>مقدار</th>
-                                <th className="text-end">وضعیت</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td className="text-nowrap">علی خزایی</td>
-                                <td>۲۱۰ هزار تومان</td>
-                                <td className="text-end">پرداخت شده</td>
-                              </tr>
-                              <tr>
-                                <td className="text-nowrap">شرکت فراوب</td>
-                                <td>۲۱۰ هزار تومان</td>
-                                <td className="text-end">پرداخت شده</td>
-                              </tr>
-                              <tr>
-                                <td className="text-nowrap">
-                                  امیررضا فلاح نژاد
-                                </td>
-                                <td>۲۱۰ هزار تومان</td>
-                                <td className="text-end text-nowrap">
-                                  انصراف از پرداخت
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                        <div className="mt-3">
+                          <h6 className="text-primary">پرداخت ها</h6>
+                          <div className="table-responsive">
+                            <table className="table table-center table-hover mb-0">
+                              <thead>
+                                <tr>
+                                  <th className="text-nowrap">کاربر</th>
+                                  <th>مقدار</th>
+                                  <th className="text-end">وضعیت</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td className="text-nowrap">علی خزایی</td>
+                                  <td>۲۱۰ هزار تومان</td>
+                                  <td className="text-end">پرداخت شده</td>
+                                </tr>
+                                <tr>
+                                  <td className="text-nowrap">شرکت فراوب</td>
+                                  <td>۲۱۰ هزار تومان</td>
+                                  <td className="text-end">پرداخت شده</td>
+                                </tr>
+                                <tr>
+                                  <td className="text-nowrap">
+                                    امیررضا فلاح نژاد
+                                  </td>
+                                  <td>۲۱۰ هزار تومان</td>
+                                  <td className="text-end text-nowrap">
+                                    انصراف از پرداخت
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="row align-right">
-                <div className="col-lg-12">
-                  <div className="card bg-white projects-card">
-                    <div className="card-body pt-0">
-                      <div className="card-header">
-                        <h5 className="card-title">نظرات</h5>
-                      </div>
-                      <div className="reviews-menu-links">
-                        <ul
-                          role="tablist"
-                          className="nav nav-pills card-header-pills nav-justified"
-                        >
-                          <li className="nav-item">
-                            <Link
-                              to="#tab-4"
-                              data-bs-toggle="tab"
-                              className="nav-link active"
-                            >
-                              همه
-                            </Link>
-                          </li>
-                          <li className="nav-item">
-                            <Link
-                              to="#tab-5"
-                              data-bs-toggle="tab"
-                              className="nav-link"
-                            >
-                              فعال
-                            </Link>
-                          </li>
-                          <li className="nav-item">
-                            <Link
-                              to="#tab-6"
-                              data-bs-toggle="tab"
-                              className="nav-link"
-                            >
-                              {" "}
-                              در انتظار تایید
-                            </Link>
-                          </li>
-                          <li className="nav-item">
-                            <Link
-                              to="#tab-7"
-                              data-bs-toggle="tab"
-                              className="nav-link"
-                            >
-                              حذف شده
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="tab-content pt-0 ">
-                        <div
-                          role="tabpanel"
-                          id="tab-4"
-                          className="tab-pane fade active show"
-                        >
-                          {loadingre ? (
-                            <Loader />
-                          ) : (
-                            <div className="table-responsive align-right">
+                <div className="row align-right">
+                  <div className="col-lg-12">
+                    <div className="card bg-white projects-card">
+                      <div className="card-body pt-0">
+                        <div className="card-header">
+                          <h5 className="card-title">نظرات</h5>
+                        </div>
+                        <div className="reviews-menu-links">
+                          <ul
+                            role="tablist"
+                            className="nav nav-pills card-header-pills nav-justified"
+                          >
+                            <li className="nav-item">
+                              <Link
+                                to="#tab-4"
+                                data-bs-toggle="tab"
+                                className="nav-link active"
+                              >
+                                همه
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                to="#tab-5"
+                                data-bs-toggle="tab"
+                                className="nav-link"
+                              >
+                                فعال
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                to="#tab-6"
+                                data-bs-toggle="tab"
+                                className="nav-link"
+                              >
+                                {" "}
+                                در انتظار تایید
+                              </Link>
+                            </li>
+                            <li className="nav-item">
+                              <Link
+                                to="#tab-7"
+                                data-bs-toggle="tab"
+                                className="nav-link"
+                              >
+                                حذف شده
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="tab-content pt-0 ">
+                          <div
+                            role="tabpanel"
+                            id="tab-4"
+                            className="tab-pane fade active show"
+                          >
+                            {loadingre ? (
+                              <Loader />
+                            ) : (
+                              <div className="table-responsive align-right">
+                                <Table
+                                  rowSelection={rowSelection}
+                                  pagination={{
+                                    // total: data.length,
+                                    showTotal: (total, range) =>
+                                      `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه ها`,
+                                    showSizeChanger: true,
+                                    onShowSizeChange: onShowSizeChange,
+                                    itemRender: itemRender,
+                                  }}
+                                  className="table"
+                                  style={{ overflowX: "auto" }}
+                                  columns={columns}
+                                  dataSource={data}
+                                  rowKey={(record) => record.id}
+                                />
+                              </div>
+                            )}
+                          </div>
+                          <div
+                            role="tabpanel"
+                            id="tab-5"
+                            className="tab-pane fade"
+                          >
+                            <div className="table-responsive">
                               <Table
                                 rowSelection={rowSelection}
                                 pagination={{
-                                  // total: data.length,
+                                  total: data.length,
                                   showTotal: (total, range) =>
                                     `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه ها`,
                                   showSizeChanger: true,
@@ -408,88 +439,64 @@ const Dashboard = () => {
                                 className="table"
                                 style={{ overflowX: "auto" }}
                                 columns={columns}
-                                dataSource={data}
+                                dataSource={reviews.filter(
+                                  (job) => job.status === "فعال"
+                                )}
                                 rowKey={(record) => record.id}
                               />
                             </div>
-                          )}
-                        </div>
-                        <div
-                          role="tabpanel"
-                          id="tab-5"
-                          className="tab-pane fade"
-                        >
-                          <div className="table-responsive">
-                            <Table
-                              rowSelection={rowSelection}
-                              pagination={{
-                                total: data.length,
-                                showTotal: (total, range) =>
-                                  `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه ها`,
-                                showSizeChanger: true,
-                                onShowSizeChange: onShowSizeChange,
-                                itemRender: itemRender,
-                              }}
-                              className="table"
-                              style={{ overflowX: "auto" }}
-                              columns={columns}
-                              dataSource={reviews.filter(
-                                (job) => job.status === "فعال"
-                              )}
-                              rowKey={(record) => record.id}
-                            />
                           </div>
-                        </div>
-                        <div
-                          role="tabpanel"
-                          id="tab-6"
-                          className="tab-pane fade"
-                        >
-                          <div className="table-responsive">
-                            <Table
-                              rowSelection={rowSelection}
-                              pagination={{
-                                total: data.length,
-                                showTotal: (total, range) =>
-                                  `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه ها`,
-                                showSizeChanger: true,
-                                onShowSizeChange: onShowSizeChange,
-                                itemRender: itemRender,
-                              }}
-                              className="table"
-                              style={{ overflowX: "auto" }}
-                              columns={columns}
-                              dataSource={reviews.filter(
-                                (review) => review.status === "درانتظار تایید"
-                              )}
-                              rowKey={(record) => record.id}
-                            />
+                          <div
+                            role="tabpanel"
+                            id="tab-6"
+                            className="tab-pane fade"
+                          >
+                            <div className="table-responsive">
+                              <Table
+                                rowSelection={rowSelection}
+                                pagination={{
+                                  total: data.length,
+                                  showTotal: (total, range) =>
+                                    `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه ها`,
+                                  showSizeChanger: true,
+                                  onShowSizeChange: onShowSizeChange,
+                                  itemRender: itemRender,
+                                }}
+                                className="table"
+                                style={{ overflowX: "auto" }}
+                                columns={columns}
+                                dataSource={reviews.filter(
+                                  (review) => review.status === "درانتظار تایید"
+                                )}
+                                rowKey={(record) => record.id}
+                              />
+                            </div>
                           </div>
-                        </div>
-                        <div
-                          role="tabpanel"
-                          id="tab-7"
-                          className="tab-pane fade"
-                        >
-                          <div className="table-responsive">
-                            <Table
-                              rowSelection={rowSelection}
-                              pagination={{
-                                total: data.length,
-                                showTotal: (total, range) =>
-                                  `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه ها`,
-                                showSizeChanger: true,
-                                onShowSizeChange: onShowSizeChange,
-                                itemRender: itemRender,
-                              }}
-                              className="table"
-                              style={{ overflowX: "auto" }}
-                              columns={columns}
-                              dataSource={reviews.filter(
-                                (job) => job.status === "حذف شده"
-                              )}
-                              rowKey={(record) => record.id}
-                            />
+                          <div
+                            role="tabpanel"
+                            id="tab-7"
+                            className="tab-pane fade"
+                          >
+                            <div className="table-responsive">
+                              <Table
+                                rowSelection={rowSelection}
+                                pagination={{
+                                  total: data.length,
+                                  showTotal: (total, range) =>
+                                    `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه ها`,
+                                  showSizeChanger: true,
+                                  onShowSizeChange: onShowSizeChange,
+                                  itemRender: itemRender,
+                                }}
+                                className="table"
+                                style={{ overflowX: "auto" }}
+                                columns={columns}
+                                dataSource={reviews.filter(
+                                  (job) => job.status === "حذف شده"
+                                )}
+                                rowKey={(record) => record.id}
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -497,9 +504,11 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
+              {/* /Page Wrapper */}
             </div>
-            {/* /Page Wrapper */}
-          </div>
+          ) : (
+            <p>not allowed</p>
+          )}
           <Sidebar />
         </div>
       </>

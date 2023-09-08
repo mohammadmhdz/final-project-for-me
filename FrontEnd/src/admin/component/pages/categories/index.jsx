@@ -14,6 +14,7 @@ import {
   postCategory,
   deletecategory,
 } from "../../../../actions/adminAction";
+import { set } from "lodash";
 
 const Categories = (props) => {
   const dispatch = useDispatch();
@@ -66,6 +67,7 @@ const Categories = (props) => {
     );
     const closeButton = document.querySelector("#edit-category .close");
     closeButton.click();
+    setEditedCategoryName("");
   };
 
   const handledeleteSubmit = (e) => {
@@ -264,6 +266,7 @@ const Categories = (props) => {
                           type="text"
                           className="form-control"
                           defaultValue={editedCategoryName}
+                          value={editedCategoryName}
                           onChange={(e) =>
                             setEditedCategoryName(e.target.value)
                           }

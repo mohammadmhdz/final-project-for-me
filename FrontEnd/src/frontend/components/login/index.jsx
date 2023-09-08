@@ -58,18 +58,18 @@ const Login = (props) => {
                         رمز یا نام کاربری شما نادرست میباشد
                       </p1>
                     ) : userLogin.userInfo?.isAdmin ? (
-                      changeURL("/template-reactjs/admin/index")
+                      changeURL("/admin/index")
                     ) : userLogin.userInfo?.role === "employee" ? (
-                      changeURL("/template-reactjs/freelancer-dashboard")
+                      changeURL("/freelancer-dashboard")
                     ) : userLogin.userInfo?.role === "employer" ? (
-                      changeURL("/template-reactjs/dashboard")
+                      changeURL("/dashboard")
                     ) : null}
                     {/* // {userLogin.error?<p1>your email or password is wrong</p1> : null} */}
-                    {/* {userLogin.userInfo ?() => changeURL("/template-reactjs/dashboard"): null} */}
+                    {/* {userLogin.userInfo ?() => changeURL("/dashboard"): null} */}
 
                     <form
                       onSubmit={submithandler}
-                      action="/template-reactjs/dashboard"
+                      action="/dashboard"
                     >
                       <div className="form-group form-focus">
                         <label className=" mb-2 ">ایمیل</label>

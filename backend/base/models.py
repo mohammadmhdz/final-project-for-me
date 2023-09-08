@@ -74,37 +74,7 @@ reviewStatus = (
 )
 
 
-# cityy = (
-#     ('اراک','اراک'),
-#     ('اصفهان','اصفهان'),
-#     ('ایلام','ایلام'),
-#     ('بجنورد','بجنورد'),
-#     ('بندرعباس','بندرعباس'),
-#     ('بوشهر','بوشهر'),
-#     ('تبریز','تبریز'),
-#     ('تهران','تهران'),
-#     ('خرم‌آباد','خرم‌آباد'),
-#     ('رشت','رشت'),
-#     ('ساری','ساری'),
-#     ('سمنان','سمنان'),
-#     ('سنندج','سنندج'),
-#     ('شهرکرد','شهرکرد'),
-#     ('شیراز','شیراز'),
-#     ('قزوین','قزوین'),
-#     ('قم','قم'),
-#     ('کرج','کرج'),
-#     ('کرمان','کرمان'),
-#     ('کرمانشاه','کرمانشاه'),
-#     ('گرگان','گرگان'),
-#     ('مشهد','مشهد'),
-#     ('همدان','همدان'),
-#     ('یاسوج','یاسوج'),
-#     ('زاهدان','زاهدان'),
-#     ('زنجان','زنجان'),
-#     ('اردبیل','اردبیل'),
-#     ('ارومیه','ارومیه'),
-#     ('اهواز','اهواز'),
-# )
+
 
 
 Population = (
@@ -150,7 +120,7 @@ Salary_Type = (
 
 
 
-class state(models.Model):
+class State(models.Model):
     name = models.CharField(max_length=50, unique=True , null=True)
 
     def __str__(self):
@@ -160,7 +130,7 @@ class state(models.Model):
 
 class City(models.Model):
     name = models.CharField(max_length=50, null=True)
-    country = models.ForeignKey(state , on_delete=models.SET_NULL,null=True)
+    country = models.ForeignKey(State , on_delete=models.SET_NULL,null=True)
 
     def __str__(self):
         return self.name   
@@ -200,7 +170,7 @@ class Company(models.Model):
  
 
 class Verification(models.Model):
-     Company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
+     Company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
      registrationـnumber =models.CharField(max_length=15)
     #  registration_file = models.ImageField(null=True, blank=True)
      status = models.BooleanField(default=False)
@@ -212,7 +182,7 @@ class Verification(models.Model):
 
 
 class Payment(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     payment_gateway = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20)
@@ -225,7 +195,7 @@ class Payment(models.Model):
 
 class Review(models.Model):
     employee = models.ForeignKey('Employee', on_delete=models.CASCADE, null=True)
-    Company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
+    Company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     content = models.TextField(max_length=1000)
     date =models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=15 , choices=reviewStatus, default="در انتظار بررسی")
@@ -271,7 +241,7 @@ class Job(models.Model):
     salary_amount       = models.CharField(max_length=100 , null=True, blank=True) 
     description  = models.TextField(max_length=5000)               
     skills = models.ManyToManyField(Skills)
-    category     = models.ForeignKey('Category',on_delete=models.CASCADE, default=1)
+    category     = models.ForeignKey('Category',on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(max_length=15 , choices=JobStatus)
     # maplocation
 
@@ -327,7 +297,7 @@ class Employee(models.Model):
     
 
     def __str__(self):
-        return self.user.username
+        return f'{self.user.username} = {self.id}'
     
 
 def validate_user_type(sender, instance, **kwargs):
@@ -377,7 +347,7 @@ class Language(models.Model):
     
 
 class Gallery(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=100)
 
     def __str__(self):
@@ -400,7 +370,7 @@ class Portfolio(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=100)
     image = models.ImageField(null=True, blank=True)
-    image_data = models.TextField(null=True, blank=True)
+    # image_data = models.TextField(null=True, blank=True)
     description  = models.TextField(max_length=1000, null=True , blank=True)
 
 
@@ -452,7 +422,7 @@ class Request(models.Model):
 
     @property
     def employee_user(self):
-        return f'{self.employee.user.first_name}{self.employee.user.last_name}' if self.employee else None 
+        return f'{self.employee.user.first_name}   {self.employee.user.last_name}' if self.employee else None 
 
     def __str__(self):
-        return f'{self.employee.user.first_name}{self.employee.user.last_name} is requested to {self.job.title} and the status is {self.status}'
+        return f'{self.employee.user.first_name}+" "+{self.employee.user.last_name} is requested to {self.job.title} and the status is {self.status}'

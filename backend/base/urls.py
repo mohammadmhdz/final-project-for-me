@@ -34,6 +34,8 @@ router.register('portfolio' , Employeedeailsview.PortfolioViewSet , basename="po
 router.register('gallery' , Employeedeailsview.GalleryViewSet , basename="gallery")
 router.register('image' , Employeedeailsview.ImageViewSet , basename="image")
 router.register('users' , views.UserViewSet , basename="users")
+router.register('city' , views.CityViewSet , basename="city")
+router.register('state' , views.StateViewSet , basename="state")
 
 
 
