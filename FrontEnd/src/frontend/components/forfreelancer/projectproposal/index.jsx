@@ -165,8 +165,7 @@ const Freelancer = (props) => {
                                     <div className="proposer-img">
                                       <img
                                         src={
-                                          "http://127.0.0.1:8000" +
-                                          items.company?.image
+                                          `http://127.0.0.1:8000/${items.company?.image}`
                                         }
                                         alt=""
                                         className="img-fluid"
