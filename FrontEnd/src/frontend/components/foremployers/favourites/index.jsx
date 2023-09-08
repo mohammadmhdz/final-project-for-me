@@ -94,7 +94,10 @@ const Favourites = (props) => {
                                     <td>
                                       <h2 className="table-avatar">
                                         <Link
-                                          to="/freelancer-profile"
+                                          to={{
+                                            pathname: "/developer-profile",
+                                            state: { idInfo: item.id },
+                                          }}
                                           className="avatar avatar-md tab-imgcircle ms-2"
                                         >
                                           <img
@@ -103,7 +106,12 @@ const Favourites = (props) => {
                                             alt="User Image"
                                           />
                                         </Link>
-                                        <Link to="/developer-profile">
+                                        <Link
+                                          to={{
+                                            pathname: "/developer-profile",
+                                            state: { idInfo: item.id },
+                                          }}
+                                        >
                                           <span className="profile-name">
                                             {item.user?.first_name}{" "}
                                             {item.user?.last_name}

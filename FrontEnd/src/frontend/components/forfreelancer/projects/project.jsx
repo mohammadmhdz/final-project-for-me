@@ -195,11 +195,7 @@ const Projects = (props) => {
                       </div>
                     </div>
 
-                    <div className="btn-search">
-                      <button type="button" className="btn btn-block">
-                        اعمال
-                      </button>
-                    </div>
+                    <div className="btn-search"></div>
                   </div>
                 </div>
               </StickyBox>

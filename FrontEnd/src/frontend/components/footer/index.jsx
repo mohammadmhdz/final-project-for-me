@@ -51,7 +51,7 @@ const Footer = (props) => {
                       <a href="/about">درباره ما</a>
                     </li>
                     <li>
-                      <a href="/blog-list">بلاگ</a>
+                      <a href="#">بلاگ</a>
                     </li>
                     <li>
                       <a href="/login">ورود</a>

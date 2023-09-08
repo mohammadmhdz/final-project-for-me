@@ -173,7 +173,7 @@ const ProjectDetails = (props) => {
                             </span>
                           </li>
                           <li>
-                            <a href="#" className="btn full-btn">
+                            <a className="btn full-btn">
                               {jobsDetailsList.job_type}
                             </a>
                           </li>
@@ -395,12 +395,15 @@ const ProjectDetails = (props) => {
                       <i className="fa fa-star" />
                     </a>
                     <div className="author-heading">
-                      <div className="profile-img">
+                      <div
+                        className="profile-img"
+                        style={{ boxShadow: "none" }}
+                      >
                         <Link
                           to={{
                             pathname: "/company-profile",
                             state: {
-                              companyIdInput: jobsDetailsList.Company?.id,
+                              companyIdInput: jobsDetailsList.company?.id,
                             },
                           }}
                         >
@@ -430,33 +433,7 @@ const ProjectDetails = (props) => {
                           {jobsDetailsList.job_city?.name}
                         </div>
                       </div>
-                      {/* <button
-                      type="button"
-                      className="btn btn-lg btn-primary rounded-pill"
-                    >
-                      <i className="fab fa-whatsapp me-2" />
-                      Follow
-                    </button> */}
-                      {/* <div className="follow-details">
-                      <div className="row">
-                        <div className="col-6 py-4 text-center">
-                         
-                          <h6 className="text-uppercase text-muted">
-                            Following
-                          </h6>
-                         
-                          <h4 className="mb-0">49</h4>
-                        </div>
-                        <div className="col-6 py-4 text-center border-start">
-                         
-                          <h6 className="text-uppercase text-muted">
-                            Followers
-                          </h6>
-                          
-                          <h4 className="mb-0">422</h4>
-                        </div>
-                      </div>
-                    </div> */}
+
                       <div>
                         <div className="row align-items-center ">
                           <div className="col">

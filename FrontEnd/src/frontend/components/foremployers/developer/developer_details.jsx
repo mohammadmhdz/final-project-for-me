@@ -319,7 +319,7 @@ const DeveloperDetails = (props) => {
                   </div>
                   <div className="col-2 text-end">
                     <Link
-                      to="/freelancer-profile-settings"
+                      to="/developer-profile-settings"
                       className="sub-title"
                     >
                       <i className="fa fa-pencil-alt me-1" />
@@ -375,7 +375,7 @@ const DeveloperDetails = (props) => {
                   </div>
                   <div className="col-2 text-end">
                     <Link
-                      to="/freelancer-profile-settings"
+                      to="/developer-profile-settings"
                       className="sub-title"
                     >
                       <i className="fa fa-pencil-alt me-1" />

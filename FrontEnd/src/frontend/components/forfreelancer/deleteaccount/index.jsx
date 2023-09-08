@@ -27,10 +27,7 @@ const FreelancerDeleteAccount = (props) => {
               <nav className="user-tabs mb-4">
                 <ul className="nav nav-tabs nav-tabs-bottom nav-justified">
                   <li className="nav-item">
-                    <Link
-                      className="nav-link"
-                      to="/freelancer-profile-settings"
-                    >
+                    <Link className="nav-link" to="/developer-profile-settings">
                       تنظیمات حساب کاربری
                     </Link>
                   </li>

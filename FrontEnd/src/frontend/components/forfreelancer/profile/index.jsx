@@ -58,7 +58,7 @@ const FreelancerProfile = (props) => {
                     <div className="pro-info-right profile-inf">
                       <Link
                         className="btn profile-edit-btn"
-                        to="/freelancer-profile-settings"
+                        to="/developer-profile-settings"
                       >
                         Edit Profile
                       </Link>

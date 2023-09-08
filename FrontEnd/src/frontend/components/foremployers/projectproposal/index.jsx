@@ -27,7 +27,7 @@ const Projectproposal = (props) => {
   const allRequest = useSelector((state) => state.freelancerRequest);
   const { freelancerRequestsAll, loading } = allRequest;
   const postStatusChange = useSelector((state) => state.companyChangeStatus);
-  const { success } = postStatusChange;
+  const { success, changeStatusArray } = postStatusChange;
 
   const { job } = location.state;
 
@@ -50,11 +50,14 @@ const Projectproposal = (props) => {
 
   const handleChangeStatus = (e) => {
     console.log(e.target.value);
-    companyChangeRequestStatus({
-      id: e.target.value,
-      status: e.target.value,
-      status_change_date: moment(new Date().toISOString()).utc().format(),
-    });
+    dispatch(
+      companyChangeRequestStatus({
+        id: e.target.id,
+        status: e.target.value,
+        status_change_date: moment(new Date().toISOString()).utc().format(),
+      })
+    );
+
     // setStatusChange({
     //   ["id"]: e.target.id,
     //   ["status"]: e.target.value,

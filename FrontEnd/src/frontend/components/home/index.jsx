@@ -460,7 +460,7 @@ const Home = () => {
                 {/* Blog Post */}
                 <div className="blog grid-blog aos" data-aos="fade-up">
                   <div className="blog-image">
-                    <Link to="/blog-details">
+                    <Link to="#">
                       <img
                         className="img-fluid"
                         src={Blog_01}
@@ -478,7 +478,7 @@ const Home = () => {
                       </li>
                     </ul>
                     <h3 className="blog-title">
-                      <Link to="/blog-details">استخدام نیروی انتظامی </Link>
+                      <Link to="#">استخدام نیروی انتظامی </Link>
                     </h3>
                     <p className="blog-detail mb-0">
                       ضمن آرزوی موفقیت تیم «ای استخدام» برای کاربران شرکت کننده
@@ -493,7 +493,7 @@ const Home = () => {
                 {/* Blog Post */}
                 <div className="blog grid-blog aos" data-aos="fade-up">
                   <div className="blog-image">
-                    <Link to="/blog-details">
+                    <Link to="#">
                       <img
                         className="img-fluid"
                         src={Blog_02}
@@ -511,7 +511,7 @@ const Home = () => {
                       </li>
                     </ul>
                     <h3 className="blog-title">
-                      <Link to="/blog-details">آغاز استتخدام بانک سینا</Link>
+                      <Link to="#">آغاز استتخدام بانک سینا</Link>
                     </h3>
                     <p className=" blog-detail mb-0">
                       بانک سینا به منظور ارائه خدمات بهینه مالی و بانکی به
@@ -525,7 +525,7 @@ const Home = () => {
                 {/* Blog Post */}
                 <div className="blog grid-blog aos" data-aos="fade-up">
                   <div className="blog-image">
-                    <Link to="/blog-details">
+                    <Link to="#">
                       <img
                         className="img-fluid"
                         src={Blog_03}
@@ -543,7 +543,7 @@ const Home = () => {
                       </li>
                     </ul>
                     <h3 className="blog-title">
-                      <Link to="/blog-details">آغاز استتخدام بانک دی</Link>
+                      <Link to="#">آغاز استتخدام بانک دی</Link>
                     </h3>
                     <p className="blog-detail mb-0 ">
                       ...به گزارش روابط‌عمومی بانک دی؛ با توجه به نیاز این بانک

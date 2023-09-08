@@ -43,7 +43,12 @@ const Sidebar = (props) => {
           <div className="me-sm-3 me-md-0 me-lg-3 mt-2 mt-sm-0 mt-md-2 mt-lg-0 align-right">
             <p className="mb-2">خوش آمدید,</p>
             <h3 className="mb-0">
-              <Link to="/freelancer-profile">
+              <Link
+                to={{
+                  pathname: "/developer-profile",
+                  state: { idInfo: localItem?.associated_id },
+                }}
+              >
                 {localItem?.name} {localItem?.last_name}
               </Link>
             </h3>
@@ -96,7 +101,7 @@ const Sidebar = (props) => {
 
             <li className="nav-item">
               <Link
-                to="/freelancer-profile-settings"
+                to="/developer-profile-settings"
                 className={`nav-link ${
                   pathname === "freelancer-profile-settings" ? "active" : ""
                 }`}
