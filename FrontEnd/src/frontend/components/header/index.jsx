@@ -178,7 +178,7 @@ const Header = (props) => {
                         to={
                           localItem.role === "employer"
                             ? "/profile-settings"
-                            : "/freelancer-profile-settings"
+                            : "/developer-profile-settings"
                         }
                       >
                         {" "}

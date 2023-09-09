@@ -97,6 +97,7 @@ const CompanyProfile = (props) => {
                 <img
                   src={`http://127.0.0.1:8000${companyDetail.company_data?.image}`}
                   alt=""
+                  style={{ height: "120px" }}
                 />
               </div>
             </div>

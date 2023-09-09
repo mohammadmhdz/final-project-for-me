@@ -391,7 +391,7 @@ const AppContainer = function (props) {
               />
               <Route
                 exact
-                path="/freelancer-profile-settings"
+                path="/developer-profile-settings"
                 component={FreelancerSettings}
               />
               <Route
@@ -401,7 +401,7 @@ const AppContainer = function (props) {
               />
               <Route
                 exact
-                path="/freelancer-profile"
+                path="/developer-profile"
                 component={FreelancerProfile}
               />
               <Route
