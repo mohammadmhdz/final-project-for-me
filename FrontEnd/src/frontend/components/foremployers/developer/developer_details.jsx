@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 // Import Images
@@ -26,8 +26,24 @@ import {
   Icon_10,
   Icon_11,
 } from "../../imagepath";
+// redux
+import { useDispatch, useSelector } from "react-redux";
+// import { employeeDetails } from "../../../../actions/employeeActions"
 
 const DeveloperDetails = (props) => {
+  const dispatch = useDispatch();
+  // const employeeDetailsList = useSelector((state) => state.employeeDetails);
+  // const {employee} = employeeDetailsList;
+  useEffect(() => {
+    // dispatch(employeeDetails(2))
+    document.body.className = "dashboard-page";
+    return () => {
+      document.body.className = "";
+    };
+  }, [dispatch]);
+
+  // console.log(employee);
+  // console.log(employeeDetailsList);
   return (
     <>
       {/* Breadcrumb */}
@@ -56,12 +72,7 @@ const DeveloperDetails = (props) => {
                       </div>
                     </div>
                     <div className="pro-info-right profile-inf">
-                      <Link
-                        className="btn profile-edit-btn"
-                        to="/freelancer-profile-settings"
-                      >
-                        ویرایش پروفایل
-                      </Link>
+                      <Link className="" to="#"></Link>
                     </div>
                   </div>
                 </div>
@@ -308,7 +319,7 @@ const DeveloperDetails = (props) => {
                   </div>
                   <div className="col-2 text-end">
                     <Link
-                      to="/freelancer-profile-settings"
+                      to="/developer-profile-settings"
                       className="sub-title"
                     >
                       <i className="fa fa-pencil-alt me-1" />
@@ -364,7 +375,7 @@ const DeveloperDetails = (props) => {
                   </div>
                   <div className="col-2 text-end">
                     <Link
-                      to="/freelancer-profile-settings"
+                      to="/developer-profile-settings"
                       className="sub-title"
                     >
                       <i className="fa fa-pencil-alt me-1" />

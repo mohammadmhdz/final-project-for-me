@@ -137,7 +137,7 @@ function Reports() {
             </div>
             {/* /Project Chart */}
             {/* Project Download */}
-            <div className="project-download">
+            {/* <div className="project-download">
               <div className="title-group d-flex">
                 <h2>فرصت های شغلی</h2>
                 <div className="down-load">
@@ -201,10 +201,10 @@ function Reports() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             {/* /Project Download */}
             {/* Employer Project */}
-            <div className="card ">
+            {/* <div className="card ">
               <div className="table-responsive">
                 <table className="table table-center table-hover mb-0 employe-tables">
                   <thead>
@@ -283,7 +283,7 @@ function Reports() {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div> */}
             {/* /Employer Project */}
           </div>
           {/* /Page Wrapper */}

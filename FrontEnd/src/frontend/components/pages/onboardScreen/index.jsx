@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Logo_01 } from "../../imagepath";
+// we have four page for signIn
 import Account from "./account";
 import Completeing from "./completeing";
 import Other from "./other";

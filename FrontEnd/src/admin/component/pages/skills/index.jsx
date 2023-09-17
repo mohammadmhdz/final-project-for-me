@@ -1,88 +1,72 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Sidebar from "../../../commoncomponent/sidebar";
 import { Table } from "antd";
+import Loader from "../../../../Loader";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { itemRender, onShowSizeChange } from "../../../paginationfunction";
 import "../../../antdstyle.css";
+import {
+  skillListAction,
+  updateSkillDetails,
+  createSkill,
+  deleteSkill,
+} from "../../../../actions/adminAction";
 
 const Skills = () => {
-  const [date, setDate] = useState(new Date());
-  const [inputfilter, setInputfilter] = useState(false);
+  const dispatch = useDispatch();
+  const skillListAll = useSelector((state) => state.skillListAll);
+  const skillDetailsUpdate = useSelector((state) => state.skillUpdateDetail);
+  const { skillUpdateSuccessful, success } = skillDetailsUpdate;
+  const skillpost = useSelector((state) => state.skillpostlist);
+  const { success: successadd } = skillpost;
+  const skilldelete = useSelector((state) => state.skilldeletelist);
+  const { success: successdel } = skilldelete;
+  const { skills, loading } = skillListAll;
+  const [selectedSkill, setSelectedSkill] = useState(null);
+  const [editedSkillName, setEditedSkillName] = useState("");
+  const [editedSkillId, setEditedSkillId] = useState("");
+  const [addedSkillName, setAddedSkillName] = useState("");
+  const [deletedSkillId, setDeletedSkillId] = useState("");
 
-  const handleChange = (date) => {
-    setDate(date);
+  const addhandleSubmit = (e) => {
+    dispatch(createSkill({ title: addedSkillName }));
+    dispatch(skillListAction());
+    const closeButton = document.querySelector("#add-category .close");
+    closeButton.click();
   };
 
-  const togglefilter = (value) => {
-    setInputfilter(value);
+  const handleSubmit = (e) => {
+    dispatch(updateSkillDetails({ id: editedSkillId, title: editedSkillName }));
+    dispatch(skillListAction());
+    const closeButton = document.querySelector("#edit-category .close");
+    closeButton.click();
+    setAddedSkillName("");
   };
 
-  const data = [
-    {
-      id: 1,
-      Skill: ".Net Developemnt",
-      slug: "Design a web application",
-    },
-    {
-      id: 2,
-      Skill: "Android",
-      slug: "Develope a mobile application development",
-    },
-    {
-      id: 3,
-      Skill: "Angular Development",
-      slug: "Design a Website using angular",
-    },
-    {
-      id: 4,
-      Skill: "Graphics & Design",
-      slug: "Design a Website Mockup",
-    },
-    {
-      id: 5,
-      Skill: "Java",
-      slug: "Application development",
-    },
-    {
-      id: 6,
-      Skill: "Laravel",
-      slug: "Develop a web application development",
-    },
-    {
-      id: 7,
-      Skill: "React Developemnt",
-      slug: "Router Implementation",
-    },
-    {
-      id: 8,
-      Skill: "Vuejs Development",
-      slug: "Design a Webpage",
-    },
-    {
-      id: 9,
-      Skill: "Web Design",
-      slug: "Design a Banner",
-    },
-    {
-      id: 10,
-      Skill: "Web Developemnt",
-      slug: "Form Validation",
-    },
-  ];
+  const handleDeleteSubmit = (e) => {
+    dispatch(deleteSkill(deletedSkillId));
+    dispatch(skillListAction());
+    const cancelLink = document.querySelector("#cancelLink");
+    cancelLink.click();
+    setEditedSkillName("");
+  };
+
+  const data = skills;
   const columns = [
     {
-      title: "مهارت",
-      dataIndex: "Skill",
+      title: "شماره",
+      dataIndex: "id",
       render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.Skill.length - b.Skill.length,
+      sorter: (a, b) => a.id.length - b.id.length,
     },
     {
-      title: "حوزه",
-      dataIndex: "slug",
+      title: "مهارت",
+      dataIndex: "title",
       render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.slug.length - b.slug.length,
+      sorter: (a, b) => a.title.length - b.title.length,
     },
 
     {
@@ -96,6 +80,11 @@ const Skills = () => {
               className="btn btn-sm btn-secondary ms-2"
               data-bs-toggle="modal"
               data-bs-target="#edit-category"
+              onClick={() => {
+                setSelectedSkill(record);
+                setEditedSkillName(record.title);
+                setEditedSkillId(record.id);
+              }}
             >
               <i className="far fa-edit" />
             </Link>
@@ -104,6 +93,9 @@ const Skills = () => {
               className="btn btn-sm btn-danger"
               data-bs-toggle="modal"
               data-bs-target="#delete_category"
+              onClick={() => {
+                setDeletedSkillId(record.id);
+              }}
             >
               <i className="far fa-trash-alt" />
             </Link>
@@ -112,6 +104,10 @@ const Skills = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    dispatch(skillListAction());
+  }, [dispatch, success, successadd, successdel]);
 
   return (
     <>
@@ -137,91 +133,38 @@ const Skills = () => {
                     >
                       <i className="fas fa-plus" />
                     </Link>
-                    <Link className="btn filter-btn" to="#" id="filter_search">
-                      <i
-                        className="fas fa-filter"
-                        onClick={() => togglefilter(!inputfilter)}
-                      />
-                    </Link>
                   </div>
                 </div>
               </div>
               {/* /Page Header */}
               {/* Search Filter */}
-              <div
-                className="card filter-card"
-                id="filter_inputs"
-                style={{ display: inputfilter ? "block" : "none" }}
-              >
-                <div className="card-body pb-0">
-                  <form>
-                    <div className="row filter-row">
-                      <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                          <label>Skills</label>
-                          <input className="form-control" type="text" />
-                        </div>
-                      </div>
-                      <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                          <label>From Date</label>
-                          <div className="cal-icon">
-                            <DatePicker
-                              selected={date}
-                              onChange={handleChange}
-                              className="form-control datetimepicker"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                          <label>To Date</label>
-                          <div className="cal-icon">
-                            <DatePicker
-                              selected={date}
-                              onChange={handleChange}
-                              className="form-control datetimepicker"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                          <button
-                            className="btn btn-primary btn-block"
-                            type="submit"
-                          >
-                            Submit
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
+
               {/* /Search Filter */}
               <div className="row">
                 <div className="col-sm-12">
                   <div className="card">
                     <div className="card-body">
-                      <div className="table-responsive">
-                        <Table
-                          pagination={{
-                            total: data.length,
-                            showTotal: (total, range) =>
-                              `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                            showSizeChanger: true,
-                            onShowSizeChange: onShowSizeChange,
-                            itemRender: itemRender,
-                          }}
-                          className="table"
-                          style={{ overflowX: "auto" }}
-                          columns={columns}
-                          dataSource={data}
-                          rowKey={(record) => record.id}
-                        />
-                      </div>
+                      {loading ? (
+                        <Loader />
+                      ) : (
+                        <div className="table-responsive">
+                          <Table
+                            pagination={{
+                              total: data.length,
+                              showTotal: (total, range) =>
+                                `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه`,
+                              showSizeChanger: true,
+                              onShowSizeChange: onShowSizeChange,
+                              itemRender: itemRender,
+                            }}
+                            className="table"
+                            style={{ overflowX: "auto" }}
+                            columns={columns}
+                            dataSource={data}
+                            rowKey={(record) => record.id}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -253,23 +196,21 @@ const Skills = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder="2D طراحی"
+                          placeholder="نام مهارت را وارد کنید"
+                          onChange={(e) => setAddedSkillName(e.target.value)}
                         />
                       </div>
-                      <div className="form-group">
-                        <label>حوزه</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="2d طراحی"
-                        />
-                      </div>
+
                       <div className="mt-4">
                         <button
                           type="submit"
                           className="btn btn-primary btn-block"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            addhandleSubmit();
+                          }}
                         >
-                          Submit
+                          تایید
                         </button>
                       </div>
                     </form>
@@ -301,23 +242,22 @@ const Skills = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="Graphics & Design"
+                          defaultValue={editedSkillName}
+                          value={editedSkillName}
+                          onChange={(e) => setEditedSkillName(e.target.value)}
                         />
                       </div>
-                      <div className="form-group">
-                        <label>حوزه</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="Design a Website Mockup"
-                        />
-                      </div>
+
                       <div className="mt-4">
                         <button
                           type="submit"
                           className="btn btn-primary btn-block"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            handleSubmit();
+                          }}
                         >
-                          ثبت
+                          تایید
                         </button>
                       </div>
                     </form>
@@ -342,12 +282,20 @@ const Skills = () => {
                     <div className="modal-btn delete-action">
                       <div className="row">
                         <div className="col-6">
-                          <Link to="#" className="btn btn-primary continue-btn">
+                          <Link
+                            to="#"
+                            className="btn btn-primary continue-btn"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              handleDeleteSubmit();
+                            }}
+                          >
                             حذف
                           </Link>
                         </div>
                         <div className="col-6">
                           <Link
+                            id="cancelLink"
                             to="#"
                             data-bs-dismiss="modal"
                             className="btn btn-primary cancel-btn"

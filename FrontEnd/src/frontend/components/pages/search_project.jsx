@@ -165,11 +165,7 @@ class SearchProject extends Component {
                         </div>
                       </div>
 
-                      <div className="btn-search">
-                        <button type="button" className="btn btn-block">
-                          اعمال کردن
-                        </button>
-                      </div>
+                      <div className="btn-search"></div>
                     </div>
                   </div>
                   {/* /Search Filter */}

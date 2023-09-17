@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import Nouislider from "nouislider-react";
@@ -18,8 +18,21 @@ import {
   Avatar_11,
   Avatar_12,
 } from "../../imagepath";
-
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { employeeListAll } from "../../../../actions/employeeActions";
 const Developer = (props) => {
+  const dispatch = useDispatch();
+  const employeeAllList = useSelector((state) => state.employeeListAll);
+  const { employeeList } = employeeAllList;
+
+  useEffect(() => {
+    // we must take the id from where we reach here
+    dispatch(employeeListAll());
+  }, [dispatch]);
+
+  // console.log(employeeDetailsList)
+  console.log(employeeList);
   return (
     <>
       {/* Breadcrumb */}
@@ -230,74 +243,88 @@ const Developer = (props) => {
                 </span>
               </div>
               <div className="row">
-                <div className="col-md-6 col-lg-6 col-xl-4">
-                  <div className="freelance-widget">
-                    <div className="freelance-content">
-                      <a
-                        data-bs-toggle="modal"
-                        href="#rating"
-                        className="favourite"
-                      >
-                        <i className="fa fa-star" />
-                      </a>
-                      <div className="freelance-img">
-                        <a href="#">
-                          <img src={Avatar_1} alt="User Image" />
-                          <span className="verified">
-                            <i className="fa fa-check-circle" />
-                          </span>
+                {employeeList.map((item) => (
+                  <div className="col-md-6 col-lg-6 col-xl-4">
+                    <div className="freelance-widget">
+                      <div className="freelance-content">
+                        <a
+                          data-bs-toggle="modal"
+                          href="#rating"
+                          className="favourite"
+                        >
+                          <i className="fa fa-star" />
                         </a>
-                      </div>
-                      <div className="freelance-info">
-                        <h3>
-                          <a href="#">محمد مهدیزاده</a>
-                        </h3>
-                        <div className="freelance-specific">
-                          Front-end developer
+                        <div className="freelance-img">
+                          <a href="#">
+                            <img
+                              src={
+                                item.image !== null
+                                  ? `http://127.0.0.1:8000${item.image}`
+                                  : Avatar_2
+                              }
+                              alt="User Image"
+                            />
+                            <span className="verified">
+                              <i className="fa fa-check-circle" />
+                            </span>
+                          </a>
                         </div>
-                        <div className="freelance-location">
-                          <i className="fa fa-map-marker-alt ms-1" />
-                          قزوین
-                        </div>
-                        <div className="rating">
+                        <div className="freelance-info">
+                          <h3>
+                            <a href="#">
+                              {item.user?.first_name} {item.user?.last_name}
+                            </a>
+                          </h3>
+                          <div className="freelance-specific">
+                            {item.perfession_title}
+                          </div>
+                          <div className="freelance-location">
+                            <i className="fa fa-map-marker-alt ms-1" />
+                            {item.city?.name}
+                          </div>
+                          {/* <div className="rating">
                           <i className="fa fa-star filled" />
                           <i className="fa fa-star filled" />
                           <i className="fa fa-star filled" />
                           <i className="fa fa-star filled" />
                           <i className="fa fa-star" />
                           <span className="average-rating">4.7 </span>
+                        </div> */}
+                          <div className="freelance-tags">
+                            {item.skills?.slice(0, 3).map((skill) => (
+                              <a href="">
+                                <span className="badge badge-pill badge-design">
+                                  {skill.title}
+                                </span>
+                              </a>
+                            ))}
+                            {/* {item.job_skills?.slice(0, 3).map((item) => (
+                              <a href="">
+                                <span className="badge badge-pill badge-design">
+                                  {item.title}
+                                </span>
+                              </a>
+                            ))} */}
+                          </div>
+                          {/* <div className="freelancers-price">$25 Hourly</div> */}
                         </div>
-                        <div className="freelance-tags">
-                          <a href="">
-                            <span className="badge badge-pill badge-design">
-                              Reactjs
-                            </span>
-                          </a>
-                          <a href="">
-                            <span className="badge badge-pill badge-design">
-                              ReactNative
-                            </span>
-                          </a>
-                          <a href="">
-                            <span className="badge badge-pill badge-design">
-                              Node Js
-                            </span>
-                          </a>
-                        </div>
-                        {/* <div className="freelancers-price">$25 Hourly</div> */}
+                      </div>
+                      <div className="cart-hover">
+                        <Link
+                          to={{
+                            pathname: "/developer-profile",
+                            state: { idInfo: item.id },
+                          }}
+                          className="btn-cart"
+
+                          // tabIndex={-1}
+                        >
+                          مشاهده پروفایل
+                        </Link>
                       </div>
                     </div>
-                    <div className="cart-hover">
-                      <Link
-                        to="/developer-details"
-                        className="btn-cart"
-                        tabIndex={-1}
-                      >
-                        مشاهده پروفایل
-                      </Link>
-                    </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>

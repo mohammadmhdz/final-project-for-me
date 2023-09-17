@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Scrollbars } from "react-custom-scrollbars";
 import FeatherIcon from "feather-icons-react";
+import { logout } from "../../actions/userActions";
+import { useDispatch } from "react-redux";
 
 const Sidebar = (props) => {
   let pathname = props.location.pathname;
+  const dispatch = useDispatch();
 
   const [isSideMenu, setSideMenu] = useState("");
   const [isSideMenuNew, setSideMenuNew] = useState("");
@@ -21,6 +24,10 @@ const Sidebar = (props) => {
   const toggleSidebarTwo = (value) => {
     console.log(value);
     setSideMenuTwo(value);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   return (
@@ -165,11 +172,11 @@ const Sidebar = (props) => {
                     <FeatherIcon icon="pie-chart" /> <span>گزارش ها</span>
                   </Link>
                 </li>
-                <li className={pathname === "/admin/roles" ? "active" : ""}>
+                {/* <li className={pathname === "/admin/roles" ? "active" : ""}>
                   <Link to="/admin/roles">
                     <FeatherIcon icon="clipboard" /> <span>دسترسی ها</span>
                   </Link>
-                </li>
+                </li> */}
                 <li className={pathname === "/admin/skills" ? "active" : ""}>
                   <Link to="/admin/skills">
                     <FeatherIcon icon="award" /> <span>مهارت ها</span>
@@ -184,11 +191,16 @@ const Sidebar = (props) => {
                     <FeatherIcon icon="user-check" /> <span>احراز هویت</span>
                   </Link>
                 </li>
-                <li className={pathname === "/admin/settings" ? "active" : ""}>
+                <li className={pathname === "/"}>
+                  <Link to="/" onClick={handleLogout}>
+                    <FeatherIcon icon="log-out" /> <span>خروج</span>
+                  </Link>
+                </li>
+                {/* <li className={pathname === "/admin/settings" ? "active" : ""}>
                   <Link to="/admin/settings">
                     <FeatherIcon icon="settings" /> <span>تنظیمات</span>
                   </Link>
-                </li>
+                </li> */}
                 {/* <li className="menu-title">
                   <span>UI Interface</span>
                 </li> */}

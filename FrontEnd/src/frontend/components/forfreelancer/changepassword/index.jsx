@@ -14,36 +14,12 @@ const FreelancerChangePassword = (props) => {
   return (
     <>
       {/* Breadcrumb */}
-      <div className="bread-crumb-bar">
-        <div className="container">
-          <div className="row align-items-center inner-banner">
-            <div className="col-md-12 col-12 text-center">
-              <div className="breadcrumb-list">
-                <nav aria-label="breadcrumb" className="page-breadcrumb">
-                  <ol className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <Link to="#">
-                        <img src={home_icon} alt="Post Author" /> Home
-                      </Link>
-                    </li>
-                    <li className="breadcrumb-item" aria-current="page">
-                      FREELANCER
-                    </li>
-                    <li className="breadcrumb-item" aria-current="page">
-                      Settings
-                    </li>
-                  </ol>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
       {/* /Breadcrumb */}
       {/* Page Content */}
       <div className="content content-page">
         <div className="container-fluid">
-          <div className="row">
+          <div className="row align-right">
             <div className="col-xl-3 col-md-4 theiaStickySidebar">
               <StickyBox offsetTop={20} offsetBottom={20}>
                 <Sidebar />
@@ -53,11 +29,8 @@ const FreelancerChangePassword = (props) => {
               <nav className="user-tabs mb-4">
                 <ul className="nav nav-tabs nav-tabs-bottom nav-justified">
                   <li className="nav-item">
-                    <Link
-                      className="nav-link"
-                      to="/freelancer-profile-settings"
-                    >
-                      Profile Settings
+                    <Link className="nav-link" to="/developer-profile-settings">
+                      تنظیمات حساب کاربری
                     </Link>
                   </li>
                   <li className="nav-item">
@@ -65,12 +38,12 @@ const FreelancerChangePassword = (props) => {
                       className="nav-link active"
                       to="/freelancer-change-password"
                     >
-                      Change Password
+                      تغییر رمز عبور
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link" to="/freelancer-delete-account">
-                      Delete Account
+                      حذف حساب کاربری
                     </Link>
                   </li>
                 </ul>
@@ -80,7 +53,7 @@ const FreelancerChangePassword = (props) => {
                 <div className="pro-card">
                   <div className="pro-head">
                     <h3 className="pro-title without-border mb-0">
-                      Change Password
+                      تغییر رمز عبور
                     </h3>
                   </div>
                   <div className="pro-body">
@@ -88,15 +61,15 @@ const FreelancerChangePassword = (props) => {
                       <div className="col-md-8">
                         <form>
                           <div className="form-group">
-                            <label>Old Password</label>
+                            <label>رمز عبور قبلی</label>
                             <input type="password" className="form-control" />
                           </div>
                           <div className="form-group">
-                            <label>New Password</label>
+                            <label>رمز عبور جدید</label>
                             <input type="password" className="form-control" />
                           </div>
                           <div className="form-group">
-                            <label>Confirm Password</label>
+                            <label>تایید رمز عبور</label>
                             <input type="password" className="form-control" />
                           </div>
                           <div className="row">
@@ -105,7 +78,7 @@ const FreelancerChangePassword = (props) => {
                                 className="btn btn-primary click-btn btn-plan"
                                 type="submit"
                               >
-                                Update
+                                تایید
                               </button>
                             </div>
                           </div>

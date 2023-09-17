@@ -5,6 +5,8 @@ import { Img_04 } from "../../imagepath";
 import { logout } from "../../../../actions/userActions";
 import { useDispatch } from "react-redux";
 const Sidebar = (props) => {
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
   // redux
   const dispatch = useDispatch();
 
@@ -19,19 +21,28 @@ const Sidebar = (props) => {
     <>
       <div className="settings-widget">
         <div className="settings-header d-sm-flex flex-row flex-wrap text-center text-sm-start align-items-center">
-          <Link to="/user-account-details">
+          <Link
+            to={{
+              pathname: "/company-profile",
+              state: {
+                companyIdInput: localItem.associated_id,
+              },
+            }}
+          >
             <img
               alt="profile image"
-              src={Img_04}
+              src={"http://127.0.0.1:8000" + localItem?.image}
               className="avatar-lg rounded-circle"
             />
           </Link>
           <div className="me-sm-3 me-md-0 me-lg-3 mt-2 mt-sm-0 mt-md-2 mt-lg-0 align-right">
             <p className="mb-2">خوش آمدید,</p>
             <Link to="user-account-details">
-              <h3 className="mb-0"> سپیده زینال زادگان</h3>
+              <h3 className="mb-0">
+                {localItem?.name} {localItem?.last_name}
+              </h3>
             </Link>
-            <p className="mb-0">@sepidzn</p>
+            <p className="mb-0">{localItem.email}</p>
           </div>
         </div>
         <div className="settings-menu">

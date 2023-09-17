@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import DatePicker from "react-datepicker";
@@ -6,186 +7,130 @@ import "react-datepicker/dist/react-datepicker.css";
 import Sidebar from "../../../commoncomponent/sidebar";
 import { itemRender, onShowSizeChange } from "../../../paginationfunction";
 import "../../../antdstyle.css";
+import Loader from "../../../../Loader";
 import {
-  img_1,
-  img_2,
-  img_3,
-  img_4,
-  img_5,
-  img_6,
-  img_7,
-  img_8,
-  img_9,
-  img_10,
-} from "../../pages/imagepath";
+  listJobs,
+  updateJobDetails,
+  deletejob,
+} from "../../../../actions/jobActions";
 
 const Projects = () => {
-  const [date, setDate] = useState(new Date());
-  const [inputfilter, setInputfilter] = useState(false);
+  const dispatch = useDispatch();
+  const jobListAll = useSelector((state) => state.jobList);
+  const { jobs, loading } = jobListAll;
 
-  const handleChange = (date) => {
-    setDate(date);
-  };
-  const togglefilter = (value) => {
-    setInputfilter(value);
+  const jobDetailsUpdate = useSelector((state) => state.jobUpdateDetail);
+  const { success } = jobDetailsUpdate;
+  const jobdelete = useSelector((state) => state.jobdelete);
+  const { success: successdel } = jobdelete;
+
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [deletedJobid, setdeletedJobid] = useState("");
+  const [editedJobName, setEditedJobName] = useState("");
+  const [editedJobStatus, setEditedJobStatus] = useState("");
+  const [editedJobid, setEditedJobid] = useState("");
+
+  const [activeJobs, setactiveJobs] = useState("");
+
+  const handleSubmit = (e) => {
+    dispatch(
+      updateJobDetails({
+        id: editedJobid,
+        title: editedJobName,
+        status: editedJobStatus,
+      })
+    );
+    // dispatch(listJobs());
+    const closeButton = document.querySelector("#add-category .close");
+    closeButton.click();
   };
 
-  const data = [
-    {
-      id: 1,
-      title: " توسعه دهنده Front-end",
-      budget: "۱۷ میلیون",
-      technology: "ReactJs",
-      company: "نوین فرادید",
-      startdate: "۱۴۰۲-۰۲-۰۱",
-      duedate: "۱۴۰۲-۰۴-۰۱",
-      image: img_1,
-      style: { width: "100%" },
-    },
-    {
-      id: 2,
-      title: " توسعه دهنده Front-end",
-      budget: "۱۷ میلیون",
-      technology: "ReactJs",
-      company: "نوین فرادید",
-      startdate: "۱۴۰۲-۰۲-۰۱",
-      duedate: "۱۴۰۲-۰۴-۰۱",
-      image: img_1,
-      style: { width: "100%" },
-    },
-    {
-      id: 3,
-      title: " توسعه دهنده Front-end",
-      budget: "۱۷ میلیون",
-      technology: "ReactJs",
-      company: "نوین فرادید",
-      startdate: "۱۴۰۲-۰۲-۰۱",
-      duedate: "۱۴۰۲-۰۴-۰۱",
-      image: img_1,
-      style: { width: "100%" },
-    },
-    {
-      id: 4,
-      title: " توسعه دهنده Front-end",
-      budget: "۱۷ میلیون",
-      technology: "ReactJs",
-      company: "نوین فرادید",
-      startdate: "۱۴۰۲-۰۲-۰۱",
-      duedate: "۱۴۰۲-۰۴-۰۱",
-      image: img_1,
-      style: { width: "100%" },
-    },
-    {
-      id: 5,
-      title: " توسعه دهنده Front-end",
-      budget: "۱۷ میلیون",
-      technology: "ReactJs",
-      company: "نوین فرادید",
-      startdate: "۱۴۰۲-۰۲-۰۱",
-      duedate: "۱۴۰۲-۰۴-۰۱",
-      image: img_1,
-      style: { width: "100%" },
-    },
-    {
-      id: 6,
-      title: " توسعه دهنده Front-end",
-      budget: "۱۷ میلیون",
-      technology: "ReactJs",
-      company: "نوین فرادید",
-      startdate: "۱۴۰۲-۰۲-۰۱",
-      duedate: "۱۴۰۲-۰۴-۰۱",
-      image: img_1,
-      style: { width: "100%" },
-    },
-    {
-      id: 7,
-      title: " توسعه دهنده Front-end",
-      budget: "۱۷ میلیون",
-      technology: "ReactJs",
-      company: "نوین فرادید",
-      startdate: "۱۴۰۲-۰۲-۰۱",
-      duedate: "۱۴۰۲-۰۴-۰۱",
-      image: img_1,
-      style: { width: "100%" },
-    },
-    {
-      id: 8,
-      title: " توسعه دهنده Front-end",
-      budget: "۱۷ میلیون",
-      technology: "ReactJs",
-      company: "نوین فرادید",
-      startdate: "۱۴۰۲-۰۲-۰۱",
-      duedate: "۱۴۰۲-۰۴-۰۱",
-      image: img_1,
-      style: { width: "100%" },
-    },
-  ];
+  const handledeleteSubmit = (e) => {
+    dispatch(deletejob(deletedJobid));
+    // dispatch(listJobs());
+    const cancelLink = document.querySelector("#cancelLink");
+    cancelLink.click();
+  };
+
+  // const filteredJobs = jobs.filter((job) => job.status === "فعال");
+  // setactiveJobs(filteredJobs);
+
+  const data = jobs;
+
   const columns = [
     {
       title: "لوگو",
-      dataIndex: "image",
+      dataIndex: "company",
       render: (text, record) => (
         <>
-          <Link to="/admin/profile" className="avatar">
-            <img alt="" src={record.image} />
+          <Link
+            to={{
+              pathname: "/company-profile",
+              state: { companyIdInput: record.id },
+            }}
+            className="avatar"
+          >
+            <img alt="" src={"http://127.0.0.1:8000" + text.image} />
           </Link>
         </>
       ),
-      sorter: (a, b) => a.image.length - b.image.length,
+      // sorter: (a, b) => a.image.length - b.image.length,
     },
     {
       title: "عنوان",
       dataIndex: "title",
-      render: (text, record) => <>{text}</>,
+      render: (text, record) => (
+        <>
+          <Link
+            to={{
+              pathname: "/project-details",
+              state: { jobIdInput: text.id },
+            }}
+            style={{ color: "black" }}
+          >
+            {text}
+          </Link>
+        </>
+      ),
       sorter: (a, b) => a.title.length - b.title.length,
     },
     {
-      title: "حقوق",
-      dataIndex: "budget",
+      title: "وضعیت",
+      dataIndex: "status",
       render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.budget.length - b.budget.length,
+      sorter: (a, b) => a.status.length - b.status.length,
     },
-    // {
-    //   title: "Progress",
-    //   dataIndex: "progress",
-    //   render: (text, record) => (
-    //     <div className="progress rounded-pill">
-    //       <div
-    //         className="progress-bar bg-primary rounded-pill"
-    //         role="progressbar"
-    //         style={record.style}
-    //         aria-valuenow={25}
-    //         aria-valuemin={0}
-    //         aria-valuemax={100}
-    //       />
-    //     </div>
-    //   ),
-    //   // sorter: (a, b) => a.email.length - b.email.length,
-    // },
+    {
+      title: "حقوق",
+      dataIndex: "salary_type",
+      render: (text, record) => <>{text}</>,
+      sorter: (a, b) => a.salary_type.length - b.salary_type.length,
+    },
+
     {
       title: "دسته بندی",
-      dataIndex: "technology",
-      render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.technology.length - b.technology.length,
+      dataIndex: "job_category",
+      render: (text, record) => <>{text.title}</>,
+      sorter: (a, b) => a.job_category.length - b.job_category.length,
     },
 
     {
       title: "شرکت",
       dataIndex: "company",
-      render: (text, record) => <>{text}</>,
+      render: (text, record) => <>{text.Name}</>,
       sorter: (a, b) => a.company.length - b.company.length,
     },
     {
       title: "تاریخ انتشار",
-      dataIndex: "startdate",
-      render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.startdate.length - b.startdate.length,
+      dataIndex: "published_at",
+      render: (text, record) => <>{new Date(text).toLocaleDateString()}</>,
+      sorter: (a, b) => a.published_at.length - b.published_at.length,
     },
     {
       title: "تاریخ انتقضا",
-      dataIndex: "duedate",
-      render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.duedate.length - b.duedate.length,
+      dataIndex: "due_to",
+      render: (text, record) => <>{new Date(text).toLocaleDateString()}</>,
+      sorter: (a, b) => a.due_to.length - b.due_to.length,
     },
 
     {
@@ -198,6 +143,12 @@ const Projects = () => {
             className="btn btn-sm btn-secondary ms-2"
             data-bs-toggle="modal"
             data-bs-target="#add-category"
+            onClick={() => {
+              setSelectedJob(record);
+              setEditedJobStatus(record.status);
+              setEditedJobName(record.title);
+              setEditedJobid(record.id);
+            }}
           >
             <i className="far fa-edit"></i>
           </Link>
@@ -206,6 +157,9 @@ const Projects = () => {
             className="btn btn-sm btn-danger"
             data-bs-toggle="modal"
             data-bs-target="#delete_category"
+            onClick={() => {
+              setdeletedJobid(record.id);
+            }}
           >
             <i className="far fa-trash-alt"></i>
           </Link>
@@ -229,6 +183,10 @@ const Projects = () => {
     }),
   };
 
+  useEffect(() => {
+    dispatch(listJobs());
+  }, [dispatch, success, successdel]);
+
   return (
     <>
       <>
@@ -245,75 +203,10 @@ const Projects = () => {
                     <div className="col">
                       <h3 className="page-title">فرصت های شغلی</h3>
                     </div>
-                    <div className="col-auto">
-                      <Link
-                        className="btn filter-btn"
-                        to="#"
-                        id="filter_search"
-                      >
-                        <i
-                          className="fas fa-filter"
-                          onClick={() => togglefilter(!inputfilter)}
-                        />
-                      </Link>
-                    </div>
+                    <div className="col-auto"></div>
                   </div>
                 </div>
                 {/* /Page Header */}
-                {/* Search Filter */}
-                <div
-                  className="card filter-card"
-                  id="filter_inputs"
-                  style={{ display: inputfilter ? "block" : "none" }}
-                >
-                  <div className="card-body pb-0">
-                    <form action="#" method="post">
-                      <div className="row filter-row">
-                        <div className="col-sm-6 col-md-3">
-                          <div className="form-group">
-                            <label>نام شرکت</label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-sm-6 col-md-3">
-                          <div className="form-group">
-                            <label>From Date</label>
-                            <div className="cal-icon">
-                              <DatePicker
-                                selected={date}
-                                onChange={handleChange}
-                                className="form-control datetimepicker"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-sm-6 col-md-3">
-                          <div className="form-group">
-                            <label>To Date</label>
-                            <div className="cal-icon">
-                              <DatePicker
-                                selected={date}
-                                onChange={handleChange}
-                                className="form-control datetimepicker"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-sm-6 col-md-3">
-                          <div className="form-group">
-                            <button
-                              className="btn btn-primary btn-block"
-                              type="submit"
-                            >
-                              Submit
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                {/* /Search Filter */}
                 <div className="card bg-white projects-card">
                   <div className="card-body pt-0">
                     <div className="card-header"></div>
@@ -328,7 +221,7 @@ const Projects = () => {
                             data-bs-toggle="tab"
                             className="nav-link active"
                           >
-                            همه (272)
+                            همه
                           </Link>
                         </li>
                         <li className="nav-item">
@@ -337,7 +230,7 @@ const Projects = () => {
                             data-bs-toggle="tab"
                             className="nav-link"
                           >
-                            فعال (218)
+                            فعال
                           </Link>
                         </li>
                         <li className="nav-item">
@@ -347,7 +240,7 @@ const Projects = () => {
                             className="nav-link"
                           >
                             {" "}
-                            غیرفعال (03)
+                            در انتظار تایید
                           </Link>
                         </li>
                         <li className="nav-item">
@@ -356,7 +249,7 @@ const Projects = () => {
                             data-bs-toggle="tab"
                             className="nav-link"
                           >
-                            حذف شده (0)
+                            منقضی شده
                           </Link>
                         </li>
                       </ul>
@@ -367,25 +260,29 @@ const Projects = () => {
                         id="tab-4"
                         className="tab-pane fade active show"
                       >
-                        <div className="table-responsive">
-                          <Table
-                            rowSelection={rowSelection}
-                            pagination={{
-                              total: data.length,
-                              showTotal: (total, range) =>
-                                `نمایش ${range[0]} از ${range[1]}از ${total} کل نتیجه`,
-                              showSizeChanger: true,
-                              onShowSizeChange: onShowSizeChange,
-                              itemRender: itemRender,
-                            }}
-                            className="table"
-                            scroll={{ x: true }}
-                            style={{ overflowX: "auto" }}
-                            columns={columns}
-                            dataSource={data}
-                            rowKey={(record) => record.id}
-                          />
-                        </div>
+                        {loading ? (
+                          <Loader />
+                        ) : (
+                          <div className="table-responsive">
+                            <Table
+                              rowSelection={rowSelection}
+                              pagination={{
+                                total: data.length,
+                                showTotal: (total, range) =>
+                                  `نمایش ${range[0]} از ${range[1]}از ${total} کل نتیجه`,
+                                showSizeChanger: true,
+                                onShowSizeChange: onShowSizeChange,
+                                itemRender: itemRender,
+                              }}
+                              className="table"
+                              scroll={{ x: true }}
+                              style={{ overflowX: "auto" }}
+                              columns={columns}
+                              dataSource={data}
+                              rowKey={(record) => record.id}
+                            />
+                          </div>
+                        )}
                       </div>
                       <div role="tabpanel" id="tab-5" className="tab-pane fade">
                         <div className="table-responsive">
@@ -402,7 +299,9 @@ const Projects = () => {
                             className="table"
                             style={{ overflowX: "auto" }}
                             columns={columns}
-                            dataSource={data}
+                            dataSource={jobs.filter(
+                              (job) => job.status === "فعال"
+                            )}
                             rowKey={(record) => record.id}
                           />
                         </div>
@@ -422,7 +321,9 @@ const Projects = () => {
                             className="table"
                             style={{ overflowX: "auto" }}
                             columns={columns}
-                            dataSource={data}
+                            dataSource={jobs.filter(
+                              (job) => job.status === "درانتظار تایید"
+                            )}
                             rowKey={(record) => record.id}
                           />
                         </div>
@@ -442,6 +343,9 @@ const Projects = () => {
                             className="table"
                             style={{ overflowX: "auto" }}
                             columns={columns}
+                            dataSource={jobs.filter(
+                              (job) => job.status === "منقضی شده"
+                            )}
                             rowKey={(record) => record.id}
                           />
                         </div>
@@ -459,7 +363,7 @@ const Projects = () => {
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h4 className="modal-title">فرصت های شغلی</h4>
+                    <h4 className="modal-title"> ویرایش </h4>
                     <button
                       type="button"
                       className="close"
@@ -475,59 +379,36 @@ const Projects = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="توسعه دهنده Front-end "
+                          defaultValue={editedJobName}
+                          onChange={(e) => setEditedJobName(e.target.value)}
                         />
                       </div>
+
                       <div className="form-group">
-                        <label>حقوق</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="۱۷ میلیون"
-                        />
+                        <label>وضعیت</label>
+                        <select
+                          name="price"
+                          className="form-control select-level"
+                          value={editedJobStatus}
+                          onChange={(e) => setEditedJobStatus(e.target.value)}
+                        >
+                          <option value="فعال">فعال</option>
+                          <option value="منقضی شده">منقضی شده</option>
+                          <option value="درانتظار تایید">درانتظار تایید</option>
+                          <option value="تکمیل شده">تکمیل شده</option>
+                        </select>
                       </div>
-                      <div className="form-group">
-                        <label>دسته بندی</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="ReactJs"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>شرکت</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="نوین فرادید"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>تاریخ انتشار</label>
-                        <div className="cal-icon">
-                          <DatePicker
-                            selected={date}
-                            onChange={handleChange}
-                            className="form-control datetimepicker"
-                          />
-                        </div>
-                      </div>
-                      <div className="form-group">
-                        <label>تاریخ اتقضا</label>
-                        <div className="cal-icon">
-                          <DatePicker
-                            selected={date}
-                            onChange={handleChange}
-                            className="form-control datetimepicker"
-                          />
-                        </div>
-                      </div>
+
                       <div className="mt-4">
                         <button
                           type="submit"
                           className="btn btn-primary btn-block"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            handleSubmit();
+                          }}
                         >
-                          Submit
+                          تایید
                         </button>
                       </div>
                     </form>
@@ -552,17 +433,25 @@ const Projects = () => {
                     <div className="modal-btn delete-action">
                       <div className="row">
                         <div className="col-6">
-                          <Link to="#" className="btn btn-primary continue-btn">
+                          <Link
+                            to="#"
+                            className="btn btn-primary continue-btn"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              handledeleteSubmit();
+                            }}
+                          >
                             حذف
                           </Link>
                         </div>
                         <div className="col-6">
                           <Link
+                            id="cancelLink"
                             to="#"
                             data-bs-dismiss="modal"
                             className="btn btn-primary cancel-btn"
                           >
-                            لفو
+                            لغو
                           </Link>
                         </div>
                       </div>

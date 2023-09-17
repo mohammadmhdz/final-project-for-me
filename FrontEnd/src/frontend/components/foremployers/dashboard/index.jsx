@@ -11,6 +11,15 @@ import {
   Img_05,
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
+import moment from "jalali-moment";
+import Loader from "../../../../Loader";
+
+// redux
+import {
+  companyDetails,
+  companyJobsListAction,
+} from "../../../../actions/companyActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const Dashboard = (props) => {
   var chartprofileoptions = {
@@ -83,8 +92,34 @@ const Dashboard = (props) => {
     },
   };
 
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
+  // redux
+  const dispatch = useDispatch();
+  const companyDetailsList = useSelector((state) => state.companyDetails);
+  const companyJobsAllList = useSelector((state) => state.companyJobsList);
+  const { companyJobsListArray, loading } = companyJobsAllList;
+  const { companyDetail, success } = companyDetailsList;
+
+  const daysBetween = (input) => {
+    const now = new Date().getDate();
+    const date = new Date(input).getDate();
+    return now - date;
+  };
+
   var chartradialOptions = {
-    series: [85, 75, 60, 40],
+    // series: [
+    //   companyDetail?.completed_jobs_count,
+    //   companyDetail?.completed_jobs_count,
+    //   companyDetail?.completed_jobs_count,
+    //   companyDetail?.completed_jobs_count,
+    // ],
+    series: [
+      100,
+      (100 / companyDetail?.all_jobs_count) * companyDetail?.active_jobs_count,
+      (100 / companyDetail?.all_jobs_count) *
+        companyDetail?.completed_jobs_count,
+    ],
     chart: {
       toolbar: {
         show: false,
@@ -147,21 +182,32 @@ const Dashboard = (props) => {
     ],
   };
   useEffect(() => {
-    let chartprofileoptionsColumn = document.getElementById("chartprofile");
-    let chartprofileoptionsChart = new ApexCharts(
-      chartprofileoptionsColumn,
-      chartprofileoptions
-    );
-    chartprofileoptionsChart.render();
+    dispatch(companyDetails(localItem.associated_id));
+    dispatch(companyJobsListAction(localItem.associated_id));
+  }, [dispatch]);
 
-    let invoiceColumn = document.getElementById("chartradial");
-    let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
-    invoiceChart.render();
-    document.body.className = "dashboard-page";
-    return () => {
-      document.body.className = "";
-    };
-  });
+  useEffect(() => {
+    //
+    if (success) {
+      let chartprofileoptionsColumn = document.getElementById("chartprofile");
+      let chartprofileoptionsChart = new ApexCharts(
+        chartprofileoptionsColumn,
+        chartprofileoptions
+      );
+      chartprofileoptionsChart.render();
+
+      let invoiceColumn = document.getElementById("chartradial");
+      let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
+      invoiceChart.render();
+      document.body.className = "dashboard-page";
+      return () => {
+        document.body.className = "";
+      };
+    }
+  }, [success]);
+  console.log(companyDetail, "companyDetail");
+  console.log(companyJobsListArray, "companyJobsListArray");
+
   return (
     <>
       {/* Page Content */}
@@ -184,7 +230,9 @@ const Dashboard = (props) => {
                         <div className="dash-widget-info">
                           فرصت های شغلی منتشر شده
                         </div>
-                        <div className="dash-widget-count">30</div>
+                        <div className="dash-widget-count">
+                          {companyDetail.all_jobs_count}
+                        </div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
@@ -202,11 +250,13 @@ const Dashboard = (props) => {
                         <div className="dash-widget-info">
                           فرصت های شغلی فعال
                         </div>
-                        <div className="dash-widget-count">5</div>
+                        <div className="dash-widget-count">
+                          {companyDetail.active_jobs_count}
+                        </div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
-                          to="/ongoing-projects"
+                          to="/manage-projects"
                           className="d-flex justify-content-md-between"
                         >
                           مشاهده بیشتر <i className="fa fa-arrow-left " />
@@ -218,11 +268,13 @@ const Dashboard = (props) => {
                     <div className="dash-widget">
                       <div className="dash-info">
                         <div className="dash-widget-info">استخدام</div>
-                        <div className="dash-widget-count">25</div>
+                        <div className="dash-widget-count">
+                          {companyDetail.completed_jobs_count}
+                        </div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
-                          to="/completed-projects"
+                          to="/manage-projects"
                           className="d-flex justify-content-md-between"
                         >
                           مشاهده بیشتر <i className="fa fa-arrow-left " />
@@ -299,33 +351,39 @@ const Dashboard = (props) => {
                       <div className="card-body">
                         <div id="chartradial" />
                         <ul className="static-list">
-                          <li>
+                          {/* <li>
                             <span>
                               <i className="fa fa-circle text-violet me-1" />{" "}
                               درخواست های ارسال شده
                             </span>{" "}
-                            <span className="sta-count">30</span>
+                            <span className="sta-count">{companyDetail.completed_jobs_count}</span>
+                          </li> */}
+                          <li>
+                            <span>
+                              <i className="fa fa-circle text-blue me-1" />
+                              فرصت های شغلی منتشر شده
+                            </span>{" "}
+                            <span className="sta-count">
+                              {companyDetail.all_jobs_count}
+                            </span>
                           </li>
                           <li>
                             <span>
                               <i className="fa fa-circle text-pink me-1" /> فرصت
                               های شغلی فعال
                             </span>{" "}
-                            <span className="sta-count">30</span>
+                            <span className="sta-count">
+                              {companyDetail.active_jobs_count}
+                            </span>
                           </li>
                           <li>
                             <span>
                               <i className="fa fa-circle text-yellow me-1" />{" "}
                               استخدام
                             </span>{" "}
-                            <span className="sta-count">30</span>
-                          </li>
-                          <li>
-                            <span>
-                              <i className="fa fa-circle text-blue me-1" /> فرصت
-                              های شغلی ذخیره شده
-                            </span>{" "}
-                            <span className="sta-count">30</span>
+                            <span className="sta-count">
+                              {companyDetail.completed_jobs_count}
+                            </span>
                           </li>
                         </ul>
                       </div>
@@ -341,7 +399,7 @@ const Dashboard = (props) => {
                         <div className="row">
                           <div className="col">
                             <h4 className="card-title">
-                              فرصت های شغلی اخبرا اضافه شده
+                              فرصت های شغلی اخیرا اضافه شده
                             </h4>
                           </div>
                           <div className="col-auto">
@@ -354,232 +412,76 @@ const Dashboard = (props) => {
                           </div>
                         </div>
                       </div>
-                      <div className="card-body">
-                        <div className="table-responsive table-job">
-                          <table className="table table-hover table-center mb-0">
-                            <thead className="thead-pink">
-                              <tr>
-                                <th>جزییات</th>
-                                <th>نوع همکاری</th>
-                                <th>حقوق</th>
-                                <th>ایجاد شده در</th>
-                                <th>تعداد درخواست ها</th>
-                                <th className="text-end"></th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <span className="detail-text">
-                                    برنامه نویس Python-Django
-                                  </span>
-                                  <span className="d-block text-expiry">
-                                    تاریخ انقضا : ۲۲ مرداد
-                                  </span>
-                                </td>
-                                <td>تمام وقت</td>
-                                <td>
-                                  <span className="table-budget">حقوق</span>{" "}
-                                  <span className="d-block text-danger">
-                                    ۱۵ تومان
-                                  </span>
-                                </td>
-                                <td>۱۲ تیر ۱۴۰۲</td>
-                                <td>47</td>
-                                <td className="text-end">
-                                  <Link
-                                    to="/view-project-detail"
-                                    className="text-success"
-                                  >
-                                    مشاهده
-                                  </Link>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <span className="detail-text">
-                                    برنامه نویس Python-Django
-                                  </span>
-                                  <span className="d-block text-expiry">
-                                    تاریخ انقضا : ۲۲ مرداد
-                                  </span>
-                                </td>
-                                <td>تمام وقت</td>
-                                <td>
-                                  <span className="table-budget">حقوق</span>{" "}
-                                  <span className="d-block text-danger">
-                                    ۱۵ تومان
-                                  </span>
-                                </td>
-                                <td>۱۲ تیر ۱۴۰۲</td>
-                                <td>47</td>
-                                <td className="text-end">
-                                  <Link
-                                    to="/view-project-detail"
-                                    className="text-success"
-                                  >
-                                    مشاهده
-                                  </Link>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <span className="detail-text">
-                                    برنامه نویس Python-Django
-                                  </span>
-                                  <span className="d-block text-expiry">
-                                    تاریخ انقضا : ۲۲ مرداد
-                                  </span>
-                                </td>
-                                <td>تمام وقت</td>
-                                <td>
-                                  <span className="table-budget">حقوق</span>{" "}
-                                  <span className="d-block text-danger">
-                                    ۱۵ تومان
-                                  </span>
-                                </td>
-                                <td>۱۲ تیر ۱۴۰۲</td>
-                                <td>47</td>
-                                <td className="text-end">
-                                  <Link
-                                    to="/view-project-detail"
-                                    className="text-success"
-                                  >
-                                    مشاهده
-                                  </Link>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <span className="detail-text">
-                                    برنامه نویس Python-Django
-                                  </span>
-                                  <span className="d-block text-expiry">
-                                    تاریخ انقضا : ۲۲ مرداد
-                                  </span>
-                                </td>
-                                <td>تمام وقت</td>
-                                <td>
-                                  <span className="table-budget">حقوق</span>{" "}
-                                  <span className="d-block text-danger">
-                                    ۱۵ تومان
-                                  </span>
-                                </td>
-                                <td>۱۲ تیر ۱۴۰۲</td>
-                                <td>47</td>
-                                <td className="text-end">
-                                  <Link
-                                    to="/view-project-detail"
-                                    className="text-success"
-                                  >
-                                    مشاهده
-                                  </Link>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                      {loading ? (
+                        <Loader />
+                      ) : (
+                        <div className="card-body">
+                          <div className="table-responsive table-job">
+                            <table className="table table-hover table-center mb-0">
+                              <thead className="thead-pink">
+                                <tr>
+                                  <th>جزییات</th>
+                                  <th>نوع همکاری</th>
+                                  <th>حقوق</th>
+                                  <th>ایجاد شده در</th>
+                                  <th>تعداد درخواست ها</th>
+                                  <th className="text-end"></th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                {companyJobsListArray.map((item) => (
+                                  <tr>
+                                    <td>
+                                      <span className="detail-text">
+                                        {item.title}
+                                      </span>
+                                      <span className="d-block text-expiry">
+                                        تاریخ انقضا :{" "}
+                                        {daysBetween(item.published_at)}
+                                      </span>
+                                    </td>
+                                    <td>{item.job_type}</td>
+                                    <td>
+                                      <span className="table-budget">حقوق</span>{" "}
+                                      <span className="d-block text-danger">
+                                        {item.salary_type === "توافقی"
+                                          ? item.salary_type
+                                          : `${item.salary_amount} میلیون `}
+                                      </span>
+                                    </td>
+                                    <td>
+                                      {moment(item.published_at, "YYYY/MM/DD")
+                                        .locale("fa")
+                                        .format("YYYY/MM/DD")}
+                                    </td>
+                                    <td>{item.num_requests}</td>
+                                    <td className="text-end">
+                                      <Link
+                                        className="text-success"
+                                        to={{
+                                          pathname: "/project-proposals",
+                                          state: { job: item },
+                                        }}
+                                      >
+                                        مشاهده
+                                      </Link>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
-                </div>
-                {/* /Past Earnings */}
-                <div className="row">
-                  {/* Plan  Details*/}
-                  {/* <div className="col-xl-6 d-flex">
-                    <div className="card flex-fill">
-                      <div className="card-header">
-                        <div className="row justify-content-between align-items-center">
-                          <div className="col">
-                            <h5 className="card-title">
-                              Membership Plan Details
-                            </h5>
-                          </div>
-                          <div className="col-auto">
-                            <a
-                              href=""
-                              className="btn-right btn btn-sm fund-btn"
-                            >
-                              View
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="card-body">
-                        <div className="row">
-                          <div className="col-md-6 col-sm-6">
-                            <div className="plan-details">
-                              <h4>The Ultima</h4>
-                              <div className="yr-amt">Anually Price</div>
-                              <h4>$1200</h4>
-                              <div className="yr-duration">
-                                Duration: One Year
-                              </div>
-                              <div className="expiry">Expiry: 24 JAN 2022</div>
-                              <Link
-                                to="/membership-plans"
-                                className="btn btn-primary btn-plan"
-                              >
-                                Change Plan
-                              </Link>
-                            </div>
-                          </div>
-                          <div className="col-md-6 col-sm-6">
-                            <div className="plan-feature">
-                              <ul>
-                                <li>12 Project Credits</li>
-                                <li>10 Allowed Services</li>
-                                <li>20 Days visibility</li>
-                                <li>5 Featured Services</li>
-                                <li>20 Days visibility</li>
-                                <li>30 Days Package Expiry</li>
-                                <li>Profile Featured</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
-                  {/* /Plan  Details */}
-                  {/* Notifications */}
-                  <div className="col-xl-6 d-flex">
-                    <div className="card flex-fill">
-                      <div className="card-header">
-                        <div className="row justify-content-between align-items-center align-right">
-                          <div className="col">
-                            <h5 className="card-title">اعلانات</h5>
-                          </div>
-                          <div className="col-auto">
-                            <Link
-                              to="/freelancer-ongoing-projects"
-                              className="btn-right btn btn-sm fund-btn"
-                            >
-                              مشاهده همه
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="pro-body p-0">
-                        <div className="news-feature">
-                          <img
-                            className="avatar-sm rounded-circle"
-                            src={Img_02}
-                            alt="User Image"
-                          />
-                          <p>متن اعلان که این یک اعلان است</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* /Notifications */}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {/* /Page Content */}
     </>
   );
 };

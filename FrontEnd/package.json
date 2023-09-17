@@ -54,11 +54,12 @@
     "i18next": "^19.8.9",
     "i18next-browser-languagedetector": "^6.0.1",
     "i18next-xhr-backend": "^3.2.2",
+    "jalali-moment": "^3.3.11",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
     "material-ui-dropzone": "^3.4.0",
     "mini-css-extract-plugin": "^0.11.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.33",
     "nouislider-react": "^3.4.0",
     "opentok-react": "^0.11.0",
@@ -130,7 +131,8 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "xml-loader": "^1.2.1",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "zaman": "^2.0.7"
   },
   "scripts": {
     "start": "webpack-dev-server --mode development --inline --progress",

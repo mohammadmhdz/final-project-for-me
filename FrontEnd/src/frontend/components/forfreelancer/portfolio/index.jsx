@@ -1,234 +1,190 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
-import { Sidebar } from '../sidebar';
-import { home_icon, Project_1, Project_2, Project_3, Project_4, Project_5, Project_6 } from "../../imagepath";
+import { Sidebar } from "../sidebar";
+import { Image } from "react-bootstrap";
+import {
+  home_icon,
+  Project_1,
+  Project_2,
+  Project_3,
+  Project_4,
+  Project_5,
+  Project_6,
+} from "../../imagepath";
+import Loader from "../../../../Loader";
+
+import {
+  employeePortfolioDetails,
+  addPortofolioEmployee,
+} from "../../../../actions/employeeActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const FreelancerPortfolio = (props) => {
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
+  const dispatch = useDispatch();
+  const portfolio = useSelector((state) => state.employeePortfolio);
+  const addPortfolio = useSelector((state) => state.addPortfolioReducer);
+  const { success: addsuccess } = addPortfolio;
+  const { employeePortfolioArray, loading } = portfolio;
+
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState(null);
+
+  const [postImage, setPostImage] = useState();
+  const [selectedFile, setSelectedFile] = useState("");
+  const [base, setBase] = useState();
+  const selectFile = (event) => {};
+  const convertToBase64 = () => {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(selectedFile);
+
+    reader.onload = () => {
+      console.log("called: ", reader);
+      setBase(reader.result);
+    };
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("title", title);
+    if (image) {
+      formData.append("image", image);
+    }
+    formData.append("employee", localItem.associated_id);
+
+    dispatch(addPortofolioEmployee(formData));
+    // dispatch(
+    //   addPortofolioEmployee({
+    //     title: title,
+    //     image: image,
+    //     employee: localItem.associated_id,
+    //     description: "",
+    //   })
+    // );
+  };
+
+  // const convertToBase64 = (file) => {
+  //   return new Promise((resolve, reject) => {
+  //     const fileReader = new FileReader();
+  //     fileReader.readAsDataURL(file);
+  //     fileReader.onload = () => {
+  //       resolve(fileReader.result);
+  //     };
+  //     fileReader.onerror = (error) => {
+  //       reject(error);
+  //     };
+  //   });
+  // };
+
+  const handleFileUpload = async (e) => {
+    setSelectedFile(e.target.files[0]);
+    convertToBase64();
+    // const file = e.target.files[0];
+    // const base64 = await convertToBase64(file);
+    setPostImage({
+      title: "ارمان ارتباط ویرا",
+      description: "برنامه نویسی سایت کاریابی",
+      employee: localItem.associated_id,
+      image: base,
+    });
+  };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("here");
+  //   dispatch(addPortofolioEmployee(postImage));
+  // };
+
+  const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    setImage(selectedImage);
+  };
+
   useEffect(() => {
-    document.body.className = 'dashboard-page';
-    return () => { document.body.className = ''; }
-  });
+    dispatch(employeePortfolioDetails(localItem.associated_id));
+    document.body.className = "dashboard-page";
+    return () => {
+      document.body.className = "";
+    };
+  }, [dispatch, addsuccess]);
+  console.log(employeePortfolioArray, "portfolio");
+  console.log(addPortfolio, "upload test");
 
   return (
     <>
-      {/* Breadcrumb */}
-      <div className="bread-crumb-bar">
-        <div className="container">
-          <div className="row align-items-center inner-banner">
-            <div className="col-md-12 col-12 text-center">
-              <div className="breadcrumb-list">
-                <nav aria-label="breadcrumb" className="page-breadcrumb">
-                  <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><Link to="#"><img src={home_icon} alt="Post Author" /> Home</Link></li>
-                    <li className="breadcrumb-item" aria-current="page">Employee</li>
-                    <li className="breadcrumb-item" aria-current="page">PORTFOLIO</li>
-                  </ol>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Breadcrumb */}
       {/* Page Content */}
       <div className="content content-page">
         <div className="container-fluid">
-          <div className="row">
+          <div className="row mt-5 align-right">
             <div className="col-xl-3 col-md-4 theiaStickySidebar">
               <StickyBox offsetTop={20} offsetBottom={20}>
                 <Sidebar />
               </StickyBox>
             </div>
-            <div className="col-xl-9 col-md-8">
-              <div className="portfolio-item">
-                <div className="pro-head p-0 pb-4">
-                  <h3 className="mb-0">Portfolio</h3>
-                  <a
-                    className="btn btn-primary back-btn br-0"
-                    data-bs-toggle="modal"
-                    href="#portfolio"
-                  >
-                    + Add Portfolio
-                  </a>
-                </div>
-                <div className="pro-content pt-4 pb-4">
-                  <div className="row">
-                    <div className="col-sm-6 col-lg-4">
-                      <div className="project-widget">
-                        <div className="portfolio-img">
-                          <img
-                            className="img-fluid"
-                            alt="User Image"
-                            src={Project_1}
-                          />
-                          <div className="portfolio-live">
-                            <div className="portfolio-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#portfolio-edit"
-                                className="port-icon"
-                              >
-                                <i className="fas fa-pen" />
-                              </a>
-                              <a href="#" className="port-icon">
-                                <i className="fas fa-trash-alt" />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="portfolio-detail">
-                          <h3 className="pro-name">Razor Website Design</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                      <div className="project-widget">
-                        <div className="portfolio-img">
-                          <img
-                            className="img-fluid"
-                            alt="User Image"
-                            src={Project_2}
-                          />
-                          <div className="portfolio-live">
-                            <div className="portfolio-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#portfolio-edit"
-                                className="port-icon"
-                              >
-                                <i className="fas fa-pen" />
-                              </a>
-                              <a href="#" className="port-icon">
-                                <i className="fas fa-trash-alt" />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="portfolio-detail">
-                          <h3 className="pro-name">Transport Website</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                      <div className="project-widget">
-                        <div className="portfolio-img">
-                          <img
-                            className="img-fluid"
-                            alt="User Image"
-                            src={Project_3}
-                          />
-                          <div className="portfolio-live">
-                            <div className="portfolio-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#portfolio-edit"
-                                className="port-icon"
-                              >
-                                <i className="fas fa-pen" />
-                              </a>
-                              <a href="#" className="port-icon">
-                                <i className="fas fa-trash-alt" />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="portfolio-detail">
-                          <h3 className="pro-name">Wordpress Website</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                      <div className="project-widget">
-                        <div className="portfolio-img">
-                          <img
-                            className="img-fluid"
-                            alt="User Image"
-                            src={Project_4}
-                          />
-                          <div className="portfolio-live">
-                            <div className="portfolio-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#portfolio-edit"
-                                className="port-icon"
-                              >
-                                <i className="fas fa-pen" />
-                              </a>
-                              <a href="#" className="port-icon">
-                                <i className="fas fa-trash-alt" />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="portfolio-detail">
-                          <h3 className="pro-name">Mobile App</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                      <div className="project-widget">
-                        <div className="portfolio-img">
-                          <img
-                            className="img-fluid"
-                            alt="User Image"
-                            src={Project_5}
-                          />
-                          <div className="portfolio-live">
-                            <div className="portfolio-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#portfolio-edit"
-                                className="port-icon"
-                              >
-                                <i className="fas fa-pen" />
-                              </a>
-                              <a href="#" className="port-icon">
-                                <i className="fas fa-trash-alt" />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="portfolio-detail">
-                          <h3 className="pro-name">Healthcare Website</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                      <div className="project-widget">
-                        <div className="portfolio-img">
-                          <img
-                            className="img-fluid"
-                            alt="User Image"
-                            src={Project_6}
-                          />
-                          <div className="portfolio-live">
-                            <div className="portfolio-content">
-                              <a
-                                data-bs-toggle="modal"
-                                href="#portfolio-edit"
-                                className="port-icon"
-                              >
-                                <i className="fas fa-pen" />
-                              </a>
-                              <a href="#" className="port-icon">
-                                <i className="fas fa-trash-alt" />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="portfolio-detail">
-                          <h3 className="pro-name">Injury Website</h3>
-                        </div>
-                      </div>
-                    </div>
+            {loading ? (
+              <Loader />
+            ) : (
+              <div className="col-xl-9 col-md-8">
+                <div className="portfolio-item">
+                  <div className="pro-head p-0 pb-4">
+                    <h3 className="mb-0">پورتفولیو</h3>
+                    <a
+                      className="btn btn-primary back-btn br-0"
+                      data-bs-toggle="modal"
+                      href="#portfolio"
+                    >
+                      + اضافه کردن
+                    </a>
                   </div>
-                  <div className="col-md-12">
-                    <ul className="paginations">
+
+                  <div className="pro-content pt-4 pb-4">
+                    <div className="row">
+                      {employeePortfolioArray.map((item) => (
+                        <div className="col-sm-6 col-lg-4">
+                          <div className="project-widget">
+                            <div className="portfolio-img">
+                              <Image
+                                className="img-fluid"
+                                alt="User Image"
+                                src={`http://127.0.0.1:8000${item.image}`}
+                                style={{
+                                  height: "250px",
+                                  width: "400px",
+                                  objectFit: "cover",
+                                }}
+                              />
+                              <div className="portfolio-live">
+                                <div className="portfolio-content">
+                                  <a
+                                    data-bs-toggle="modal"
+                                    href="#portfolio-edit"
+                                    className="port-icon"
+                                  >
+                                    <i className="fas fa-pen" />
+                                  </a>
+                                  <a href="#" className="port-icon me-2">
+                                    <i className="fas fa-trash-alt" />
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="portfolio-detail">
+                              <h3 className="pro-name">{item.title}</h3>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="col-md-12">
+                      {/* <ul className="paginations">
                       <li>
                         <a href="#">
                           {" "}
-                          <i className="fas fa-angle-left" /> Previous
+                          <i className="fas fa-angle-right" /> قبلی
                         </a>
                       </li>
                       <li>
@@ -247,14 +203,15 @@ const FreelancerPortfolio = (props) => {
                       </li>
                       <li>
                         <a href="#">
-                          Next <i className="fas fa-angle-right" />
+                          بعدی <i className="fas fa-angle-left" />
                         </a>
                       </li>
-                    </ul>
+                    </ul> */}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -262,9 +219,9 @@ const FreelancerPortfolio = (props) => {
       {/* The Modal */}
       <div className="modal fade" id="portfolio">
         <div className="modal-dialog modal-dialog-centered modal-lg">
-          <div className="modal-content">
+          <div className="modal-content align-right">
             <div className="modal-header">
-              <h4>Add Portfolio</h4>
+              <h4>اضافه کردن نمونه کار</h4>
               <span className="modal-close">
                 <a href="#" data-bs-dismiss="modal" aria-label="Close">
                   <i className="far fa-times-circle orange-text" />
@@ -273,22 +230,35 @@ const FreelancerPortfolio = (props) => {
             </div>
             <div className="modal-body">
               <div className="port-title">
-                <h3>Simple &amp; Best Way To Showcase Your Work</h3>
+                <h3>
+                  نمونه کارهای خود را اضافه کنید تا شانس بیشتری برای استخدام
+                  داشته باشید
+                </h3>
               </div>
-              <form >
+              <form onSubmit={handleSubmit}>
                 <div className="modal-info">
-                  <div className="row">
+                  <div className="row align-right">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label>Title</label>
-                        <input type="text" className="form-control" />
+                        <label>توضیحات</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                        />
                       </div>
-                      <div className="form-group">
-                        <label>Link</label>
-                        <input type="text" className="form-control" />
-                      </div>
+
                       <label className="br-0 file-upload image-upbtn">
-                        upload Files <input type="file" />
+                        بارگذاری تصاویر
+                        <input
+                          type="file"
+                          label="Image"
+                          name="myFile"
+                          accept=".jpeg, .png, .jpg"
+                          onChange={handleImageChange}
+                          // onChange={(e) => handleFileUpload(e)}
+                        />
                       </label>
                     </div>
                   </div>
@@ -298,10 +268,13 @@ const FreelancerPortfolio = (props) => {
                     data-bs-dismiss="modal"
                     className="btn btn-primary black-btn submit-btn"
                   >
-                    Cancel
+                    لغو
                   </a>
-                  <button type="submit" className="btn btn-primary submit-btn">
-                    Submit
+                  <button
+                    onClick={(e) => handleSubmit(e)}
+                    className="btn btn-primary submit-btn me-3"
+                  >
+                    تایید
                   </button>
                 </div>
               </form>
@@ -312,9 +285,9 @@ const FreelancerPortfolio = (props) => {
       {/* The Modal */}
       <div className="modal fade" id="portfolio-edit">
         <div className="modal-dialog modal-dialog-centered modal-lg">
-          <div className="modal-content">
+          <div className="modal-content align-right">
             <div className="modal-header">
-              <h4 className="modal-title">Add Portfolio</h4>
+              <h4 className="modal-title">ویرایش نمونه کار</h4>
               <span className="modal-close">
                 <a href="#" data-bs-dismiss="modal" aria-label="Close">
                   <i className="far fa-times-circle orange-text" />
@@ -323,30 +296,35 @@ const FreelancerPortfolio = (props) => {
             </div>
             <div className="modal-body">
               <div className="port-title">
-                <h3>Simple &amp; Best Way To Showcase Your Work</h3>
+                <h3>
+                  نمونه کارهای خود را اضافه کنید تا شانس بیشتری برای استخدام
+                  داشته باشید
+                </h3>
               </div>
-              <form >
+              <form onSubmit={handleSubmit}>
                 <div className="modal-info">
-                  <div className="row">
+                  <div className="row align-right">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label>Title</label>
+                        <label>توضیحات</label>
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="Portfolio Name"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
                         />
                       </div>
-                      <div className="form-group">
-                        <label>Link</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="Http://www.example.com//john..."
-                        />
-                      </div>
+
                       <label className="br-0 file-upload image-upbtn">
-                        upload Files <input type="file" />
+                        بارگذاری تصاویر
+                        <input
+                          type="file"
+                          label="Image"
+                          name="myFile"
+                          accept=".jpeg, .png, .jpg"
+                          onChange={handleImageChange}
+                          // onChange={(e) => handleFileUpload(e)}
+                        />
                       </label>
                     </div>
                   </div>
@@ -356,14 +334,14 @@ const FreelancerPortfolio = (props) => {
                     data-bs-dismiss="modal"
                     className="btn btn-primary black-btn submit-btn"
                   >
-                    Cancel
+                    لغو
                   </a>
-                  <Link
-                    to="/freelancer-portfolio"
-                    className="btn btn-primary submit-btn"
+                  <button
+                    onClick={(e) => handleSubmit(e)}
+                    className="btn btn-primary submit-btn me-3"
                   >
-                    Submit
-                  </Link>
+                    تایید
+                  </button>
                 </div>
               </form>
             </div>
@@ -371,7 +349,6 @@ const FreelancerPortfolio = (props) => {
         </div>
       </div>
     </>
-  )
-
-}
+  );
+};
 export default FreelancerPortfolio;

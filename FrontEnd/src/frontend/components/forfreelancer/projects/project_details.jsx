@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 // Import Images
 import {
@@ -22,19 +22,117 @@ import {
   Icon_location,
   Icon_work,
 } from "../../imagepath";
+import moment from "jalali-moment";
+import Loader from "../../../../Loader";
+
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { jobsDetail } from "../../../../actions/jobActions";
+import {
+  freelancerRequest,
+  postApply,
+} from "../../../../actions/requestsActions";
+import {
+  employeeFavoriteList,
+  employeeToggleFavoriteList,
+} from "../../../../actions/employeeActions";
+import { companyDetails } from "../../../../actions/companyActions";
 
 const ProjectDetails = (props) => {
+  const localItem = JSON.parse(localStorage?.getItem("userInfo"));
+
+  const location = useLocation();
+  const { jobIdInput } = location.state;
   // redux
   const dispatch = useDispatch();
-  const { jobs } = useSelector((state) => state.jobsDetails);
+  const jobs = useSelector((state) => state.jobsDetails);
+
+  const freelancerRequests = useSelector((state) => state.freelancerRequest);
+  const toggleFavorite = useSelector((state) => state.employeeToggleFavorite);
+  const { success: togglesuccess } = toggleFavorite;
+  const employeeFavorite = useSelector((state) => state.employeeFavoriteList);
+  const postApplyResult = useSelector((state) => state.postApplyList);
+  const { success: resuccess } = postApplyResult;
+
+  const { employeeFavorites } = employeeFavorite;
+  const { freelancerRequestsAll } = freelancerRequests;
+  const { jobsDetailsList, success: succsessjob } = jobs;
+  const [requestSendingDetail, setRequestSendingDetail] = useState();
+
+  const companyDetailsDispatch = useSelector((state) => state.companyDetails);
+  const { companyDetail, loading: loadingcompany } = companyDetailsDispatch;
+
+  const daysBetween = (input) => {
+    const now = new Date().getDate();
+    const date = new Date(input).getDate();
+    return now - date;
+  };
   useEffect(() => {
     //redux
     // bejaye 3 id job mored nazar ra ghara midahim
-    dispatch(jobsDetail(3));
-  }, [dispatch]);
+    dispatch(jobsDetail(jobIdInput));
+    dispatch(freelancerRequest());
+    dispatch(employeeFavoriteList(localItem?.associated_id));
+  }, [dispatch, resuccess]);
+
+  useEffect(() => {
+    dispatch(employeeFavoriteList(localItem?.associated_id));
+  }, [dispatch, togglesuccess]);
+
+  useEffect(() => {
+    //redux
+    // bejaye 3 id job mored nazar ra ghara midahim
+    dispatch(companyDetails(jobsDetailsList?.company?.id));
+  }, [succsessjob]);
+
+  const favoriteStatus = employeeFavorites?.map((item) => {
+    if (item.id === jobIdInput) {
+      return true;
+    } else return false;
+  });
+
+  const cvStatus = freelancerRequestsAll.map((item) => {
+    if (+item.employee === +localItem?.associated_id) {
+      if (+jobIdInput === +item.job) {
+        return true;
+      }
+    } else return false;
+  });
+
+  const handleFavorite = (e, toggleFavoriteId) => {
+    // e.preventdefault();
+    console.log(toggleFavoriteId);
+    console.log(e);
+    dispatch(
+      employeeToggleFavoriteList(localItem.associated_id, toggleFavoriteId)
+    );
+  };
+
+  const handleChange = (e) => {
+    console.log(e.target.value);
+    setRequestSendingDetail({
+      employee: +localItem?.associated_id,
+      Company: +jobsDetailsList.company?.id,
+      job: +jobIdInput,
+      status: "درانتظار بررسی",
+      [e.target.id]: e.target.value,
+    });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(requestSendingDetail);
+    dispatch(postApply(requestSendingDetail));
+    const cancelLink = document.querySelector("#cancelLink");
+    cancelLink.click();
+  };
+
+  // console.log(jobsDetailsList , "jobDetail")
+  console.log(freelancerRequestsAll, "allreques");
+  // console.log(localItem?.id, "input")
+  // console.log(favoriteStatus, "favorites")
+  console.log(cvStatus, "cvStatus");
+  // console.log(postApplyResult, "post result")
+
   return (
     <>
       {/* Breadcrumb */}
@@ -51,23 +149,32 @@ const ProjectDetails = (props) => {
                     <div className="pro-info-left col-md-8">
                       <div className="profile-info">
                         <h2 className="profile-title">
-                          طراح رابط کاربری (UI/UX)
+                          {jobsDetailsList.title}
                         </h2>
                         <Link
-                          to="/company-details"
+                          to={{
+                            pathname: "/company-profile",
+                            state: {
+                              companyIdInput: jobsDetailsList.company?.id,
+                            },
+                          }}
                           className="profile-position"
                         >
                           {" "}
-                          فراوب | Faraweb
+                          {jobsDetailsList.Company?.Name}
                         </Link>
                         <div />
                         <ul className="profile-preword align-items-center">
                           <li>
-                            <i className="fa fa-clock" /> ۲ روز پیش
+                            <i className="fa fa-clock" />{" "}
+                            <span>
+                              {60 - daysBetween(jobsDetailsList?.published_at)}{" "}
+                              روز
+                            </span>
                           </li>
                           <li>
-                            <a href="#" className="btn full-btn">
-                              تمام وقت
+                            <a className="btn full-btn">
+                              {jobsDetailsList.job_type}
                             </a>
                           </li>
                         </ul>
@@ -82,17 +189,46 @@ const ProjectDetails = (props) => {
                         </li>
                       </ul>
                       <div className="d-flex align-items-center justify-content-md-end justify-content-center">
-                        <a href="">
-                          <i className="fa fa-heart heart fa-2x ms-2 red-text" />
-                        </a>
-                        <a
-                          data-bs-toggle="modal"
-                          href="#file"
-                          className="btn bid-btn"
-                        >
-                          ارسال رزومه{" "}
-                          <i className="fa fa-long-arrow-alt-left me-1" />
-                        </a>
+                        {favoriteStatus?.includes(true) ? (
+                          <a
+                            href=""
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleFavorite(e, jobIdInput)();
+                            }}
+                          >
+                            <i className="fa fa-heart heart fa-2x ms-2 red-text" />
+                          </a>
+                        ) : (
+                          <a
+                            href=""
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleFavorite(e, jobIdInput)();
+                            }}
+                          >
+                            <i className="far fa-heart heart fa-2x ms-2 red-text" />
+                          </a>
+                        )}
+                        {cvStatus.includes(true) ? (
+                          <a className="btn bid-btn" data-bs-toggle="modal">
+                            در حال بررسی{" "}
+                            <i className="fa fa-long-arrow-alt-left me-1" />
+                          </a>
+                        ) : localItem ? (
+                          <a
+                            className="btn bid-btn"
+                            data-bs-toggle="modal"
+                            href="#file"
+                          >
+                            ارسال رزومه{" "}
+                            <i className="fa fa-long-arrow-alt-left me-1" />
+                          </a>
+                        ) : (
+                          <Link to="/login" className="btn bid-btn">
+                            لطفا وارد شوید
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -111,7 +247,10 @@ const ProjectDetails = (props) => {
                         <div className="d-flex align-items-center justify-content-lg-between pro-post job-type">
                           <div>
                             <p>مهلت ارسال رزومه </p>
-                            <h6>۵۸ روز</h6>
+                            <h6>
+                              {60 - daysBetween(jobsDetailsList?.published_at)}{" "}
+                              روز
+                            </h6>
                           </div>
                           <img
                             className="img-fluid"
@@ -125,7 +264,7 @@ const ProjectDetails = (props) => {
                         <div className="d-flex align-items-center justify-content-lg-between pro-post job-type">
                           <div>
                             <p>شهر</p>
-                            <h6>تهران</h6>
+                            <h6>{jobsDetailsList.job_city?.name}</h6>
                           </div>
                           <img
                             className="img-fluid"
@@ -139,7 +278,7 @@ const ProjectDetails = (props) => {
                         <div className="d-flex align-items-center justify-content-lg-between pro-post job-type">
                           <div>
                             <p>سابقه کار</p>
-                            <h6>بدون محدودیت</h6>
+                            <h6>{jobsDetailsList.experience}</h6>
                           </div>
                           <img
                             className="img-fluid"
@@ -153,7 +292,9 @@ const ProjectDetails = (props) => {
                         <div className="d-flex align-items-center justify-content-lg-between pro-post job-type">
                           <div>
                             <p>حقوق</p>
-                            <h6>۱۲ میلیون</h6>
+                            <h6>
+                              {jobsDetailsList.salary_amount}میلیون تومان{" "}
+                            </h6>
                           </div>
                           <img
                             className="img-fluid"
@@ -172,21 +313,7 @@ const ProjectDetails = (props) => {
                 <div className="pro-post widget-box align-right">
                   <h3 className="pro-title">توضیحات</h3>
                   <div className="pro-content">
-                    <p>
-                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ،
-                      و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه
-                      روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای
-                      شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-                      بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
-                      درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می
-                      طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه
-                      ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی
-                      ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری
-                      موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                      زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی
-                      سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده
-                      قرار گیرد.
-                    </p>
+                    <p>{jobsDetailsList.company?.about}</p>
                   </div>
                 </div>
                 {/* /Senior Animator  */}
@@ -199,7 +326,7 @@ const ProjectDetails = (props) => {
                         <li>
                           عنوان:{" "}
                           <span>
-                            متن
+                            {jobsDetailsList.description}
                             <i
                               className="fa fa-question-circle"
                               data-bs-toggle="tooltip"
@@ -217,12 +344,14 @@ const ProjectDetails = (props) => {
                   <h3 className="pro-title">مهارت های مورد نیاز</h3>
                   <div className="pro-content">
                     <div className="tags">
-                      <a href="">
-                        <span className="badge badge-pill badge-design">
-                          After Effects
-                        </span>
-                      </a>
-                      <a href="">
+                      {jobsDetailsList.job_skills?.map((items) => (
+                        <a href="">
+                          <span className="badge badge-pill badge-design">
+                            {items.title}
+                          </span>
+                        </a>
+                      ))}
+                      {/*<a href="">
                         <span className="badge badge-pill badge-design">
                           Illustrator
                         </span>
@@ -246,7 +375,7 @@ const ProjectDetails = (props) => {
                         <span className="badge badge-pill badge-design">
                           Whiteboard
                         </span>
-                      </a>
+                      </a> */}
                     </div>
                   </div>
                 </div>
@@ -266,68 +395,53 @@ const ProjectDetails = (props) => {
                       <i className="fa fa-star" />
                     </a>
                     <div className="author-heading">
-                      <div className="profile-img">
-                        <a href="#">
-                          <img src={company_img1} alt="author" />
-                        </a>
+                      <div
+                        className="profile-img"
+                        style={{ boxShadow: "none" }}
+                      >
+                        <Link
+                          to={{
+                            pathname: "/company-profile",
+                            state: {
+                              companyIdInput: jobsDetailsList.company?.id,
+                            },
+                          }}
+                        >
+                          <img
+                            src={`http://127.0.0.1:8000${jobsDetailsList.company?.image}`}
+                            alt="author"
+                          />
+                        </Link>
                       </div>
                       <div className="profile-name">
                         <Link
-                          to="./company-details"
+                          to={{
+                            pathname: "/company-profile",
+                            state: {
+                              companyIdInput: jobsDetailsList.company?.id,
+                            },
+                          }}
                           className="author-location"
                         >
-                          فراوب|FaraWeb{" "}
+                          {jobsDetailsList.company?.Name}
                           <i className="fa fa-check-circle text-success verified" />
                         </Link>
                       </div>
                       <div className="freelance-info">
                         <div className="freelance-location">
                           <i className="fa fa-map-marker ms-1" />
-                          تهران
-                        </div>
-                        <div className="rating">
-                          <i className="fa fa-star filled" />
-                          <i className="fa fa-star filled" />
-                          <i className="fa fa-star filled" />
-                          <i className="fa fa-star filled" />
-                          <i className="fa fa-star" />
-                          <span className="average-rating">4.7 (32)</span>
+                          {jobsDetailsList.job_city?.name}
                         </div>
                       </div>
-                      {/* <button
-                      type="button"
-                      className="btn btn-lg btn-primary rounded-pill"
-                    >
-                      <i className="fab fa-whatsapp me-2" />
-                      Follow
-                    </button> */}
-                      {/* <div className="follow-details">
-                      <div className="row">
-                        <div className="col-6 py-4 text-center">
-                         
-                          <h6 className="text-uppercase text-muted">
-                            Following
-                          </h6>
-                         
-                          <h4 className="mb-0">49</h4>
-                        </div>
-                        <div className="col-6 py-4 text-center border-start">
-                         
-                          <h6 className="text-uppercase text-muted">
-                            Followers
-                          </h6>
-                          
-                          <h4 className="mb-0">422</h4>
-                        </div>
-                      </div>
-                    </div> */}
+
                       <div>
                         <div className="row align-items-center ">
                           <div className="col">
                             <h6 className="text-sm text-end mb-0">عضویت از:</h6>
                           </div>
                           <div className="col-auto">
-                            <span className="text-sm">۲۱ فروردین ۱۴۰۲</span>
+                            {daysBetween(jobsDetailsList.company?.founded_at)}{" "}
+                            روز پیش
                           </div>
                         </div>
                         <hr className="my-3" />
@@ -350,7 +464,9 @@ const ProjectDetails = (props) => {
                             </h6>
                           </div>
                           <div className="col-auto">
-                            <span className="text-sm">faraweb.com</span>
+                            <span className="text-sm">
+                              {jobsDetailsList.company?.Website}
+                            </span>
                           </div>
                         </div>
                         <hr className="my-3" />
@@ -362,7 +478,9 @@ const ProjectDetails = (props) => {
                             </h6>
                           </div>
                           <div className="col-auto">
-                            <span className="text-sm">faraweb@</span>
+                            <span className="text-sm">
+                              {jobsDetailsList.company?.linkdin}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -370,7 +488,8 @@ const ProjectDetails = (props) => {
                   </div>
                 </div>
                 {/* Link Widget */}
-                <div className="pro-post widget-box post-widget align-right">
+
+                {/* <div className="pro-post widget-box post-widget align-right">
                   <h3 className="pro-title">لینک پروفایل</h3>
                   <div className="pro-content pt-0">
                     <div className="form-group profile-group mb-0">
@@ -391,39 +510,56 @@ const ProjectDetails = (props) => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* /Link Widget */}
                 {/* Attachments Widget */}
                 <div className="pro-post widget-box post-widget pb-0 align-right">
                   <h3 className="pro-title">اطلاعات استخدام شرکت</h3>
                   <div className="pro-content">
-                    <div className="row">
-                      <div className="col-6">
-                        <div className="pro-post client-list">
-                          <p>کل آگهی ها</p>
-                          <h6 className="bg-red">48</h6>
+                    {loadingcompany ? (
+                      <Loader />
+                    ) : (
+                      <div className="row">
+                        <div className="col-6">
+                          <div className="pro-post client-list">
+                            <p>کل آگهی ها</p>
+                            <h6 className="bg-red">
+                              {companyDetail?.all_jobs_count}
+                            </h6>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-6">
-                        <div className="pro-post client-list">
-                          <p>نرخ استخدام</p>
-                          <h6 className="bg-blue">22</h6>
-                        </div>
-                      </div>
-                      <div className="col-6">
-                        <div className="pro-post client-list">
-                          <p>فرصت های شغلی فعال</p>
-                          <h6 className="bg-green">48</h6>
-                        </div>
-                      </div>
 
-                      <div className="col-6">
-                        <div className="pro-post client-list">
-                          <p>استخدام شده</p>
-                          <h6 className="bg-pink">48</h6>
+                        <div className="col-6">
+                          <div className="pro-post client-list">
+                            <p>نرخ استخدام</p>
+                            <h6 className="bg-blue">
+                              {(
+                                (companyDetail?.completed_jobs_count /
+                                  companyDetail?.all_jobs_count) *
+                                100
+                              ).toFixed(2)}
+                            </h6>
+                          </div>
+                        </div>
+                        <div className="col-6">
+                          <div className="pro-post client-list">
+                            <p>فرصت های شغلی فعال</p>
+                            <h6 className="bg-green">
+                              {companyDetail?.active_jobs_count}
+                            </h6>
+                          </div>
+                        </div>
+
+                        <div className="col-6">
+                          <div className="pro-post client-list">
+                            <p>استخدام شده</p>
+                            <h6 className="bg-pink">
+                              {companyDetail?.completed_jobs_count}
+                            </h6>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
                 {/* /Attachments Widget */}
@@ -443,9 +579,14 @@ const ProjectDetails = (props) => {
           <div className="modal-dialog modal-dialog-centered modal-lg">
             <div className="modal-content">
               <div className="modal-header">
-                <h4 className="modal-title">SEND PROPOSALS</h4>
+                <h4 className="modal-title">ارسال درخواست</h4>
                 <span className="modal-close">
-                  <a href="#" data-bs-dismiss="modal" aria-label="Close">
+                  <a
+                    id="cancelLink"
+                    href="#"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  >
                     <i className="fa fa-times-circle red-text" />
                   </a>
                 </span>
@@ -455,93 +596,27 @@ const ProjectDetails = (props) => {
                   <form>
                     <div className="feedback-form">
                       <div className="row">
-                        <div className="col-md-6 form-group">
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Your Price"
-                          />
-                        </div>
-                        <div className="col-md-6 form-group">
-                          <input
-                            type="email"
-                            className="form-control"
-                            placeholder="Estimated Hours"
-                          />
-                        </div>
                         <div className="col-md-12 form-group">
                           <textarea
+                            onChange={handleChange}
+                            id="message"
                             rows={5}
                             className="form-control"
-                            placeholder="Cover Letter"
+                            placeholder="متن درخواست"
                             defaultValue={""}
                           />
                         </div>
                       </div>
                     </div>
-                    <div className="proposal-features">
-                      <div className="proposal-widget proposal-success">
-                        <label className="custom_check">
-                          <input type="checkbox" name="select_time" />
-                          <span className="checkmark" />
-                          <span className="proposal-text">
-                            Stick this Proposal to the Top
-                          </span>
-                          <span className="proposal-text float-end">
-                            $12.00
-                          </span>
-                        </label>
-                        <p>
-                          The sticky proposal will always be displayed on top of
-                          all the proposals.
-                        </p>
-                      </div>
-                      <div className="proposal-widget proposal-light">
-                        <label className="custom_check">
-                          <input type="checkbox" name="select_time" />
-                          <span className="checkmark" />
-                          <span className="proposal-text">
-                            $ Make Sealed Proposal
-                          </span>
-                          <span className="proposal-text float-end">$7.00</span>
-                        </label>
-                        <p>
-                          The sealed proposal will be sent to the project author
-                          only it will not be visible publically.
-                        </p>
-                      </div>
-                      <div className="proposal-widget proposal-danger">
-                        <label className="custom_check">
-                          <input type="checkbox" name="select_time" />
-                          <span className="checkmark" />
-                          <span className="proposal-text">
-                            $ Make Sealed Proposal
-                          </span>
-                          <span className="proposal-text float-end">
-                            $15.00
-                          </span>
-                        </label>
-                        <p>
-                          The featured proposal will have a distinctive color
-                          and popped up between other proposals to get the
-                          author's attention.
-                        </p>
-                      </div>
-                    </div>
+
                     <div className="row">
-                      <div className="col-md-12 submit-section">
-                        <label className="custom_check">
-                          <input type="checkbox" name="select_time" />
-                          <span className="checkmark" /> I agree to the Terms
-                          And Conditions
-                        </label>
-                      </div>
                       <div className="col-md-12 submit-section text-end">
                         <button
+                          onClick={handleSubmit}
                           className="btn btn-primary submit-btn"
                           type="submit"
                         >
-                          SUBMIT PROPOSAL
+                          ارسال
                         </button>
                       </div>
                     </div>

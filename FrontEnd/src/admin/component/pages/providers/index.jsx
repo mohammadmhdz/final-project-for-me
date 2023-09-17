@@ -1,202 +1,119 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
+import Loader from "../../../../Loader";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Sidebar from "../../../commoncomponent/sidebar";
 import { itemRender, onShowSizeChange } from "../../../paginationfunction";
 import "../../../antdstyle.css";
 import {
-  img_1,
-  img_2,
-  img_3,
-  img_4,
-  img_5,
-  img_6,
-  img_7,
-  img_8,
-  img_9,
-  img_10,
-} from "../imagepath";
+  companyListAction,
+  updateCompanyDetailss,
+  deletecompany,
+} from "../../../../actions/companyActions";
+import { deleteuser } from "../../../../actions/adminAction";
 
 const Providers = () => {
-  //date
+  const dispatch = useDispatch();
+  const companyListAll = useSelector((state) => state.companyListAll);
 
-  const [date, setDate] = useState(new Date());
-  const [inputfilter, setInputfilter] = useState(false);
+  const companyDetailsUpdate = useSelector(
+    (state) => state.companyUpdateDetail
+  );
+  const { success: successup } = companyDetailsUpdate;
+  const companydelete = useSelector((state) => state.companydelete);
+  const { success: successdel } = companydelete;
+  const { compnanies, loading } = companyListAll;
 
-  const handleChange = (date) => {
-    setDate(date);
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [editedCompanyName, setEditedCompanyName] = useState("");
+  const [editedCompanyid, setEditedCompanyid] = useState("");
+  const [addedCompanyName, setAddedCompanyName] = useState("");
+  const [deletedCompanyid, setDeletedCompanyid] = useState("");
+  const [Editedowner, setEditedowner] = useState("");
+  const [Editedplan, setEditedplan] = useState("");
+
+  const handleSubmit = (e) => {
+    dispatch(
+      updateCompanyDetailss({
+        id: editedCompanyid,
+        Name: editedCompanyName,
+        Owner_name: Editedowner,
+        active_plan: Editedplan,
+      })
+    );
+    dispatch(companyListAction());
+    const closeButton = document.querySelector("#add-category .close");
+    closeButton.click();
   };
 
-  const togglefilter = (value) => {
-    setInputfilter(value);
+  const handledeleteSubmit = (e) => {
+    dispatch(deleteuser(deletedCompanyid));
+    dispatch(companyListAction());
+    const cancelLink = document.querySelector("#cancelLink");
+    cancelLink.click();
   };
 
-  const data = [
-    {
-      id: "C1",
-      companyname: "فراوب|FaraWeb",
-      primarycontact: "سپیده زینال زادگان",
-      website: "https://faraweb.com",
-      totalprojects: "12",
-      status: "فعال",
-      image: img_1,
-    },
-    {
-      id: "C2",
-      companyname: "فراوب|FaraWeb",
-      primarycontact: "سپیده زینال زادگان",
-      website: "https://faraweb.com",
-      totalprojects: "12",
-      status: "فعال",
-      image: img_2,
-    },
-    {
-      id: "C3",
-      companyname: "فراوب|FaraWeb",
-      primarycontact: "سپیده زینال زادگان",
-      website: "https://faraweb.com",
-      totalprojects: "12",
-      status: "فعال",
-      image: img_3,
-    },
-    {
-      id: "C4",
-      companyname: "فراوب|FaraWeb",
-      primarycontact: "سپیده زینال زادگان",
-      website: "https://faraweb.com",
-      totalprojects: "12",
-      status: "فعال",
-      image: img_4,
-    },
-    {
-      id: "C5",
-      companyname: "فراوب|FaraWeb",
-      primarycontact: "سپیده زینال زادگان",
-      website: "https://faraweb.com",
-      totalprojects: "12",
-      status: "فعال",
-      image: img_5,
-    },
-    {
-      id: "C6",
-      companyname: "فراوب|FaraWeb",
-      primarycontact: "سپیده زینال زادگان",
-      website: "https://faraweb.com",
-      totalprojects: "12",
-      status: "فعال",
-      image: img_6,
-    },
-    {
-      id: "C7",
-      companyname: "فراوب|FaraWeb",
-      primarycontact: "سپیده زینال زادگان",
-      website: "https://faraweb.com",
-      totalprojects: "12",
-      status: "فعال",
-      image: img_7,
-    },
-
-    {
-      id: "C8",
-      companyname: "فراوب|FaraWeb",
-      primarycontact: "سپیده زینال زادگان",
-      website: "https://faraweb.com",
-      totalprojects: "12",
-      status: "فعال",
-      image: img_8,
-    },
-    {
-      id: "C9",
-      companyname: "فراوب|FaraWeb",
-      primarycontact: "سپیده زینال زادگان",
-      website: "https://faraweb.com",
-      totalprojects: "12",
-      status: "فعال",
-      image: img_9,
-    },
-    {
-      id: "C10",
-      companyname: "فراوب|FaraWeb",
-      primarycontact: "سپیده زینال زادگان",
-      website: "https://faraweb.com",
-      totalprojects: "12",
-      status: "فعال",
-      image: img_10,
-    },
-  ];
+  const data = compnanies;
+  console.log("data", data);
   const columns = [
     {
       title: "شناسه",
-      dataIndex: "id",
-      render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.id.length - b.id.length,
+      dataIndex: "company_data",
+      render: (text, record) => <>{text.id}</>,
+      // sorter: (a, b) => a.id.length - b.id.length,
     },
     {
       title: "لوگو",
-      dataIndex: "image",
-      render: (text, record) => (
-        <>
-          <Link to="#" className="avatar">
-            <img alt="" src={record.image} />
-          </Link>
-        </>
-      ),
-      sorter: (a, b) => a.image.length - b.image.length,
-    },
-    {
-      title: "نام شرکت",
-      dataIndex: "companyname",
-      render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.companyname.length - b.companyname.length,
-    },
-    {
-      title: "مدیر شرکت",
-      dataIndex: "primarycontact",
-      render: (text, record) => (
-        <>
-          <h2 className="table-avatar">
-            <Link to="/admin/profile">{text}</Link>
-          </h2>
-        </>
-      ),
-      sorter: (a, b) => a.primarycontact.length - b.primarycontact.length,
-    },
-    {
-      title: "وبسایت",
-      dataIndex: "website",
-      render: (text, record) => <>{text}</>,
-
-      sorter: (a, b) => a.website.length - b.website.length,
-    },
-    {
-      title: "فرصت های شغلی",
-      dataIndex: "totalprojects",
-      render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.totalprojects.length - b.totalprojects.length,
-    },
-
-    {
-      title: "وضعیت",
-      dataIndex: "status",
+      dataIndex: "company_data",
       render: (text, record) => (
         <>
           <Link
-            to="#"
-            className={` ${
-              record.status === "Enabled"
-                ? "btn btn-enable"
-                : record.status === "Disable"
-                ? "btn btn-disable"
-                : ""
-            }`}
+            to={{
+              pathname: "/company-profile",
+              state: { companyIdInput: text.id },
+            }}
+            className="avatar"
           >
-            {record.status}
+            <img alt="" src={"http://127.0.0.1:8000" + text.image} />
           </Link>
         </>
       ),
-      sorter: (a, b) => a.status.length - b.status.length,
+      // sorter: (a, b) => a.image.length - b.image.length,
+    },
+    {
+      title: "نام شرکت",
+      dataIndex: "company_data",
+      render: (text, record) => <>{text.Name}</>,
+      // sorter: (a, b) => a.Name.length - b.Name.length,
+    },
+    {
+      title: "مدیر شرکت",
+      dataIndex: "company_data",
+      render: (text, record) => <>{text.Owner_name}</>,
+      // sorter: (a, b) => a.primarycontact.length - b.primarycontact.length,
+    },
+    {
+      title: "ایمیل",
+      dataIndex: "company_data",
+      render: (text, record) => <>{text.Email}</>,
+
+      // sorter: (a, b) => a.website.length - b.website.length,
+    },
+    {
+      title: " فرصت های شغلی",
+      dataIndex: "all_jobs_count",
+      render: (text, record) => <>{text}</>,
+      // sorter: (a, b) => a.totalprojects.length - b.totalprojects.length,
+    },
+
+    {
+      title: "تلفن",
+      dataIndex: "company_data",
+      render: (text, record) => <>{text.Phone}</>,
+      // sorter: (a, b) => a.status.length - b.status.length,
     },
     {
       title: "",
@@ -208,6 +125,13 @@ const Providers = () => {
             className="btn btn-sm btn-secondary ms-2"
             data-bs-toggle="modal"
             data-bs-target="#add-category"
+            onClick={() => {
+              setSelectedCompany(record);
+              setEditedCompanyName(record.company_data.Name);
+              setEditedCompanyid(record.company_data.id);
+              setEditedplan(record.company_data.active_plan);
+              setEditedowner(record.company_data.Owner_name);
+            }}
           >
             <i className="far fa-edit"></i>
           </Link>
@@ -216,6 +140,9 @@ const Providers = () => {
             className="btn btn-sm btn-danger"
             data-bs-toggle="modal"
             data-bs-target="#delete_category"
+            onClick={() => {
+              setDeletedCompanyid(record.company_data.userr.id);
+            }}
           >
             <i className="far fa-trash-alt"></i>
           </Link>
@@ -239,6 +166,10 @@ const Providers = () => {
     }),
   };
 
+  useEffect(() => {
+    dispatch(companyListAction());
+  }, [dispatch, successup, successdel]);
+
   return (
     <>
       <>
@@ -248,104 +179,33 @@ const Providers = () => {
             {/* Page Wrapper */}
             <div className="page-wrapper">
               <div className="content container-fluid">
-                {/* Page Header */}
-                <div className="page-header">
-                  <div className="row align-items-center">
-                    <div className="col">
-                      <h3 className="page-title">شرکت ها</h3>
-                    </div>
-                    <div className="col-auto">
-                      <Link
-                        className="btn filter-btn"
-                        to="#"
-                        id="filter_search"
-                      >
-                        <i
-                          className="fas fa-filter"
-                          onClick={() => togglefilter(!inputfilter)}
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-                {/* /Page Header */}
-                {/* Search Filter */}
-                <div
-                  className="card filter-card"
-                  id="filter_inputs"
-                  style={{ display: inputfilter ? "block" : "none" }}
-                >
-                  <div className="card-body pb-0">
-                    <form action="#" method="post">
-                      <div className="row filter-row">
-                        <div className="col-sm-6 col-md-3">
-                          <div className="form-group">
-                            <label>نام شرکت</label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-sm-6 col-md-3">
-                          <div className="form-group">
-                            <label>از تاریخ</label>
-                            <div className="cal-icon">
-                              <DatePicker
-                                selected={date}
-                                onChange={handleChange}
-                                className="form-control datetimepicker"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-sm-6 col-md-3">
-                          <div className="form-group">
-                            <label>تا تاریخ</label>
-                            <div className="cal-icon">
-                              <DatePicker
-                                selected={date}
-                                onChange={handleChange}
-                                className="form-control datetimepicker"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-sm-6 col-md-3">
-                          <div className="form-group">
-                            <button
-                              className="btn btn-primary btn-block"
-                              type="submit"
-                            >
-                              تایید
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                {/* /Search Filter */}
                 <div className="row">
                   <div className="col-sm-12">
                     <div className="card">
                       <div className="card-body">
-                        <div className="table-responsive">
-                          <Table
-                            rowSelection={rowSelection}
-                            scroll={{ x: true }}
-                            pagination={{
-                              total: data.length,
-                              showTotal: (total, range) =>
-                                `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                              showSizeChanger: true,
-                              onShowSizeChange: onShowSizeChange,
-                              itemRender: itemRender,
-                            }}
-                            className="table"
-                            style={{ overflowX: "auto" }}
-                            columns={columns}
-                            dataSource={data}
-                            rowKey={(record) => record.id}
-                          />
-                        </div>
+                        {loading ? (
+                          <Loader />
+                        ) : (
+                          <div className="table-responsive">
+                            <Table
+                              rowSelection={rowSelection}
+                              scroll={{ x: true }}
+                              pagination={{
+                                total: data.length,
+                                showTotal: (total, range) =>
+                                  `نمایش ${range[0]} از ${range[1]} کل ${total} نتایج`,
+                                showSizeChanger: true,
+                                onShowSizeChange: onShowSizeChange,
+                                itemRender: itemRender,
+                              }}
+                              className="table"
+                              style={{ overflowX: "auto" }}
+                              columns={columns}
+                              dataSource={data}
+                              rowKey={(record) => record.id}
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -377,45 +237,43 @@ const Providers = () => {
                           <input
                             type="text"
                             className="form-control"
-                            defaultValue="فراوب|Faraweb"
+                            defaultValue={editedCompanyName}
+                            onChange={(e) =>
+                              setEditedCompanyName(e.target.value)
+                            }
                           />
                         </div>
                         <div className="form-group">
-                          <label>نام مدیر</label>
+                          <label>نام صاحب شرکت </label>
                           <input
                             type="text"
                             className="form-control"
-                            defaultValue="سپیده زینال زادگان"
+                            defaultValue={Editedowner}
+                            onChange={(e) => setEditedowner(e.target.value)}
                           />
                         </div>
+
                         <div className="form-group">
-                          <label>وبسایت</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            defaultValue="https://faraweb.com"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>فرصت های شغلی</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            defaultValue={12}
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>وضعیت</label>
-                          <select className="form-control form-select">
-                            <option selected="">انتخاب کنید</option>
-                            <option selected="">غیرفعال</option>
-                            <option>فعال</option>
+                          <label>اشتراک فعال </label>
+                          <select
+                            name="price"
+                            className="form-control select-level"
+                            value={Editedplan}
+                            onChange={(e) => setEditedplan(e.target.value)}
+                          >
+                            <option value="بنیادی">بنیادی</option>
+                            <option value="پیشرفته">پیشرفته</option>
                           </select>
                         </div>
+
                         <div className="mt-4">
                           <button
                             type="submit"
                             className="btn btn-primary btn-block"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              handleSubmit();
+                            }}
                           >
                             تایید
                           </button>
@@ -445,12 +303,17 @@ const Providers = () => {
                             <Link
                               to="#"
                               className="btn btn-primary continue-btn"
+                              onClick={(event) => {
+                                event.preventDefault();
+                                handledeleteSubmit();
+                              }}
                             >
                               حذف
                             </Link>
                           </div>
                           <div className="col-6">
                             <Link
+                              id="#cancelLink"
                               to="#"
                               data-bs-dismiss="modal"
                               className="btn btn-primary cancel-btn"

@@ -12,31 +12,26 @@ import {
   Tab_icon_12,
   Tab_icon_13,
 } from "../../imagepath";
-import StickyBox from "react-sticky-box";
-import { ProfileSidebar } from "../../forfreelancer/sidebar/profilesidebar";
-import { useLocation } from "react-router-dom";
+import moment from "jalali-moment";
+import Loader from "../../../../Loader";
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { listJobs } from "../../../../actions/jobActions";
+import { companyJobsListAction } from "../../../../actions/companyActions";
 
-export const CompanyProject = (props) => {
-  // const input = useLocation();
-  // console.log(input, "Sss");
-  // const [item, setItem] = useState([input]);
+const CompanyProject = ({ companyId }) => {
+  // for using redux in our project
+  const dispatch = useDispatch();
+  const companyJobs = useSelector((state) => state.companyJobsList);
+  const { companyJobsListArray, loading } = companyJobs;
+  console.log(companyJobsListArray);
+  useEffect(() => {
+    dispatch(companyJobsListAction(companyId));
 
-  // // for using redux in our project
-  // const dispatch = useDispatch();
-  // const listJob = useSelector((state) => state.jobList);
-  // const { jobs } = listJob;
-  // // console.log(error, loading, jobs);
-  // useEffect(() => {
-  //   dispatch(listJobs());
-
-  //   document.body.className = "dashboard-page";
-  //   return () => {
-  //     document.body.className = "";
-  //   };
-  // }, [dispatch]);
+    // document.body.className = "dashboard-page";
+    // return () => {
+    //   document.body.className = "";
+    // };
+  }, [dispatch]);
 
   // // console.log(jobs, "job list per company");
 
@@ -49,97 +44,102 @@ export const CompanyProject = (props) => {
     <>
       <div className="pro-post widget-box company-post align-right">
         <h3 className="pro-title">فرصت های شغلی</h3>
-        <div className="projects-card flex-fill project-company">
-          <div className="card-body">
-            <div className="projects-details align-items-center">
-              <div className="project-info">
-                <span>آرمان ارتباطات ویرا</span>
-                <h2>رایمون فناور آریان | Rymon Fanavar Arian</h2>
-                <div className="customer-info">
-                  <ul className="list-details">
-                    <li>
-                      <div className="slot">
-                        <p>Price type</p>
-                        <h5>Fixed</h5>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="slot">
-                        <p>شهر</p>
-                        <h5>تهران</h5>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="slot">
-                        <p>تاریخ انقضا</p>
-                        <h5>۱۰ روز</h5>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div className="project-hire-info">
-                <div className="content-divider" />
-                <div className="projects-amount">
-                  <h3>13 میلیون</h3>
-                  {/* <h5>in 12 Days</h5> */}
-                </div>
-                <div className="content-divider" />
-                {/* <div className="projects-action text-center">
-                            <Link
-                              to="/view-project-detail"
-                              className="projects-btn"
-                            >
-                              View Proposals
-                            </Link>
-                            <Link
-                              to="/view-project-detail"
-                              className="projects-btn"
-                            >
-                              Edit Jobs
-                            </Link>
-                            <Link to="#" className="hired-detail">
-                              <span>5</span> Proposals
-                            </Link>
-                          </div> */}
-              </div>
-            </div>
-          </div>
-        </div>
+        {loading ? (
+          <Loader />
+        ) : (
+          companyJobsListArray?.map((items, index) =>
+            items.status === "فعال" ? (
+              <div className="projects-card flex-fill project-company">
+                <div className="card-body">
+                  <div className="projects-details align-items-center">
+                    <div className="project-info">
+                      <Link
+                        className="font-semibold text-primary"
+                        to={{
+                          pathname: "/project-details",
+                          state: { jobIdInput: +items.id },
+                        }}
+                      >
+                        <span>{items.title}</span>
+                      </Link>
 
-        {/* Pagination */}
-        <div className="row">
-          <div className="col-md-12">
-            <ul className="paginations list-pagination">
-              <li>
-                <Link to="#">
-                  <i className="fas fa-angle-right" /> قبلی
-                </Link>
-              </li>
-              <li>
-                <Link to="#">1</Link>
-              </li>
-              <li>
-                <Link to="#" className="active">
-                  2
-                </Link>
-              </li>
-              <li>
-                <Link to="#">3</Link>
-              </li>
-              <li>
-                <Link to="#">4</Link>
-              </li>
-              <li>
-                <Link to="#">
-                  بعدی <i className="fas fa-angle-left" />
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        {/* /Pagination */}
+                      {/* <h2>{items.company?.Name}</h2> */}
+                      <div className="d-flex ">
+                        <div className="avatar avatar-xl ms-2">
+                          <img
+                            className="avatar-img "
+                            style={{ borderRadius: "10px" }}
+                            alt=""
+                            src={"http://127.0.0.1:8000" + items.company?.image}
+                          />
+                        </div>
+                        <div
+                          className="customer-info"
+                          style={{ width: "100%" }}
+                        >
+                          <ul className="list-details">
+                            <li>
+                              <div className="slot">
+                                <p>نام شرکت</p>
+                                <h2>{items.company?.Name}</h2>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="slot">
+                                <p> حقوق</p>
+                                <h5>
+                                  {items.salary_amount === null
+                                    ? items.salary_type
+                                    : `${items.salary_amount} میلیون تومان`}
+                                </h5>
+                              </div>
+                            </li>
+
+                            <li>
+                              <div className="slot">
+                                <p>حوزه</p>
+                                <h5>{items.job_category?.title}</h5>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="slot">
+                                <p>تاریخ انتشار</p>
+                                <h5>
+                                  {moment(items.published_at, "YYYY/MM/DD")
+                                    .locale("fa")
+                                    .format("YYYY/MM/DD")}
+                                </h5>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="project-hire-info">
+                      <Link
+                        className="font-semibold text-primary"
+                        to={{
+                          pathname: "/project-details",
+                          state: { jobIdInput: +items.id },
+                        }}
+                      >
+                        <h4
+                          style={{ borderRadius: "20px" }}
+                          className="btn-cart"
+                        >
+                          مشاهده بیشتر
+                        </h4>
+                      </Link>
+                      {/* <h5>in 12 Days</h5> */}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : null
+          )
+        )}
       </div>
     </>
   );
 };
+export default CompanyProject;

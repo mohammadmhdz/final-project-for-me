@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 // Import Slick Slider
 import Slider from "react-slick";
 // Import Images
-import { Review_01, Review_02 } from "../imagepath";
+import { Review_01, Review_02, Review_03, Review_1 } from "../imagepath";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -97,115 +97,15 @@ const Reviews = (props) => {
                 </div>
               </div>
               <div className="review-content">
-                <p>
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                  استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و
-                  مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی
-                  تکنولوژی مورد نیاز
+                <p class="limited-lines">
+                  من به دنبال کاری در زمینه مهندسی برق بودم و با استفاده از سایت
+                  کمک کار موفق شدم به شغلی مناسب دست پیدا کنم. بخش جستجوی سریع و
+                  دقیق سایت بسیار کمکم کرد و در کمتر از یک هفته به یک مصاحبه
+                  کاری دعوت شدم. از تجربه مثبتی که با این سایت داشتم بسیار راضی
+                  هستم.
                 </p>
               </div>
             </div>
-            <div className="review-blog">
-              <div className="review-top d-flex align-items-center">
-                <div className="review-img">
-                  <Link to="/review">
-                    <img
-                      className="img-fluid"
-                      src={Review_01}
-                      alt="Post Image"
-                    />
-                  </Link>
-                </div>
-                <div className="review-info align-right">
-                  <h3>فاطمه حنیفی</h3>
-                  <h5>کارجو</h5>
-                  <div className="rating">
-                    <i className="fas fa-star filled" />
-                    <i className="fas fa-star filled" />
-                    <i className="fas fa-star filled" />
-                    <i className="fas fa-star filled" />
-                    <i className="fas fa-star" />
-                    <span className="average-rating">4.7</span>
-                  </div>
-                </div>
-              </div>
-              <div className="review-content">
-                <p>
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                  استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و
-                  مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی
-                  تکنولوژی مورد نیاز
-                </p>
-              </div>
-            </div>
-            <div className="review-blog">
-              <div className="review-top d-flex align-items-center">
-                <div className="review-img">
-                  <Link to="/review">
-                    <img
-                      className="img-fluid"
-                      src={Review_01}
-                      alt="Post Image"
-                    />
-                  </Link>
-                </div>
-                <div className="review-info align-right">
-                  <h3>فاطمه حنیفی</h3>
-                  <h5>کارجو</h5>
-                  <div className="rating">
-                    <i className="fas fa-star filled" />
-                    <i className="fas fa-star filled" />
-                    <i className="fas fa-star filled" />
-                    <i className="fas fa-star filled" />
-                    <i className="fas fa-star" />
-                    <span className="average-rating">4.7</span>
-                  </div>
-                </div>
-              </div>
-              <div className="review-content">
-                <p>
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                  استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و
-                  مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی
-                  تکنولوژی مورد نیاز
-                </p>
-              </div>
-            </div>
-            <div className="review-blog">
-              <div className="review-top d-flex align-items-center">
-                <div className="review-img">
-                  <Link to="/review">
-                    <img
-                      className="img-fluid"
-                      src={Review_01}
-                      alt="Post Image"
-                    />
-                  </Link>
-                </div>
-                <div className="review-info align-right">
-                  <h3>فاطمه حنیفی</h3>
-                  <h5>کارجو</h5>
-                  <div className="rating">
-                    <i className="fas fa-star filled" />
-                    <i className="fas fa-star filled" />
-                    <i className="fas fa-star filled" />
-                    <i className="fas fa-star filled" />
-                    <i className="fas fa-star" />
-                    <span className="average-rating">4.7</span>
-                  </div>
-                </div>
-              </div>
-              <div className="review-content">
-                <p>
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                  استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و
-                  مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی
-                  تکنولوژی مورد نیاز
-                </p>
-              </div>
-            </div>
-            {/* / Review Widget */}
-            {/* Review Widget */}
             <div className="review-blog">
               <div className="review-top d-flex align-items-center">
                 <div className="review-img">
@@ -218,8 +118,111 @@ const Reviews = (props) => {
                   </Link>
                 </div>
                 <div className="review-info align-right">
+                  <h3>شیما نبوی </h3>
+                  <h5>کارجو</h5>
+                  <div className="rating">
+                    <i className="fas fa-star filled" />
+                    <i className="fas fa-star filled" />
+                    <i className="fas fa-star filled" />
+                    <i className="fas fa-star filled" />
+                    <i className="fas fa-star" />
+                    <span className="average-rating">4.7</span>
+                  </div>
+                </div>
+              </div>
+              <div className="review-content">
+                <p class="limited-lines">
+                  سایت کمک کار برای من یک چشم انداز عالی و خیلی خوب برای پیدا
+                  کردن کار بود. من به تازگی از رشته مدیریت فارغ التحصیل شده بودم
+                  و به دنبال یک شغل در زمینه بازاریابی بودم ولی به نتیجه
+                  نمیرسیدم. سایت با ارائه فرصت‌های شغلی مناسب و اطلاعات ...
+                </p>
+              </div>
+            </div>
+            <div className="review-blog">
+              <div className="review-top d-flex align-items-center">
+                <div className="review-img">
+                  <Link to="/review">
+                    <img
+                      className="img-fluid"
+                      src={Review_1}
+                      alt="Post Image"
+                    />
+                  </Link>
+                </div>
+                <div className="review-info align-right">
+                  <h3>آریا عسگری </h3>
+                  <h5>کارجو</h5>
+                  <div className="rating">
+                    <i className="fas fa-star filled" />
+                    <i className="fas fa-star filled" />
+                    <i className="fas fa-star filled" />
+                    <i className="fas fa-star filled" />
+                    <i className="fas fa-star" />
+                    <span className="average-rating">4.7</span>
+                  </div>
+                </div>
+              </div>
+              <div className="review-content">
+                <p class="limited-lines">
+                  استفاده از سایت کمک کار برای من تبدیل به یک تجربه مثبت شده
+                  است. من به دنبال یک فرصت شغلی در حوزه تجارت الکترونیک بودم و
+                  با استفاده از این سایت به یک شغل مناسب رسیدم. ویژگی‌هایی مانند
+                  راحتی استفاده، پاسخگویی سریع تیم پشتیبانی و گستره گزینه‌های
+                  ...
+                </p>
+              </div>
+            </div>
+            <div className="review-blog">
+              <div className="review-top d-flex align-items-center">
+                <div className="review-img">
+                  <Link to="/review">
+                    <img
+                      className="img-fluid"
+                      src={Review_03}
+                      alt="Post Image"
+                    />
+                  </Link>
+                </div>
+                <div className="review-info align-right">
+                  <h3>معین مهدی‌زاده</h3>
+                  <h5>کارفرما</h5>
+                  <div className="rating">
+                    <i className="fas fa-star filled" />
+                    <i className="fas fa-star filled" />
+                    <i className="fas fa-star filled" />
+                    <i className="fas fa-star filled" />
+                    <i className="fas fa-star" />
+                    <span className="average-rating">4.7</span>
+                  </div>
+                </div>
+              </div>
+              <div className="review-content">
+                <p>
+                  سایت کمک کار یک ابزار قدرتمند برای جذب نیروی کار است. من با
+                  استفاده از این سایت تعداد زیادی آگهی استخدام منتشر کردم و در
+                  کمترین زمان ممکن به فرد مناسب برای هر شغل رسیدم. امکانات
+                  پیشرفته جستجو و فیلتر کردن، به همراه امکان ارسال پیام و مدیریت
+                  ...
+                </p>
+              </div>
+            </div>
+            {/* / Review Widget */}
+            {/* Review Widget */}
+            <div className="review-blog">
+              <div className="review-top d-flex align-items-center">
+                <div className="review-img">
+                  <Link to="/review">
+                    <img
+                      className="img-fluid"
+                      src={Review_1}
+                      alt="Post Image"
+                    />
+                  </Link>
+                </div>
+                <div className="review-info align-right">
                   <h3>علی خزایی</h3>
-                  <h5>رهبر پروژه</h5>
+                  <h5> کارفرما</h5>
                   <div className="rating">
                     <i className="fas fa-star filled" />
                     <i className="fas fa-star filled" />
@@ -232,10 +235,10 @@ const Reviews = (props) => {
               </div>
               <div className="review-content">
                 <p>
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                  استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و
-                  مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی
-                  تکنولوژی مورد نیاز
+                  با استفاده از سایت کمک کار توانستم به راحتی نیروی کار ما را
+                  تکمیل کنم. قابلیت‌های پیشرفته‌ای برای انتخاب و فیلتر کردن
+                  کاندیداها در اختیار دارد و ما را قادر می‌سازد به سرعت بهترین
+                  فرد را برای شغل‌های خالی پیدا کنیم. همچنین، امکان ارسال و ...
                 </p>
               </div>
             </div>

@@ -1,5 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import moment from "jalali-moment";
 import StickyBox from "react-sticky-box";
 // Import Images
 import {
@@ -25,9 +26,57 @@ import {
   Img_01,
   Icon_10,
   Icon_11,
+  Avatar_2,
 } from "../../imagepath";
+import SimpleReactLightbox from "simple-react-lightbox";
+import { SRLWrapper } from "simple-react-lightbox";
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import {
+  employeeDetails,
+  employeePortfolioDetails,
+} from "../../../../actions/employeeActions";
+import {
+  companyToggleFavoriteList,
+  companyDetails,
+} from "../../../../actions/companyActions";
 
 const DeveloperProfile = (props) => {
+  const location = useLocation();
+  const idInfo = location.state.idInfo;
+
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
+  const dispatch = useDispatch();
+  const employeeDetailsList = useSelector((state) => state.employeeDetails);
+  const Portfolio = useSelector((state) => state.employeePortfolio);
+  const toggleFavorite = useSelector((state) => state.companyToggleFavorite);
+  const companyDetailsReducer = useSelector((state) => state.companyDetails);
+  const { employee } = employeeDetailsList;
+  const { companyDetail } = companyDetailsReducer;
+  const { employeePortfolioArray } = Portfolio;
+
+  const handleToggleFavorite = (e) => {
+    e.preventDefault();
+    dispatch(companyToggleFavoriteList(localItem.associated_id, idInfo));
+  };
+  useEffect(() => {
+    // we must take the id from where we reach here
+    dispatch(employeeDetails(idInfo));
+    dispatch(employeePortfolioDetails(idInfo));
+    dispatch(companyDetails(localItem?.associated_id));
+
+    document.body.className = "dashboard-page";
+    return () => {
+      document.body.className = "";
+    };
+  }, [dispatch]);
+  // console.log(employee , "EMPLOYEE INFO")
+  console.log(employeePortfolioArray, "EMPLOYEE PORTFOLIO INFO");
+  console.log(employee, "toggle favoirte");
+  console.log(companyDetail, "company detail");
+
+  // console.log(location , "loc");
   return (
     <>
       {/* Breadcrumb */}
@@ -43,16 +92,54 @@ const DeveloperProfile = (props) => {
                   <div className="provider-widget">
                     <div className="pro-info-left">
                       <div className="provider-img">
-                        <img src={Img_01} alt="User" />
+                        <img
+                          src={
+                            employee.image !== null
+                              ? `http://127.0.0.1:8000${employee.image}`
+                              : Img_01
+                          }
+                          alt="User"
+                        />
                       </div>
                       <div className="profile-info">
-                        <h2 className="profile-title">محمد مهدی‌زاده</h2>
-                        <p className="profile-position">front-end Developer</p>
-                        <div>
-                          <a href="#" className="btn full-btn">
-                            تمام وقت
-                          </a>
-                        </div>
+                        <h2 className="profile-title">
+                          {employee.user?.first_name} {employee.user?.last_name}
+                        </h2>
+                        <p className="profile-position">
+                          {employee.perfession_title}{" "}
+                        </p>
+                        {localItem.role === "employer" ? (
+                          <div>
+                            <a href="" className="btn full-btn ms-3">
+                              {employee.cooperation_type}
+                            </a>
+                            <a
+                              href={
+                                employee?.cv
+                                  ? `http://127.0.0.1:8000/${employee.cv}`
+                                  : null
+                              }
+                              className={
+                                employee.cv
+                                  ? "btn full-btn ms-3"
+                                  : "btn full-btn ms-3 disable-btn"
+                              }
+                            >
+                              دانلود رزومه
+                            </a>
+                            <a href="" onClick={handleToggleFavorite}>
+                              <i
+                                className={
+                                  companyDetail.company_data?.favorite_employee?.includes(
+                                    idInfo
+                                  )
+                                    ? "fa fa-heart heart fa-2x ms-2 red-text"
+                                    : "far fa-heart heart fa-2x ms-2 red-text"
+                                }
+                              />
+                            </a>
+                          </div>
+                        ) : null}
                       </div>
                     </div>
                     <div className="pro-info-right profile-inf"></div>
@@ -82,14 +169,19 @@ const DeveloperProfile = (props) => {
                       </a>
                     </li>
                     <li className="nav-item">
-                      <a className="nav-link" href="#bids" data-bs-toggle="tab">
+                      <Link
+                        to="#bids"
+                        className="nav-link"
+                        href="#bids"
+                        data-bs-toggle="tab"
+                      >
                         <img
                           className="img-fluid"
                           alt="User Image"
                           src={Tab_icon_02}
                         />
                         <p className="bg-blue">پروژه ها</p>
-                      </a>
+                      </Link>
                     </li>
                     <li className="nav-item">
                       <Link
@@ -136,21 +228,7 @@ const DeveloperProfile = (props) => {
                 <div className="pro-post widget-box align-right" id="overview">
                   <h3 className="pro-title">درباره</h3>
                   <div className="pro-content">
-                    <p>
-                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ،
-                      و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه
-                      روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای
-                      شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-                      بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
-                      درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می
-                      طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه
-                      ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی
-                      ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری
-                      موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                      زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی
-                      سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده
-                      قرار گیرد.
-                    </p>
+                    <p>{employee.about}</p>
                   </div>
                 </div>
                 <div
@@ -160,48 +238,31 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">سوابق شغلی</h3>
                   <div className="pro-content">
                     <div className="row">
-                      <div
-                        className="col-lg-4 col-md-6 d-flex"
-                        style={{ height: "100%" }}
-                      >
-                        <div className="experiance-list d-flex  flex-column">
-                          <div className="experiance-logo d-flex align-items-center justify-content-center">
-                            <img className="img-fluid" alt="" src={Icon_10} />
+                      {employee.Experiences?.map((item) => (
+                        <div
+                          className="col-lg-4 col-md-6 d-flex"
+                          style={{ height: "100%" }}
+                        >
+                          <div className="experiance-list d-flex  flex-column">
+                            <div className="experiance-logo d-flex align-items-center justify-content-center">
+                              <img className="img-fluid" alt="" src={Icon_10} />
+                            </div>
+                            <h4>{item.title}</h4>
+                            <h5>{item.company_name}</h5>
+                            <h5>
+                              {" "}
+                              {moment(item.from_date, "YYYY/MM/DD")
+                                .locale("fa")
+                                .format("YYYY/MM/DD")}{" "}
+                              الی{" "}
+                              {moment(item.to_date, "YYYY/MM/DD")
+                                .locale("fa")
+                                .format("YYYY/MM/DD")}
+                            </h5>
+                            <p>{/* description */}</p>
                           </div>
-                          <h4>توسعه دهنده Front-end</h4>
-                          <h5>آرمان ارتباطات ویرا</h5>
-                          <h5> تابستان ۱۴۰۱</h5>
-                          <p>{/* description */}</p>
                         </div>
-                      </div>
-                      <div
-                        className="col-lg-4 col-md-6 d-flex"
-                        style={{ height: "100%" }}
-                      >
-                        <div className="experiance-list d-flex  flex-column">
-                          <div className="experiance-logo d-flex align-items-center justify-content-center">
-                            <img className="img-fluid" alt="" src={Icon_10} />
-                          </div>
-                          <h4>توسعه دهنده Front-end</h4>
-                          <h5>آرمان ارتباطات ویرا</h5>
-                          <h5> تابستان ۱۴۰۱</h5>
-                          <p>{/* description */}</p>
-                        </div>
-                      </div>
-                      <div
-                        className="col-lg-4 col-md-6 d-flex"
-                        style={{ height: "100%" }}
-                      >
-                        <div className="experiance-list d-flex  flex-column">
-                          <div className="experiance-logo d-flex align-items-center justify-content-center">
-                            <img className="img-fluid" alt="" src={Icon_10} />
-                          </div>
-                          <h4>توسعه دهنده Front-end</h4>
-                          <h5>آرمان ارتباطات ویرا</h5>
-                          <h5> تابستان ۱۴۰۱</h5>
-                          <p>{/* description */}</p>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -214,18 +275,29 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">تحصیلات</h3>
                   <div className="pro-content">
                     <div className="row">
-                      <div
-                        className="col-lg-6 col-md-6 d-flex"
-                        style={{ height: "100%" }}
-                      >
-                        <div className="experiance-list">
-                          <div className="experiance-logo logo-bg d-flex align-items-center justify-content-center">
-                            <img className="img-fluid" alt="" src={Icon_11} />
+                      {employee.Education?.map((item) => (
+                        <div
+                          className="col-lg-6 col-md-6 d-flex"
+                          style={{ height: "100%" }}
+                        >
+                          <div className="experiance-list">
+                            <div className="experiance-logo logo-bg d-flex align-items-center justify-content-center">
+                              <img className="img-fluid" alt="" src={Icon_11} />
+                            </div>
+                            <h4>{item.degree} </h4>
+                            <h5>
+                              {moment(item.from_date, "YYYY/MM/DD")
+                                .locale("fa")
+                                .format("YYYY")}{" "}
+                              الی{" "}
+                              {moment(item.to_date, "YYYY/MM/DD")
+                                .locale("fa")
+                                .format("YYYY")}
+                            </h5>
+                            <h5>{item.institute}</h5>
                           </div>
-                          <h4>مهندسی کامپیوتر</h4>
-                          <h5>دانشگاه زنجان ۱۳۹۷-۱۴۰۲</h5>
                         </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -236,32 +308,88 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">نمونه کارها</h3>
                   <div className="pro-content">
                     <div className="row">
-                      <div className="col-sm-6 col-md-6 col-lg-4 col-xl-3">
-                        <div className="project-widget">
-                          <div className="pro-image">
-                            <a href={Project_img} data-fancybox="gallery2">
-                              <img
-                                className="img-fluid"
-                                alt="User Image"
-                                src={Project_img}
-                              />
-                            </a>
+                      {/* {employeePortfolioArray.length !== 0 ? (
+                        employeePortfolioArray?.map((item) => (
+                          <div className="col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                            <div className="project-widget">
+                              <div className="pro-image">
+                                <a data-fancybox="gallery2">
+                                  <img
+                                    className="img-fluid"
+                                    alt="User Image"
+                                    src={
+                                      item.image !== null
+                                        ? `http://127.0.0.1:8000${item.image}`
+                                        : Avatar_2
+                                    }
+                                  />
+                                </a>
+                              </div>
+                              <div className="pro-detail">
+                                {/* <h3 className="pro-name">{item.description}</h3> */}
+                      {/* <p className="pro-designation">
+                                  {item.title === null
+                                    ? "نمونه جهت نمایش وجود ندارد"
+                                    : item.title}
+                                </p>
+                              </div>
+                            </div>
                           </div>
-                          <div className="pro-detail">
-                            <h3 className="pro-name">نام پروژه</h3>
-                            <p className="pro-designation">حوزه</p>
-                          </div>
+                        ))
+                      ) : (
+                        <h5>نمونه کاری جهت نمایش وجود ندارد</h5>
+                      )} */}
+                      <SimpleReactLightbox>
+                        <div id="bids">
+                          <SRLWrapper>
+                            <div className="row">
+                              {employeePortfolioArray.length !== 0 ? (
+                                employeePortfolioArray?.map((item) => (
+                                  <div
+                                    className="col-sm-6 col-md-6 col-lg-4 col-xl-4"
+                                    key={item.id}
+                                  >
+                                    <div className="project-widget">
+                                      <div className="pro-image">
+                                        <button
+                                          data-fancybox="gallery222"
+                                          style={{
+                                            fit: "cover",
+                                            border: "none",
+                                            backgroundColor: " ##b4d8c9;",
+                                            borderRadius: "10px",
+                                            color: "#FE4A23",
+                                            height: "320px",
+                                            width: "250px",
+                                          }}
+                                        >
+                                          <img
+                                            className="img-fluid gallery-image mt-2 ps-3 me-2"
+                                            src={
+                                              item.image !== null
+                                                ? `http://127.0.0.1:8000${item.image}`
+                                                : Avatar_2
+                                            }
+                                          />
+                                          <p className="mt-2">{item.title}</p>
+                                          <h3 className="pro-name mb-2">
+                                            {item.description}
+                                          </h3>
+                                          <div className="view-gallery">
+                                            <i className="far fa-eye" />
+                                          </div>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))
+                              ) : (
+                                <h5>نمونه کاری جهت نمایش وجود ندارد</h5>
+                              )}{" "}
+                            </div>
+                          </SRLWrapper>
                         </div>
-                      </div>
-
-                      <div className="col-md-12 text-center">
-                        <Link
-                          to="/freelancer-portfolio"
-                          className="btn more-btn"
-                        >
-                          مشاهده همه{" "}
-                        </Link>
-                      </div>
+                      </SimpleReactLightbox>
                     </div>
                   </div>
                 </div>
@@ -274,18 +402,11 @@ const DeveloperProfile = (props) => {
                   <h3 className="pro-title">مهارت های فنی</h3>
                   <div className="pro-content">
                     <div className="tags">
-                      <span className="badge badge-pill badge-skills">
-                        + Web Design
-                      </span>
-                      <span className="badge badge-pill badge-skills">
-                        + UI Design
-                      </span>
-                      <span className="badge badge-pill badge-skills">
-                        + Node Js
-                      </span>
-                      <span className="badge badge-pill badge-skills">
-                        + Javascript
-                      </span>
+                      {employee.skills?.map((item) => (
+                        <span className="badge badge-pill badge-skills">
+                          {item.title}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -302,45 +423,21 @@ const DeveloperProfile = (props) => {
                   <div className="col-2 text-end"></div>
                 </div>
                 <ul className="latest-posts pro-content">
-                  <li>
-                    <p>English</p>
-                    <div className="progress progress-md mb-0">
-                      <div
-                        className="progress-bar"
-                        role="progressbar"
-                        style={{ width: "50%" }}
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                  </li>
-                  <li>
-                    <p>فارسی</p>
-                    <div className="progress progress-md mb-0">
-                      <div
-                        className="progress-bar bg-success"
-                        role="progressbar"
-                        style={{ width: "65%" }}
-                        aria-valuenow={25}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                  </li>
-                  <li>
-                    <p>آلمانی</p>
-                    <div className="progress progress-md mb-0">
-                      <div
-                        className="progress-bar bg-warning"
-                        role="progressbar"
-                        style={{ width: "50%" }}
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                  </li>
+                  {employee.Language?.map((item) => (
+                    <li>
+                      <p>{item.language}</p>
+                      <div className="progress progress-md mb-0">
+                        <div
+                          className="progress-bar"
+                          role="progressbar"
+                          style={{ width: `${item.rate}%` }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="pro-post widget-box about-widget align-right">
@@ -353,15 +450,15 @@ const DeveloperProfile = (props) => {
                 <ul className="latest-posts pro-content pt-0">
                   <li>
                     <p>جنسیت</p>
-                    <h6>زن</h6>
+                    <h6>{employee.gender}</h6>
                   </li>
                   <li>
-                    <p>سابقه کاری</p>
-                    <h6>سال ۱</h6>
+                    <p>ایمیل</p>
+                    <h6>{employee.user?.email}</h6>
                   </li>
                   <li>
                     <p>شهر</p>
-                    <h6>زنجان</h6>
+                    <h6>{employee.city?.name}</h6>
                   </li>
                 </ul>
               </div>
@@ -370,27 +467,22 @@ const DeveloperProfile = (props) => {
                 <div className="widget-title-box">
                   <h4 className="pro-title">شبکه های اجتماعی </h4>
                 </div>
-                <ul className="latest-posts pro-content ">
+                <ul className="social-link-profile">
                   <li>
-                    <a href="#">http://www.facebook.com/john...</a>
+                    <a href={employee.manual_link}>
+                      <i className="fa fa-globe" />
+                    </a>
                   </li>
                   <li>
-                    <a href="#">http://www.Twitter.com/john...</a>
-                  </li>
-                  <li>
-                    <a href="#">Http://www.googleplus.com/john... </a>
-                  </li>
-                  <li>
-                    <a href="#"> Http://www.behance.com/john...</a>
-                  </li>
-                  <li>
-                    <a href="#"> Http://www.pinterest.com/john...</a>
+                    <a href={employee.linkdin}>
+                      <i className="fab fa-linkedin" />
+                    </a>
                   </li>
                 </ul>
               </div>
               {/* /Categories */}
               {/* Link Widget */}
-              <div className="pro-post widget-box post-widget align-right">
+              {/* <div className="pro-post widget-box post-widget align-right">
                 <h3 className="pro-title">لینک پروفایل</h3>
                 <div className="pro-content">
                   <div className="form-group profile-group mb-0">
@@ -411,7 +503,7 @@ const DeveloperProfile = (props) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               {/* /Link Widget */}
             </div>
             {/* /Blog Sidebar */}

@@ -12,14 +12,44 @@ import {
   home_icon,
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
+// redux
+// import {companyFavoriteEmployee}from "../../../../store"
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../../../Loader";
+import {
+  companyFavoriteEmployees,
+  companyToggleFavoriteList,
+} from "../../../../actions/companyActions";
+import { employeeFavoriteList } from "../../../../actions/employeeActions";
 
 const Favourites = (props) => {
+  // redux
+  const dispatch = useDispatch();
+  const companyEmployeeFavorite = useSelector(
+    (state) => state.companyFavoriteEmployee
+  );
+  const toggleFavoriteResultt = useSelector(
+    (state) => state.companyToggleFavorite
+  );
+
+  const { success, toggleFavoriteResult } = toggleFavoriteResultt;
+  const { companyFavoriteEmployeesList, loading } = companyEmployeeFavorite;
+
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
+  const handleToggleFavorite = (e, idInfo) => {
+    e.preventDefault();
+    dispatch(companyToggleFavoriteList(localItem.associated_id, idInfo));
+  };
+
   useEffect(() => {
+    dispatch(companyFavoriteEmployees(localItem.associated_id));
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
-  });
+  }, [dispatch, success]);
+  console.log(companyFavoriteEmployeesList);
   return (
     <>
       {/* Page Content */}
@@ -48,65 +78,101 @@ const Favourites = (props) => {
                             <thead className="thead-pink">
                               <tr>
                                 <th>اطلاعات کارجو</th>
-                                <th>حداقل حقوق</th>
-                                <th>سابقه کار</th>
+                                <th> نوع همکاری</th>
+                                <th>ایمیل</th>
                                 <th>شهر</th>
                                 <th>وضعیت</th>
                                 <th />
                               </tr>
                             </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <h2 className="table-avatar">
-                                    <Link
-                                      to="/freelancer-profile"
-                                      className="avatar avatar-md tab-imgcircle ms-2"
-                                    >
-                                      <img
-                                        className="avatar-img rounded-circle"
-                                        src={Img_02}
-                                        alt="User Image"
-                                      />
-                                    </Link>
-                                    <Link to="/freelancer-profile">
-                                      <span className="profile-name">
-                                        محمد مهدیزاده
-                                      </span>
-                                      <span>برنامه نویس FullStack</span>
-                                      {/* <span className="rating mt-2">
+                            {loading ? (
+                              <Loader />
+                            ) : (
+                              companyFavoriteEmployeesList?.map((item) => (
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <h2 className="table-avatar">
+                                        <Link
+                                          to={{
+                                            pathname: "/developer-profile",
+                                            state: { idInfo: item.id },
+                                          }}
+                                          className="avatar avatar-md tab-imgcircle ms-2"
+                                        >
+                                          <img
+                                            className="avatar-img rounded-circle"
+                                            src={`http://127.0.0.1:8000${item?.image}`}
+                                            alt="User Image"
+                                          />
+                                        </Link>
+                                        <Link
+                                          to={{
+                                            pathname: "/developer-profile",
+                                            state: { idInfo: item.id },
+                                          }}
+                                        >
+                                          <span className="profile-name">
+                                            {item.user?.first_name}{" "}
+                                            {item.user?.last_name}
+                                          </span>
+                                          <span>{item.perfession_title}</span>
+                                          {/* <span className="rating mt-2">
                                       <i className="fa fa-star filled" />
                                       <i className="fa fa-star filled" />
                                       <i className="fa fa-star filled" />
                                       <i className="fa fa-star filled" />
                                       <i className="fa fa-star" />
                                     </span> */}
-                                    </Link>
-                                  </h2>
-                                </td>
-                                <td>۱۵ میلیون</td>
-                                <td>۳ سال</td>
-                                <td>
-                                  <h2 className="table-avatar">قزوین</h2>
-                                </td>
-                                <td>
-                                  <a href="" className="fav">
-                                    <i className="fa fa-heart filled" />
-                                  </a>
-                                </td>
-                                <td className="text-end">
-                                  <div className="table-action">
-                                    <a
+                                        </Link>
+                                      </h2>
+                                    </td>
+                                    <td> {item.cooperation_type}</td>
+                                    <td> {item.user?.email}</td>
+                                    <td>
+                                      <h2 className="table-avatar">
+                                        {item.city?.name}
+                                      </h2>
+                                    </td>
+                                    <td>
+                                      <a
+                                        onClick={(e) =>
+                                          handleToggleFavorite(e, item.id)
+                                        }
+                                        href=""
+                                        className="fav"
+                                      >
+                                        <i className="fa fa-heart filled" />
+                                      </a>
+                                    </td>
+                                    <td className="text-end">
+                                      <div className="table-action">
+                                        <Link
+                                          className="btn btn-primary btn-invite"
+                                          to={{
+                                            pathname: "/developer-profile",
+                                            state: { idInfo: item.id },
+                                          }}
+                                        >
+                                          <span className="profile-name">
+                                            مشاهده بیشتر
+                                          </span>
+                                        </Link>
+
+                                        {/* <a
                                       data-bs-toggle="modal"
                                       href="#bookmark"
                                       className="btn btn-primary btn-invite"
-                                    >
+                                      >
                                       مشاهده پروفایل
-                                    </a>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
+                                    </a> */}
+                                        <Link></Link>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              ))
+                            )}
                           </table>
                         </div>
                       </div>

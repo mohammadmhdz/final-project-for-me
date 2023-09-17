@@ -121,7 +121,7 @@ import FreelancerDetails from "./components/freelancer-details";
 import CompanyDetails from "./components/CompanyDetails";
 import OnboardScreenEmployer from "./components/pages/onboardScreen/onboard-screen-employer";
 import CompanyGallery from "./components/CompanyDetails/company-gallery";
-import CompanyReview from "./components/CompanyDetails/companyreview";
+import { CompanyReview } from "./components/CompanyDetails/companyreview";
 
 if (!window.location.pathname.includes("admin")) {
   require("./assets/js/bootstrap.min.js");
@@ -253,15 +253,17 @@ const AppContainer = function (props) {
               <Route exact path="/searchp" component={SearchProject} />
               {/* <Route exact path="/search" component={Search} /> */}
               <Route exact path="/company-profile" component={CompanyProfile} />
+              <Route exact path="/company-gallery" component={CompanyGallery} />
+
               <Route exact path="/post-project" component={PostProject} />
               <Route exact path="/company-project" component={CompanyProject} />
               {/* For Employer */}
               <Route exact path="/developer" component={Developer} />
-              <Route
+              {/* <Route
                 exact
                 path="/developer-details"
                 component={DeveloperDetails}
-              />
+              /> */}
               <Route exact path="/dashboard" component={Dashboard} />
               <Route exact path="/edit-project" component={EditProject} />
               <Route exact path="/manage-projects" component={Manageprojects} />
@@ -316,7 +318,7 @@ const AppContainer = function (props) {
                 component={Projectproposal}
               />
               {/* <Route exact path="/company-details" component={CompanyDetails} /> */}
-              <Route exact path="/company-review" component={CompanyReview} />
+              {/* <Route exact path="/company-review" component={CompanyReview} /> */}
               {/* For Freelancer */}
               <Route exact path="/project" component={Project} />
               <Route exact path="/project-details" component={ProjectDetails} />
@@ -378,7 +380,7 @@ const AppContainer = function (props) {
                 component={FreelancerInvitations}
               />
               <Route
-                exact
+                exactfreelancer-profile-settings
                 path="/freelancer-membership"
                 component={FreelancerMembership}
               />
@@ -389,7 +391,7 @@ const AppContainer = function (props) {
               />
               <Route
                 exact
-                path="/freelancer-profile-settings"
+                path="/developer-profile-settings"
                 component={FreelancerSettings}
               />
               <Route
@@ -399,7 +401,7 @@ const AppContainer = function (props) {
               />
               <Route
                 exact
-                path="/freelancer-profile"
+                path="/developer-profile"
                 component={FreelancerProfile}
               />
               <Route

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import ApexCharts from "apexcharts";
@@ -16,6 +16,42 @@ import { employeeDetails } from "../../../../actions/employeeActions";
 import { freelancerRequest } from "../../../../actions/requestsActions";
 
 const FreelancerDashboard = (props) => {
+  // redux
+  const dispatch = useDispatch();
+  const employeeList = useSelector((state) => state.employeeDetails);
+  const freelancerRequests = useSelector((state) => state.freelancerRequest);
+  const { freelancerRequestsAll, loading, success } = freelancerRequests;
+  const { employee } = employeeList;
+
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
+  // const { employee } = employeeList;
+  // const emloyeeDetails = useSelector((state) => state.employeeListDetails);
+  useEffect(() => {
+    dispatch(employeeDetails(localItem.associated_id));
+    dispatch(freelancerRequest());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (success) {
+      let chartprofileoptionsColumn = document.getElementById("chartprofile");
+      let chartprofileoptionsChart = new ApexCharts(
+        chartprofileoptionsColumn,
+        chartprofileoptions
+      );
+      chartprofileoptionsChart.render();
+
+      let invoiceColumn = document.getElementById("chartradial");
+      let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
+      invoiceChart.render();
+    }
+  }, [success]);
+  const [x, setX] = useState([]);
+
+  // console.log(x, "CHART");
+  // console.log(chartradialOptions.series, "sdsd");
+  // console.log(employee, "sdsd");
+  // console.log(item, "item")
   var chartprofileoptions = {
     series: [
       {
@@ -62,18 +98,18 @@ const FreelancerDashboard = (props) => {
     },
     xaxis: {
       categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
+        "فروردین",
+        "اردیبهشت",
+        "خرداد",
+        "تبر",
+        "مرداد",
+        "شهریور",
+        "مهر",
+        "آبان",
+        "آذر",
+        "دی",
+        "بهمن",
+        "اسفند",
       ],
       lines: {
         show: false,
@@ -85,9 +121,32 @@ const FreelancerDashboard = (props) => {
       },
     },
   };
+  const declinedCount = freelancerRequestsAll.filter(
+    (item) => item.status === "رد شده"
+  ).length;
+  const checkCount = freelancerRequestsAll.filter(
+    (item) => item.status === "بررسی شده"
+  ).length;
+  const pendingCount = freelancerRequestsAll.filter(
+    (item) => item.status === "در انتظار بررسی"
+  ).length;
+  const totalCount = freelancerRequestsAll.length;
 
-  var chartradialOptions = {
-    series: [85, 75, 60, 40],
+  const dataaa = 50;
+  const chartradialOptions = {
+    // series: [freelancerRequestsAll?.filter((items) =>items.employee === employee.id).length
+    //         , freelancerRequestsAll?.filter((items) => items.status === "بررسی شده" && items.employee === employee.id).length
+    //         , freelancerRequestsAll?.filter((items) => items.status === "در انتظار بررسی" && items.employee === employee.id).length
+    //         , freelancerRequestsAll?.filter((items) => items.status === "رد شده" && items.employee === employee.id).length
+    // ],
+    // series: [x[0] * 10, x[1] * 10, x[2] * 10, x[3] * 10],
+    series: [
+      100,
+      (checkCount / totalCount) * 100,
+      (pendingCount / totalCount) * 100,
+      (declinedCount / totalCount) * 100,
+    ],
+
     chart: {
       toolbar: {
         show: false,
@@ -150,34 +209,9 @@ const FreelancerDashboard = (props) => {
     ],
   };
 
-  // redux
-  const dispatch = useDispatch();
-  const employeeList = useSelector((state) => state.employeeDetails);
-  const freelancerRequests = useSelector((state) => state.freelancerRequest);
-  // const { employee } = employeeList;
-  // const emloyeeDetails = useSelector((state) => state.employeeListDetails);
-  useEffect(() => {
-    // redux
-    // employeeDetails ra taghir dadim
-    dispatch(employeeDetails());
-    dispatch(freelancerRequest());
+  console.log(employeeList);
+  console.log(freelancerRequestsAll);
 
-    let chartprofileoptionsColumn = document.getElementById("chartprofile");
-    let chartprofileoptionsChart = new ApexCharts(
-      chartprofileoptionsColumn,
-      chartprofileoptions
-    );
-    chartprofileoptionsChart.render();
-
-    let invoiceColumn = document.getElementById("chartradial");
-    let invoiceChart = new ApexCharts(invoiceColumn, chartradialOptions);
-    invoiceChart.render();
-    document.body.className = "dashboard-page";
-    return () => {
-      document.body.className = "";
-    };
-  }, [dispatch]);
-  // console.log(employeeList, "sdsd");
   return (
     <>
       {/* Page Content */}
@@ -186,7 +220,7 @@ const FreelancerDashboard = (props) => {
           <div className="row mt-lg-5">
             <div className="col-xl-3 col-md-4 theiaStickySidebar">
               <StickyBox offsetTop={20} offsetBottom={20}>
-                <Sidebar />
+                <Sidebar items={localItem} />
               </StickyBox>
             </div>
             <div className="col-xl-9 col-md-8">
@@ -198,7 +232,13 @@ const FreelancerDashboard = (props) => {
                         <div className="dash-widget-info">
                           درخواست های ارسال شده
                         </div>
-                        <div className="dash-widget-count">30</div>
+                        <div className="dash-widget-count">
+                          {
+                            freelancerRequestsAll.filter(
+                              (items) => items.employee === employee.id
+                            ).length
+                          }
+                        </div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
@@ -217,11 +257,22 @@ const FreelancerDashboard = (props) => {
                         <div className="dash-widget-info">
                           درخواست های تعیین وضعیت شده
                         </div>
-                        <div className="dash-widget-count">5</div>
+                        <div className="dash-widget-count">
+                          {freelancerRequestsAll.filter(
+                            (items) =>
+                              items.status === "رد شده" &&
+                              items.employee === employee.id
+                          ).length +
+                            freelancerRequestsAll.filter(
+                              (items) =>
+                                items.status === "بررسی شده" &&
+                                items.employee === employee.id
+                            ).length}
+                        </div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
-                          to="/freelancer-completed-projects"
+                          to="/freelancer-project-proposals"
                           className="d-flex align-items-center justify-content-md-between"
                         >
                           <div>مشاهده بیشتر </div>
@@ -236,11 +287,19 @@ const FreelancerDashboard = (props) => {
                         <div className="dash-widget-info">
                           درخواست های درحال بررسی
                         </div>
-                        <div className="dash-widget-count">25</div>
+                        <div className="dash-widget-count">
+                          {
+                            freelancerRequestsAll.filter(
+                              (items) =>
+                                items.status === "در انتظار بررسی" &&
+                                items.employee === employee.id
+                            ).length
+                          }
+                        </div>
                       </div>
                       <div className="dash-widget-more">
                         <Link
-                          to="/freelancer-ongoing-projects"
+                          to="/freelancer-project-proposals"
                           className="d-flex align-items-center justify-content-md-between"
                         >
                           <div> مشاهده بیشتر </div>
@@ -283,28 +342,58 @@ const FreelancerDashboard = (props) => {
                               <i className="fa fa-circle text-violet me-1" /> کل
                               درخواست ها
                             </span>{" "}
-                            <span className="sta-count">30</span>
+                            <span className="sta-count">
+                              {
+                                freelancerRequestsAll.filter(
+                                  (items) => items.employee === employee.id
+                                ).length
+                              }
+                            </span>
                           </li>
                           <li>
                             <span>
                               <i className="fa fa-circle text-pink me-1" />{" "}
-                              استخدام
+                              بررسی شده
                             </span>{" "}
-                            <span className="sta-count">30</span>
+                            <span className="sta-count">
+                              {
+                                freelancerRequestsAll.filter(
+                                  (items) =>
+                                    items.status === "بررسی شده" &&
+                                    items.employee === employee.id
+                                ).length
+                              }
+                            </span>
                           </li>
                           <li>
                             <span>
-                              <i className="fa fa-circle text-yellow me-1" />{" "}
-                              درخواست های رد شده
+                              <i className="fa fa-circle text-yellow me-1" /> در
+                              انتظار بررسی
                             </span>{" "}
-                            <span className="sta-count">30</span>
+                            <span className="sta-count">
+                              {
+                                freelancerRequestsAll.filter(
+                                  (items) =>
+                                    items.status === "در انتظار بررسی" &&
+                                    items.employee === employee.id
+                                ).length
+                              }
+                            </span>
                           </li>
                           <li>
                             <span>
-                              <i className="fa fa-circle text-blue me-1" />{" "}
-                              کارهای ذخیره شده
+                              <i className="fa fa-circle text-blue me-1" /> رد
+                              شده
                             </span>{" "}
-                            <span className="sta-count">30</span>
+                            <span className="sta-count">
+                              {
+                                freelancerRequestsAll.filter(
+                                  (items) =>
+                                    items.status === "رد شده" &&
+                                    items.employee === employee.id
+                                ).length
+                              }
+                            </span>
                           </li>
                         </ul>
                       </div>
@@ -499,126 +588,42 @@ const FreelancerDashboard = (props) => {
                         </Link>
                       </div>
                       <div className="pro-body p-0">
-                        <div className="earn-feature">
-                          <div className="row flex-column-reverse">
-                            <div className="col-lg-7 col-md-6">
-                              <div className="earn-info">
-                                {/* <p>برنامه نویس frontend</p> */}
-                                {/* <div className="date">تمام وقت,تهران </div> */}
-                              </div>
-                            </div>
-                            <div className="col-lg-5 col-md-6">
-                              <div className="earn-img">
-                                <span className=" d-flex  align-center">
-                                  <img
-                                    src={Avatar_1}
-                                    alt="logo"
-                                    className="img-fluid avatar-xl rounded-circle"
-                                  />{" "}
-                                  {/* فناوران جوان آینده | Fanavaran Javan Ayandeh */}
-                                  <div className=" earn-info d-flex flex-column me-3">
-                                    <div className="titlee">
-                                      برنامه نویس فرانت اند
-                                    </div>
-                                    <div className="date text-secondary">
-                                      تمام وقت,تهران
+                        {freelancerRequestsAll?.map(
+                          (items) =>
+                            // console.log(items , items.employee , employee.id)
+                            items.employee === employee.id && (
+                              <div className="earn-feature">
+                                <div className="row flex-column-reverse">
+                                  <div className="col-lg-7 col-md-6">
+                                    <div className="earn-info">
+                                      {/* <p>برنامه نویس frontend</p> */}
+                                      {/* <div className="date">تمام وقت,تهران </div> */}
                                     </div>
                                   </div>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="earn-feature">
-                          <div className="row flex-column-reverse">
-                            <div className="col-lg-7 col-md-6">
-                              <div className="earn-info">
-                                {/* <p>برنامه نویس frontend</p> */}
-                                {/* <div className="date">تمام وقت,تهران </div> */}
-                              </div>
-                            </div>
-                            <div className="col-lg-5 col-md-6">
-                              <div className="earn-img">
-                                <span className=" d-flex  align-center">
-                                  <img
-                                    src={Avatar_1}
-                                    alt="logo"
-                                    className="img-fluid avatar-xl rounded-circle"
-                                  />{" "}
-                                  {/* فناوران جوان آینده | Fanavaran Javan Ayandeh */}
-                                  <div className=" earn-info d-flex flex-column me-3">
-                                    <div className="titlee">
-                                      برنامه نویس فرانت اند
-                                    </div>
-                                    <div className="date text-secondary">
-                                      تمام وقت,تهران
+                                  <div className="col-lg-5 col-md-6">
+                                    <div className="earn-img">
+                                      <span className=" d-flex  align-center">
+                                        {/* <img
+                                          src={Avatar_1}
+                                          alt="logo"
+                                          className="img-fluid avatar-xl rounded-circle"
+                                        />{" "} */}
+                                        {/* فناوران جوان آینده | Fanavaran Javan Ayandeh */}
+                                        <div className=" earn-info d-flex flex-column me-3">
+                                          <div className="titlee">
+                                            {items.job_title}
+                                          </div>
+                                          <div className="date text-secondary">
+                                            {items.company_name}
+                                          </div>
+                                        </div>
+                                      </span>
                                     </div>
                                   </div>
-                                </span>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="earn-feature">
-                          <div className="row flex-column-reverse">
-                            <div className="col-lg-7 col-md-6">
-                              <div className="earn-info">
-                                {/* <p>برنامه نویس frontend</p> */}
-                                {/* <div className="date">تمام وقت,تهران </div> */}
-                              </div>
-                            </div>
-                            <div className="col-lg-5 col-md-6">
-                              <div className="earn-img">
-                                <span className=" d-flex  align-center">
-                                  <img
-                                    src={Avatar_1}
-                                    alt="logo"
-                                    className="img-fluid avatar-xl rounded-circle"
-                                  />{" "}
-                                  {/* فناوران جوان آینده | Fanavaran Javan Ayandeh */}
-                                  <div className=" earn-info d-flex flex-column me-3">
-                                    <div className="titlee">
-                                      برنامه نویس فرانت اند
-                                    </div>
-                                    <div className="date text-secondary">
-                                      تمام وقت,تهران
-                                    </div>
-                                  </div>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="earn-feature">
-                          <div className="row flex-column-reverse">
-                            <div className="col-lg-7 col-md-6">
-                              <div className="earn-info">
-                                {/* <p>برنامه نویس frontend</p> */}
-                                {/* <div className="date">تمام وقت,تهران </div> */}
-                              </div>
-                            </div>
-                            <div className="col-lg-5 col-md-6">
-                              <div className="earn-img">
-                                <span className=" d-flex  align-center">
-                                  <img
-                                    src={Avatar_1}
-                                    alt="logo"
-                                    className="img-fluid avatar-xl rounded-circle"
-                                  />{" "}
-                                  {/* فناوران جوان آینده | Fanavaran Javan Ayandeh */}
-                                  <div className=" earn-info d-flex flex-column me-3">
-                                    <div className="titlee">
-                                      برنامه نویس فرانت اند
-                                    </div>
-                                    <div className="date text-secondary">
-                                      تمام وقت,تهران
-                                    </div>
-                                  </div>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                            )
+                        )}
                       </div>
                     </div>
                   </div>

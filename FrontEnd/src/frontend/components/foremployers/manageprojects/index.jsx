@@ -1,17 +1,82 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { Developer_01, Flags_en, home_icon } from "../../imagepath";
 import { Sidebar } from "../sidebar";
+import moment from "jalali-moment";
+import Pendingprojects from "../pendingprojects/index";
+import CompletedProjects from "../completedprojects/index";
+import OngoingProjects from "../ongoingprojects/index";
+import CancelledProjects from "../cancelledprojects/index";
+import Loader from "../../../../Loader";
+// redux
+import { companyJobsListAction } from "../../../../actions/companyActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const Manageprojects = (props) => {
+  const localItem = JSON.parse(localStorage.getItem("userInfo"));
+
+  const [allRequest, setAllRequest] = useState(true);
+  const [waiting, setWaiting] = useState(false);
+  const [active, setActive] = useState(false);
+  const [complete, setComplete] = useState(false);
+  const [expired, setExpired] = useState(false);
+
+  const handleAllRequest = () => {
+    setAllRequest(true);
+    setComplete(false);
+    setWaiting(false);
+    setActive(false);
+    setExpired(false);
+  };
+  const handleWaiting = () => {
+    setWaiting(true);
+    setAllRequest(false);
+    setComplete(false);
+    setActive(false);
+    setExpired(false);
+  };
+  const handleActive = () => {
+    setActive(true);
+    setAllRequest(false);
+    setComplete(false);
+    setWaiting(false);
+    setExpired(false);
+  };
+  const handleComplete = () => {
+    setComplete(true);
+    setAllRequest(false);
+    setWaiting(false);
+    setActive(false);
+    setExpired(false);
+  };
+  const handleExpired = () => {
+    setExpired(true);
+    setAllRequest(false);
+    setWaiting(false);
+    setActive(false);
+    setComplete(false);
+    setExpired(false);
+  };
+
+  const daysBetween = (input) => {
+    const now = new Date().getDate();
+    const date = new Date(input).getDate();
+    return now - date;
+  };
+  // redux
+  const dispatch = useDispatch();
+  const companyJobsAllList = useSelector((state) => state.companyJobsList);
+  const { companyJobsListArray, loading } = companyJobsAllList;
+
   useEffect(() => {
+    dispatch(companyJobsListAction(localItem.associated_id));
     document.body.className = "dashboard-page";
     return () => {
       document.body.className = "";
     };
-  });
-
+  }, [dispatch]);
+  console.log(companyJobsListArray);
   return (
     <>
       {/* Page Content */}
@@ -29,9 +94,9 @@ const Manageprojects = (props) => {
               <div className="page-title">
                 <div className="row">
                   <div className="col-md-6">
-                    <h3>همه کار های منتشر شده شما</h3>
+                    <h3> کار های منتشر شده شما</h3>
                   </div>
-                  <div className="col-md-6 text-end">
+                  <div className="col-md-6 text-start">
                     <Link
                       to="/post-project"
                       className="btn btn-primary back-btn mb-4"
@@ -44,342 +109,187 @@ const Manageprojects = (props) => {
               <nav className="user-tabs project-tabs">
                 <ul className="nav nav-tabs nav-tabs-bottom nav-justified">
                   <li className="nav-item">
-                    <Link className="nav-link active" to="/manage-projects">
+                    <Link
+                      className={allRequest ? "nav-link active" : "nav-link"}
+                      to="/manage-projects"
+                      onClick={handleAllRequest}
+                    >
                       همه
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/pending-projects">
+                    <Link
+                      className={waiting ? "nav-link active" : "nav-link"}
+                      onClick={handleWaiting}
+                    >
                       در انتظار
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/ongoing-projects">
+                    <Link
+                      className={active ? "nav-link active" : "nav-link"}
+                      onClick={handleActive}
+                    >
                       فعال
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/completed-projects">
+                    <Link
+                      className={complete ? "nav-link active" : "nav-link"}
+                      onClick={handleComplete}
+                    >
                       تکمیل شده
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/cancelled-projects">
+                    <Link
+                      className={expired ? "nav-link active" : "nav-link"}
+                      onClick={handleExpired}
+                    >
                       منقضی شده
                     </Link>
                   </li>
                 </ul>
               </nav>
               {/* project list */}
-              <div className="my-projects-list">
-                <div className="row">
-                  <div className="col-lg-10 flex-wrap">
-                    <div className="projects-card flex-fill">
-                      <div className="card-body">
-                        <div className="projects-details align-items-center">
-                          <div className="project-info">
-                            <span>فراوب|FaraWeb</span>
-                            <h2>برنامه نویس FrontEnd</h2>
-                            <div className="customer-info">
-                              <ul className="list-details">
-                                <li>
-                                  <div className="slot">
-                                    <p>امکان دورکاری</p>
-                                    <h5>دارد</h5>
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="slot">
-                                    <p>شهر</p>
-                                    <h5>تهران</h5>
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="slot">
-                                    <p>انقضای آگهی</p>
-                                    <h5>۲۰ روز </h5>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div className="project-hire-info">
-                            <div className="content-divider" />
-                            <div className="projects-amount">
-                              <h3>۱۳ میلیون</h3>
-                              {/* <h5>in 12 Days</h5> */}
-                            </div>
-                            <div className="content-divider" />
-                            <div className="projects-action text-center">
-                              <Link
-                                to="/view-project-detail"
-                                className="projects-btn"
-                              >
-                                مشاهده بیشتر{" "}
-                              </Link>
-                              <a href="#" className="hired-detail">
-                                استخدام شده در تاریخ ۱۲ بهمن ۱۴۰۱
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-2 d-flex flex-wrap">
-                    <div className="projects-card flex-fill">
-                      <div className="card-body p-2">
-                        <div className="prj-proposal-count text-center hired">
-                          <h3>استخدام شده</h3>
-                          <img
-                            src={Developer_01}
-                            alt=""
-                            className="img-fluid"
-                          />
-                          <p className="mb-0">محمد مهدیزاده</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              {loading ? (
+                <div className="card-body">
+                  <Loader />
                 </div>
-              </div>
-              <div className="my-projects-list">
-                <div className="row">
-                  <div className="col-lg-10 flex-wrap">
-                    <div className="projects-card flex-fill">
-                      <div className="card-body">
-                        <div className="projects-details align-items-center">
-                          <div className="project-info">
-                            <span>فراوب|FaraWeb</span>
-                            <h2>طراح محصول(Product Designer)</h2>
-                            <div className="customer-info">
-                              <ul className="list-details">
-                                <li>
-                                  <div className="slot">
-                                    <p>امکان دورکاری</p>
-                                    <h5>ندارد</h5>
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="slot">
-                                    <p>شهر</p>
-                                    <h5>تهران</h5>
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="slot">
-                                    <p>انقضای آگهی</p>
-                                    <h5>۱۰ روز</h5>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div className="project-hire-info">
-                            <div className="content-divider" />
-                            <div className="projects-amount">
-                              <h3>۱۷ میلیون</h3>
-                              {/* <h5>in 12 Days</h5> */}
-                            </div>
-                            <div className="content-divider" />
-                            <div className="projects-action">
-                              <Link
-                                to="/project-proposals"
-                                className="projects-btn"
-                              >
-                                مشاهده درخواست ها{" "}
-                              </Link>
-                              <Link to="/edit-project" className="projects-btn">
-                                ویرایش
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-2 d-flex flex-wrap">
-                    <div className="projects-card flex-fill">
-                      <div className="card-body p-2">
-                        <div className="prj-proposal-count text-center">
-                          <span>5</span>
-                          <h3>درخواست</h3>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="my-projects-list">
-                <div className="row">
-                  <div className="col-lg-10 flex-wrap">
-                    <div className="projects-card flex-fill">
-                      <div className="card-body">
-                        <div className="projects-details align-items-center">
-                          <div className="project-info">
-                            <span>فراوب|FaraWeb</span>
-                            <h2>برنامه نویس FrontEnd</h2>
-                            <div className="customer-info">
-                              <ul className="list-details">
-                                <li>
-                                  <div className="slot">
-                                    <p>امکان دورکاری</p>
-                                    <h5>دارد</h5>
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="slot">
-                                    <p>شهر</p>
-                                    <h5>تهران</h5>
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="slot">
-                                    <p>انقضای آگهی</p>
-                                    <h5>۲۰ روز </h5>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div className="project-hire-info">
-                            <div className="content-divider" />
-                            <div className="projects-amount">
-                              <h3>۱۳ میلیون</h3>
-                              {/* <h5>in 12 Days</h5> */}
-                            </div>
-                            <div className="content-divider" />
-                            <div className="projects-action text-center">
-                              <Link
-                                to="/view-project-detail"
-                                className="projects-btn"
-                              >
-                                مشاهده بیشتر{" "}
-                              </Link>
-                              <a href="#" className="hired-detail">
-                                استخدام شده در تاریخ ۱۲ بهمن ۱۴۰۱
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-2 d-flex flex-wrap">
-                    <div className="projects-card flex-fill">
-                      <div className="card-body p-2">
-                        <div className="prj-proposal-count text-center hired">
-                          <h3>استخدام شده</h3>
-                          <img
-                            src={Developer_01}
-                            alt=""
-                            className="img-fluid"
-                          />
-                          <p className="mb-0">محمد مهدیزاده</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="my-projects-list">
-                <div className="row">
-                  <div className="col-lg-10 flex-wrap">
-                    <div className="projects-card flex-fill">
-                      <div className="card-body">
-                        <div className="projects-details align-items-center">
-                          <div className="project-info">
-                            <span>فراوب|FaraWeb</span>
-                            <h2>طراح محصول(Product Designer)</h2>
-                            <div className="customer-info">
-                              <ul className="list-details">
-                                <li>
-                                  <div className="slot">
-                                    <p>امکان دورکاری</p>
-                                    <h5>ندارد</h5>
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="slot">
-                                    <p>شهر</p>
-                                    <h5>تهران</h5>
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="slot">
-                                    <p>انقضای آگهی</p>
-                                    <h5>۱۰ روز</h5>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div className="project-hire-info">
-                            <div className="content-divider" />
-                            <div className="projects-amount">
-                              <h3>۱۷ میلیون</h3>
-                              {/* <h5>in 12 Days</h5> */}
-                            </div>
-                            <div className="content-divider" />
-                            <div className="projects-action">
-                              <Link
-                                to="/project-proposals"
-                                className="projects-btn"
-                              >
-                                مشاهده درخواست ها{" "}
-                              </Link>
-                              <Link to="/edit-project" className="projects-btn">
-                                ویرایش
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-2 d-flex flex-wrap">
-                    <div className="projects-card flex-fill">
-                      <div className="card-body p-2">
-                        <div className="prj-proposal-count text-center">
-                          <span>5</span>
-                          <h3>درخواست</h3>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              ) : allRequest ? (
+                companyJobsListArray.map((item) => (
+                  <div className="my-projects-list">
+                    <div className="row">
+                      <div className="col-lg-10 flex-wrap">
+                        <div
+                          className="projects-card flex-fill"
+                          style={{
+                            backgroundColor:
+                              item.status === "درانتظار تایید"
+                                ? "#fff8f2"
+                                : item.status === "فعال"
+                                ? "#your-color-value-for-active"
+                                : item.status === "تکمیل شده"
+                                ? "#eafcee"
+                                : item.status === "منقضی شده"
+                                ? "#ff00001a"
+                                : "#default-color-value",
+                          }}
+                        >
+                          <div className="card-body">
+                            <div className="projects-details align-items-center">
+                              <div className="project-info">
+                                <span>{item.Company?.Name}</span>
+                                <h2>{item.title}</h2>
+                                <div className="customer-info">
+                                  <ul className="list-details">
+                                    <li>
+                                      <div className="slot">
+                                        <p>امکان دورکاری</p>
+                                        <h5>
+                                          {item.isremote ? "دارد" : "ندارد"}
+                                        </h5>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div className="slot">
+                                        <p>شهر</p>
+                                        <h5>{item.company?.city.name}</h5>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div className="slot">
+                                        <p>انقضای آگهی</p>
+                                        <h5>
+                                          {60 - daysBetween(item.published_at)}{" "}
+                                          روز دبگر{" "}
+                                        </h5>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      {" "}
+                                      <div className="slot">
+                                        <p> حقوق</p>
+                                        <h5>
+                                          {item.salary_amount
+                                            ? `${item.salary_amount} میلیون`
+                                            : "حقوق توافقی"}{" "}
+                                        </h5>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                              <div className="project-hire-infoo">
+                                <div className="projects-amount">
+                                  {/* <h5>in 12 Days</h5> */}
+                                </div>
 
-              <div className="row">
-                <div className="col-md-12">
-                  <ul className="paginations list-pagination">
-                    <li>
-                      <a href="#">
-                        <i className="fa fa-angle-right" /> قبلی
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">1</a>
-                    </li>
-                    <li>
-                      <a href="#" className="active">
-                        2
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">3</a>
-                    </li>
-                    <li>
-                      <a href="#">4</a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        بعدی <i className="fa fa-angle-left" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+                                <div className="projects-action text-center">
+                                  {item.num_requests !== 0 &&
+                                  item.status === "فعال" ? (
+                                    <Link
+                                      className="projects-btn"
+                                      to={{
+                                        pathname: "/project-proposals",
+                                        state: { job: item },
+                                      }}
+                                    >
+                                      مشاهده درخواست ها
+                                    </Link>
+                                  ) : null}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {item.completed_request_user !== null ? (
+                        <div className="col-lg-2 d-flex flex-wrap">
+                          <div className="projects-card flex-fill">
+                            <div className="card-body p-2">
+                              <div className="prj-proposal-count text-center hired">
+                                <h3>استخدام شده</h3>
+                                {/* <img
+                                  src={Developer_01}
+                                  alt=""
+                                  className="img-fluid"
+                                /> */}
+                                <p className="mb-0">
+                                  {item.completed_request_user.first_name}{" "}
+                                  {item.completed_request_user.last_name}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="col-lg-2 d-flex flex-wrap">
+                          <div className="projects-card flex-fill">
+                            <div className="card-body p-2">
+                              <div className="prj-proposal-count text-center">
+                                <span>{item.num_requests}</span>
+                                <h3>درخواست</h3>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))
+              ) : waiting ? (
+                <Pendingprojects data={companyJobsListArray} />
+              ) : complete ? (
+                <CompletedProjects data={companyJobsListArray} />
+              ) : active ? (
+                <OngoingProjects data={companyJobsListArray} />
+              ) : expired ? (
+                <CancelledProjects data={companyJobsListArray} />
+              ) : (
+                <CancelledProjects data={companyJobsListArray} />
+              )}
+
               {/* /pagination */}
             </div>
           </div>

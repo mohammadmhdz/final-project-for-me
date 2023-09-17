@@ -1,9 +1,21 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Logo, Img_04, avatar_1 } from "../imagepath";
-import config from "config";
+import { Logo, avatar_1 } from "../imagepath";
+// redux
+import { logout } from "../../../actions/userActions";
+import { useDispatch, useSelector } from "react-redux";
+import { employeeDetails } from "../../../actions/employeeActions";
 
 const Header = (props) => {
+  // add by mhdz
+  const localItem = JSON.parse(localStorage?.getItem("userInfo"));
+  const dispatch = useDispatch();
+
+  console.log(localItem);
+  const employeedetails = useSelector((state) => state.employeeDetails);
+  const { employee, loading } = employeedetails;
+  console.log(employee);
+
   const [isSideMenu, setSideMenu] = useState("");
   const [isSideMenu1, setSideMenu1] = useState("");
   const [isSideMenu2, setSideMenu2] = useState("");
@@ -59,6 +71,7 @@ const Header = (props) => {
 
   useEffect(() => {
     showButton();
+    dispatch(employeeDetails(localItem?.associated_id));
   }, []);
   window.addEventListener("resize", showButton);
 
@@ -68,6 +81,10 @@ const Header = (props) => {
     } else {
       setNavbar(false);
     }
+  };
+
+  const handleLogout = (e) => {
+    dispatch(logout());
   };
   window.addEventListener("scroll", changeBackground);
   return (
@@ -111,19 +128,13 @@ const Header = (props) => {
                 </div>
                 <ul className="main-nav">
                   <li>
-                    <Link to="/" target="_blank">
-                      خانه
-                    </Link>
+                    <Link to="/">خانه</Link>
                   </li>
                   <li>
-                    <Link to="/project" target="_blank">
-                      فرصت های شغلی
-                    </Link>
+                    <Link to="/project">فرصت های شغلی</Link>
                   </li>
                   <li>
-                    <Link to="/privacy-policy" target="_blank">
-                      قوانین و مقررات
-                    </Link>
+                    <Link to="/privacy-policy">قوانین و مقررات</Link>
                   </li>
 
                   {/* <li>
@@ -133,12 +144,7 @@ const Header = (props) => {
                   </li> */}
                 </ul>
               </div>
-              {pathname === "user-account-details" ? (
-                <ul className="nav header-navbar-rht"></ul>
-              ) : pathname === "freelancer-invoices" ||
-                pathname === "project" ||
-                pathname === "view-invoice" ||
-                pathname.includes("freelancer-") ? (
+              {localItem ? (
                 <ul className="nav header-navbar-rht">
                   <li className="nav-item dropdown has-arrow account-item">
                     <Link
@@ -147,25 +153,43 @@ const Header = (props) => {
                       data-bs-toggle="dropdown"
                     >
                       <span className="user-img  ms-2">
-                        <img src={avatar_1} alt="" />
+                        <img
+                          src={`http://127.0.0.1:8000${localItem?.image}`}
+                          alt=""
+                        />
                       </span>
-                      <span className=" ms-2">پروفایل</span>
+                      <span className=" ms-2">{localItem?.username}</span>
                     </Link>
 
                     <div className="dropdown-menu emp">
                       <Link
-                        className="dropdown-item"
-                        to="/user-account-details"
+                        className="dropdown-item "
+                        to={
+                          localItem.role === "employer"
+                            ? "/dashboard"
+                            : "/freelancer-dashboard"
+                        }
                       >
                         <i className="material-icons  ms-1">verified_user</i>{" "}
                         پروفایل من
                       </Link>
-                      <Link className="dropdown-item " to="/profile-settings">
+                      <Link
+                        className="dropdown-item "
+                        to={
+                          localItem.role === "employer"
+                            ? "/profile-settings"
+                            : "/developer-profile-settings"
+                        }
+                      >
                         {" "}
                         <i className="material-icons  ms-1">settings</i>
                         تنظیمات
                       </Link>
-                      <Link className="dropdown-item" to="/">
+                      <Link
+                        onClick={handleLogout}
+                        className="dropdown-item"
+                        to="/"
+                      >
                         <i className="material-icons  ms-1">
                           power_settings_new
                         </i>{" "}
@@ -174,9 +198,15 @@ const Header = (props) => {
                     </div>
                   </li>
                   <li className={pathname === "post-project" ? "active" : ""}>
-                    <Link to="/post-project" className="login-btn">
-                      Post a Project{" "}
-                    </Link>
+                    {localItem.role === "employee" ? (
+                      <Link to="/project" className="login-btn">
+                        لیست کارها
+                      </Link>
+                    ) : (
+                      <Link to="/post-project" className="login-btn">
+                        ایجاد کار
+                      </Link>
+                    )}
                   </li>
                 </ul>
               ) : (

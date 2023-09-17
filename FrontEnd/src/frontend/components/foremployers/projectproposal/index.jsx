@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import {
   Avatar_1,
@@ -9,8 +9,67 @@ import {
   Logo_01,
 } from "../../imagepath";
 import { Sidebar } from "../sidebar";
+// import { alias as moment } from "jalali-moment";
+import moment from "moment";
+
+// redux
+import {
+  freelancerRequest,
+  companyChangeRequestStatus,
+} from "../../../../actions/requestsActions";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../../../Loader";
 
 const Projectproposal = (props) => {
+  const dispatch = useDispatch();
+
+  const location = useLocation();
+  const allRequest = useSelector((state) => state.freelancerRequest);
+  const { freelancerRequestsAll, loading } = allRequest;
+  const postStatusChange = useSelector((state) => state.companyChangeStatus);
+  const { success, changeStatusArray } = postStatusChange;
+
+  const { job } = location.state;
+
+  const [statusShow, setStatusShow] = useState("در انتظار بررسی");
+  const [statusChange, setStatusChange] = useState();
+
+  const daysBetween = (input) => {
+    const now = new Date().getDate();
+    const date = new Date(input).getDate();
+    return now - date;
+  };
+
+  useEffect(() => {
+    dispatch(freelancerRequest());
+  }, [dispatch, success]);
+
+  // useEffect(() => {
+  //   dispatch(companyChangeRequestStatus(statusChange));
+  // }, [statusChange]);
+
+  const handleChangeStatus = (e) => {
+    console.log(e.target.value);
+    dispatch(
+      companyChangeRequestStatus({
+        id: e.target.id,
+        status: e.target.value,
+        status_change_date: moment(new Date().toISOString()).utc().format(),
+      })
+    );
+
+    // setStatusChange({
+    //   ["id"]: e.target.id,
+    //   ["status"]: e.target.value,
+    //   ["status_change_date"]: moment(new Date().toISOString()).utc().format(),
+    // });
+  };
+
+  const hired = true;
+  const hired2 = false;
+  const hired3 = false;
+
+  console.log("ssss", statusShow);
   return (
     <>
       {/* Page Content */}
@@ -28,36 +87,6 @@ const Projectproposal = (props) => {
               <div className="page-title">
                 <h3>درخواست ها</h3>
               </div>
-              <nav className="user-tabs mb-4">
-                <ul className="nav nav-tabs nav-tabs-bottom nav-justified">
-                  <li className="nav-item">
-                    <Link className="nav-link active" to="/manage-projects">
-                      همه
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/pending-projects">
-                      در انتظار
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/ongoing-projects">
-                      فعال
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/completed-projects">
-                      تکمیل شده
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/cancelled-projects">
-                      منقضی شده
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
-              {/* project list */}
               <div className="my-projects-list">
                 <div className="row">
                   <div className="col-lg-10 flex-wrap">
@@ -65,26 +94,36 @@ const Projectproposal = (props) => {
                       <div className="card-body">
                         <div className="projects-details align-items-center">
                           <div className="project-info">
-                            <span>فراوب|FaraWeb</span>
-                            <h2>توسعه دهنده فرانت اند</h2>
+                            <Link
+                              className="text-success"
+                              to={{
+                                pathname: "/company-profile",
+                                state: { companyIdInput: +job.company?.id },
+                              }}
+                            >
+                              {job.company?.Name}
+                            </Link>
+                            <h2>{job.title}</h2>
                             <div className="customer-info">
                               <ul className="list-details">
                                 <li>
                                   <div className="slot">
                                     <p>امکان دورکاری</p>
-                                    <h5>ندار</h5>
+                                    <h5>{job?.isremote ? "دارد" : "ندارد"}</h5>
                                   </div>
                                 </li>
                                 <li>
                                   <div className="slot">
                                     <p>شهر</p>
-                                    <h5>تهران</h5>
+                                    <h5>{job?.company.city.name}</h5>
                                   </div>
                                 </li>
                                 <li>
                                   <div className="slot">
                                     <p>انقضای اگهی</p>
-                                    <h5>۱۰ روز</h5>
+                                    <h5>
+                                      {60 - daysBetween(job.published_at)}
+                                    </h5>
                                   </div>
                                 </li>
                               </ul>
@@ -92,7 +131,11 @@ const Projectproposal = (props) => {
                           </div>
                           <div className="project-hire-info">
                             <div className="projects-amount proposals">
-                              <h3>۱۷ میلیون</h3>
+                              <h3>
+                                {job.salary_amount
+                                  ? `${job.salary_amount} میلیون تومان`
+                                  : "توافقی"}
+                              </h3>
                             </div>
                           </div>
                         </div>
@@ -100,121 +143,179 @@ const Projectproposal = (props) => {
                     </div>
                   </div>
                   <div className="col-lg-2 d-flex flex-wrap">
-                    <div className="projects-card flex-fill">
-                      <div className="card-body p-2">
-                        <div className="prj-proposal-count text-center">
-                          <span>5</span>
-                          <h3>درخواست</h3>
+                    {job.completed_request_user === null ? (
+                      <div className="projects-card flex-fill">
+                        <div className="card-body p-2">
+                          <div className="prj-proposal-count text-center">
+                            <span>{job.num_requests}</span>
+                            <h3>درخواست</h3>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="projects-card flex-fill">
+                        <div className="card-body p-2">
+                          <div className="prj-proposal-count text-center">
+                            <h3 style={{ color: "orange" }}>استخدام شده</h3>
+                            <Link
+                              className="font-semibold text-primary"
+                              to={{
+                                pathname: "/developer-profile",
+                                state: {
+                                  idInfo: +job.completed_request_user?.id,
+                                },
+                              }}
+                            >
+                              <p className="mb-0">
+                                {job.completed_request_user?.first_name}{" "}
+                                {job.completed_request_user?.last_name}
+                              </p>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
               {/* /project list */}
               {/* Proposals list */}
-              <div className="proposals-section mb-4">
-                <h3 className="page-subtitle">درخواست های ارسال شده</h3>
-                <div className="proposal-card">
-                  {/* Proposals */}
-                  <div className="project-proposals align-items-center">
-                    <div className="proposals-info">
-                      <div className="proposer-info">
-                        <div className="proposer-img">
-                          <img src={Avatar_1} alt="" className="img-fluid" />
-                        </div>
-                        <div className="proposer-detail">
-                          <h4>محمد مهدی زاده</h4>
-                          <ul className="proposal-details">
-                            <li> ۲۹ تیر ۱۴۰۲</li>
 
-                            <li>
-                              {" "}
-                              <Link
-                                to="/freelancer-profile"
-                                className="font-semibold text-primary"
-                              >
-                                مشاهده پروفایل
-                              </Link>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="proposer-bid-info">
-                        <div className="proposer-bid">
-                          <h3>۱۷ میلیون تومان</h3>
-                          <h5>درخواست دورکاری</h5>
-                        </div>
-                        <div className="proposer-confirm">
-                          <a
-                            data-bs-toggle="modal"
-                            href="#hire"
-                            className="projects-btn"
-                          >
-                            استخدام کنید
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="description-proposal">
-                      <h5 className="desc-title">توضیحات</h5>
-                      <p>
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
-                        چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون
-                        بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و
-                        برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با
-                        هدف بهبود ابزارهای کاربردی می باشد کتابهای زیادی در شصت
-                        و سه درصد گذشته حال و آینده
-                        <span id="dots">...</span>
-                        <span id="more">
-                          Turpis quam sed in sed curabitur netus laoreet. In
-                          tortor neque sapien praesent porttitor cursus
-                        </span>
-                        <span
-                          id="myBtn"
-                          className="text-primary font-bold readmore"
-                        >
-                          بیشتر
-                        </span>
-                      </p>
+              <div className="proposals-section mb-4">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <h3 className="page-subtitle">درخواست های دریافت شده</h3>
+                  <div className="col-md-3 col-lg-3">
+                    <div className="form-group">
+                      <select
+                        onChange={(e) => setStatusShow(e.target.value)}
+                        name="price"
+                        className="form-control select-level"
+                      >
+                        <option value="در انتظار بررسی">در انتظار بررسی</option>
+                        <option value="بررسی شده">بررسی شده</option>
+                        <option value="رد شده">رد شده</option>
+                        {/* <option value="استخدام شده">استخدام شده</option> */}
+                      </select>
                     </div>
                   </div>
                 </div>
+
+                {loading ? (
+                  <Loader />
+                ) : (
+                  freelancerRequestsAll.map(
+                    (item) =>
+                      +item.job === +job.id &&
+                      item.Company === job.Company &&
+                      statusShow === item.status && (
+                        <div className="proposal-card">
+                          {/* Proposals */}
+                          <div className="project-proposals align-items-center">
+                            <div className="proposals-info">
+                              <div className="proposer-info">
+                                <div className="proposer-img">
+                                  <img
+                                    src={Avatar_1}
+                                    alt=""
+                                    className="img-fluid"
+                                  />
+                                </div>
+                                <div className="proposer-detail">
+                                  <h4>{item.employee_user}</h4>
+                                  <ul className="proposal-details">
+                                    <li>
+                                      تاریخ :{" "}
+                                      {moment(item.send_at, "YYYY/MM/DD")
+                                        .locale("fa")
+                                        .format("YYYY/MM/DD")}
+                                    </li>
+
+                                    <li>
+                                      {" "}
+                                      <Link
+                                        className="font-semibold text-primary"
+                                        to={{
+                                          pathname: "/developer-profile",
+                                          state: { idInfo: +item.employee },
+                                        }}
+                                      >
+                                        مشاهده پروفایل
+                                      </Link>
+                                    </li>
+                                    <li>وضعیت درخواست :{item.status}</li>
+                                  </ul>
+                                </div>
+                              </div>
+                              {item.status === "رد شده" ? (
+                                <div
+                                  style={
+                                    hired3 ? { pointerEvents: "none" } : {}
+                                  }
+                                  className="disable-btn ms-1"
+                                >
+                                  رد شده
+                                </div>
+                              ) : item.status === "در انتظار بررسی" ||
+                                item.status === "بررسی شده" ? (
+                                <div className="proposer-bid-info">
+                                  <div className="proposer-bid"></div>
+                                  <div className="proposer-confirm">
+                                    <button
+                                      onClick={(e) => handleChangeStatus(e)}
+                                      id={item.id}
+                                      value="استخدام شده"
+                                      className="projects-btn ms-1"
+                                    >
+                                      تغییر به استخدام شده
+                                    </button>
+                                    <button
+                                      onClick={(e) => handleChangeStatus(e)}
+                                      id={item.id}
+                                      value="بررسی شده"
+                                      style={
+                                        hired2 ? { pointerEvents: "none" } : {}
+                                      }
+                                      disabled={hired2 ? true : false}
+                                      className={
+                                        item.status === "در انتظار بررسی"
+                                          ? "projects-btn ms-1"
+                                          : "disable-btn projects-btn ms-1"
+                                      }
+                                    >
+                                      تغییر به بررسی شده
+                                    </button>
+                                    <button
+                                      onClick={(e) => handleChangeStatus(e)}
+                                      id={item.id}
+                                      value="رد شده"
+                                      style={
+                                        hired3 ? { pointerEvents: "none" } : {}
+                                      }
+                                      disabled={hired3 ? true : false}
+                                      className={
+                                        hired3
+                                          ? "disable-btn projects-btn ms-1"
+                                          : "projects-btn ms-1"
+                                      }
+                                    >
+                                      تغییر به رد شده
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : null}
+                            </div>
+                            <div className="description-proposal">
+                              <h5 className="desc-title">متن پیام</h5>
+                              <p>{item.message}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                  )
+                )}
               </div>
+
               {/* /Proposals list */}
-              {/* pagination */}
-              <div className="row">
-                <div className="col-md-12">
-                  <ul className="paginations">
-                    <li>
-                      <a href="#">
-                        {" "}
-                        <i className="fas fa-angle-right" /> قبلی
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">1</a>
-                    </li>
-                    <li>
-                      <a href="#" className="active">
-                        2
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">3</a>
-                    </li>
-                    <li>
-                      <a href="#">4</a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        بعذی <i className="fas fa-angle-left" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              {/* /pagination */}
             </div>
           </div>
         </div>

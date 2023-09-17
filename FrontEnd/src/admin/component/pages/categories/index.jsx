@@ -1,54 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Sidebar from "../../../commoncomponent/sidebar";
 import { Table } from "antd";
+import Loader from "../../../../Loader";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import { itemRender, onShowSizeChange } from "../../../paginationfunction";
 import "../../../antdstyle.css";
-const Categories = () => {
-  const [date, setDate] = useState(new Date());
-  const [inputfilter, setInputfilter] = useState(false);
+import {
+  categoryListAction,
+  updateCategoryDetails,
+  postCategory,
+  deletecategory,
+} from "../../../../actions/adminAction";
+import { set } from "lodash";
 
-  const handleChange = (date) => {
-    setDate(date);
+const Categories = (props) => {
+  const dispatch = useDispatch();
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [editedCategoryName, setEditedCategoryName] = useState("");
+  const [editedCategoryid, setEditedCategoryid] = useState("");
+  const [addedCategoryName, setAddedCategoryName] = useState("");
+  const [deletedCategoryid, setdeletedCategoryid] = useState("");
+  const [delcategories, setdelcategories] = useState([]);
+  const [mock, setmock] = useState([]);
+
+  const categoryListAll = useSelector((state) => state.categoryListAll);
+  const { categories, loading } = categoryListAll;
+
+  const categoryDetailsUpdate = useSelector(
+    (state) => state.categoryUpdateDetail
+  );
+  const {
+    loading: loadingupdate,
+    error: errorupdate,
+    success: successupdate,
+    categoryupdateList: updateCategory,
+  } = categoryDetailsUpdate;
+
+  const categorydelete = useSelector((state) => state.categorydelete);
+
+  const categorypost = useSelector((state) => state.categorypostlistt);
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    categoryPostList: createdCategory,
+  } = categorypost;
+
+  useEffect(() => {
+    dispatch(categoryListAction());
+  }, [dispatch, updateCategory, createdCategory, successCreate, successupdate]);
+
+  const addhandleSubmit = (e) => {
+    dispatch(postCategory({ title: addedCategoryName }));
+    const closeButton = document.querySelector("#add-category .close");
+    closeButton.click();
+    setAddedCategoryName("");
   };
 
-  const togglefilter = (value) => {
-    setInputfilter(value);
+  const handleSubmit = (e) => {
+    dispatch(
+      updateCategoryDetails({ id: editedCategoryid, title: editedCategoryName })
+    );
+    const closeButton = document.querySelector("#edit-category .close");
+    closeButton.click();
+    setEditedCategoryName("");
   };
 
-  const data = [
-    {
-      id: 1,
-      categoryname: "Graphics & Design",
-    },
-    {
-      id: 2,
-      categoryname: "Cartoons",
-    },
-    {
-      id: 3,
-      categoryname: "Flyers & Brochures",
-    },
-    {
-      id: 4,
-      categoryname: "Illustration",
-    },
-    {
-      id: 5,
-      categoryname: "Sales & Marketing",
-    },
-    {
-      id: 6,
-      categoryname: "Accounting / Finance",
-    },
-    {
-      id: 7,
-      categoryname: "Telecommunications",
-    },
-  ];
+  const handledeleteSubmit = (e) => {
+    setdelcategories([...delcategories, deletedCategoryid]);
+    dispatch(deletecategory(deletedCategoryid));
+    dispatch(categoryListAction());
+    const cancelLink = document.querySelector("#cancelLink");
+    cancelLink.click();
+  };
+
+  const data = categories;
 
   const columns = [
     {
@@ -59,13 +89,12 @@ const Categories = () => {
     },
     {
       title: "نام دسته بندی",
-      dataIndex: "categoryname",
+      dataIndex: "title",
       render: (text, record) => <>{text}</>,
-      sorter: (a, b) => a.categoryname.length - b.categoryname.length,
+      sorter: (a, b) => a.title.length - b.title.length,
     },
 
     {
-      //   title: "عملیات",
       dataIndex: "action",
       render: (text, record) => (
         <>
@@ -75,6 +104,11 @@ const Categories = () => {
               className="btn btn-sm btn-secondary ms-2"
               data-bs-toggle="modal"
               data-bs-target="#edit-category"
+              onClick={() => {
+                setSelectedCategory(record);
+                setEditedCategoryName(record.title);
+                setEditedCategoryid(record.id);
+              }}
             >
               <i className="far fa-edit" />
             </Link>
@@ -83,6 +117,9 @@ const Categories = () => {
               className="btn btn-sm btn-danger"
               data-bs-toggle="modal"
               data-bs-target="#delete_category"
+              onClick={() => {
+                setdeletedCategoryid(record.id);
+              }}
             >
               <i className="far fa-trash-alt" />
             </Link>
@@ -97,7 +134,6 @@ const Categories = () => {
       <>
         <div className="main-wrapper">
           {/* Page Wrapper */}
-
           <Sidebar />
           <div className="page-wrapper">
             <div className="content container-fluid">
@@ -116,91 +152,41 @@ const Categories = () => {
                     >
                       <i className="fas fa-plus" />
                     </Link>
-                    <Link className="btn filter-btn" to="#" id="filter_search">
-                      <i
-                        className="fas fa-filter"
-                        onClick={() => togglefilter(!inputfilter)}
-                      />
-                    </Link>
                   </div>
                 </div>
               </div>
               {/* /Page Header */}
               {/* Search Filter */}
-              <div
-                className="card filter-card"
-                id="filter_inputs"
-                style={{ display: inputfilter ? "block" : "none" }}
-              >
-                <div className="card-body pb-0">
-                  <form>
-                    <div className="row filter-row">
-                      <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                          <label>اضافه کردن دسته بندی</label>
-                          <input className="form-control" type="text" />
-                        </div>
-                      </div>
-                      <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                          <label>From Date</label>
-                          <div className="cal-icon">
-                            <DatePicker
-                              selected={date}
-                              onChange={handleChange}
-                              className="form-control datetimepicker"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                          <label>To Date</label>
-                          <div className="cal-icon">
-                            <DatePicker
-                              selected={date}
-                              onChange={handleChange}
-                              className="form-control datetimepicker"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-6 col-md-3">
-                        <div className="form-group">
-                          <button
-                            className="btn btn-primary btn-block"
-                            type="submit"
-                          >
-                            Submit
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
+
               {/* /Search Filter */}
               <div className="row">
                 <div className="col-sm-12">
                   <div className="card">
                     <div className="card-body">
-                      <div className="table-responsive">
-                        <Table
-                          pagination={{
-                            total: data.length,
-                            showTotal: (total, range) =>
-                              `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه`,
-                            showSizeChanger: true,
-                            onShowSizeChange: onShowSizeChange,
-                            itemRender: itemRender,
-                          }}
-                          className="table role"
-                          style={{ overflowX: "auto" }}
-                          columns={columns}
-                          dataSource={data}
-                          rowKey={(record) => record.id}
-                        />
-                      </div>
+                      {loading ? (
+                        <Loader />
+                      ) : (
+                        <div className="table-responsive">
+                          <Table
+                            id="#table"
+                            pagination={{
+                              total: data.length,
+                              showTotal: (total, range) =>
+                                `نمایش ${range[0]} از ${range[1]} از ${total} کل نتیجه`,
+                              showSizeChanger: true,
+                              onShowSizeChange: onShowSizeChange,
+                              itemRender: itemRender,
+                            }}
+                            className="table role"
+                            style={{ overflowX: "auto" }}
+                            columns={columns}
+                            dataSource={data.filter(
+                              (obj) => !delcategories.includes(obj.id)
+                            )}
+                            rowKey={(record) => record.id}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -226,24 +212,31 @@ const Categories = () => {
                   </div>
                   {/* Modal body */}
                   <div className="modal-body">
-                    <form>
+                    <formn>
                       <div className="form-group">
                         <label>نام دسته بندی</label>
                         <input
+                          id="inputtitle"
                           type="text"
                           className="form-control"
+                          value={addedCategoryName}
                           placeholder="نام دسته بندی را وارد کنید"
+                          onChange={(e) => setAddedCategoryName(e.target.value)}
                         />
                       </div>
                       <div className="mt-4">
                         <button
                           type="submit"
                           className="btn btn-primary btn-block"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            addhandleSubmit();
+                          }}
                         >
                           تایید
                         </button>
                       </div>
-                    </form>
+                    </formn>
                   </div>
                 </div>
               </div>
@@ -272,13 +265,21 @@ const Categories = () => {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue="Graphic & Design"
+                          defaultValue={editedCategoryName}
+                          value={editedCategoryName}
+                          onChange={(e) =>
+                            setEditedCategoryName(e.target.value)
+                          }
                         />
                       </div>
                       <div className="mt-4">
                         <button
                           type="submit"
                           className="btn btn-primary btn-block"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            handleSubmit();
+                          }}
                         >
                           تایید
                         </button>
@@ -305,12 +306,20 @@ const Categories = () => {
                     <div className="modal-btn delete-action">
                       <div className="row">
                         <div className="col-6">
-                          <Link to="#" className="btn btn-primary continue-btn">
+                          <Link
+                            to="#"
+                            className="btn btn-primary continue-btn"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              handledeleteSubmit();
+                            }}
+                          >
                             حذف
                           </Link>
                         </div>
                         <div className="col-6">
                           <Link
+                            id="cancelLink"
                             to="#"
                             data-bs-dismiss="modal"
                             className="btn btn-primary cancel-btn"
